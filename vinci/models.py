@@ -1,27 +1,40 @@
+from datetime import datetime
 import peewee as p
 import config
+from vinci import utils
 
 db = p.SqliteDatabase(config.database_file)
 
-class Notebook(p.Model):
-    slug = p.CharField()
-    name = p.CharField()
-    description = p.CharField()
 
+class BaseModel(p.Model):
     class Meta:
         database = db
 
 
-class Entry(p.Model):
-    content = p.CharField()
+class Notebook(BaseModel):
+    slug = p.CharField(max_length=200, unique=True)
+    name = p.CharField(max_length=200)
+    description = p.TextField(null=True)
+
+    def save(self, force_insert=False, only=None):
+        if self.slug == '':
+            self.slug = utils.slugify(self.name)
+        return super(Entry, self).save(force_insert, only)
+
+
+class Entry(BaseModel):
+    content = p.TextField()
     notebook = p.ForeignKeyField(Notebook, related_name='entries')
-    date = p.DateField()
-    time = p.TimeField()
-    last_modified = p.DateTimeField()
+    created = p.DateTimeField(default=datetime.now)
+    last_modified = p.DateTimeField(default=datetime.now)
 
     class Meta:
-        database = db
+        order_by = ('-created',)
 
-if True: # tables not created
-    Notebook.create_table()
-    Entry.create_table()
+    def save(self, force_insert=False, only=None):
+        self.last_modified = datetime.now()
+        return super(Entry, self).save(force_insert, only)
+
+
+Notebook.create_table(True)
+Entry.create_table(True)

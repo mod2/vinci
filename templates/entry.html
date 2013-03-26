@@ -1,0 +1,10 @@
+{% extends '_base.html' %}
+
+{% block page_content %}
+{% block entry %}
+<article class="entry" data-id="{{ entry.id }}">
+	{% block metadata %}<div class="metadata"><a href="{{ entry.url }}"><date>{{ entry.date }}</date><time>{{ entry.time }}</time></a></div>{% endblock content %}
+	{% block content %}<div class="content">{{ content }}</div>{% endblock content %}
+</article>
+{% endblock entry %}
+{% endblock page_content %}

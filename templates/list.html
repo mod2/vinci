@@ -1,0 +1,18 @@
+{% extends '_base.html' %}
+
+{% block page_content %}
+{% block input %}
+<article id="input">
+	<div class="content"><textarea id="add" name="add"></textarea></div>
+</article>
+{% endblock input %}
+
+<section id="entries">
+	{% for entry in entries %}{% block entry %}
+	<article class="entry" data-id="{{ entry.id }}">
+		{% block metadata %}<div class="metadata"><a href="{{ entry.url }}"><date>{{ entry.date }}</date><time>{{ entry.time }}</time></a></div>{% endblock content %}
+		{% block content %}<div class="content">{{ content }}</div>{% endblock content %}
+	</article>
+	{% endblock entry %}{% endfor %}
+</section>
+{% endblock page_content %}

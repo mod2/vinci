@@ -16,7 +16,7 @@ $(document).ready(function() {
 		return false;
 	});
 
-	$("#search input").bind('keyup', function() {
+	$("#search input").on('submit', function() {
 		var query = $(this).val().trim();
 
 		if (query.length > 1) {
@@ -60,7 +60,7 @@ $(document).ready(function() {
 		return false;
 	});
 
-	$("#add").on("change", function() {
+	$("#add").on("submit", function() {
 		var val = $(this).val().trim();
 		addEntry(val);
 	});
@@ -68,7 +68,10 @@ $(document).ready(function() {
 
 function addEntry(text) {
 	// Add the entry
-	console.log("added entry:", text);
+	console.log("adding entry:", text);
+	$.get(config.notebook_url + "/add?content=" + encodeURIComponent(text), function(data) {
+		console.log(data);
+	});
 
 	// Clear out the entry box
 	$("#add").val('');

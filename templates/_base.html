@@ -14,6 +14,13 @@
 	<script src="{{ staticpath }}/js/jquery.hotkeys.js" type="text/javascript" charset="utf-8"></script>
 
 	<script src="{{ staticpath }}/js/vinci.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript" charset="utf-8">
+		var config = {};
+		config.url = "{{ url_for('index') }}";
+		config.notebook_url = config.url + "/{{ notebook.slug }}";
+	</script>
+
 	{% endblock head %}
 </head>
 

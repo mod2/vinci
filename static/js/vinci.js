@@ -71,6 +71,19 @@ function addEntry(text) {
 	console.log("adding entry:", text);
 	$.get(config.notebook_url + "/add?content=" + encodeURIComponent(text), function(data) {
 		console.log(data);
+
+	 	if (data.status == 'success') {
+			var entryHTML = '<article class="entry" data-id="' + data.id + '">';
+			entryHTML += '<div class="metadata"><a href="' + config.notebook_url + '/entry/' + data.url + '">';
+			entryHTML += '<date>' + data.date + '</date><time>' + data.time + '</time>';
+			entryHTML += '</a></div>';
+			entryHTML += '<div class="content">' + data.html + '</div>';
+			entryHTML += '</article>';
+		
+			$(entryHTML).prependTo($("#entries"));	
+		} else {
+			alert("Error adding entry");
+		}
 	});
 
 	// Clear out the entry box

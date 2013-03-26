@@ -11,8 +11,8 @@
 <section id="entries">
 	{% for entry in entries %}
 	<article class="entry" data-id="{{ entry.id }}">
-		<div class="metadata"><a href="{{ url_for('index') ~ 'entry/' ~ entry.date.strftime('%Y-%m-%d') ~ '.1' }}"><date>{{ entry.date.strftime('%a, %d %b %Y') }}</date><time>{{ entry.date.strftime('%l:%M %p')|trim }}</time></a></div>
-		<div class="content">{{ entry.content }}</div>
+    <div class="metadata"><a href="{{ url_for('index') ~ notebook.slug ~ '/entry/' ~ entry.date.strftime('%Y-%m-%d') ~ '.' ~ entry.id }}"><date>{{ entry.date.strftime('%a, %d %b %Y') }}</date><time>{{ entry.date.strftime('%l:%M %p')|trim }}</time></a></div>
+		<div class="content">{{ entry.content|markdown }}</div>
 	</article>
 	{% endfor %}
 </section>

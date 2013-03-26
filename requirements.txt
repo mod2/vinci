@@ -4,3 +4,5 @@ Werkzeug==0.8.3
 peewee==2.0.9
 whoosh==2.4.1
 nose==1.2.1
+Flask-Markdown==0.3
+smartypants==1.6.0.3

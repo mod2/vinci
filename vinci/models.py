@@ -1,9 +1,7 @@
 from datetime import datetime
 import peewee as p
-import config
-from vinci import utils
 
-db = p.SqliteDatabase(config.database_file)
+db = p.SqliteDatabase(None, threadlocals=True)
 
 
 class BaseModel(p.Model):
@@ -15,11 +13,6 @@ class Notebook(BaseModel):
     slug = p.CharField(max_length=200, unique=True)
     name = p.CharField(max_length=200)
     description = p.TextField(null=True)
-
-    def save(self, force_insert=False, only=None):
-        if self.slug == '':
-            self.slug = utils.slugify(self.name)
-        return super(Entry, self).save(force_insert, only)
 
 
 class Entry(BaseModel):
@@ -36,5 +29,7 @@ class Entry(BaseModel):
         return super(Entry, self).save(force_insert, only)
 
 
-Notebook.create_table(True)
-Entry.create_table(True)
+def init_db(dbname):
+    db.init(dbname)
+    Notebook.create_table(True)
+    Entry.create_table(True)

@@ -7,12 +7,15 @@
 </article>
 {% endblock input %}
 
+{% block entries %}
 <section id="entries">
-	{% for entry in entries %}{% block entry %}
+	{% for entry in entries %}
 	<article class="entry" data-id="{{ entry.id }}">
-		{% block metadata %}<div class="metadata"><a href="{{ entry.url }}"><date>{{ entry.date }}</date><time>{{ entry.time }}</time></a></div>{% endblock content %}
-		{% block content %}<div class="content">{{ content }}</div>{% endblock content %}
+		<div class="metadata"><a href="{{ entry.url }}"><date>{{ entry.date }}</date><time>{{ entry.time }}</time></a></div>
+		<div class="content">{{ content }}</div>
 	</article>
-	{% endblock entry %}{% endfor %}
+	{% endfor %}
 </section>
+{% endblock entries %}
+
 {% endblock page_content %}

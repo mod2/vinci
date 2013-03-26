@@ -10,19 +10,19 @@ class BaseModel(p.Model):
 
 
 class Notebook(BaseModel):
-    slug = p.CharField(max_length=200, unique=True)
-    name = p.CharField(max_length=200)
+    slug = p.CharField(max_length=100, unique=True)
+    name = p.CharField(max_length=100)
     description = p.TextField(null=True)
 
 
 class Entry(BaseModel):
     content = p.TextField()
     notebook = p.ForeignKeyField(Notebook, related_name='entries')
-    created = p.DateTimeField(default=datetime.now)
+    date = p.DateTimeField(default=datetime.now)
     last_modified = p.DateTimeField(default=datetime.now)
 
     class Meta:
-        order_by = ('-created',)
+        order_by = ('-date',)
 
     def save(self, force_insert=False, only=None):
         self.last_modified = datetime.now()

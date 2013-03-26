@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% block head %}
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+	<title>{{ notebook.name }} | Vinci</title>
+
+	<link href="{{ path }}/static/css/style.css" rel="stylesheet" type="text/css" charset="utf-8" />
+
+	<script src="{{ path }}/static/js/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="{{ path }}/static/js/jquery.hotkeys.js" type="text/javascript" charset="utf-8"></script>
+
+	<script src="{{ path }}/static/js/vinci.js" type="text/javascript" charset="utf-8"></script>
+	{% endblock head %}
+</head>
+
+<body>
+	<section id="page">
+		{% block header %}
+		<header>
+			<h1>{{ notebook.name }}</h1>
+
+			<div id="search">
+				<input type="text"{% if query %}value="{{ query }}"{% endif %}/>
+			</div>
+		</header>
+		{% endblock header %}
+
+		{% block input %}
+		<article id="input">
+			<div class="content"><textarea id="add" name="add"></textarea></div>
+		</article>
+		{% endblock input %}
+
+		<section id="entries">
+			{% for entry in entries %}{% block entry %}
+			<article class="entry" data-id="{{ entry.id }}">
+				{% block metadata %}<div class="metadata"><a href="{{ entry.url }}"><date>{{ entry.date }}</date><time>{{ entry.time }}</time></a></div>{% endblock content %}
+				{% block content %}<div class="content">{{ content }}</div>{% endblock content %}
+			</article>
+			{% endblock entry %}{% endfor %}
+		</section>
+	</section>
+</body>
+</html>

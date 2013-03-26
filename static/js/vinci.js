@@ -1,0 +1,78 @@
+$(document).ready(function() {
+	// Search box
+	// --------------------------------------------------
+
+	$(document).bind('keydown', '/', function() {
+		// Focus on the search box
+		$("#search input").focus();
+
+		return false;
+	});
+
+	$("#search input").bind('keydown', 'esc', function() {
+		// Unfocus the search box
+		$("#search input").blur();
+
+		return false;
+	});
+
+	$("#search input").bind('keyup', function() {
+		var query = $(this).val().trim();
+
+		if (query.length > 1) {
+			console.log("Searching for", query);
+		} else {
+			console.log("Cleared search results");
+		}
+	});
+
+
+	// Entry box
+	// --------------------------------------------------
+
+	$(document).bind('keydown', 'ctrl+return', function() {
+		if ($("#add:focus").length == 0) {
+			// Focus the entry box
+			$("#add").focus();
+		}
+
+		return false;
+	});
+
+	$("#add").bind('keydown', 'shift+return', function() {
+		var val = $(this).val().trim();
+		addEntry(val);
+
+		return false;
+	});
+
+	$("#add").bind('keydown', 'ctrl+return', function() {
+		// Unfocus the entry box
+		$("#add").blur();
+
+		return false;
+	});
+
+	$("#add").bind('keydown', 'esc', function() {
+		// Unfocus the entry box
+		$("#add").blur();
+
+		return false;
+	});
+
+	$("#add").on("change", function() {
+		var val = $(this).val().trim();
+		addEntry(val);
+	});
+});
+
+function addEntry(text) {
+	// Add the entry
+	console.log("added entry:", text);
+
+	// Clear out the entry box
+	$("#add").val('');
+
+	// Focus on the entry box
+	$("#add").focus();
+}

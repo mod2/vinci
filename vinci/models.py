@@ -1,4 +1,5 @@
 from datetime import datetime
+import vinci.utils as utils
 import peewee as p
 
 db = p.SqliteDatabase(None, threadlocals=True)
@@ -13,6 +14,14 @@ class Notebook(BaseModel):
     slug = p.CharField(max_length=100, unique=True)
     name = p.CharField(max_length=100)
     description = p.TextField(null=True)
+
+    def set_slug(self):
+        slug = utils.slugify(self.name)
+        num = Notebook.select().where(
+                p.fn.Substr(Notebook.slug, 1, len(slug)) == slug).count()
+        if num > 0:
+            slug += '-' + str(num)
+        self.slug = slug
 
 
 class Entry(BaseModel):

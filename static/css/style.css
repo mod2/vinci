@@ -4,6 +4,8 @@ body						{ margin: 0; padding: 0; font-family: "Avenir Next", "Helvetica Neue",
 
 a							{ color: #558bc0; }
 
+h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, h6:first-child	{ margin-top: 0; }
+
 #page						{ padding: 15px 35px 35px; }
 
 #page header				{ margin-left: 240px; margin-bottom: 5px; overflow: auto; clear: both; max-width: 680px; padding: 15px; }

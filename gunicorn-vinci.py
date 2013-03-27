@@ -1,4 +1,4 @@
-from web import *
+from web import app
 
 from werkzeug.contrib.fixers import ProxyFix
 

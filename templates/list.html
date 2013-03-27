@@ -2,9 +2,9 @@
 
 {% block page_content %}
 {% block input %}
-<article id="input">
+<form id="input">
 	<div class="content"><textarea id="add" name="add"></textarea></div>
-</article>
+</form>
 {% endblock input %}
 
 {% block entries %}
@@ -12,7 +12,7 @@
 	{% for entry in entries %}
 	<article class="entry" data-id="{{ entry.id }}">
     <div class="metadata"><a href="{{ url_for('index') ~ notebook.slug ~ '/entry/' ~ entry.date.strftime('%Y-%m-%d') ~ '.' ~ entry.id }}"><date>{{ entry.date.strftime('%a, %d %b %Y') }}</date><time>{{ entry.date.strftime('%l:%M %p')|trim }}</time></a></div>
-		<div class="content">{{ entry.content|markdown }}</div>
+	<div class="content">{{ entry.content|markdown|hashtag(url_for('index'), notebook.slug, '/tag')|safe }}</div>
 	</article>
 	{% endfor %}
 </section>

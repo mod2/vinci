@@ -60,8 +60,9 @@ $(document).ready(function() {
 		return false;
 	});
 
-	$("#add").on("submit", function() {
-		var val = $(this).val().trim();
+	$("form#input").on("submit", function() {
+		alert("submitting");
+		var val = $(this).find("#add").val().trim();
 		addEntry(val);
 	});
 });

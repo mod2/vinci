@@ -141,7 +141,6 @@ def add_notebook():
 
     # If we succeeded
     if notebook:
-        # Send the info we need to generate the entry HTML
         response = {
             'status': 'success',
             'name': notebook.name,
@@ -176,14 +175,33 @@ def delete_notebook():
 
         return jsonify(response)
 
-# Edit (rename) a notebook
-@app.route('/edit/notebook/')
+# Rename a notebook
+@app.route('/rename/notebook/')
 def edit_notebook():
     # Defaults and parameters
     notebook = request.args.get('notebook')
     name = request.args.get('name')
     callback = request.args.get('callback')
     type = request.args.get('type') or 'json'
+
+    # Edit the entry
+    notebook = vinci.rename_notebook(notebook_slug=notebook, name=name)
+
+    # If we succeeded
+    if notebook:
+        response = {
+            'status': 'success',
+            'name': notebook.name,
+            'slug': notebook.slug,
+            'description': notebook.description
+        }
+
+        return response_with_callback(response, callback)
+    else:
+        response = { 'status': 'error' }
+
+        return jsonify(response)
+
 
 # Search within all notebooks
 @app.route('/search/<query>')

@@ -21,6 +21,19 @@ def add_notebook(name, description=None):
     return nb
 
 @db
+def rename_notebook(notebook_slug, name):
+    """Rename a notebook."""
+    try:
+        nb = m.Notebook.get(m.Notebook.slug == notebook_slug)
+        nb.name = name
+        nb.slug = utils.slugify(nb.name)
+        nb.save()
+
+        return nb
+    except:
+        return False
+
+@db
 def delete_notebook(notebook_slug):
     """Delete a notebook."""
     try:

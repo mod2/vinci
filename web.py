@@ -49,16 +49,20 @@ def add_entry():
     # If we succeeded
     if entry:
         if date == None:
-            date = entry.date   # TODO: fix
+            date = entry.date
+
+        # Prep the HTML
+        html = jinja_filters.convert_hashtags(content, url_for('index'), notebook, '/tag')
+        html = smartyPants(markdown(html))
 
         # Send the info we need to generate the entry HTML
         response = {
             'status': 'success',
-            'id': entry.id, # TODO: fix
-            'url': '%s.%s' % (date.strftime('%Y-%m-%d'), entry.id), # TODO: fix
-            'date': date.strftime('%a, %d %b %Y'), # TODO: fix
-            'time': date.strftime('%l:%M %p').strip(), # TODO: fix
-            'html': smartyPants(markdown(content))
+            'id': entry.id,
+            'url': '%s.%s' % (date.strftime('%Y-%m-%d'), entry.id),
+            'date': date.strftime('%a, %d %b %Y'),
+            'time': date.strftime('%l:%M %p').strip(),
+            'html': html
         }
 
         if callback:

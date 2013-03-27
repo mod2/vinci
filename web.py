@@ -137,7 +137,7 @@ def add_notebook():
     type = request.args.get('type') or 'json'
 
     # Add the notebook
-    notebook = vinci.create_notebook(name=name, description=description)
+    notebook = vinci.add_notebook(name=name, description=description)
 
     # If we succeeded
     if notebook:
@@ -162,6 +162,19 @@ def delete_notebook():
     notebook = request.args.get('notebook')
     callback = request.args.get('callback')
     type = request.args.get('type') or 'json'
+
+    # Delete the entry
+    success = vinci.delete_notebook(notebook_slug=notebook)
+
+    # If we succeeded
+    if success:
+        response = { 'status': 'success' }
+
+        return response_with_callback(response, callback)
+    else:
+        response = { 'status': 'error' }
+
+        return jsonify(response)
 
 # Edit (rename) a notebook
 @app.route('/edit/notebook/')

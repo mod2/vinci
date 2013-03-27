@@ -13,12 +13,22 @@ def db(f):
     return wrapper
 
 @db
-def create_notebook(name, description=None):
-    """Create a new notebook."""
+def add_notebook(name, description=None):
+    """Add a new notebook."""
     nb = m.Notebook(name=name, description=description)
     nb.slug = utils.slugify(nb.name)
     nb.save()
     return nb
+
+@db
+def delete_notebook(notebook_slug):
+    """Delete a notebook."""
+    try:
+        nb = m.Notebook.get(m.Notebook.slug == notebook_slug)
+        nb.delete_instance()
+        return True
+    except m.Notebook.DoesNotExist:
+        return False
 
 # Get a specific notebook
 @db

@@ -61,9 +61,10 @@ $(document).ready(function() {
 	});
 
 	$("form#input").on("submit", function() {
-		alert("submitting");
 		var val = $(this).find("#add").val().trim();
 		addEntry(val);
+
+		return false;
 	});
 });
 

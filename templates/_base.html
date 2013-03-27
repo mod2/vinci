@@ -5,7 +5,7 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 
-	<title>{{ notebook.name }} | Vinci</title>
+	<title>{{ title }} | Vinci</title>
 
 	{% set staticpath = url_for('index') ~ "static" %}
 	<link href="{{ staticpath }}/css/style.css?v3" rel="stylesheet" type="text/css" charset="utf-8" />
@@ -18,7 +18,7 @@
 	<script type="text/javascript" charset="utf-8">
 		var config = {};
 		config.url = "{{ url_for('index') }}";
-		config.notebook = "{{ notebook.slug }}";
+{% if notebook %}		config.notebook = "{{ notebook.slug }}";{% endif %}
 	</script>
 
 	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
@@ -30,7 +30,7 @@
 	<section id="page">
 		{% block header %}
 		<header>
-			<h1>{{ notebook.name }}</h1>
+			<h1>{{ title }}</h1>
 
 			<div id="search">
 				<input type="text"{% if query %}value="{{ query }}"{% endif %}/>

@@ -100,8 +100,33 @@ def edit_entry():
 def add_notebook():
     # Defaults and parameters
     name = request.args.get('name')
+    description = request.args.get('desc')
     callback = request.args.get('callback')
     type = request.args.get('type') or 'json'
+
+    # Add the notebook
+    notebook = vinci.create_notebook(name=name, description=description)
+
+    # If we succeeded
+    if notebook:
+        # Send the info we need to generate the entry HTML
+        response = {
+            'status': 'success',
+            'name': notebook.name,
+            'slug': notebook.slug,
+            'description': notebook.description
+        }
+
+        if callback:
+            return redirect(callback)
+        else:
+            return jsonify(response)
+    else:
+        response = {
+            'status': 'error'
+        }
+
+        return jsonify(response)
 
 # Delete a notebook
 @app.route('/delete/notebook/')
@@ -163,12 +188,20 @@ def display_entries(notebook_slug):
     notebook = vinci.get_notebook(notebook_slug)
     entries = vinci.get_entries(notebook_slug)
 
-    return render_template(template, notebook=notebook, entries=entries)
+    return render_template(template, title=notebook.name, notebook=notebook, entries=entries)
 
 # Home page
 @app.route('/')
 def index():
-    return 'hello'
+    # Defaults and parameters
+    type = request.args.get('type') or 'html'
+
+    # Template to load
+    template = 'index.%s' % type
+
+    notebooks = vinci.get_all_notebooks()
+
+    return render_template(template, title="Notebooks", notebooks=notebooks)
 
 
 if __name__ == '__main__':

@@ -48,9 +48,6 @@ def add_entry():
 
     # If we succeeded
     if entry:
-        if date == None:
-            date = entry.date
-
         # Prep the HTML
         html = jinja_filters.convert_hashtags(content, url_for('index'), notebook, '/tag')
         html = smartyPants(markdown(html))
@@ -59,20 +56,15 @@ def add_entry():
         response = {
             'status': 'success',
             'id': entry.id,
-            'url': '%s.%s' % (date.strftime('%Y-%m-%d'), entry.id),
-            'date': date.strftime('%a, %d %b %Y'),
-            'time': date.strftime('%l:%M %p').strip(),
+            'url': '%s.%s' % (entry.date.strftime('%Y-%m-%d'), entry.id),
+            'date': entry.date.strftime('%a, %d %b %Y'),
+            'time': entry.date.strftime('%l:%M %p').strip(),
             'html': html
         }
 
-        if callback:
-            return redirect(callback)
-        else:
-            return jsonify(response)
+        return response_with_callback(response, callback)
     else:
-        response = {
-            'status': 'error'
-        }
+        response = { 'status': 'error' }
 
         return jsonify(response)
 
@@ -85,15 +77,55 @@ def delete_entry():
     callback = request.args.get('callback')
     type = request.args.get('type') or 'json'
 
+    # Delete the entry
+    success = vinci.delete_entry(id=id, notebook_slug=notebook)
+
+    # If we succeeded
+    if success:
+        response = { 'status': 'success' }
+
+        return response_with_callback(response, callback)
+    else:
+        response = { 'status': 'error' }
+
+        return jsonify(response)
+
 # Edit an entry
+# TODO: refactor this, lots of shared code with add_entry()
 @app.route('/edit/entry/')
 def edit_entry():
     # Defaults and parameters
     notebook = request.args.get('notebook')
     id = request.args.get('id')
     content = request.args.get('content')
+    date = request.args.get('date')
     callback = request.args.get('callback')
     type = request.args.get('type') or 'json'
+
+    # Edit the entry
+    entry = vinci.edit_entry(id=id, content=content, notebook_slug=notebook, date=date)
+
+    # If we succeeded
+    if entry:
+        # Prep the HTML
+        html = jinja_filters.convert_hashtags(content, url_for('index'), notebook, '/tag')
+        html = smartyPants(markdown(html))
+
+        # Send the info we need to generate the entry HTML
+        response = {
+            'status': 'success',
+            'id': entry.id,
+            'url': '%s.%s' % (entry.date.strftime('%Y-%m-%d'), entry.id),
+            'date': entry.date.strftime('%a, %d %b %Y'),
+            'time': entry.date.strftime('%l:%M %p').strip(),
+            'html': html
+        }
+
+        return response_with_callback(response, callback)
+    else:
+        response = { 'status': 'error' }
+
+        return jsonify(response)
 
 # Add a notebook
 @app.route('/add/notebook/')
@@ -117,14 +149,9 @@ def add_notebook():
             'description': notebook.description
         }
 
-        if callback:
-            return redirect(callback)
-        else:
-            return jsonify(response)
+        return response_with_callback(response, callback)
     else:
-        response = {
-            'status': 'error'
-        }
+        response = { 'status': 'error' }
 
         return jsonify(response)
 
@@ -203,6 +230,22 @@ def index():
 
     return render_template(template, title="Notebooks", notebooks=notebooks)
 
+# 404
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html', title='File Not Found'), 404
+
+# 500
+@app.errorhandler(500)
+def page_not_found(error):
+    return render_template('500.html', title='Something crashed.'), 500
+
+# Redirect if callback, otherwise return JSONed response
+def response_with_callback(response, callback):
+    if callback:
+        return redirect(callback)
+    else:
+        return jsonify(response)
 
 if __name__ == '__main__':
     app.debug = config.debug

@@ -1,6 +1,7 @@
 import vinci.models as m
 import vinci.utils as utils
 import config
+import datetime
 
 def db(f):
     def wrapper(*args, **kwargs):
@@ -48,16 +49,28 @@ def add_entry(content, notebook_slug, date=None):
 # Edit an entry
 @db
 def edit_entry(id, content, notebook_slug, date=None):
-    entry = m.Entry.get(id=id, notebook=notebook_slug)
+    entry = m.Entry.get(id=id)
 
+    # Update the content
     entry.content = content
 
+    # Revise the date if passed in
     if date:
-        entry.date = date
+        entry.date = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
 
     entry.save()
 
     return entry
+
+# Delete an entry
+@db
+def delete_entry(id, notebook_slug):
+    try:
+        entry = m.Entry.get(id=id)
+        entry.delete_instance()
+        return True
+    except m.Entry.DoesNotExist:
+        return False
 
 # Get all entries for the given notebook
 @db

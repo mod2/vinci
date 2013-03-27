@@ -89,7 +89,7 @@ def edit_entry(id, content, notebook_slug, date=None):
 @db
 def delete_entry(id, notebook_slug):
     try:
-        entry = m.Entry.get(id=id)
+        entry = m.Entry.get(m.Entry.id == id)
         entry.delete_instance()
         return True
     except m.Entry.DoesNotExist:
@@ -99,3 +99,8 @@ def delete_entry(id, notebook_slug):
 @db
 def get_entries(notebook_slug):
     return get_notebook(notebook_slug).entries
+
+# Get a specific entry
+@db
+def get_entry(id, notebook_slug):
+    return m.Entry.get(m.Entry.id == id)

@@ -233,6 +233,17 @@ def display_entry(notebook_slug, entry_id):
     # Defaults and parameters
     type = request.args.get('type') or 'html'
 
+    # Template to load
+    template = 'entry.%s' % type
+
+    # Parse the entry ID out
+    id = entry_id[entry_id.find('.')+1:]
+
+    # Data
+    notebook = vinci.get_notebook(notebook_slug)
+    entry = vinci.get_entry(id, notebook_slug)
+
+    return render_template(template, title=notebook.name, notebook=notebook, entry=entry)
 
 @app.route('/<notebook_slug>/')
 def display_entries(notebook_slug):

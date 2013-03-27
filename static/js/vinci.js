@@ -70,7 +70,6 @@ $(document).ready(function() {
 
 function addEntry(text) {
 	// Add the entry
-	console.log("adding entry:", text);
 	$.get(config.url + "add/entry?notebook=" + config.notebook + "&content=" + encodeURIComponent(text), function(data) {
 	 	if (data.status == 'success') {
 			var entryHTML = '<article class="entry" data-id="' + data.id + '">';

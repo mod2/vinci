@@ -1,6 +1,6 @@
 # Vinci web app
 
-from flask import Flask, request, render_template, url_for, send_from_directory, jsonify
+from flask import Flask, request, render_template, url_for, send_from_directory, jsonify, redirect
 from flaskext.markdown import Markdown
 from markdown import markdown
 from smartypants import smartyPants
@@ -66,7 +66,7 @@ def add_entry():
         }
 
         if callback:
-            return ''
+            return redirect(callback)
         else:
             return jsonify(response)
     else:

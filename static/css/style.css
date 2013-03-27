@@ -73,7 +73,7 @@ h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, 
 
 	#input .content			{ margin-left: 0px; }
 
-	#input .content input[type=submit]	{ display: block; width: 100%; background: #96b3b3; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: "Avenir Next", Helvetica, Arial, sans-serif; padding: 5px 8px; font-size: .9em; font-weight: 600; cursor: pointer; }
+	#input .content input[type=submit]	{ display: block; width: 100%; background: #96b3b3; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: "Avenir Next", Helvetica, Arial, sans-serif; padding: 5px 8px; font-size: .9em; font-weight: 600; cursor: pointer; -webkit-appearance: none; }
 }
 
 @media screen and (max-width: 320px) {

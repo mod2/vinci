@@ -89,6 +89,6 @@ function addEntry(text) {
 	// Clear out the entry box
 	$("#add").val('');
 
-	// Focus on the entry box
-	$("#add").focus();
+	// Blur entry box
+	$("#add").blur();
 }

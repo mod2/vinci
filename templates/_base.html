@@ -18,7 +18,7 @@
 	<script type="text/javascript" charset="utf-8">
 		var config = {};
 		config.url = "{{ url_for('index') }}";
-		config.notebook_url = config.url + "{{ notebook.slug }}";
+		config.notebook = "{{ notebook.slug }}";
 	</script>
 
 	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">

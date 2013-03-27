@@ -36,7 +36,7 @@ h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, 
 .entry .metadata time		{ display: inline-block; }
 .entry .metadata time:before	{ margin: 0 3px; content: '—'; }
 
-.entry a.tag				{ font-size: 14px; color: #7499b6; background: #eee; -moz-border-radius: 5px; border-radius: 5px; padding: 1px 6px; cursor: pointer; }
+.entry a.tag				{ font-size: 14px; color: #7499b6; background: #eee; -moz-border-radius: 5px; border-radius: 5px; padding: 1px 6px; cursor: pointer; text-decoration: none; }
 .entry a.tag:hover			{ background: #345678; color: #fff; }
 
 #input						{ margin-bottom: 1em; padding: 15px; }

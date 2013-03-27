@@ -70,12 +70,10 @@ $(document).ready(function() {
 function addEntry(text) {
 	// Add the entry
 	console.log("adding entry:", text);
-	$.get(config.notebook_url + "/add?content=" + encodeURIComponent(text), function(data) {
-		console.log(data);
-
+	$.get(config.url + "add/entry?notebook=" + config.notebook + "&content=" + encodeURIComponent(text), function(data) {
 	 	if (data.status == 'success') {
 			var entryHTML = '<article class="entry" data-id="' + data.id + '">';
-			entryHTML += '<div class="metadata"><a href="' + config.notebook_url + '/entry/' + data.url + '">';
+			entryHTML += '<div class="metadata"><a href="' + config.url + config.notebook + '/entry/' + data.url + '">';
 			entryHTML += '<date>' + data.date + '</date><time>' + data.time + '</time>';
 			entryHTML += '</a></div>';
 			entryHTML += '<div class="content">' + data.html + '</div>';

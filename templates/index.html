@@ -1,13 +1,14 @@
 {% extends '_base.html' %}
 
 {% block page_content %}
-
-<section id="notebooks">
-	{% for notebook in notebooks %}
-	<article class="notebook" data-slug="{{ notebook.slug }}">
-		<h2><a href="{{ url_for('index') ~ notebook.slug }}">{{ notebook.name }}</a></h2>
-	</article>
-	{% endfor %}
-</section>
-
+<div class="container">
+	<section id="notebooks">
+		{% for notebook in notebooks %}
+		<article class="notebook" data-slug="{{ notebook.slug }}">
+			<h2><a href="{{ url_for('index') ~ notebook.slug }}">{{ notebook.name }}</a></h2>
+			{% if notebook.description %}<p>{{ notebook.description }}</p>{% endif %}
+		</article>
+		{% endfor %}
+	</section>
+</div>
 {% endblock page_content %}

@@ -1,21 +1,28 @@
 {% extends '_base.html' %}
 
-{% block page_content %}
 {% block input %}
 <form id="input">
-	<div class="content"><textarea id="add" name="add"></textarea><input type="submit" value="Add Entry" /></div>
+	<div class="container">
+		<div class="content"><textarea id="add" name="add"></textarea><input type="submit" value="Add Entry" /></div>
+	</div>
 </form>
 {% endblock input %}
 
-{% block entries %}
-<section id="entries">
-	{% for entry in entries %}
-	<article class="entry" data-id="{{ entry.id }}">
-		<div class="metadata"><a href="{{ url_for('index') ~ notebook.slug ~ '/entry/' ~ entry.date.strftime('%Y-%m-%d') ~ '.' ~ entry.id }}"><date>{{ entry.date.strftime('%a, %d %b %Y') }}</date><time>{{ entry.date.strftime('%l:%M %p')|trim }}</time></a></div>
-		<div class="content">{{ entry.content|hashtag(url_for('index'), notebook.slug, '/tag')|markdown }}</div>
-	</article>
-	{% endfor %}
-</section>
-{% endblock entries %}
-
+{% block page_content %}
+<div class="container">
+	{% block entries %}
+	<section id="entries">
+		{% for entry in entries %}
+		<article class="entry" data-id="{{ entry.id }}">
+			<div class="metadata"><a href="{{ url_for('index') ~ notebook.slug ~ '/entry/' ~ entry.date.strftime('%Y-%m-%d') ~ '.' ~ entry.id }}"><date>{{ entry.date.strftime('%a, %d %b %Y') }}</date><time>{{ entry.date.strftime('%l:%M %p')|trim }}</time></a></div>
+			<div class="content">{{ entry.content|hashtag(url_for('index'), notebook.slug, '/tag')|markdown }}</div>
+		</article>
+		{% else %}
+		<article class="entry">
+			<div class="content">No entries yet.</div>
+		</article>
+		{% endfor %}
+	</section>
+	{% endblock entries %}
+</div>
 {% endblock page_content %}

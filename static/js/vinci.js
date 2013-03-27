@@ -81,6 +81,15 @@ function addEntry(text) {
 			entryHTML += '</article>';
 		
 			$(entryHTML).prependTo($("#entries"));	
+
+            // Add yellow highlight
+            var entry = $("#entries .entry:first");
+            entry.addClass("new");
+
+            // Remove the yellow after two seconds
+            setTimeout(function() {
+                entry.removeClass("new");
+            }, 2000);
 		} else {
 			alert("Error adding entry");
 		}

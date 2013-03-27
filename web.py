@@ -259,7 +259,7 @@ def index():
 
     notebooks = vinci.get_all_notebooks()
 
-    return render_template(template, title="Notebooks", notebooks=notebooks)
+    return render_template(template, title="All Notebooks", notebooks=notebooks)
 
 # 404
 @app.errorhandler(404)

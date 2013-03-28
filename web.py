@@ -5,6 +5,7 @@ from flask import url_for, send_from_directory, jsonify, redirect
 from flaskext.markdown import Markdown
 from markdown import markdown
 from smartypants import smartyPants
+from datetime import datetime
 import os
 import re
 import logging
@@ -51,6 +52,12 @@ def add_entry():
     date = request.args.get('date')
     callback = request.args.get('callback')
     #type = request.args.get('type') or 'json'
+
+    # If the date is a string, convert it to datetime first
+    if date and isinstance(date, unicode):
+        date = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+    elif date and isinstance(date, str):
+        date = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
 
     # Add the entry
     entry = vinci.add_entry(content=content, notebook_slug=notebook, date=date)

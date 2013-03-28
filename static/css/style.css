@@ -20,6 +20,16 @@ body > header #search		{ position: absolute; bottom: 0px; right: 0px; }
 body > header #search input	{ font-size: 1em; padding: 1px 8px; border: solid 1px #4b6360; background: #232b2a; -moz-border-radius: 1em; border-radius: 1em; font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif; line-height: 1em; font-weight: 600; -webkit-transition: all .15s ease-in-out; -moz-transition: all .15s ease-in-out; transition: all .15s ease-in-out; color: #fff; width: 250px; }
 body > header #search input:focus	{ outline: none; border-color: #6b8380; box-shadow: 0 0 12px #576d6a; }
 
+nav[role=pagination]		{ font-size: .8em; padding: 5px 35px; clear: both; overflow: auto; background: #dde4d0; }
+nav[role=pagination] label	{ color: #adb695; float: left; line-height: 1.8em; }
+nav[role=pagination] .sort	{ float: left; margin-left: 20px; }
+nav[role=pagination] .sort select	{ background: #bbccbf; border: solid 1px #bbccbf; -webkit-appearance: none; color: #7b8d7f; padding: 1px 5px 3px; margin-left: 5px; cursor: pointer; }
+nav[role=pagination] .sort select:hover	{ background: #fff; border: #fff; color: #000; }
+nav[role=pagination] .links	{ float: right; }
+nav[role=pagination] .links a	{ color: #91aa80; text-decoration: none; display: inline-block; line-height: 1.8em; }
+nav[role=pagination] .links a:hover	{ color: #fff; }
+nav[role=pagination] .links a + a	{ margin-left: 15px; }
+
 #page						{ padding: 35px; padding-bottom: 50px; background: #eee; }
 
 .entry						{ margin-bottom: 1.5em; overflow: auto; clear: both; background: #fff; padding: 15px; -moz-border-radius: 3px; border-radius: 3px; box-shadow: 1px 1px 15px #ccc; -webkit-transition: background .35s ease-in-out; -moz-transition: background .35s ease-in-out; transition: background .35s ease-in-out; }
@@ -62,14 +72,17 @@ box-shadow: 1px 1px 15px #ccc; border-left: solid 25px #c7b58e; }
 #notebooks .notebook h2 a	{ text-decoration: none; color: #46a7a7; display: block; }
 #notebooks .notebook p		{ margin: 5px 0 0; font-size: .9em; }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 500px) {
 	body					{ background: #fff; }
 
-	body > header			{ padding: 15px; }
+	body > header			{ padding: 10px 15px; }
+	body > header a.notebooks + h1	{ font-size: 1.7em; }
 	body > header #search input	{ width: 100px; }
 
 	#input					{ padding: 15px; }
 	#input .content input[type=submit]	{ display: block; width: 100%; background: #728161; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: "Avenir Next", Helvetica, Arial, sans-serif; padding: 5px 8px; font-size: .9em; font-weight: 600; cursor: pointer; -webkit-appearance: none; }
+
+	nav[role=pagination]	{ padding: 5px 15px; }
 
 	#page					{ padding: 15px 0; background: #fff; }
 

@@ -33,6 +33,9 @@ app = Flask(__name__)
 Markdown(app)
 app.jinja_env.filters['hashtag'] = utils.filters.hashtag
 
+# Initialize database
+vinci.init_db()
+
 
 # Favicon
 @app.route('/favicon.ico/')

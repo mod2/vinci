@@ -46,7 +46,7 @@ def delete_notebook(notebook_slug):
         # Then the notebook
         nb = m.Notebook.get(m.Notebook.slug == notebook_slug)
         nb.delete_instance()
-        #TODO add vaccum sql command
+        m.db.execute_sql('VACUUM')
         return True
     except m.Notebook.DoesNotExist:
         return False
@@ -102,7 +102,7 @@ def delete_entry(id, notebook_slug):
         entry = m.Entry.get(m.Entry.id == id)
         si.delete_from_index(entry)
         entry.delete_instance()
-        #TODO add vaccum sql command
+        m.db.execute_sql('VACUUM')
         return True
     except m.Entry.DoesNotExist:
         return False

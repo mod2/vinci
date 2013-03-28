@@ -16,14 +16,22 @@ $(document).ready(function() {
 		return false;
 	});
 
-	$("#search input").on('submit', function() {
-		var query = $(this).val().trim();
+	$("#search").on('submit', function() {
+		var query = $(this).find("input").val().trim();
 
 		if (query.length > 1) {
-			console.log("Searching for", query);
-		} else {
-			console.log("Cleared search results");
+			var url = config.url;
+			var q = query.replace(/#(\w+)/, 'tag:$1');
+
+			if (config.notebook) {
+				url += config.notebook + '/';
+			}
+			url += 'search/' + q;
 		}
+
+		window.location.href = url;
+
+		return false;
 	});
 
 

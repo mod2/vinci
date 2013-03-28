@@ -8,8 +8,17 @@
 </form>
 {% endblock input %}
 
+{% block nav %}
+<nav role="pagination">
+	<div class="container">
+		<label>Page 1 of 10</label><div class="sort"><label>Sort:</label> <select id="sort" name="sort"><option>Newest first</option><option>Oldest first</option></select></div><div class="links"><a href="">&larr; Prev</a><a href="">Next &rarr;</a>
+	</div>
+</nav>
+{% endblock nav %}
+
 {% block page_content %}
 <div class="container">
+
 	{% block entries %}
 	<section id="entries">
 		{% for entry in entries %}

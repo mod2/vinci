@@ -37,6 +37,12 @@ def rename_notebook(notebook_slug, name):
 def delete_notebook(notebook_slug):
     """Delete a notebook."""
     try:
+        # First delete the entries
+        entries = get_entries(notebook_slug)
+        for entry in entries:
+            entry.delete_instance()
+
+        # Then the notebook
         nb = m.Notebook.get(m.Notebook.slug == notebook_slug)
         nb.delete_instance()
         return True

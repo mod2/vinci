@@ -18,16 +18,18 @@ $(document).ready(function() {
 
 	$("#search").on('submit', function() {
 		var query = $(this).find("input").val().trim();
+		var url = config.url;
+		if (config.notebook) {
+			url += config.notebook + '/';
+		}
 
-		if (query.length > 1) {
-			var url = config.url;
+		if (query.length > 0) {
 			var q = query.replace(/#(\w+)/, 'tag:$1');
 
-			if (config.notebook) {
-				url += config.notebook + '/';
-			}
 			url += 'search/' + q;
-		}
+		} else {
+            // Empty search, clear results (don't need to change URL)
+        }
 
 		window.location.href = url;
 

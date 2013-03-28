@@ -14,7 +14,7 @@ body > header div.container	{ position: relative; }
 body > header a.notebooks	{ display: block; text-decoration: none; color: #418383; font-size: .8em; text-transform: uppercase; margin-bottom: 3px; }
 
 body > header h1			{ color: #fff; font-weight: 600; font-size: 1.6em; margin: 0; padding-top: 1em; display: inline-block; line-height: 1em; }
-body > header a.notebooks + h1	{ font-size: 2em; padding-top: 0; }
+body > header a.notebooks + h1	{ padding-top: 0; }
 
 body > header #search		{ position: absolute; bottom: 0px; right: 0px; }
 body > header #search input	{ font-size: 1em; padding: 1px 8px; border: solid 1px #4b6360; background: #232b2a; -moz-border-radius: 1em; border-radius: 1em; font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif; line-height: 1em; font-weight: 600; -webkit-transition: all .15s ease-in-out; -moz-transition: all .15s ease-in-out; transition: all .15s ease-in-out; color: #fff; width: 250px; }
@@ -35,7 +35,7 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 .entry						{ margin-bottom: 1.5em; overflow: auto; clear: both; background: #fff; padding: 15px; -moz-border-radius: 3px; border-radius: 3px; box-shadow: 1px 1px 15px #ccc; -webkit-transition: background .35s ease-in-out; -moz-transition: background .35s ease-in-out; transition: background .35s ease-in-out; }
 .entry.new					{ background: #ffffd8; }
 
-.entry .metadata			{ font-size: .7em; color: #aaa; font-weight: 500; margin-bottom: 8px; }
+.entry .metadata			{ font-size: .7em; color: #ddd; font-weight: 500; margin-bottom: 8px; }
 .entry .metadata a			{ text-decoration: none; color: #ddd; -webkit-transition: color .35s ease-in-out; -moz-transition: color .35s ease-in-out; transition: color .35s ease-in-out; }
 .entry .metadata a:hover	{ color: #000; }
 

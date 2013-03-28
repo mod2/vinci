@@ -5,10 +5,12 @@ from flask import url_for, send_from_directory, jsonify, redirect
 from flaskext.markdown import Markdown
 from markdown import markdown
 from smartypants import smartyPants
-import config
 import os
-import vinci
+import re
 import logging
+
+import config
+import vinci
 import utils.filters
 
 # set up some debugging stuff
@@ -231,58 +233,93 @@ def reindex():
     return redirect(url_for('index'))
 
 
-# Search within all notebooks
 @app.route('/search/<query>')
 def search_all_notebooks(query):
+    """ Search within all notebooks"""
+
     # Defaults and parameters
-    #type = request.args.get('type') or 'html'
-    results = vinci.search(query)
-    html = 'results for ' + query + '<br>'
-    for r in results:
-        html += r[1].content + '(' + str(r[0]) + ')<br>'
-    return html
+    type = request.args.get('type') or 'html'
+
+    # Template to load
+    template = 'list.%s' % type
+
+    # Data
+    entries = vinci.search(query)
+
+    return render_template(template,
+                           title="Search All Notebooks",
+                           query=query,
+                           entries=entries)
 
 
-# Load entries with a tag within all notebooks
 @app.route('/tag/<tag>')
 def search_all_tags(tag):
+    """ Load entries with a tag within all notebooks """
+
     # Defaults and parameters
-    #type = request.args.get('type') or 'html'
+    type = request.args.get('type') or 'html'
+
+    # Template to load
+    template = 'list.%s' % type
+
+    # Data
     tags = tag.split(' ')
-    query = ["tag:" + t for t in tags]
-    results = vinci.search(" ".join(query))
-    html = 'results for ' + " ".join(query) + '<br>'
-    for r in results:
-        html += r[1].content + '(' + str(r[0]) + ')<br>'
-    return html
+    query = " ".join(["#" + t for t in tags])
+    search_query = " ".join(["tag:" + t for t in tags])
+    entries = vinci.search(search_query)
+
+    return render_template(template,
+                           title="Search All Tags",
+                           query=query,
+                           entries=entries)
 
 
 # Search within a notebook
 @app.route('/<notebook_slug>/search/<query>')
 def search_notebook(notebook_slug, query):
     """Search within a notebook"""
+
     # Defaults and parameters
-    #type = request.args.get('type') or 'html'
-    query += ' notebook:' + notebook_slug
-    results = vinci.search(query)
-    html = 'results for ' + query + '<br>'
-    for r in results:
-        html += r[1].content + '(' + str(r[0]) + ')<br>'
-    return html
+    type = request.args.get('type') or 'html'
+
+    # Template to load
+    template = 'list.%s' % type
+
+    # Data
+    notebook = vinci.get_notebook(notebook_slug)
+    search_query = query + ' notebook:' + notebook_slug
+    query = re.sub(r'tag:', '#', query)
+    entries = vinci.search(search_query)
+
+    return render_template(template,
+                           title=notebook.name,
+                           query=query,
+                           notebook=notebook,
+                           entries=entries)
 
 
-# Load entries with a tag within a notebook
 @app.route('/<notebook_slug>/tag/<tag>')
 def search_tags_in_notebook(notebook_slug, tag):
+    """ Load entries with a tag within a notebook """
+
     # Defaults and parameters
-    #type = request.args.get('type') or 'html'
+    type = request.args.get('type') or 'html'
+
+    # Template to load
+    template = 'list.%s' % type
+
+    # Data
+    notebook = vinci.get_notebook(notebook_slug)
     tags = tag.split(' ')
-    query = " ".join(["tag:" + t for t in tags]) + ' notebook:' + notebook_slug
-    results = vinci.search(query)
-    html = 'results for ' + query + '<br>'
-    for r in results:
-        html += r[1].content + '(' + str(r[0]) + ')<br>'
-    return html
+    query = " ".join(["#" + t for t in tags])
+    search_query = " ".join(["tag:" + t for t in tags]) + ' notebook:' + notebook_slug
+    entries = vinci.search(search_query)
+
+    return render_template(template,
+                           title=notebook.name,
+                           query=query,
+                           notebook=notebook,
+                           entries=entries)
 
 
 # Display a single entry

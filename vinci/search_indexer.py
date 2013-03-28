@@ -84,4 +84,4 @@ def search(query_string, database_file=None):
     for entry in entries:
         entries_scores.append((entry_ids[entry.id], entry))
     entries_scores.sort(reverse=True)
-    return entries_scores
+    return [entry for score, entry in entries_scores]

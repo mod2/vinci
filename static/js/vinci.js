@@ -1,4 +1,13 @@
 $(document).ready(function() {
+	// Infinite scroll
+	if ($("nav[role=navigation] a.next")) {
+		$("#entries").jscroll({
+			debug: true,
+			nextSelector: 'a.next',
+			contentSelector: '#entries'
+		});
+	}
+
 	// Search box
 	// --------------------------------------------------
 

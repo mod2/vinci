@@ -13,7 +13,7 @@
 {% block nav %}
 <nav role="pagination">
 	<div class="container">
-		<label>{{ pagination.hits }} entries</label><label>Page {{ pagination.page }} of {{ pagination.pages }}</label><div class="sort"><select id="sort" name="sort">{% if pagination.sort == 'relevance' %}<option value="relevance" selected>Sort by relevance</option>{% endif %}<option value="date_desc"{% if pagination.sort == 'date_desc' %} selected{% endif %}>Sort newest first</option><option value="date_asc"{% if pagination.sort == 'date_asc' %} selected{% endif %}>Sort oldest first</option></select></div><div class="links">{% if pagination.has_prev %}<a href="{{ pagination.prev_page }}">&larr; Prev</a>{% endif %}{% if pagination.has_next %}<a href="{{ pagination.next_page }}">Next &rarr;</a>{% endif %}</div>
+		<label>{{ pagination.hits }} entries</label><label>Page {{ pagination.page }} of {{ pagination.pages }}</label><div class="sort"><select id="sort" name="sort">{% if pagination.sort == 'relevance' %}<option value="relevance" selected>Sort by relevance</option>{% endif %}<option value="date_desc"{% if pagination.sort == 'date_desc' %} selected{% endif %}>Sort newest first</option><option value="date_asc"{% if pagination.sort == 'date_asc' %} selected{% endif %}>Sort oldest first</option></select></div><div class="links">{% if pagination.has_prev %}<a class="prev" href="{{ pagination.prev_page }}">&larr; Prev</a>{% endif %}{% if pagination.has_next %}<a class="next" href="{{ pagination.next_page }}">Next &rarr;</a>{% endif %}</div>
 	</div>
 </nav>
 {% endblock nav %}
@@ -30,6 +30,7 @@
 			<div class="content">No entries yet.</div>
 		</article>
 		{% endfor %}
+		<div class="iscroll">{% if pagination.has_prev %}<a class="prev" href="{{ pagination.prev_page }}">&larr; Prev</a>{% endif %}{% if pagination.has_next %}<a class="next" href="{{ pagination.next_page }}">Next &rarr;</a>{% endif %}</div>
 	</section>
 	{% endblock entries %}
 </div>

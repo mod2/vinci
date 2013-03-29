@@ -9,20 +9,7 @@ def process_entries(entries):
 
     for entry in entries:
         # Prep the HTML
-        html = utils.text.markdownify(entry.content,
-                                      url_for('index'),
-                                      entry.notebook.slug,
-                                      '/tag')
-
-        processed_entries.append({
-            'id': entry.id,
-            'notebook': {
-                'slug': entry.notebook.slug,
-                'name': entry.notebook.name
-                },
-            'date': entry.date,
-            'content': Markup(html),
-        })
+        processed_entries.append(process_entry(entry))
 
     return processed_entries
 

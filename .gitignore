@@ -1,5 +1,7 @@
 *.pyc
 data
+*.db
+*.idx
 config.py
 *.log
 static/custom/css/*

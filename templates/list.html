@@ -13,7 +13,7 @@
 {% block nav %}
 <nav role="pagination">
 	<div class="container">
-		<label>Page 1 of 10</label><div class="sort"><label>Sort:</label> <select id="sort" name="sort"><option>Newest first</option><option>Oldest first</option></select></div><div class="links"><a href="">&larr; Prev</a><a href="">Next &rarr;</a>
+		<label>{{ total_hits}} entries</label><label>Page {{ page }} of {{ total_pages or -1 }}</label><div class="sort"><select id="sort" name="sort">{% if sortby == 'relevance' %}<option value="relevance" selected>Sort by relevance</option>{% endif %}<option value="date_desc"{% if sortby == 'date_desc' %} selected{% endif %}>Sort newest first</option><option value="date_asc"{% if sortby == 'date_asc' %} selected{% endif %}>Sort oldest first</option></select></div><div class="links"><a href="">&larr; Prev</a><a href="">Next &rarr;</a>
 	</div>
 </nav>
 {% endblock nav %}

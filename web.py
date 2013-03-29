@@ -379,6 +379,8 @@ def display_entry(notebook_slug, entry_id):
 def display_entries(notebook_slug):
     # Defaults and parameters
     type = request.args.get('type') or 'html'
+    sortby = request.args.get('sort') or config.default_search_order
+    page = request.args.get('page') or 1
 
     # Template to load
     template = 'list.%s' % type
@@ -391,7 +393,9 @@ def display_entries(notebook_slug):
     return render_template(template,
                            title=notebook.name,
                            notebook=notebook,
-                           entries=entries)
+                           entries=entries,
+                           sortby=sortby,
+                           page=page)
 
 
 # Home page

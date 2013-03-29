@@ -164,7 +164,7 @@ def add_notebook():
 
     # Defaults and parameters
     name = request.args.get('name')
-    description = request.args.get('desc')
+    description = request.args.get('description')
     callback = request.args.get('callback')
     #type = request.args.get('type') or 'json'
 

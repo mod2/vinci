@@ -312,7 +312,7 @@ def search_notebook(notebook_slug, query):
     # Data
     notebook = vinci.get_notebook(notebook_slug)
     search_query = query + ' notebook:' + notebook_slug
-    query = re.sub(r'tag:', '#', query)
+    query = re.sub(r'tag:', '#', search_query)
     entries, total_hits, total_pages = vinci.search(query, page, sortby)
 
     return render_template(template,

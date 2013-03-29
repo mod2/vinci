@@ -27,7 +27,8 @@ def process_entry(entry):
             'name': entry.notebook.name
             },
         'date': entry.date,
-        'content': Markup(html),
+        'content': entry.content,
+        'html': Markup(html),
     }
 
     return processed_entry

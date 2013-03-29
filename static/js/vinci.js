@@ -28,8 +28,8 @@ $(document).ready(function() {
 
 			url += 'search/' + q;
 		} else {
-            // Empty search, clear results (don't need to change URL)
-        }
+			// Empty search, clear results (don't need to change URL)
+		}
 
 		window.location.href = url;
 
@@ -109,6 +109,66 @@ $(document).ready(function() {
 
 		return false;
 	});
+
+
+	// Editing entries
+	// --------------------------------------------------
+
+	$(".entry .metadata .controls a.edit").on("click", function() {
+		var entry = $(this).parents(".entry:first");
+
+		if (entry.find(".content:visible").length > 0) {
+			// Show the editbox
+			entry.find(".content").fadeOut(75, function() {
+				entry.find(".editbox").fadeIn(75);
+			});
+		} else {
+			// Hide the editbox
+			entry.find(".editbox").fadeOut(75, function() {
+				entry.find(".content").fadeIn(75);
+			});
+		}
+
+		return false;
+	});
+
+	$(".entry .editbox").on("submit", function() {
+		var entry = $(this).parents(".entry:first");
+        var id = entry.attr("data-id");
+		var text = encodeURIComponent(entry.find(".editbox textarea").val().trim());
+        var date = encodeURIComponent(entry.find(".editbox input[type=text]").val().trim());
+
+		// Call edit entry web service
+        var url = config.url + "edit/entry?id=" + id + "&notebook=" + config.notebook + "&date=" + date + "&content=" + text;
+
+        $.get(url, function(data) {
+            if (data.status == 'success') {
+                // Update content
+                entry.find(".content").html(data.html);
+
+                // Update date
+                entry.find(".metadata date").html(data.date);
+                entry.find(".metadata time").html(data.time);
+
+                // Add yellow highlight
+                entry.addClass("new");
+
+                // Remove the yellow after two seconds
+                setTimeout(function() {
+                    entry.removeClass("new");
+                }, 2000);
+
+                // Hide edit stuff, show content stuff
+                entry.find(".editbox").fadeOut(75, function() {
+                    entry.find(".content").fadeIn(75);
+                });
+            } else {
+                alert("Error editing entry");
+            }
+        });
+
+        return false;
+	});
 });
 
 function addEntry(text) {
@@ -124,14 +184,14 @@ function addEntry(text) {
 		
 			$(entryHTML).prependTo($("#entries"));	
 
-            // Add yellow highlight
-            var entry = $("#entries .entry:first");
-            entry.addClass("new");
+			// Add yellow highlight
+			var entry = $("#entries .entry:first");
+			entry.addClass("new");
 
-            // Remove the yellow after two seconds
-            setTimeout(function() {
-                entry.removeClass("new");
-            }, 2000);
+			// Remove the yellow after two seconds
+			setTimeout(function() {
+				entry.removeClass("new");
+			}, 2000);
 		} else {
 			alert("Error adding entry");
 		}
@@ -143,3 +203,4 @@ function addEntry(text) {
 	// Blur entry box
 	$("#add").blur();
 }
+

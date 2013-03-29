@@ -1,13 +1,6 @@
 $(document).ready(function() {
 	// Infinite scroll
 	if ($("nav[role=navigation] a.next")) {
-		/*
-		$("#entries").jscroll({
-			debug: true,
-			nextSelector: 'a.next',
-			contentSelector: '#entries',
-		});
-		*/
 		$("#entries").infinitescroll({
 			navSelector: "nav[role=pagination] .links",
 			nextSelector: "nav[role=pagination] .links a.next",

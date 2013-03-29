@@ -2,6 +2,7 @@ import config
 import os
 import os.path
 import re
+import math
 import whoosh.index as index
 from whoosh.fields import Schema, TEXT, KEYWORD, ID, DATETIME
 from whoosh.analysis import StemmingAnalyzer
@@ -85,4 +86,4 @@ def search(query_string, page=1, results_per_page=10, sort_order='relevance'):
         else:
             results = searcher.search_page(query, page, pagelen=results_per_page)
         entry_ids = {int(entry['id']): entry.rank for entry in results}
-    return entry_ids, len(results), len(results)/results_per_page
+    return entry_ids, len(results), math.ceil(len(results)/float(results_per_page))

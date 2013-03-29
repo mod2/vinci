@@ -1,8 +1,9 @@
-import vinci.models as m
-import vinci.utils as utils
-import vinci.search_indexer as si
+import models as m
+import utils as utils
+import search_indexer as si
 import config
 import datetime
+import math
 
 
 def init_db(database_file=config.database_file, admin=config.admin):
@@ -104,9 +105,17 @@ def delete_entry(id, notebook_slug):
         return False
 
 
-def get_entries(notebook_slug):
+def get_entries(notebook_slug,
+                sort=config.default_sort_order,
+                page=1,
+                num_per_page=config.results_per_page):
     """Get all entries for the given notebook"""
-    return get_notebook(notebook_slug).entries
+    entries = get_notebook(notebook_slug).entries
+    if sort == 'date_asc':
+        entries = entries.order_by(m.Entry.date.asc())
+    total_entries = entries.count()
+    total_pages = math.ceil(total_entries / float(num_per_page))
+    return entries.paginate(page, num_per_page), total_entries, total_pages
 
 
 def get_entry(id, notebook_slug):

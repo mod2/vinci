@@ -377,11 +377,12 @@ def display_entries(notebook_slug):
 
     # Data
     notebook = vinci.get_notebook(notebook_slug)
-    db_entries = vinci.get_entries(notebook_slug)
+    db_entries, total_hits, total_pages = vinci.get_entries(notebook_slug,
+                                                            sortby,
+                                                            page,
+                                                            config.results_per_page)
     entries = utils.entries.process_entries(db_entries)
 
-    total_hits = 500000
-    total_pages = 5
     base_url = '%s%s' % (url_for('index'), notebook_slug) 
     pagination = utils.pagination.get_pagination(page, total_hits, total_pages, sortby, base_url)
 

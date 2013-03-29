@@ -34,6 +34,9 @@ app = Flask(__name__)
 Markdown(app)
 app.jinja_env.filters['hashtag'] = utils.filters.hashtag
 
+# Initialize database
+vinci.init_db()
+
 
 # Favicon
 @app.route('/favicon.ico/')
@@ -246,17 +249,23 @@ def search_all_notebooks(query):
 
     # Defaults and parameters
     type = request.args.get('type') or 'html'
+    sortby = request.args.get('sort') or config.default_search_order
+    page = request.args.get('page') or 1
 
     # Template to load
     template = 'list.%s' % type
 
     # Data
-    entries = vinci.search(query)
+    entries, total_hits, total_pages = vinci.search(query, page, sortby)
 
     return render_template(template,
                            title="Search All Notebooks",
                            query=query,
-                           entries=entries)
+                           entries=entries,
+                           sortby=sortby,
+                           page=page,
+                           total_hits=total_hits,
+                           total_pages=total_pages)
 
 
 @app.route('/tag/<tag>')
@@ -265,6 +274,8 @@ def search_all_tags(tag):
 
     # Defaults and parameters
     type = request.args.get('type') or 'html'
+    sortby = request.args.get('sort') or config.default_search_order
+    page = request.args.get('page') or 1
 
     # Template to load
     template = 'list.%s' % type
@@ -273,12 +284,16 @@ def search_all_tags(tag):
     tags = tag.split(' ')
     query = " ".join(["#" + t for t in tags])
     search_query = " ".join(["tag:" + t for t in tags])
-    entries = vinci.search(search_query)
+    entries, total_hits, total_pages = vinci.search(search_query, page, sortby)
 
     return render_template(template,
                            title="Search All Tags",
                            query=query,
-                           entries=entries)
+                           entries=entries,
+                           sortby=sortby,
+                           page=page,
+                           total_hits=total_hits,
+                           total_pages=total_pages)
 
 
 # Search within a notebook
@@ -288,6 +303,8 @@ def search_notebook(notebook_slug, query):
 
     # Defaults and parameters
     type = request.args.get('type') or 'html'
+    sortby = request.args.get('sort') or config.default_search_order
+    page = request.args.get('page') or 1
 
     # Template to load
     template = 'list.%s' % type
@@ -296,13 +313,17 @@ def search_notebook(notebook_slug, query):
     notebook = vinci.get_notebook(notebook_slug)
     search_query = query + ' notebook:' + notebook_slug
     query = re.sub(r'tag:', '#', query)
-    entries = vinci.search(search_query)
+    entries, total_hits, total_pages = vinci.search(query, page, sortby)
 
     return render_template(template,
                            title=notebook.name,
                            query=query,
                            notebook=notebook,
-                           entries=entries)
+                           entries=entries,
+                           sortby=sortby,
+                           page=page,
+                           total_hits=total_hits,
+                           total_pages=total_pages)
 
 
 @app.route('/<notebook_slug>/tag/<tag>')
@@ -311,6 +332,8 @@ def search_tags_in_notebook(notebook_slug, tag):
 
     # Defaults and parameters
     type = request.args.get('type') or 'html'
+    sortby = request.args.get('sort') or config.default_search_order
+    page = request.args.get('page') or 1
 
     # Template to load
     template = 'list.%s' % type
@@ -320,13 +343,17 @@ def search_tags_in_notebook(notebook_slug, tag):
     tags = tag.split(' ')
     query = " ".join(["#" + t for t in tags])
     search_query = " ".join(["tag:" + t for t in tags]) + ' notebook:' + notebook_slug
-    entries = vinci.search(search_query)
+    entries, total_hits, total_pages = vinci.search(search_query, page, sortby)
 
     return render_template(template,
                            title=notebook.name,
                            query=query,
                            notebook=notebook,
-                           entries=entries)
+                           entries=entries,
+                           sortby=sortby,
+                           page=page,
+                           total_hits=total_hits,
+                           total_pages=total_pages)
 
 
 # Display a single entry

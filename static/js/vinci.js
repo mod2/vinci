@@ -76,6 +76,39 @@ $(document).ready(function() {
 
 		return false;
 	});
+
+
+	// Sorting
+	// --------------------------------------------------
+	
+	$("select#sort").on("change", function() {
+		var val = $(this).val();
+		var url = window.location.href;
+
+		queryString = window.location.search;
+
+		// If sort is in the query string, replace it
+		if (url.match(/sort=/)) {
+			newQueryString = queryString.replace(/sort=([^&]+)/, 'sort=' + val);
+		} else { // Add it
+			// First ignore the ? and split into an array by &
+			queryArray = queryString.substr(1).split('&');
+
+			// Add it to the array
+			queryArray.push('sort=' + val);
+
+			// And package it back up again
+			newQueryString = '?' + queryArray.join('&');
+		}
+
+		// Rebuild the URL
+		url = window.location.origin + window.location.pathname + newQueryString;
+
+		// Redirect to it
+		window.location.href = url;
+
+		return false;
+	});
 });
 
 function addEntry(text) {

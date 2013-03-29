@@ -11,6 +11,7 @@ import config
 import vinci
 import utils.text
 import utils.entries
+import utils.pagination
 
 # set up some debugging stuff
 if config.debug:
@@ -242,7 +243,7 @@ def search_all_notebooks(query):
     # Defaults and parameters
     type = request.args.get('type') or 'html'
     sortby = request.args.get('sort') or config.default_search_order
-    page = request.args.get('page') or 1
+    page = int(request.args.get('page')) or 1
 
     # Template to load
     template = 'list.%s' % type
@@ -251,14 +252,14 @@ def search_all_notebooks(query):
     db_entries, total_hits, total_pages = vinci.search(query, page, sortby)
     entries = utils.entries.process_entries(db_entries)
 
+    base_url = '%ssearch/%s' % (url_for('index'), query) 
+    pagination = utils.pagination.get_pagination(page, total_hits, total_pages, sortby, base_url)
+
     return render_template(template,
                            title="Search All Notebooks",
                            query=query,
                            entries=entries,
-                           sortby=sortby,
-                           page=page,
-                           total_hits=total_hits,
-                           total_pages=total_pages)
+                           pagination=pagination)
 
 
 @app.route('/tag/<tag>')
@@ -268,7 +269,7 @@ def search_all_tags(tag):
     # Defaults and parameters
     type = request.args.get('type') or 'html'
     sortby = request.args.get('sort') or config.default_search_order
-    page = request.args.get('page') or 1
+    page = int(request.args.get('page')) or 1
 
     # Template to load
     template = 'list.%s' % type
@@ -280,14 +281,14 @@ def search_all_tags(tag):
     db_entries, total_hits, total_pages = vinci.search(search_query, page, sortby)
     entries = utils.entries.process_entries(db_entries)
 
+    base_url = '%stag/%s' % (url_for('index'), original_query) 
+    pagination = utils.pagination.get_pagination(page, total_hits, total_pages, sortby, base_url)
+
     return render_template(template,
                            title="Search All Tags",
                            query=query,
                            entries=entries,
-                           sortby=sortby,
-                           page=page,
-                           total_hits=total_hits,
-                           total_pages=total_pages)
+                           pagination=pagination)
 
 
 # Search within a notebook
@@ -298,27 +299,28 @@ def search_notebook(notebook_slug, query):
     # Defaults and parameters
     type = request.args.get('type') or 'html'
     sortby = request.args.get('sort') or config.default_search_order
-    page = request.args.get('page') or 1
+    page = int(request.args.get('page')) or 1
 
     # Template to load
     template = 'list.%s' % type
 
     # Data
     notebook = vinci.get_notebook(notebook_slug)
-    search_query = query + ' notebook:' + notebook_slug
+    original_query = query
+    search_query = original_query + ' notebook:' + notebook_slug
     query = re.sub(r'tag:', '#', search_query)
     db_entries, total_hits, total_pages = vinci.search(query, page, sortby)
     entries = utils.entries.process_entries(db_entries)
+
+    base_url = '%s%s/search/%s' % (url_for('index'), notebook_slug, original_query) 
+    pagination = utils.pagination.get_pagination(page, total_hits, total_pages, sortby, base_url)
 
     return render_template(template,
                            title=notebook.name,
                            query=query,
                            notebook=notebook,
                            entries=entries,
-                           sortby=sortby,
-                           page=page,
-                           total_hits=total_hits,
-                           total_pages=total_pages)
+                           pagination=pagination)
 
 
 @app.route('/<notebook_slug>/tag/<tag>')
@@ -328,7 +330,7 @@ def search_tags_in_notebook(notebook_slug, tag):
     # Defaults and parameters
     type = request.args.get('type') or 'html'
     sortby = request.args.get('sort') or config.default_search_order
-    page = request.args.get('page') or 1
+    page = int(request.args.get('page')) or 1
 
     # Template to load
     template = 'list.%s' % type
@@ -341,15 +343,15 @@ def search_tags_in_notebook(notebook_slug, tag):
     db_entries, total_hits, total_pages = vinci.search(search_query, page, sortby)
     entries = utils.entries.process_entries(db_entries)
 
+    base_url = '%s%s/tag/%s' % (url_for('index'), notebook_slug, tag) 
+    pagination = utils.pagination.get_pagination(page, total_hits, total_pages, sortby, base_url)
+
     return render_template(template,
                            title=notebook.name,
                            query=query,
                            notebook=notebook,
                            entries=entries,
-                           sortby=sortby,
-                           page=page,
-                           total_hits=total_hits,
-                           total_pages=total_pages)
+                           pagination=pagination)
 
 
 # Display a single entry
@@ -380,7 +382,7 @@ def display_entries(notebook_slug):
     # Defaults and parameters
     type = request.args.get('type') or 'html'
     sortby = request.args.get('sort') or config.default_search_order
-    page = request.args.get('page') or 1
+    page = int(request.args.get('page')) or 1
 
     # Template to load
     template = 'list.%s' % type

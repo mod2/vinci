@@ -120,7 +120,9 @@ $(document).ready(function() {
 		if (entry.find(".content:visible").length > 0) {
 			// Show the editbox
 			entry.find(".content").fadeOut(75, function() {
-				entry.find(".editbox").fadeIn(75);
+				entry.find(".editbox").fadeIn(75, function() {
+					$(this).find("textarea").focus()
+				});
 			});
 		} else {
 			// Hide the editbox
@@ -168,6 +170,12 @@ $(document).ready(function() {
         });
 
         return false;
+	});
+
+	$(".entry .editbox textarea, .entry .editbox input[type=text]").bind('keydown', 'shift+return', function() {
+		$(this).parents(".editbox").submit();
+
+		return false;
 	});
 });
 

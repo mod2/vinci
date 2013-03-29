@@ -119,6 +119,7 @@ a.addnotebook:hover			{ }
 	nav[role=pagination]	{ padding: 5px 15px; }
 
 	#page					{ padding: 15px 0; background: #fff; }
+	#infscr-loading			{ padding: 0 15px; }
 
 	.entry:first-child		{ border-top: none; }
 

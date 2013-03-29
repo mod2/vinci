@@ -17,13 +17,15 @@
 		{% endfor %}
 	</section>
 
-	<a href="" class="addnotebook">+ Add Notebook</a>
+	<section id="nb-add-box">
+		<a href="" class="addnotebook">+ Add Notebook</a>
 
-	<form class="addbox nb-edit-box">
-		<div class="group"><label>Name:</label> <input type="text" class="name" /></div>
-		<label>Description:</label>
-		<textarea class="desc"></textarea>
-		<input type="submit" value="Add Notebook" class="submitbutton" />
-	</form>
+		<form class="addbox nb-edit-box">
+			<div class="group"><label>Name:</label> <input type="text" class="name" /></div>
+			<label>Description:</label>
+			<textarea class="desc"></textarea>
+			<input type="submit" value="Add Notebook" class="submitbutton" />
+		</form>
+	</section>
 </div>
 {% endblock page_content %}

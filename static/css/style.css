@@ -100,7 +100,7 @@ a.addnotebook:hover			{ }
 .nb-edit-box label				{ color: #999; display: block; margin-bottom: 5px; }
 .nb-edit-box .group				{ margin-top: 5px; margin-bottom: 5px; }
 .nb-edit-box .group label		{ margin: 0; display: inline-block; }
-.nb-edit-box .group input[type=text] { font-size: 1em; padding: 2px 3px; -moz-border-radius: 3px; border-radius: 3px; border: solid 1px #bbb; font-family: "Avenir Next", Helvetica, Arial, sans-serif; width: 250px; }
+.nb-edit-box .group input[type=text] { font-size: 1em; padding: 2px 3px; -moz-border-radius: 3px; border-radius: 3px; border: solid 1px #bbb; font-family: "Avenir Next", Helvetica, Arial, sans-serif; max-width: 250px; width: 100%; }
 .nb-edit-box textarea			{ font-size: 1em; padding: 10px; -moz-border-radius: 3px; border-radius: 3px; width: 100%; height: 3em; font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-transition: all .15s ease-in-out; -moz-transition: all .15s ease-in-out; transition: all .15s ease-in-out; background: #fff; border: solid 1px #ccc; }
 .nb-edit-box textarea:focus		{ outline: none; box-shadow: 0 0 50px #aaa; }
 
@@ -128,6 +128,7 @@ a.addnotebook:hover			{ }
 	.entry .editbox input[type=submit]	{ display: block; width: 100%; background: #728161; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: "Avenir Next", Helvetica, Arial, sans-serif; padding: 5px 8px; font-size: .9em; font-weight: 600; cursor: pointer; -webkit-appearance: none; }
 
 	#notebooks				{ padding: 15px; }
+	#nb-add-box				{ padding: 0 15px; }
 }
 
 @media screen and (max-width: 320px) {

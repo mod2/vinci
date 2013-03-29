@@ -5,9 +5,25 @@
 	<section id="notebooks">
 		{% for notebook in notebooks %}
 		<article class="notebook" data-slug="{{ notebook.slug }}">
-			<a href="{{ url_for('index') ~ notebook.slug }}"><h2>{{ notebook.name }}</h2>{% if notebook.description %}<p>{{ notebook.description }}</p>{% endif %}</a>
+			<div class="controls"><a href="" class="delete">Delete</a> <a href="" class="edit">Edit</a></div>
+			<a href="{{ url_for('index') ~ notebook.slug }}"><h2>{{ notebook.name }}</h2><p>{% if notebook.description %}{{ notebook.description }}{% endif %}</p></a>
+			<form class="editbox nb-edit-box">
+				<div class="group"><label>Name:</label> <input type="text" class="name" value="{{ notebook.name }}" /></div>
+				<label>Description:</label>
+				<textarea class="desc">{% if notebook.description %}{{ notebook.description }}{% endif %}</textarea>
+				<input type="submit" value="Save Notebook" class="submitbutton" />
+			</form>
 		</article>
 		{% endfor %}
 	</section>
+
+	<a href="" class="addnotebook">+ Add Notebook</a>
+
+	<form class="addbox nb-edit-box">
+		<div class="group"><label>Name:</label> <input type="text" class="name" /></div>
+		<label>Description:</label>
+		<textarea class="desc"></textarea>
+		<input type="submit" value="Add Notebook" class="submitbutton" />
+	</form>
 </div>
 {% endblock page_content %}

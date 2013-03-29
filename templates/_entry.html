@@ -1,5 +1,5 @@
 <article class="entry" data-id="{{ entry.id }}">
 	<div class="metadata">{% if not notebook %}<a href="{{ url_for('index') ~ entry.notebook.slug }}">{{ entry.notebook.name }}</a> — {% endif %}<a href="{{ url_for('index') ~ entry.notebook.slug ~ '/entry/' ~ entry.date.strftime('%Y-%m-%d') ~ '.' ~ entry.id }}"><date>{{ entry.date.strftime('%a, %d %b %Y') }}</date><time>{{ entry.date.strftime('%l:%M %p')|trim }}</time></a><div class="controls"><a href="" class="delete">Delete</a><a href="" class="edit">Edit</a></div></div>
 	<div class="content">{{ entry.html }}</div>
-	<form class="editbox"><textarea>{{ entry.content }}</textarea><div class="group"><label>Date:</label><input type="text" value="{{ entry.date.strftime('%Y-%m-%d %H:%M:%S') }}" /></div><input type="submit" value="Save Entry" /></form>
+	<form class="editbox"><textarea>{{ entry.content }}</textarea><div class="group"><label>Date:</label><input type="text" value="{{ entry.date.strftime('%Y-%m-%d %H:%M:%S') }}" /></div><input type="submit" value="Save Entry" class="submitbutton" /></form>
 </article>

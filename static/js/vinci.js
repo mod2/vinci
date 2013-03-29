@@ -200,6 +200,140 @@ $(document).ready(function() {
 
 		return false;
 	});
+
+
+	// Adding a notebook
+	// --------------------------------------------------
+
+	$("a.addnotebook").on("click", function() {
+		// Toggle the view
+		var entry = $(this).parents(".entry:first");
+
+		if ($(".addbox:visible").length > 0) {
+			// Hide the addbox 
+			$(".addbox").fadeOut(75);
+		} else {
+			// Show the addbox
+			$(".addbox").fadeIn(75, function() {
+				$(".addbox input[type=text]").focus();
+			});
+		}
+
+		return false;
+	});
+
+	$(".addbox textarea, .addbox input[type=text]").bind('keydown', 'shift+return', function() {
+		$(this).parents(".addbox").submit();
+
+		return false;
+	});
+
+	$(".addbox").on("submit", function() {
+		var name = encodeURIComponent($(this).find(".name").val().trim());
+		var desc = encodeURIComponent($(this).find(".desc").val().trim());
+		var url = config.url + "add/notebook?name=" + name + "&description=" + desc;
+
+		console.log(url);
+
+		// Add the notebook
+		$.get(url, function(data) {
+			if (data.status == 'success') {
+				var nbHTML = '<article class="notebook" data-slug="' + data.slug + '">';
+				nbHTML += '<a href="' + config.url + data.slug + '">';
+				nbHTML += '<h2>' + data.name + '</h2>';
+				if (data.description) {
+					nbHTML += '<p>' + data.description + '</p>';
+				}
+				nbHTML += '</a>';
+				nbHTML += '</article>';
+			
+				$(nbHTML).appendTo($("#notebooks"));
+
+				$(".addbox").fadeOut(75, function() {
+					$(this).find(".name").val('');
+					$(this).find(".desc").val('');
+				});
+			} else {
+				alert("Error adding notebook");
+			}
+		});
+
+		return false;
+	});
+
+
+	// Editing notebooks
+	// --------------------------------------------------
+
+	$(".notebook .controls a.edit").on("click", function() {
+		var nb = $(this).parents(".notebook:first");
+
+		if (nb.find("> a:visible").length > 0) {
+			// Show the editbox
+			nb.find(".editbox").fadeIn(75, function() {
+				$(this).find(".name").focus()
+			});
+		} else {
+			// Hide the editbox
+			nb.find(".editbox").fadeOut(75);
+		}
+
+		return false;
+	});
+
+	$(".notebook .editbox").on("submit", function() {
+		var nb = $(this).parents(".notebook:first");
+        var slug = nb.attr("data-slug");
+        var name = encodeURIComponent(nb.find(".editbox input[type=text]").val().trim());
+		var desc = encodeURIComponent(nb.find(".editbox textarea").val().trim());
+
+		// Call edit notebook web service
+        var url = config.url + "edit/notebook?notebook=" + slug + "&name=" + name + "&description=" + desc;
+
+        $.get(url, function(data) {
+            if (data.status == 'success') {
+                // Update content
+                nb.find("> a h2").html(data.name);
+                nb.find("> a p").html(data.description);
+
+                // Hide edit stuff
+                nb.find(".editbox").fadeOut(75);
+            } else {
+                alert("Error editing notebook");
+            }
+        });
+
+        return false;
+	});
+
+	$(".notebook .editbox textarea, .notebook .editbox input[type=text]").bind('keydown', 'shift+return', function() {
+		$(this).parents(".editbox").submit();
+
+		return false;
+	});
+
+	$(".notebook .controls a.delete").on("click", function() {
+		if (confirm("Do you really want to delete that notebook?")) {
+			var nb = $(this).parents(".notebook:first");
+			var slug = nb.attr("data-slug");
+
+			// Call delete notebook web service
+			var url = config.url + "delete/notebook?notebook=" + slug;
+
+			$.get(url, function(data) {
+				if (data.status == 'success') {
+					// Fade out and then delete the DOM element
+					nb.fadeOut(75, function() {
+						nb.remove();
+					});
+				} else {
+					alert("Error deleting notebook");
+				}
+			});
+		}
+
+		return false;
+	});
 });
 
 function addEntry(text) {

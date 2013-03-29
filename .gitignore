@@ -2,3 +2,5 @@
 data
 config.py
 *.log
+static/custom/css/*
+static/custom/js/*

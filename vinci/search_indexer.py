@@ -3,7 +3,7 @@ import os
 import os.path
 import re
 import whoosh.index as index
-from whoosh.fields import Schema, TEXT, KEYWORD, ID
+from whoosh.fields import Schema, TEXT, KEYWORD, ID, DATETIME
 from whoosh.analysis import StemmingAnalyzer
 from whoosh.qparser import QueryParser
 from models import Entry, init_db
@@ -24,7 +24,8 @@ def default_index_schema():
     return Schema(id=ID(unique=True, stored=True),
                   notebook=ID,
                   content=TEXT(analyzer=StemmingAnalyzer()),
-                  tag=KEYWORD(field_boost=2.0))
+                  tag=KEYWORD(field_boost=2.0),
+                  date=DATETIME)
 
 
 def full_index(database_file=None):
@@ -38,7 +39,8 @@ def full_index(database_file=None):
         writer.add_document(id=unicode(entry.id),
                             notebook=entry.notebook.slug,
                             content=entry.content,
-                            tag=u" ".join(_get_tags(entry)))
+                            tag=u" ".join(_get_tags(entry)),
+                            date=entry.date)
     writer.commit()
 
 
@@ -49,7 +51,8 @@ def add_or_update_index(document):
     writer.add_document(id=unicode(document.id),
                         notebook=document.notebook.slug,
                         content=document.content,
-                        tag=u" ".join(_get_tags(document)))
+                        tag=u" ".join(_get_tags(document)),
+                        date=document.date)
     writer.commit()
 
 
@@ -67,21 +70,21 @@ def _get_tags(entry):
     return tag_re.findall(entry.content)
 
 
-def search(query_string, database_file=None):
-    if database_file is None:
-        database_file = config.database_file
+def search(query_string, page=1, results_per_page=10, sort_order='relevance'):
     if isinstance(query_string, str):
         query_string = unicode(query_string)
     ix = get_or_create_index()
     query = QueryParser('content', ix.schema).parse(query_string)
     entry_ids = {}
+    results = None
     with ix.searcher() as searcher:
-        results = searcher.search(query)
-        entry_ids = {int(entry['id']): entry.score for entry in results}
-    init_db(database_file)
-    entries = Entry.select().where(Entry.id << entry_ids.keys())
-    entries_scores = []
-    for entry in entries:
-        entries_scores.append((entry_ids[entry.id], entry))
-    entries_scores.sort(reverse=True)
-    return [entry for score, entry in entries_scores]
+        if sort_order == 'date_desc':
+            results = searcher.search_page(query, page, pagelen=results_per_page,
+                                           sortedby='date', reverse=True)
+        elif sort_order == 'date_asc':
+            results = searcher.search_page(query, page, pagelen=results_per_page,
+                                           sortedby='date')
+        else:
+            results = searcher.search_page(query, page, pagelen=results_per_page)
+        entry_ids = {int(entry['id']): entry.rank for entry in results}
+    return entry_ids, len(results), len(results)/results_per_page

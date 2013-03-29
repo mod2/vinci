@@ -114,9 +114,20 @@ def get_entry(id, notebook_slug):
     return m.Entry.get(m.Entry.id == id)
 
 
-def search(query):
+def search(query, page=1, sort_order='relevance'):
     """Submit search to the whoosh searcher"""
-    return si.search(query)
+    page_results, total_hits, total_pages = si.search(query,
+                                                      page,
+                                                      config.results_per_page,
+                                                      sort_order)
+    ids = [entry_id for entry_id, rank in page_results.items()]
+    entries = m.Entry.select().where(m.Entry.id << ids)
+    results = []
+
+    for entry in entries:
+        results.append((page_results[entry.id], entry))
+    results.sort() # depends on sort
+    return [entry for rank, entry in results], total_hits, total_pages
 
 
 def reindex():

@@ -34,17 +34,17 @@ config.root_path = app.root_path
 vinci.init_db()
 
 
-# Favicon
 @app.route('/favicon.ico/')
 def favicon():
+    """Serve up the favicon."""
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'favicon.ico',
                                mimetype='image/vnd.microsoft.icon')
 
 
-# Add an entry
 @app.route('/add/entry/')
 def add_entry():
+    """Add an entry."""
     # Defaults and parameters
     notebook = request.args.get('notebook')
     content = request.args.get('content')
@@ -86,9 +86,10 @@ def add_entry():
         return jsonify(response)
 
 
-# Delete an entry
 @app.route('/delete/entry/')
 def delete_entry():
+    """Delete an entry."""
+
     # Defaults and parameters
     notebook = request.args.get('notebook')
     id = request.args.get('id')
@@ -109,10 +110,11 @@ def delete_entry():
         return jsonify(response)
 
 
-# Edit an entry
 # TODO: refactor this, lots of shared code with add_entry()
 @app.route('/edit/entry/')
 def edit_entry():
+    """Edit an entry."""
+
     # Defaults and parameters
     notebook = request.args.get('notebook')
     id = request.args.get('id')
@@ -152,9 +154,10 @@ def edit_entry():
         return jsonify(response)
 
 
-# Add a notebook
 @app.route('/add/notebook/')
 def add_notebook():
+    """Add a notebook."""
+
     # Defaults and parameters
     name = request.args.get('name')
     description = request.args.get('desc')
@@ -180,9 +183,10 @@ def add_notebook():
         return jsonify(response)
 
 
-# Delete a notebook
 @app.route('/delete/notebook/')
 def delete_notebook():
+    """Delete a notebook."""
+
     # Defaults and parameters
     notebook = request.args.get('notebook')
     callback = request.args.get('callback')
@@ -202,17 +206,19 @@ def delete_notebook():
         return jsonify(response)
 
 
-# Rename a notebook
-@app.route('/rename/notebook/')
+@app.route('/edit/notebook/')
 def edit_notebook():
+    """Edit a notebook."""
+
     # Defaults and parameters
     notebook = request.args.get('notebook')
     name = request.args.get('name')
+    description = request.args.get('description')
     callback = request.args.get('callback')
     #type = request.args.get('type') or 'json'
 
     # Edit the entry
-    notebook = vinci.rename_notebook(notebook_slug=notebook, name=name)
+    notebook = vinci.edit_notebook(notebook_slug=notebook, name=name, description=description)
 
     # If we succeeded
     if notebook:
@@ -233,13 +239,14 @@ def edit_notebook():
 @app.route('/reindex/')
 def reindex():
     """Reindex the index."""
+
     vinci.reindex()
     return redirect(url_for('index'))
 
 
 @app.route('/search/<query>')
 def search_all_notebooks(query):
-    """ Search within all notebooks"""
+    """Search within all notebooks."""
 
     # Defaults and parameters
     type = request.args.get('type') or 'html'
@@ -263,7 +270,7 @@ def search_all_notebooks(query):
 
 @app.route('/tag/<tag>')
 def search_all_tags(tag):
-    """ Load entries with a tag within all notebooks """
+    """Load entries with a tag within all notebooks."""
 
     # Defaults and parameters
     type = request.args.get('type') or 'html'
@@ -320,7 +327,7 @@ def search_notebook(notebook_slug, query):
 
 @app.route('/<notebook_slug>/tag/<tag>')
 def search_tags_in_notebook(notebook_slug, tag):
-    """ Load entries with a tag within a notebook """
+    """Load entries with a tag within a notebook."""
 
     # Defaults and parameters
     type = request.args.get('type') or 'html'
@@ -347,9 +354,10 @@ def search_tags_in_notebook(notebook_slug, tag):
                                  pagination=pagination)
 
 
-# Display a single entry
 @app.route('/<notebook_slug>/entry/<entry_id>')
 def display_entry(notebook_slug, entry_id):
+    """Display a single entry."""
+
     # Defaults and parameters
     type = request.args.get('type') or 'html'
 
@@ -370,6 +378,8 @@ def display_entry(notebook_slug, entry_id):
 
 @app.route('/<notebook_slug>/')
 def display_entries(notebook_slug):
+    """Display entries for a notebook."""
+
     # Defaults and parameters
     type = request.args.get('type') or 'html'
     sortby = request.args.get('sort') or config.default_search_order
@@ -394,14 +404,12 @@ def display_entries(notebook_slug):
                                  pagination=pagination)
 
 
-# Home page
 @app.route('/')
 def index():
+    """Home page."""
+
     # Defaults and parameters
     type = request.args.get('type') or 'html'
-
-    # Template to load
-    template = 'index.%s' % type
 
     notebooks = vinci.get_all_notebooks()
 

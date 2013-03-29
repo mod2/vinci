@@ -5,8 +5,7 @@
 	<section id="notebooks">
 		{% for notebook in notebooks %}
 		<article class="notebook" data-slug="{{ notebook.slug }}">
-			<h2><a href="{{ url_for('index') ~ notebook.slug }}">{{ notebook.name }}</a></h2>
-			{% if notebook.description %}<p>{{ notebook.description }}</p>{% endif %}
+			<a href="{{ url_for('index') ~ notebook.slug }}"><h2>{{ notebook.name }}</h2>{% if notebook.description %}<p>{{ notebook.description }}</p>{% endif %}</a>
 		</article>
 		{% endfor %}
 	</section>

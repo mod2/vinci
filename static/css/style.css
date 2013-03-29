@@ -81,13 +81,13 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 
 #input .content input[type=submit]	{ display: none; }
 
-#notebooks .notebook		{ padding: 15px; background: #fff; margin-bottom: 2em; -moz-border-radius: 3px; border-radius: 3px;
+#notebooks .notebook		{ background: #fff; margin-bottom: 2em; -moz-border-radius: 3px; border-radius: 3px;
 box-shadow: 1px 1px 15px #ccc; border-left: solid 25px #c7b58e; }
 #notebooks .notebook:hover	{ box-shadow: 1px 1px 15px #999; }
 #notebooks .notebook:last-child	{ margin-bottom: 0; }
-#notebooks .notebook h2		{ margin: 0; line-height: 1.2em; }
-#notebooks .notebook h2 a	{ text-decoration: none; color: #46a7a7; display: block; }
-#notebooks .notebook p		{ margin: 5px 0 0; font-size: .9em; }
+#notebooks .notebook a		{ text-decoration: none; color: #46a7a7; display: block; padding: 15px; }
+#notebooks .notebook a h2	{ margin: 0; line-height: 1.2em; }
+#notebooks .notebook a p	{ margin: 0; font-size: .9em; font-weight: 400; color: #999; }
 
 @media screen and (max-width: 500px) {
 	body					{ background: #fff; }

@@ -19,12 +19,17 @@ def add_notebook(name, description=None):
     return nb
 
 
-def rename_notebook(notebook_slug, name):
-    """Rename a notebook."""
+def edit_notebook(notebook_slug, name, description=None):
+    """Edit a notebook."""
     try:
         nb = m.Notebook.get(m.Notebook.slug == notebook_slug)
+
         nb.name = name
         nb.slug = utils.slugify(nb.name)
+
+        if description:
+            nb.description = description
+
         nb.save()
 
         return nb

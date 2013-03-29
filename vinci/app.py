@@ -41,7 +41,7 @@ def delete_notebook(notebook_slug):
     """Delete a notebook."""
     try:
         # First delete the entries
-        entries = get_entries(notebook_slug)
+        entries, hits, pages = get_entries(notebook_slug)
         for entry in entries:
             entry.delete_instance()
 

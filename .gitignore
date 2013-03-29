@@ -1,4 +1,6 @@
 *.pyc
 data
+*.db
+*.idx
 config.py
 *.log

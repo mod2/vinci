@@ -28,11 +28,9 @@ def default_index_schema():
                   date=DATETIME)
 
 
-def full_index(database_file=None):
+def full_index(database_file=config.database_file, admin=config.admin):
     """Create a fresh new index."""
-    if database_file is None:
-        database_file = config.database_file
-    init_db(database_file)
+    init_db(database_file, admin)
     ix = index.create_in(config.index_dir, default_index_schema())
     writer = ix.writer()
     for entry in Entry.select():

@@ -1,10 +1,20 @@
 $(document).ready(function() {
 	// Infinite scroll
 	if ($("nav[role=navigation] a.next")) {
+		/*
 		$("#entries").jscroll({
 			debug: true,
 			nextSelector: 'a.next',
-			contentSelector: '#entries'
+			contentSelector: '#entries',
+		});
+		*/
+		$("#entries").infinitescroll({
+			navSelector: "nav[role=pagination] .links",
+			nextSelector: "nav[role=pagination] .links a.next",
+			itemSelector: "article.entry",
+			loading: {
+				finishedMsg: '<i>The very end.</i>',
+			},
 		});
 	}
 

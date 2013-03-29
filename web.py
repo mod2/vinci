@@ -243,7 +243,7 @@ def search_all_notebooks(query):
     # Defaults and parameters
     type = request.args.get('type') or 'html'
     sortby = request.args.get('sort') or config.default_search_order
-    page = int(request.args.get('page')) or 1
+    page = int(request.args.get('page') or 1)
 
     # Template to load
     template = 'list.%s' % type
@@ -269,7 +269,7 @@ def search_all_tags(tag):
     # Defaults and parameters
     type = request.args.get('type') or 'html'
     sortby = request.args.get('sort') or config.default_search_order
-    page = int(request.args.get('page')) or 1
+    page = int(request.args.get('page') or 1)
 
     # Template to load
     template = 'list.%s' % type
@@ -299,7 +299,7 @@ def search_notebook(notebook_slug, query):
     # Defaults and parameters
     type = request.args.get('type') or 'html'
     sortby = request.args.get('sort') or config.default_search_order
-    page = int(request.args.get('page')) or 1
+    page = int(request.args.get('page') or 1)
 
     # Template to load
     template = 'list.%s' % type
@@ -330,7 +330,7 @@ def search_tags_in_notebook(notebook_slug, tag):
     # Defaults and parameters
     type = request.args.get('type') or 'html'
     sortby = request.args.get('sort') or config.default_search_order
-    page = int(request.args.get('page')) or 1
+    page = int(request.args.get('page') or 1)
 
     # Template to load
     template = 'list.%s' % type
@@ -382,7 +382,7 @@ def display_entries(notebook_slug):
     # Defaults and parameters
     type = request.args.get('type') or 'html'
     sortby = request.args.get('sort') or config.default_search_order
-    page = int(request.args.get('page')) or 1
+    page = int(request.args.get('page') or 1)
 
     # Template to load
     template = 'list.%s' % type
@@ -392,12 +392,16 @@ def display_entries(notebook_slug):
     db_entries = vinci.get_entries(notebook_slug)
     entries = utils.entries.process_entries(db_entries)
 
+    total_hits = 500000
+    total_pages = 5
+    base_url = '%s%s' % (url_for('index'), notebook_slug) 
+    pagination = utils.pagination.get_pagination(page, total_hits, total_pages, sortby, base_url)
+
     return render_template(template,
                            title=notebook.name,
                            notebook=notebook,
                            entries=entries,
-                           sortby=sortby,
-                           page=page)
+                           pagination=pagination)
 
 
 # Home page

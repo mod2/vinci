@@ -280,7 +280,7 @@ $(document).ready(function() {
 	$("#notebooks").on("click", ".notebook .controls a.edit", function() {
 		var nb = $(this).parents(".notebook:first");
 
-		if (nb.find("> a:visible").length > 0) {
+		if (nb.find(".editbox:visible").length == 0) {
 			// Show the editbox
 			nb.find(".editbox").fadeIn(75, function() {
 				$(this).find(".name").focus()

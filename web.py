@@ -76,7 +76,9 @@ def add_entry():
             'url': '%s.%s' % (entry.date.strftime('%Y-%m-%d'), entry.id),
             'date': entry.date.strftime('%a, %d %b %Y'),
             'time': entry.date.strftime('%l:%M %p').strip(),
-            'html': html
+            'datetime': entry.date.strftime('%Y-%m-%d %H:%M:%S'),
+            'html': html,
+            'content': content
         }
 
         return response_with_callback(response, callback)
@@ -144,7 +146,9 @@ def edit_entry():
             'url': '%s.%s' % (entry.date.strftime('%Y-%m-%d'), entry.id),
             'date': entry.date.strftime('%a, %d %b %Y'),
             'time': entry.date.strftime('%l:%M %p').strip(),
-            'html': html
+            'datetime': entry.date.strftime('%Y-%m-%d %H:%M:%S'),
+            'html': html,
+            'content': content,
         }
 
         return response_with_callback(response, callback)

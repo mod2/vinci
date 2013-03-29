@@ -114,7 +114,7 @@ $(document).ready(function() {
 	// Editing entries
 	// --------------------------------------------------
 
-	$(".entry .metadata .controls a.edit").on("click", function() {
+	$("#entries").on("click", ".entry .metadata .controls a.edit", function() {
 		var entry = $(this).parents(".entry:first");
 
 		if (entry.find(".content:visible").length > 0) {
@@ -134,7 +134,7 @@ $(document).ready(function() {
 		return false;
 	});
 
-	$(".entry .editbox").on("submit", function() {
+	$("#entries").on("submit", ".entry .editbox", function() {
 		var entry = $(this).parents(".entry:first");
         var id = entry.attr("data-id");
 		var text = encodeURIComponent(entry.find(".editbox textarea").val().trim());
@@ -178,7 +178,7 @@ $(document).ready(function() {
 		return false;
 	});
 
-	$(".entry .metadata .controls a.delete").on("click", function() {
+	$("#entries").on("click", ".entry .metadata .controls a.delete", function() {
 		if (confirm("Do you really want to delete that entry?")) {
 			var entry = $(this).parents(".entry:first");
 			var id = entry.attr("data-id");
@@ -207,8 +207,6 @@ $(document).ready(function() {
 
 	$("a.addnotebook").on("click", function() {
 		// Toggle the view
-		var entry = $(this).parents(".entry:first");
-
 		if ($(".addbox:visible").length > 0) {
 			// Hide the addbox 
 			$(".addbox").fadeOut(75);
@@ -239,15 +237,29 @@ $(document).ready(function() {
 		$.get(url, function(data) {
 			if (data.status == 'success') {
 				var nbHTML = '<article class="notebook" data-slug="' + data.slug + '">';
+				nbHTML += '<div class="controls"><a href="" class="delete">Delete</a> <a href="" class="edit">Edit</a></div>';
 				nbHTML += '<a href="' + config.url + data.slug + '">';
 				nbHTML += '<h2>' + data.name + '</h2>';
 				if (data.description) {
 					nbHTML += '<p>' + data.description + '</p>';
 				}
 				nbHTML += '</a>';
+				nbHTML += '<form class="editbox nb-edit-box">';
+				nbHTML += '<div class="group"><label>Name:</label> <input type="text" class="name" value="' + data.name + '" /></div>';
+				nbHTML += '<label>Description:</label><textarea class="desc">';
+				if (data.description) nbHTML += data.description;
+				nbHTML += '</textarea>';
+				nbHTML += '<input type="submit" value="Save Notebook" class="submitbutton" />';
+				nbHTML += '</form>';
 				nbHTML += '</article>';
 			
-				$(nbHTML).appendTo($("#notebooks"));
+				var nb = $(nbHTML).appendTo($("#notebooks"));
+				
+				nb.find(".editbox textarea, .editbox input[type=text]").bind('keydown', 'shift+return', function() {
+					$(this).parents(".editbox").submit();
+
+					return false;
+				});
 
 				$(".addbox").fadeOut(75, function() {
 					$(this).find(".name").val('');
@@ -265,7 +277,7 @@ $(document).ready(function() {
 	// Editing notebooks
 	// --------------------------------------------------
 
-	$(".notebook .controls a.edit").on("click", function() {
+	$("#notebooks").on("click", ".notebook .controls a.edit", function() {
 		var nb = $(this).parents(".notebook:first");
 
 		if (nb.find("> a:visible").length > 0) {
@@ -281,7 +293,7 @@ $(document).ready(function() {
 		return false;
 	});
 
-	$(".notebook .editbox").on("submit", function() {
+	$("#notebooks").on("submit", ".notebook .editbox", function() {
 		var nb = $(this).parents(".notebook:first");
         var slug = nb.attr("data-slug");
         var name = encodeURIComponent(nb.find(".editbox input[type=text]").val().trim());
@@ -295,6 +307,7 @@ $(document).ready(function() {
                 // Update content
                 nb.find("> a h2").html(data.name);
                 nb.find("> a p").html(data.description);
+				nb.attr("data-slug", data.slug);
 
                 // Hide edit stuff
                 nb.find(".editbox").fadeOut(75);
@@ -312,7 +325,7 @@ $(document).ready(function() {
 		return false;
 	});
 
-	$(".notebook .controls a.delete").on("click", function() {
+	$("#notebooks").on("click", ".notebook .controls a.delete", function() {
 		if (confirm("Do you really want to delete that notebook?")) {
 			var nb = $(this).parents(".notebook:first");
 			var slug = nb.attr("data-slug");
@@ -343,14 +356,26 @@ function addEntry(text) {
 			var entryHTML = '<article class="entry" data-id="' + data.id + '">';
 			entryHTML += '<div class="metadata"><a href="' + config.url + config.notebook + '/entry/' + data.url + '">';
 			entryHTML += '<date>' + data.date + '</date><time>' + data.time + '</time>';
-			entryHTML += '</a></div>';
+			entryHTML += '</a>';
+			entryHTML += '<div class="controls"><a href="" class="delete">Delete</a><a href="" class="edit">Edit</a></div>';
+			entryHTML += '</div>';
 			entryHTML += '<div class="content">' + data.html + '</div>';
+			entryHTML += '<form class="editbox">';
+			entryHTML += '<textarea>' + data.content + '</textarea>';
+			entryHTML += '<div class="group"><label>Date:</label><input type="text" value="' + data.datetime + '" /></div>';
+			entryHTML += '<input type="submit" value="Save Entry" class="submitbutton" />';
+			entryHTML += '</form>';
 			entryHTML += '</article>';
-		
-			$(entryHTML).prependTo($("#entries"));	
+
+			var entry = $(entryHTML).prependTo($("#entries"));	
+
+			entry.find(".editbox textarea, .editbox input[type=text]").bind('keydown', 'shift+return', function() {
+				$(this).parents(".editbox").submit();
+
+				return false;
+			});
 
 			// Add yellow highlight
-			var entry = $("#entries .entry:first");
 			entry.addClass("new");
 
 			// Remove the yellow after two seconds

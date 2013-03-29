@@ -2,9 +2,6 @@
 
 from flask import Flask, request, render_template
 from flask import url_for, send_from_directory, jsonify, redirect
-from flaskext.markdown import Markdown
-from markdown import markdown
-from smartypants import smartyPants
 from datetime import datetime
 import os
 import re
@@ -12,7 +9,8 @@ import logging
 
 import config
 import vinci
-import utils.filters
+import utils.text
+import utils.entries
 
 # set up some debugging stuff
 if config.debug:
@@ -29,10 +27,6 @@ if config.debug:
 
 # Initialize the Flask app
 app = Flask(__name__)
-
-# Set up Jinja2 filters for Markdown and hashtags
-Markdown(app)
-app.jinja_env.filters['hashtag'] = utils.filters.hashtag
 
 # Initialize database
 vinci.init_db()
@@ -68,11 +62,10 @@ def add_entry():
     # If we succeeded
     if entry:
         # Prep the HTML
-        html = utils.filters.convert_hashtags(content,
-                                              url_for('index'),
-                                              notebook,
-                                              '/tag')
-        html = smartyPants(markdown(html))
+        html = utils.text.markdownify(content,
+                                      url_for('index'),
+                                      notebook,
+                                      '/tag')
 
         # Send the info we need to generate the entry HTML
         response = {
@@ -135,11 +128,10 @@ def edit_entry():
     # If we succeeded
     if entry:
         # Prep the HTML
-        html = utils.filters.convert_hashtags(content,
-                                              url_for('index'),
-                                              notebook,
-                                              '/tag')
-        html = smartyPants(markdown(html))
+        html = utils.text.markdownify(content,
+                                      url_for('index'),
+                                      notebook,
+                                      '/tag')
 
         # Send the info we need to generate the entry HTML
         response = {
@@ -256,7 +248,8 @@ def search_all_notebooks(query):
     template = 'list.%s' % type
 
     # Data
-    entries, total_hits, total_pages = vinci.search(query, page, sortby)
+    db_entries, total_hits, total_pages = vinci.search(query, page, sortby)
+    entries = utils.entries.process_entries(db_entries)
 
     return render_template(template,
                            title="Search All Notebooks",
@@ -284,7 +277,8 @@ def search_all_tags(tag):
     tags = tag.split(' ')
     query = " ".join(["#" + t for t in tags])
     search_query = " ".join(["tag:" + t for t in tags])
-    entries, total_hits, total_pages = vinci.search(search_query, page, sortby)
+    db_entries, total_hits, total_pages = vinci.search(search_query, page, sortby)
+    entries = utils.entries.process_entries(db_entries)
 
     return render_template(template,
                            title="Search All Tags",
@@ -312,8 +306,9 @@ def search_notebook(notebook_slug, query):
     # Data
     notebook = vinci.get_notebook(notebook_slug)
     search_query = query + ' notebook:' + notebook_slug
-    query = re.sub(r'tag:', '#', search_query)
-    entries, total_hits, total_pages = vinci.search(query, page, sortby)
+    query = re.sub(r'tag:', '#', query)
+    db_entries, total_hits, total_pages = vinci.search(query, page, sortby)
+    entries = utils.entries.process_entries(db_entries)
 
     return render_template(template,
                            title=notebook.name,
@@ -343,7 +338,8 @@ def search_tags_in_notebook(notebook_slug, tag):
     tags = tag.split(' ')
     query = " ".join(["#" + t for t in tags])
     search_query = " ".join(["tag:" + t for t in tags]) + ' notebook:' + notebook_slug
-    entries, total_hits, total_pages = vinci.search(search_query, page, sortby)
+    db_entries, total_hits, total_pages = vinci.search(search_query, page, sortby)
+    entries = utils.entries.process_entries(db_entries)
 
     return render_template(template,
                            title=notebook.name,
@@ -370,7 +366,8 @@ def display_entry(notebook_slug, entry_id):
 
     # Data
     notebook = vinci.get_notebook(notebook_slug)
-    entry = vinci.get_entry(id, notebook_slug)
+    db_entry = vinci.get_entry(id, notebook_slug)
+    entry = utils.entries.process_entry(db_entry)
 
     return render_template(template,
                            title=notebook.name,
@@ -388,7 +385,8 @@ def display_entries(notebook_slug):
 
     # Data
     notebook = vinci.get_notebook(notebook_slug)
-    entries = vinci.get_entries(notebook_slug)
+    db_entries = vinci.get_entries(notebook_slug)
+    entries = utils.entries.process_entries(db_entries)
 
     return render_template(template,
                            title=notebook.name,

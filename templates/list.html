@@ -1,11 +1,13 @@
 {% extends '_base.html' %}
 
 {% block input %}
+{% if title != "Search All Notebooks" and title != "Search All Tags" %}
 <form id="input">
 	<div class="container">
 		<div class="content"><textarea id="add" name="add"></textarea><input type="submit" value="Add Entry" /></div>
 	</div>
 </form>
+{% endif %}
 {% endblock input %}
 
 {% block nav %}
@@ -22,10 +24,7 @@
 	{% block entries %}
 	<section id="entries">
 		{% for entry in entries %}
-		<article class="entry" data-id="{{ entry.id }}">
-        <div class="metadata">{% if not notebook %}<a href="{{ url_for('index') ~ entry.notebook.slug }}">{{ entry.notebook.name }}</a> — {% endif %}<a href="{{ url_for('index') ~ entry.notebook.slug ~ '/entry/' ~ entry.date.strftime('%Y-%m-%d') ~ '.' ~ entry.id }}"><date>{{ entry.date.strftime('%a, %d %b %Y') }}</date><time>{{ entry.date.strftime('%l:%M %p')|trim }}</time></a></div>
-			<div class="content">{{ entry.content|hashtag(url_for('index'), entry.notebook.slug, '/tag')|markdown }}</div>
-		</article>
+		{% include '_entry.html' %}
 		{% else %}
 		<article class="entry">
 			<div class="content">No entries yet.</div>

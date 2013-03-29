@@ -4,10 +4,7 @@
 
 {% block entry %}
 <div class="container">
-<article class="entry" data-id="{{ entry.id }}">
-	<div class="metadata"><date>{{ entry.date.strftime('%a, %d %b %Y') }}</date><time>{{ entry.date.strftime('%l:%M %p')|trim }}</time></div>
-	<div class="content">{{ entry.content|hashtag(url_for('index'), notebook.slug, '/tag')|markdown }}</div>
-</article>
+{% include '_entry.html' %}
 </div>
 {% endblock entry %}
 

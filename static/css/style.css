@@ -50,6 +50,8 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 .entry .content figure		{ margin: 1em 0; }
 .entry .content figure img	{ max-width: 100%; }
 
+.entry .content strong		{ font-weight: 600; }
+
 .entry .metadata date		{ display: inline-block; }
 .entry .metadata time		{ display: inline-block; }
 .entry .metadata time:before	{ margin: 0 3px; content: '—'; }

@@ -22,10 +22,7 @@
 	{% block entries %}
 	<section id="entries">
 		{% for entry in entries %}
-		<article class="entry" data-id="{{ entry.id }}">
-        <div class="metadata">{% if not notebook %}<a href="{{ url_for('index') ~ entry.notebook.slug }}">{{ entry.notebook.name }}</a> — {% endif %}<a href="{{ url_for('index') ~ entry.notebook.slug ~ '/entry/' ~ entry.date.strftime('%Y-%m-%d') ~ '.' ~ entry.id }}"><date>{{ entry.date.strftime('%a, %d %b %Y') }}</date><time>{{ entry.date.strftime('%l:%M %p')|trim }}</time></a></div>
-			<div class="content">{{ entry.content }}</div>
-		</article>
+		{% include '_entry.html' %}
 		{% else %}
 		<article class="entry">
 			<div class="content">No entries yet.</div>

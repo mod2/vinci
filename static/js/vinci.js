@@ -177,6 +177,29 @@ $(document).ready(function() {
 
 		return false;
 	});
+
+	$(".entry .metadata .controls a.delete").on("click", function() {
+		if (confirm("Do you really want to delete that entry?")) {
+			var entry = $(this).parents(".entry:first");
+			var id = entry.attr("data-id");
+
+			// Call delete entry web service
+			var url = config.url + "delete/entry?id=" + id + "&notebook=" + config.notebook;
+
+			$.get(url, function(data) {
+				if (data.status == 'success') {
+					// Fade out and then delete the DOM element
+					entry.fadeOut(75, function() {
+						entry.remove();
+					});
+				} else {
+					alert("Error deleting entry");
+				}
+			});
+		}
+
+		return false;
+	});
 });
 
 function addEntry(text) {

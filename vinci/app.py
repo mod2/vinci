@@ -5,9 +5,9 @@ import config
 import datetime
 
 
-def init_db(database_file=config.database_file):
+def init_db(database_file=config.database_file, admin=config.admin):
     """Initializes the database creating a connection."""
-    m.init_db(database_file)
+    m.init_db(database_file, admin)
 
 
 def add_notebook(name, description=None):

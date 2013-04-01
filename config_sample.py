@@ -21,10 +21,10 @@ plugins = {
         'css': ['checklist.css']
     },
     'grid': {
-        'js': ['grid.js'],
         'css': ['grid.css']
     },
     'pedigree': {
-        'js': ['pedigree.js']
+        'js': ['pedigree.js'],
+        'css': ['pedigree.css']
     }
 }

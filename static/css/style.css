@@ -57,6 +57,8 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 .entry .content code		{ font-family: Monaco, Courier; font-size: .9em; }
 .entry .content p code		{ color: #345678; padding: 2px 5px; -moz-border-radius: 3px; border-radius: 3px; background: #eee; font-size: .8em; }
 
+.entry .content blockquote	{ border-left: solid 5px #ddd; padding-left: 15px; margin-left: 25px; }
+
 .entry .metadata date		{ display: inline-block; }
 .entry .metadata time		{ display: inline-block; }
 .entry .metadata time:before	{ margin: 0 3px; content: '—'; }

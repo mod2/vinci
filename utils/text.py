@@ -13,7 +13,7 @@ def markdownify(content, url, slug, base_url):
     plugin_list = []
     lines = content.split('\n')
     if lines[0][:8] == 'plugins:':
-        plugin_list = lines[0][8:].split(',')
+        plugin_list = [x.strip() for x in lines[0][8:].split(',')]
         content = '\n'.join(lines[1:])
         
         # Go through the list and apply each one

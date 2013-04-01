@@ -8,7 +8,7 @@ $(document).ready(function() {
 			loading: {
 				finishedMsg: '<i>The very end.</i>',
 			},
-		});
+		}, processEntries);
 	}
 
 	// Search box
@@ -160,6 +160,13 @@ $(document).ready(function() {
                 // Update content
                 entry.find(".content").html(data.html);
 
+				// Update plugins list
+				entry.attr("data-plugins", data.plugins.join(","));
+
+				// For any plugins, call the init function on the newly returned content
+				var content = entry.find(".content");
+				loadPlugins(content, data.plugins);
+
                 // Update date
                 entry.find(".metadata date").html(data.date);
                 entry.find(".metadata time").html(data.time);
@@ -184,7 +191,7 @@ $(document).ready(function() {
         return false;
 	});
 
-	$(".entry .editbox textarea, .entry .editbox input[type=text]").bind('keydown', 'shift+return', function() {
+	$("#entries").on("keydown", ".entry .editbox textarea, .entry .editbox input[type=text]", "shift+return", function() {
 		$(this).parents(".editbox").submit();
 
 		return false;
@@ -365,7 +372,7 @@ function addEntry(text) {
 	// Add the entry
 	$.get(config.url + "add/entry?notebook=" + config.notebook + "&content=" + encodeURIComponent(text), function(data) {
 	 	if (data.status == 'success') {
-			var entryHTML = '<article class="entry" data-id="' + data.id + '">';
+			var entryHTML = '<article class="entry" data-id="' + data.id + '" data-plugins="' + data.plugins.join(',') + '">';
 			entryHTML += '<div class="metadata"><a href="' + config.url + config.notebook + '/entry/' + data.url + '">';
 			entryHTML += '<date>' + data.date + '</date><time>' + data.time + '</time>';
 			entryHTML += '</a>';
@@ -380,17 +387,10 @@ function addEntry(text) {
 			entryHTML += '</article>';
 
 			var entry = $(entryHTML).prependTo($("#entries"));	
-			var content = entry.find(".content");
 
 			// For any plugins, call the init function on the newly returned content
-			for (var i=0; i<data.plugins.length; i++) {
-				var plugin = data.plugins[i];
-
-				var plugin_function = plugin + "_init";
-
-				console.log(plugin_function, window, window[plugin_function]);
-				window[plugin_function](content);
-			}
+			var content = entry.find(".content");
+			loadPlugins(content, data.plugins);
 
 			// Bind shift+return
 			entry.find(".editbox textarea, .editbox input[type=text]").bind('keydown', 'shift+return', function() {
@@ -418,3 +418,29 @@ function addEntry(text) {
 	$("#add").blur();
 }
 
+function loadPlugins(content, plugins) {
+	for (var i=0; i<plugins.length; i++) {
+		var plugin = plugins[i];
+
+		var plugin_function = plugin + "_init";
+
+		if (plugin_function in window) {
+			window[plugin_function](content);
+		}
+	}
+}
+
+function processEntries(entries) {
+	for (i in entries) {
+		var entry = $(entries[i]);
+		console.log(entry.attr("data-id"), entry.attr("data-plugins"));
+
+		if ($(entry).attr("data-plugins")) {
+			var plugins = entry.attr("data-plugins").split(',');
+
+			entry.find(".content").each(function() {
+				loadPlugins($(this), plugins);
+			});
+		}
+	}
+}

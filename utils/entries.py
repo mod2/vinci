@@ -14,11 +14,11 @@ def process_entries(entries):
     return processed_entries
 
 def process_entry(entry):
+    notebook_url = '%s%s' % (url_for('index'), entry.notebook.slug)
+
     # Prep the HTML
-    html, plugins = utils.text.markdownify(entry.content,
-                                           url_for('index'),
-                                           entry.notebook.slug,
-                                           '/tag')
+    html, plugins = utils.text.process(entry.content,
+                                       notebook_url)
     
     processed_entry = {
         'id': entry.id,

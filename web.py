@@ -65,10 +65,8 @@ def add_entry():
     # If we succeeded
     if entry:
         # Prep the HTML
-        html, plugins = utils.text.markdownify(content,
-                                      url_for('index'),
-                                      notebook,
-                                      '/tag')
+        html, plugins = utils.text.process(content,
+                                           '%s%s' % (url_for('index'), notebook))
 
         # Send the info we need to generate the entry HTML
         response = {
@@ -136,10 +134,8 @@ def edit_entry():
     # If we succeeded
     if entry:
         # Prep the HTML
-        html, plugins = utils.text.markdownify(content,
-                                      url_for('index'),
-                                      notebook,
-                                      '/tag')
+        html, plugins = utils.text.process(content,
+                                           '%s%s' % (url_for('index'), notebook))
 
         # Send the info we need to generate the entry HTML
         response = {

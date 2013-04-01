@@ -1,15 +1,20 @@
 # Text-related utility functions
 
-from markdown import markdown
-from smartypants import smartyPants
 import re
 import config
 
-def markdownify(content, url, slug, base_url):
-    """Everything needed to prep an entry for display (plugins,
-       hashtag conversion, Markdown, and SmartyPants)"""
+def run_plugin(name, content, notebook_url):
+    # Import the plugin function
+    plugins = __import__("plugins", fromlist=[name])
+    plugin = getattr(plugins, name)
 
-    # Check for plugins
+    # Process it
+    return plugin.process(content, notebook_url)
+
+def process(content, notebook_url):
+    """Process an entry for display in HTML."""
+
+    # Check for entry-specific plugins
     plugin_list = []
     lines = content.split('\n')
     if lines[0][:8] == 'plugins:':
@@ -20,18 +25,19 @@ def markdownify(content, url, slug, base_url):
         for plugin_name in plugin_list:
             name = str(plugin_name)
             if name in config.plugins:
-                # Import the plugin function
-                plugins = __import__("plugins", fromlist=[name])
-                plugin = getattr(plugins, name)
-
-                # Process it
-                content = plugin.process(content)
+                content = run_plugin(name, content, notebook_url)
     
+    # Run default plugins last
+    for plugin_name in config.default_plugins:
+        name = str(plugin_name)
+        content = run_plugin(name, content, notebook_url)
+
     # Convert hashtags to HTML links
-    html = convert_hashtags(content, url, slug, base_url)
+    #html = convert_hashtags(content, url, slug, base_url)
 
     # Markdown and SmartyPants it and return it
-    return (smartyPants(markdown(html)), plugin_list)
+    #return (smartyPants(markdown(html)), plugin_list)
+    return content, plugin_list
 
 
 def convert_hashtags(value, index, slug, base_url):

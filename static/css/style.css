@@ -110,7 +110,7 @@ a.addnotebook:hover			{ }
 	body					{ background: #fff; }
 
 	body > header			{ padding: 10px 15px; }
-	body > header a.notebooks + h1	{ font-size: 1.7em; }
+	body > header a.notebooks + h1	{ font-size: 1.2em; }
 	body > header #search input	{ width: 100px; }
 
 	#input					{ padding: 15px; }

@@ -15,7 +15,7 @@ def process_entries(entries):
 
 def process_entry(entry):
     # Prep the HTML
-    html = utils.text.markdownify(entry.content,
+    html, plugins = utils.text.markdownify(entry.content,
                                   url_for('index'),
                                   entry.notebook.slug,
                                   '/tag')
@@ -29,6 +29,7 @@ def process_entry(entry):
         'date': entry.date,
         'content': entry.content,
         'html': Markup(html),
+        'plugins': plugins,
     }
 
     return processed_entry

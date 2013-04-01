@@ -15,3 +15,13 @@ admin = {
 notebook_access = {
     #'test': ['user email 1', 'user email 2'],
 }
+
+plugins = {
+    'checklist': {
+        'css': ['checklist.css']
+    },
+    'grid': {
+        'js': ['grid.js'],
+        'css': ['grid.css']
+    }
+}

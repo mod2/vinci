@@ -12,6 +12,7 @@ import utils.text
 import utils.entries
 import utils.pagination
 import utils.template
+import plugins
 
 # set up some debugging stuff
 if config.debug:
@@ -64,7 +65,7 @@ def add_entry():
     # If we succeeded
     if entry:
         # Prep the HTML
-        html = utils.text.markdownify(content,
+        html, plugins = utils.text.markdownify(content,
                                       url_for('index'),
                                       notebook,
                                       '/tag')
@@ -78,7 +79,8 @@ def add_entry():
             'time': entry.date.strftime('%l:%M %p').strip(),
             'datetime': entry.date.strftime('%Y-%m-%d %H:%M:%S'),
             'html': html,
-            'content': content
+            'content': content,
+            'plugins': plugins,
         }
 
         return response_with_callback(response, callback)
@@ -134,7 +136,7 @@ def edit_entry():
     # If we succeeded
     if entry:
         # Prep the HTML
-        html = utils.text.markdownify(content,
+        html, plugins = utils.text.markdownify(content,
                                       url_for('index'),
                                       notebook,
                                       '/tag')
@@ -149,6 +151,7 @@ def edit_entry():
             'datetime': entry.date.strftime('%Y-%m-%d %H:%M:%S'),
             'html': html,
             'content': content,
+            'plugins': plugins,
         }
 
         return response_with_callback(response, callback)
@@ -377,7 +380,8 @@ def display_entry(notebook_slug, entry_id):
                                  type,
                                  notebook=notebook,
                                  title=notebook.name,
-                                 entry=entry)
+                                 entry=entry,
+                                 config=config)
 
 
 @app.route('/<notebook_slug>/')
@@ -405,7 +409,8 @@ def display_entries(notebook_slug):
                                  notebook=notebook,
                                  title=notebook.name,
                                  entries=entries,
-                                 pagination=pagination)
+                                 pagination=pagination,
+                                 config=config)
 
 
 @app.route('/')

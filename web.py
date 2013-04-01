@@ -268,7 +268,8 @@ def search_all_notebooks(query):
                                  title="Search All Notebooks",
                                  query=query,
                                  entries=entries,
-                                 pagination=pagination)
+                                 pagination=pagination,
+                                 config=config)
 
 
 @app.route('/tag/<tag>')
@@ -295,7 +296,8 @@ def search_all_tags(tag):
                                  title="Search All Tags",
                                  query=query,
                                  entries=entries,
-                                 pagination=pagination)
+                                 pagination=pagination,
+                                 config=config)
 
 
 # Search within a notebook
@@ -325,7 +327,8 @@ def search_notebook(notebook_slug, query):
                                  notebook=notebook,
                                  query=query,
                                  entries=entries,
-                                 pagination=pagination)
+                                 pagination=pagination,
+                                 config=config)
 
 
 @app.route('/<notebook_slug>/tag/<tag>')
@@ -354,7 +357,8 @@ def search_tags_in_notebook(notebook_slug, tag):
                                  notebook=notebook,
                                  query=query,
                                  entries=entries,
-                                 pagination=pagination)
+                                 pagination=pagination,
+                                 config=config)
 
 
 @app.route('/<notebook_slug>/entry/<entry_id>')

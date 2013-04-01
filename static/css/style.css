@@ -131,7 +131,13 @@ a.addnotebook:hover			{ }
 
 	.addbox input[type=submit]	{ display: block; width: 100%; background: #728161; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: "Avenir Next", Helvetica, Arial, sans-serif; padding: 5px 8px; font-size: .9em; font-weight: 600; cursor: pointer; -webkit-appearance: none; }
 
-	#notebooks				{ padding: 15px; }
+	#notebooks				{ padding: 10px 15px; }
+	#notebooks .notebook	{ margin-bottom: 1em; border-left-width: 15px; }
+	#notebooks .notebook .controls	{ padding: 10px; }
+	#notebooks .notebook > a	{ padding: 10px; }
+	#notebooks .notebook > a h2	{ font-size: 1.2em; }
+	#notebooks .notebook .editbox	{ padding: 10px; padding-top: 0; }
+	a.addnotebook			{ margin-top: 1em; font-size: .9em; }
 	#nb-add-box				{ padding: 0 15px; }
 }
 

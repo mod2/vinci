@@ -406,6 +406,10 @@ function addEntry(text) {
 			setTimeout(function() {
 				entry.removeClass("new");
 			}, 2000);
+
+			// And update the # entries
+			var numEntries = parseInt($("label.num_entries").html().match(/^(\d+)/)[1]);
+			$("label.num_entries").html((numEntries + 1) + " entries");
 		} else {
 			alert("Error adding entry");
 		}

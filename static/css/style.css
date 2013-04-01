@@ -61,8 +61,8 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 .entry .metadata time		{ display: inline-block; }
 .entry .metadata time:before	{ margin: 0 3px; content: '—'; }
 
-.entry a.tag				{ font-size: 14px; color: #7499b6; background: #eee; -moz-border-radius: 5px; border-radius: 5px; padding: 0px 4px; cursor: pointer; text-decoration: none; }
-.entry a.tag:hover			{ background: #345678; color: #fff; }
+.entry a.tag				{ color: #7499b6; cursor: pointer; text-decoration: none; }
+.entry a.tag:hover			{ color: #930; }
 
 .entry .editbox             { display: none; }
 .entry .editbox .group      { margin: 3px 0 10px; }

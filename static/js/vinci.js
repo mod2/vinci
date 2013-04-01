@@ -433,7 +433,6 @@ function loadPlugins(content, plugins) {
 function processEntries(entries) {
 	for (i in entries) {
 		var entry = $(entries[i]);
-		console.log(entry.attr("data-id"), entry.attr("data-plugins"));
 
 		if ($(entry).attr("data-plugins")) {
 			var plugins = entry.attr("data-plugins").split(',');

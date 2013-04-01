@@ -1,0 +1,31 @@
+@font-face { font-family: 'Chess'; src: local('Chess'), url('/static/plugins/chess/chess_merida_unicode.ttf') format('truetype'); }
+
+.dark { background-color: #628a62; }
+
+table.chess { margin: 0 auto; } 
+table.chess { border-top: solid 1.5em #eee; border-right: solid 1.5em #eee; }
+table.chess td, table.chess th { font-family: 'Chess', Times, serif; font-size: 2em; border: solid 1px #000; -webkit-user-select: none; -moz-user-select: none; user-select: none; border-collapse: collapse}
+
+table.chess th { color: #bbb; font-family: Helvetica; font-size: 1.1em; padding: 5px; }
+table.chess th { background: #eee; border: solid 1px #eee; color: #ccc; }
+
+table.chess td { width: 1.5em; height: 1.5em; text-align: center; vertical-align: middle; line-height: 1em; }
+
+.chess td.w { color: #fff; text-shadow: 0 0 5px #000; }
+.chess td.b { text-shadow: 0 0 5px rgba(255, 255, 255, 0.3); }
+
+
+
+.fen { font-family: Helvetica, Arial, sans-serif; font-size: 12px; color: #bbb; font-weight: bold; margin-top: 1em; text-align: center; line-height: 1.2em; overflow: auto; }
+
+@media screen and (max-width: 600px) {
+	table.chess { font-size: .75em; line-height: 1em; }
+	.fen { line-height: 1.2em; }
+}
+
+@media screen and (max-width: 400px) {
+	table.chess { font-size: .5em; line-height: 1em; }
+	.chess td.w { text-shadow: 0 0 3px #000; }
+	.chess td.b { text-shadow: 0 0 3px rgba(255, 255, 255, 0.3); }
+	.fen { font-size: .6em; line-height: 1.2em; }
+}

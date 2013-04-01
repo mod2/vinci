@@ -16,6 +16,8 @@ notebook_access = {
     #'test': ['user email 1', 'user email 2'],
 }
 
+default_plugins = [ 'youtube', 'hashtags', 'md', 'sp' ]
+
 plugins = {
     'checklist': {
         'css': ['checklist.css']

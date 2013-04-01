@@ -28,5 +28,8 @@ plugins = {
     'pedigree': {
         'js': ['pedigree.js'],
         'css': ['pedigree.css']
-    }
+    },
+    'chess': {
+        'css': ['chess.css']
+    },
 }

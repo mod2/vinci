@@ -83,12 +83,20 @@ function write_pedigree(person, cur_gen, n, boxtype) {
 }
 
 $(document).ready(function() {
-	$(".emperor-pedigree").each(function() {
-		var num_generations = 1;	// total number of generations in this tree
-		var last = [];				// stores the last people we parsed at each generation
-		var last_gen = 1;			// the generation of the last line we parsed
-		var rel = '';				// whether we're on the father or the mother
+	// Process all the entries on the page
+	$(".entry .content").each(function() {
+		pedigree_init($(this));
+	});
+});
 
+// Process pedigree on an entry's content
+function pedigree_init(content) {
+	var num_generations = 1;	// total number of generations in this tree
+	var last = [];				// stores the last people we parsed at each generation
+	var last_gen = 1;			// the generation of the last line we parsed
+	var rel = '';				// whether we're on the father or the mother
+
+	content.find("div.emperor-pedigree").each(function() {
 		// grab the content
 		var content = $.trim($(this).html());
 		var lines = content.split('\n');
@@ -154,11 +162,5 @@ $(document).ready(function() {
 
 		// replace the div's contents with the generated HTML
 		$(this).html(htmlcontent);
-
-		// add css rules for the pedigree chart
-		$('.emperor-pedigree table').css({ 'margin': '0px auto', 'padding': '0em 0px' });
-		$('.emperor-pedigree .head').css({ 'vertical-align': 'bottom', 'border-bottom': 'solid 2px black', 'margin': '0px', 'padding': '10px 25px 3px 10px', 'font-weight': 'bold', 'letter-spacing': '-0.02em', 'min-width': '150px' });
-		$('.emperor-pedigree .tail').css({ 'vertical-align': 'top', 'font-size': '.7em', 'margin': '0px', 'padding': '4px 25px 10px 10px', 'color': '#777' });
-		$('.emperor-pedigree .leftborder').css({ 'border-left': 'solid 2px black', 'padding-left': '8px' });
 	});
-});
+}

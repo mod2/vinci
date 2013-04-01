@@ -1,1 +1,4 @@
-.emperor-pedigree td.head { font-weight: 600; }
+.emperor-pedigree table			{ margin: 0px auto; padding: 0; }
+.emperor-pedigree .head			{ vertical-align: bottom; border-bottom: solid 2px black; margin: 0px; padding: 10px 25px 3px 10px; font-weight: 600; letter-spacing: -0.02em; min-width: 150px; }
+.emperor-pedigree .tail			{ vertical-align: top; font-size: .7em; margin: 0px; padding: 4px 25px 10px 10px; color: #777 }
+.emperor-pedigree .leftborder	{ border-left: solid 2px black; padding-left: 8px; }

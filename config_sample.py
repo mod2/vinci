@@ -23,5 +23,8 @@ plugins = {
     'grid': {
         'js': ['grid.js'],
         'css': ['grid.css']
+    },
+    'pedigree': {
+        'js': ['pedigree.js']
     }
 }

@@ -11,10 +11,8 @@
 import re
 
 def process(content):
-    # Get rid of the plugins line
-    str = '\n'.join(content.split('\n')[1:])
+    # Convert to checkboxes
+    content = re.sub(r'\* (.*)', r'<div class="checklist-group"><input type=checkbox><label>\1</label></div>', content)
 
-    # Change things over
-    str = re.sub(r'\* (.*)', r'<div class="checklist-group"><input type=checkbox><label>\1</label></div>', str)
+    return content
 
-    return str

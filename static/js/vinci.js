@@ -380,7 +380,19 @@ function addEntry(text) {
 			entryHTML += '</article>';
 
 			var entry = $(entryHTML).prependTo($("#entries"));	
+			var content = entry.find(".content");
 
+			// For any plugins, call the init function on the newly returned content
+			for (var i=0; i<data.plugins.length; i++) {
+				var plugin = data.plugins[i];
+
+				var plugin_function = plugin + "_init";
+
+				console.log(plugin_function, window, window[plugin_function]);
+				window[plugin_function](content);
+			}
+
+			// Bind shift+return
 			entry.find(".editbox textarea, .editbox input[type=text]").bind('keydown', 'shift+return', function() {
 				$(this).parents(".editbox").submit();
 

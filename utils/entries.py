@@ -16,10 +16,10 @@ def process_entries(entries):
 def process_entry(entry):
     # Prep the HTML
     html, plugins = utils.text.markdownify(entry.content,
-                                  url_for('index'),
-                                  entry.notebook.slug,
-                                  '/tag')
-
+                                           url_for('index'),
+                                           entry.notebook.slug,
+                                           '/tag')
+    
     processed_entry = {
         'id': entry.id,
         'notebook': {

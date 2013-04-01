@@ -2,7 +2,14 @@
 // by Ben Crowder
  
 $(document).ready(function() {
-	$(".grid-box").each(function() {
+	$(".entry .content").each(function() {
+		grid_init($(this));
+	});
+});
+
+function grid_init(content) {
+    /*
+	content.find(".grid-box").each(function() {
 		// Grab the content
 		var content = $.trim($(this).html());
 		var lines = content.split('\n');
@@ -11,7 +18,6 @@ $(document).ready(function() {
 		html = '<table>';
 		for (var i in lines) {
 			var line = $.trim(lines[i]);
-			console.log(line);
 	
 			html += '<tr>';
 			for (var x in line) {
@@ -28,4 +34,5 @@ $(document).ready(function() {
 		// replace the div's contents with the generated HTML
 		$(this).html(html);
 	});
-});
+    */
+}

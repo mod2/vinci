@@ -12,6 +12,11 @@
     {% if custom and custom.css %}
     <link href="{{ staticpath }}/custom/css/{{ notebook.slug }}.css" rel="stylesheet" type="text/css" charset="utf-8" />
     {% endif %}
+    {% for plugin in config.plugins %}
+		{% for file in config.plugins[plugin].css %}
+	<link href="{{ staticpath }}/plugins/{{ plugin }}/{{ file }}" rel="stylesheet" type="text/css" charset="utf-8" />
+		{% endfor %}
+	{% endfor %}
 
 	<script src="{{ staticpath }}/js/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="{{ staticpath }}/js/jquery.hotkeys.js" type="text/javascript" charset="utf-8"></script>
@@ -21,6 +26,11 @@
     {% if custom and custom.js %}
     <script src="{{ staticpath }}/custom/js/{{ notebook.slug }}.js" type="text/javascript" charset="utf-8"></script>
     {% endif %}
+    {% for plugin in config.plugins %}
+		{% for file in config.plugins[plugin].js %}
+	<script src="{{ staticpath }}/plugins/{{ plugin }}/{{ file }}" type="text/javascript" charset="utf-8"></script>
+		{% endfor %}
+	{% endfor %}
 
 	<script type="text/javascript" charset="utf-8">
 		var config = {};

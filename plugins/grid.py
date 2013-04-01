@@ -2,12 +2,27 @@
 
 import re
 
+# Convert the 010100 etc. syntax to an HTML table
+def gridify(m):
+    content = m.group(1)
+    lines = content.split('\n')
+
+    html = '<div class="grid-box">'
+    html += '<table>'
+
+    for line in lines:
+        html += '<tr>'
+        for char in line:
+            html += '<td%s></td>' % (' class="filled"' if char == '1' else '')
+        html += '</tr>'
+    html += '</table>'
+    html += '</div>'
+
+    return html
+
 def process(content):
-    # Get rid of the plugins line
-    str = '\n'.join(content.split('\n')[1:])
-
-    # Change things over
+    # Convert {grid ... } notation to the HTML we need
     regex = re.compile(r'{grid\n(.*?)\n}', flags=re.DOTALL)
-    str = regex.sub(r'<div class="grid-box">\1</div>', str)
+    content = regex.sub(gridify, content)
 
-    return str
+    return content

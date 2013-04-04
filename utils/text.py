@@ -17,6 +17,10 @@ def process(content, notebook_url):
     exclude_list = []
     plugin_list = []
 
+    # Split by ----
+    # Go through each line in metadata and parse
+    # Strip off metadata
+
     # Check for entry-specific plugins
     lines = content.split('\n')
     if lines[0][:8] == 'plugins:':

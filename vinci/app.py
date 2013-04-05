@@ -147,3 +147,14 @@ def search(query, page=1, sort_order='relevance'):
 def reindex():
     """Perform a full index."""
     return si.full_index()
+
+
+def get_user(username):
+    try:
+        return m.User.get(m.User.username == username)
+    except:
+        return None
+
+
+def get_new_user():
+    return m.User()

@@ -6,3 +6,4 @@ whoosh==2.4.1
 nose==1.2.1
 Flask-Markdown==0.3
 smartypants==1.6.0.3
+Flask-OpenID==1.1.1

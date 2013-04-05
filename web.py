@@ -1,10 +1,13 @@
 # Vinci web app
 
-from flask import Flask, request, render_template, url_for, send_from_directory, jsonify, redirect
+from flask import Flask, request, render_template, url_for, send_from_directory, jsonify, redirect, session, g, flash
+from flask.ext.openid import OpenID
 from datetime import datetime
 import os
+from os.path import join, dirname
 import re
 import logging
+from functools import wraps
 
 import config
 import vinci
@@ -27,14 +30,102 @@ if config.debug:
     fh.setFormatter(formatter)
     logger.addHandler(fh)
 
+GOOGLE_OPENID_URL = 'https://www.google.com/accounts/o8/id'
+
 # Initialize the Flask app
-app = Flask(__name__)
+app = Flask('Vinci')
 config.root_path = app.root_path
+app.secret_key = config.secret_key
+oid = OpenID(app, join(dirname(__file__), config.openid_store))
 
 # Initialize database
 vinci.init_db()
 
+#Authentication and Authentication Decorators
+def logged_in(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if g.user is None:
+            return redirect(url_for('login'))
+        return func(*args, **kwargs)
+    return wrapper
 
+
+def admin_only(func):
+    @wraps(func)
+    @logged_in
+    def wrapper(*args, **kwargs):
+        if g.user.admin is False:
+            return redirect(url_for('no_permission'))
+        return func(*args, **kwargs)
+    return wrapper
+
+
+def notebook_access(func):
+    @wraps(func)
+    @logged_in
+    def wrapper(*args, **kwargs):
+        notebook = str(kwargs['notebook_slug'])
+        username = str(g.user.username)
+        notebook_access = [] if notebook not in config.notebook_access.keys() else config.notebook_access[notebook]
+        if g.user.admin is False and username not in notebook_access:
+            return redirect(url_for('no_permission'))
+        return func(*args, **kwargs)
+    return wrapper
+
+
+def ws_access(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs)
+    return wrapper
+
+
+def get_user():
+    return vinci.get_user(session.get('openid-email', ''))
+
+
+@app.before_request
+def lookup_current_user():
+    g.user = get_user()
+
+
+@app.route('/login/')
+@oid.loginhandler
+def login():
+    if g.user is not None:
+        return redirect(oid.get_next_url())
+    else:
+        return oid.try_login(session.get('openid', GOOGLE_OPENID_URL),
+                             ask_for=['email'])
+
+
+@app.route('/logout/')
+def logout():
+    session.pop('openid', None)
+    session.pop('openid-email', None)
+    flash(u'You are now signed out.')
+    return redirect(oid.get_next_url())
+
+
+@oid.after_login
+def new_user(resp):
+    session['openid'] = resp.identity_url
+    session['openid-email'] = resp.email
+    if get_user() is None:
+        new_user = vinci.get_new_user()
+        new_user.username = resp.email
+        new_user.display = resp.email
+        new_user.save()
+    return redirect(oid.get_next_url())
+
+
+@app.route('/nopermission/')
+def no_permission():
+    return "Not authorized"
+
+
+#Static routes
 @app.route('/favicon.ico/')
 def favicon():
     """Serve up the favicon."""
@@ -42,8 +133,10 @@ def favicon():
                                'favicon.ico',
                                mimetype='image/vnd.microsoft.icon')
 
+#routes
 
 @app.route('/add/entry/')
+@ws_access
 def add_entry():
     """Add an entry."""
     # Defaults and parameters
@@ -89,6 +182,7 @@ def add_entry():
 
 
 @app.route('/delete/entry/')
+@ws_access
 def delete_entry():
     """Delete an entry."""
 
@@ -114,6 +208,7 @@ def delete_entry():
 
 # TODO: refactor this, lots of shared code with add_entry()
 @app.route('/edit/entry/')
+@ws_access
 def edit_entry():
     """Edit an entry."""
 
@@ -158,6 +253,7 @@ def edit_entry():
 
 
 @app.route('/add/notebook/')
+@ws_access
 def add_notebook():
     """Add a notebook."""
 
@@ -187,6 +283,7 @@ def add_notebook():
 
 
 @app.route('/delete/notebook/')
+@ws_access
 def delete_notebook():
     """Delete a notebook."""
 
@@ -210,6 +307,7 @@ def delete_notebook():
 
 
 @app.route('/edit/notebook/')
+@ws_access
 def edit_notebook():
     """Edit a notebook."""
 
@@ -240,6 +338,7 @@ def edit_notebook():
 
 
 @app.route('/reindex/')
+@admin_only
 def reindex():
     """Reindex the index."""
 
@@ -248,6 +347,7 @@ def reindex():
 
 
 @app.route('/search/<query>')
+@admin_only
 def search_all_notebooks(query):
     """Search within all notebooks."""
 
@@ -273,6 +373,7 @@ def search_all_notebooks(query):
 
 
 @app.route('/tag/<tag>')
+@admin_only
 def search_all_tags(tag):
     """Load entries with a tag within all notebooks."""
 
@@ -302,6 +403,7 @@ def search_all_tags(tag):
 
 # Search within a notebook
 @app.route('/<notebook_slug>/search/<query>')
+@notebook_access
 def search_notebook(notebook_slug, query):
     """Search within a notebook"""
 
@@ -332,6 +434,7 @@ def search_notebook(notebook_slug, query):
 
 
 @app.route('/<notebook_slug>/tag/<tag>')
+@notebook_access
 def search_tags_in_notebook(notebook_slug, tag):
     """Load entries with a tag within a notebook."""
 
@@ -362,6 +465,7 @@ def search_tags_in_notebook(notebook_slug, tag):
 
 
 @app.route('/<notebook_slug>/entry/<entry_id>')
+@notebook_access
 def display_entry(notebook_slug, entry_id):
     """Display a single entry."""
 
@@ -385,6 +489,7 @@ def display_entry(notebook_slug, entry_id):
 
 
 @app.route('/<notebook_slug>/')
+@notebook_access
 def display_entries(notebook_slug):
     """Display entries for a notebook."""
 
@@ -414,9 +519,9 @@ def display_entries(notebook_slug):
 
 
 @app.route('/')
+@admin_only
 def index():
     """Home page."""
-
     # Defaults and parameters
     type = request.args.get('type') or 'html'
 

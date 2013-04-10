@@ -34,4 +34,7 @@ plugins = {
     'chess': {
         'css': ['chess.css']
     },
+    'poetry': {
+        'css': ['poetry.css']
+    },
 }

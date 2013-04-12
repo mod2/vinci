@@ -4,6 +4,7 @@ index_dir = 'data/index.idx'
 openid_store = 'data/openid_store'
 debug = True
 secret_key = 'Some random string of characters. KEEP IT SECRET.'
+ws_key = 'yourwebservicekey'
 results_per_page = 10
 default_sort_order = 'date_desc' # date_asc, date_desc
 default_search_order = 'relevance' # relevance, date_asc, date_desc

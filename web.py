@@ -77,6 +77,8 @@ def notebook_access(func):
 def ws_access(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
+        if g.user is None and request.args.get('key', '') != config.ws_key:
+            return redirect(url_for('no_permission'))
         return func(*args, **kwargs)
     return wrapper
 

@@ -43,15 +43,23 @@ def full_index(database_file=config.database_file, admin=config.admin):
     writer.commit()
 
 
-def add_or_update_index(document):
+def add_or_update_index(document, new=False):
     """Adds or updates the document in the index."""
     ix = get_or_create_index()
     writer = ix.writer()
-    writer.add_document(id=unicode(document.id),
-                        notebook=document.notebook.slug,
-                        content=document.content,
-                        tag=u" ".join(_get_tags(document)),
-                        date=document.date)
+    if new:
+        writer.add_document(id=unicode(document.id),
+                            notebook=document.notebook.slug,
+                            content=document.content,
+                            tag=u" ".join(_get_tags(document)),
+                            date=document.date)
+    else:
+        writer.update_document(id=unicode(document.id),
+                               notebook=document.notebook.slug,
+                               content=document.content,
+                               tag=u" ".join(_get_tags(document)),
+                               date=document.date)
+
     writer.commit()
 
 

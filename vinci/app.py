@@ -77,7 +77,7 @@ def add_entry(content, notebook_slug, date=None):
     else:
         new_entry = m.Entry(content=content, notebook=nb, date=date)
     new_entry.save()
-    si.add_or_update_index(new_entry)
+    si.add_or_update_index(new_entry, new=True)
     return new_entry
 
 

@@ -19,7 +19,7 @@ notebook_access = {
     #'test': ['user email 1', 'user email 2'],
 }
 
-default_plugins = [ 'youtube', 'hashtags', 'md', 'sp' ]
+default_plugins = [ 'youtube', 'hashtags', 'image', 'md', 'sp' ]
 
 plugins = {
     'checklist': {

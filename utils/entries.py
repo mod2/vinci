@@ -18,6 +18,7 @@ def process_entry(entry):
 
     # Prep the HTML
     html, plugins = utils.text.process(entry.content,
+                                       entry,
                                        notebook_url)
     
     processed_entry = {

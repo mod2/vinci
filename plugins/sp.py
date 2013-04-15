@@ -3,5 +3,5 @@
 
 from smartypants import smartyPants
 
-def process(content, notebook_url):
+def process(content, entry, notebook_url):
     return smartyPants(content)

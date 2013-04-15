@@ -5,7 +5,7 @@
 import re
 
 
-def process(content, notebook_url):
+def process(content, entry, notebook_url):
     """Convert FEN:<fen> to an HTML chess board."""
     regex = re.compile(r'^FEN:(.*)$', flags=re.MULTILINE)
     content = regex.sub(fen_gen, content)

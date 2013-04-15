@@ -55,7 +55,7 @@ def poemify(m):
 
     return html
 
-def process(content, notebook_url):
+def process(content, entry, notebook_url):
     # Convert {poetry ... } notation to the HTML we need
     regex = re.compile(r'{poetry\n(.*?)\n}', flags=re.DOTALL)
     content = regex.sub(poemify, content)

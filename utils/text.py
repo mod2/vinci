@@ -3,15 +3,15 @@
 import re
 import config
 
-def run_plugin(name, content, notebook_url):
+def run_plugin(name, content, entry, notebook_url):
     # Import the plugin function
     plugins = __import__("plugins", fromlist=[name])
     plugin = getattr(plugins, name)
 
     # Process it
-    return plugin.process(content, notebook_url)
+    return plugin.process(content, entry, notebook_url)
 
-def process(content, notebook_url):
+def process(content, entry, notebook_url):
     """Process an entry for display in HTML."""
 
     exclude_list = []
@@ -36,12 +36,12 @@ def process(content, notebook_url):
                 exclude_list.append(name[1:])
             elif name in config.plugins:
                 # Otherwise run the plugin
-                content = run_plugin(name, content, notebook_url)
+                content = run_plugin(name, content, entry, notebook_url)
     
     # Run default plugins last
     for plugin_name in config.default_plugins:
         name = str(plugin_name)
         if name not in exclude_list:
-            content = run_plugin(name, content, notebook_url)
+            content = run_plugin(name, content, entry, notebook_url)
 
     return content, plugin_list

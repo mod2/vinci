@@ -161,6 +161,7 @@ def add_entry():
     if entry:
         # Prep the HTML
         html, plugins = utils.text.process(content,
+                                           entry,
                                            '%s%s' % (url_for('index'), notebook))
 
         # Send the info we need to generate the entry HTML
@@ -232,6 +233,7 @@ def edit_entry():
     if entry:
         # Prep the HTML
         html, plugins = utils.text.process(content,
+                                           entry,
                                            '%s%s' % (url_for('index'), notebook))
 
         # Send the info we need to generate the entry HTML

@@ -3,5 +3,5 @@
 
 from markdown import markdown
 
-def process(content, notebook_url):
+def process(content, entry, notebook_url):
     return markdown(content)

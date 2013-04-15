@@ -20,7 +20,7 @@ def gridify(m):
 
     return html
 
-def process(content, notebook_url):
+def process(content, entry, notebook_url):
     # Convert {grid ... } notation to the HTML we need
     regex = re.compile(r'{grid\n(.*?)\n}', flags=re.DOTALL)
     content = regex.sub(gridify, content)

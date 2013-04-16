@@ -49,7 +49,7 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 .entry .content div			{ max-width: 100%; overflow: auto; }
 
 .entry .content figure		{ margin: 1em 0; }
-.entry .content figure img	{ max-width: 100%; }
+.entry .content figure img	{ max-width: 100%; border: solid 1px #ccc; }
 
 .entry .content strong		{ font-weight: 600; }
 

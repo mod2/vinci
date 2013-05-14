@@ -22,9 +22,9 @@ body > header #search input	{ font-size: 1em; padding: 1px 8px; border: solid 1p
 body > header #search input:focus	{ outline: none; border-color: #6b8380; }
 
 nav[role=pagination]		{ font-size: .8em; padding: 5px 35px; clear: both; overflow: auto; background: #dde4d0; }
-nav[role=pagination] label	{ color: #adb695; float: left; line-height: 1.8em; margin-right: 20px; }
+nav[role=pagination] label	{ color: #adb695; float: left; line-height: 1.9em; margin-right: 20px; }
 nav[role=pagination] .sort	{ float: left; }
-nav[role=pagination] .sort select	{ background: #bbccbf; border: solid 1px #bbccbf; -webkit-appearance: none; color: #7b8d7f; padding: 1px 5px 3px; margin-left: 5px; cursor: pointer; }
+nav[role=pagination] .sort select	{ background: #bbccbf; border: solid 1px #bbccbf; -webkit-appearance: none; color: #7b8d7f; padding: 2px 5px 2px; margin-left: 5px; cursor: pointer; font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 nav[role=pagination] .sort select:hover	{ background: #fff; border-color: #fff; color: #000; }
 nav[role=pagination] .links	{ float: right; display: none; }
 nav[role=pagination] .links a	{ color: #91aa80; text-decoration: none; display: inline-block; line-height: 1.8em; }

@@ -12,13 +12,13 @@ def run_plugin(name, content, entry, notebook_url):
     # Process it
     return plugin.process(content, entry, notebook_url)
 
-def process(content, entry, notebook_url):
-    """Process an entry for display in HTML."""
-
-    exclude_list = []
-    plugin_list = []
-    title = ''
-    slug = ''
+def parse_header(content):
+    response = {
+        'content': content,
+        'title': '',
+        'slug': '',
+        'plugins': []
+    }
 
     # Split entry by ----
     body = content.split('----')
@@ -36,21 +36,30 @@ def process(content, entry, notebook_url):
             value = ':'.join(line.split(':')[1:]).strip()
 
             if keyword == 'plugins' or keyword == 'plugin':
-                plugin_list = [x.strip() for x in value.split(',')]
+                response['plugins'] = [x.strip() for x in value.split(',')]
 
             if keyword == 'title':
-                title = value
-                slug = vinci.utils.slugify(title)
+                response['title'] = value
+                response['slug'] = vinci.utils.slugify(response['title'])
 
             if keyword == 'slug':
-                slug = value
+                response['slug'] = value
 
         # If there is a header, the content now is the rest after the header
         # Otherwise leave it intact
-        content = body[1]
+        response['content'] = body[1]
+
+    return response
+
+def process(content, entry, notebook_url):
+    """Process an entry for display in HTML."""
+
+    exclude_list = []
+
+    response = parse_header(content)
 
     # Go through the list (if present) and apply each plugin
-    for plugin_name in plugin_list:
+    for plugin_name in response['plugins']:
         name = str(plugin_name)
 
         # If the name starts with - ('-md', etc.), add to exclude list for default plugins
@@ -58,7 +67,7 @@ def process(content, entry, notebook_url):
             exclude_list.append(name[1:])
         elif name in config.plugins:
             # Otherwise run the plugin
-            content = run_plugin(name, content, entry, notebook_url)
+            response['content'] = run_plugin(name, response['content'], entry, notebook_url)
 
     # Check for entry-specific plugins
     lines = content.split('\n')
@@ -66,13 +75,6 @@ def process(content, entry, notebook_url):
     for plugin_name in config.default_plugins:
         name = str(plugin_name)
         if name not in exclude_list:
-            content = run_plugin(name, content, entry, notebook_url)
-
-    response = {
-        'content': content,
-        'title': title,
-        'slug': slug,
-        'plugins': plugin_list
-    }
+            response['content'] = run_plugin(name, response['content'], entry, notebook_url)
 
     return response

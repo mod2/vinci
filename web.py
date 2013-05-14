@@ -146,7 +146,6 @@ def add_entry():
     content = request.args.get('content')
     date = request.args.get('date')
     callback = request.args.get('callback')
-    #type = request.args.get('type') or 'json'
 
     # If the date is a string, convert it to datetime first
     if date and isinstance(date, unicode):
@@ -154,8 +153,10 @@ def add_entry():
     elif date and isinstance(date, str):
         date = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
 
+    header = utils.text.parse_header(content)
+
     # Add the entry
-    entry = vinci.add_entry(content=content, notebook_slug=notebook, date=date)
+    entry = vinci.add_entry(content=content, notebook_slug=notebook, date=date, title=header['title'], slug=header['slug'])
 
     # If we succeeded
     if entry:
@@ -225,11 +226,16 @@ def edit_entry():
     callback = request.args.get('callback')
     #type = request.args.get('type') or 'json'
 
+    # Parse the header
+    header = utils.text.parse_header(content)
+
     # Edit the entry
     entry = vinci.edit_entry(id=id,
                              content=content,
                              notebook_slug=notebook,
-                             date=date)
+                             date=date,
+                             title=header['title'],
+                             slug=header['slug'])
 
     # If we succeeded
     if entry:

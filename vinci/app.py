@@ -69,7 +69,7 @@ def get_all_notebooks():
     return notebooks
 
 
-def add_entry(content, notebook_slug, date=None):
+def add_entry(content, notebook_slug, date=None, title=None, slug=None):
     """Add a new entry to a notebook."""
     nb = get_notebook(notebook_slug)
     if date is None:
@@ -81,7 +81,7 @@ def add_entry(content, notebook_slug, date=None):
     return new_entry
 
 
-def edit_entry(id, content, notebook_slug, date=None):
+def edit_entry(id, content, notebook_slug, date=None, title=None, slug=None):
     """Edit an entry."""
     entry = m.Entry.get(id=id)
 

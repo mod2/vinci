@@ -24,7 +24,7 @@ body > header #search input:focus	{ outline: none; border-color: #6b8380; }
 nav[role=pagination]		{ font-size: .8em; padding: 5px 35px; clear: both; overflow: auto; background: #dde4d0; }
 nav[role=pagination] label	{ color: #adb695; float: left; line-height: 1.9em; margin-right: 20px; }
 nav[role=pagination] .sort	{ float: left; }
-nav[role=pagination] .sort select	{ background: #bbccbf; border: solid 1px #bbccbf; -webkit-appearance: none; color: #7b8d7f; padding: 2px 5px 2px; margin-left: 5px; cursor: pointer; font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+nav[role=pagination] .sort select	{ background: #ced6c5; border: solid 1px #ced6c5; -webkit-appearance: none; color: #7b8d7f; padding: 2px 5px 2px; margin-left: 5px; cursor: pointer; font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 nav[role=pagination] .sort select:hover	{ background: #fff; border-color: #fff; color: #000; }
 nav[role=pagination] .links	{ float: right; display: none; }
 nav[role=pagination] .links a	{ color: #91aa80; text-decoration: none; display: inline-block; line-height: 1.8em; }
@@ -72,6 +72,12 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 .entry .editbox .group input[type=text] { font-size: .9em; padding: 2px 3px; -moz-border-radius: 3px; border-radius: 3px; border: solid 1px #bbb; font-family: "Avenir Next", Helvetica, Arial, sans-serif; width: 250px; }
 .entry .editbox textarea    { font-size: 1em; padding: 10px; -moz-border-radius: 3px; border-radius: 3px; width: 100%; height: 3em; font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-transition: all .15s ease-in-out; -moz-transition: all .15s ease-in-out; transition: all .15s ease-in-out; background: #fff; border: solid 1px #bbb; }
 .entry .editbox textarea:focus { outline: none; height: 200px; }
+
+.entry.page					{ border: solid 3px #c6d3e4; padding: 10px; }
+.entry.page h3				{ margin: 0; font-size: 1.1em; }
+.entry.page h3 a			{ text-decoration: none; }
+.entry.page .metadata		{ margin-bottom: 0; }
+.entry.page .metadata > a	{ display: none; }
 
 .submitbutton				{ display: none; }
 
@@ -129,6 +135,8 @@ a.addnotebook:hover			{ }
 	.entry .metadata a		{ color: #bbb; }
 
 	.entry .editbox input[type=submit]	{ display: block; width: 100%; background: #728161; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: "Avenir Next", Helvetica, Arial, sans-serif; padding: 5px 8px; font-size: .9em; font-weight: 600; cursor: pointer; -webkit-appearance: none; }
+
+	.entry.page				{ border: none; border-left: solid 15px #c6d3e4; padding: 6px 0; padding-left: 10px; -moz-border-radius: 0; border-radius: 0; margin-left: 15px; margin-right: 15px; }
 
 	.addbox input[type=submit]	{ display: block; width: 100%; background: #728161; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: "Avenir Next", Helvetica, Arial, sans-serif; padding: 5px 8px; font-size: .9em; font-weight: 600; cursor: pointer; -webkit-appearance: none; }
 

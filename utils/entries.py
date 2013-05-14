@@ -17,9 +17,9 @@ def process_entry(entry):
     notebook_url = '%s%s' % (url_for('index'), entry.notebook.slug)
 
     # Prep the HTML
-    html, plugins = utils.text.process(entry.content,
-                                       entry,
-                                       notebook_url)
+    response = utils.text.process(entry.content,
+                                  entry,
+                                  notebook_url)
     
     processed_entry = {
         'id': entry.id,
@@ -29,8 +29,10 @@ def process_entry(entry):
             },
         'date': entry.date,
         'content': entry.content,
-        'html': Markup(html),
-        'plugins': plugins,
+        'title': response['title'],
+        'slug': response['slug'],
+        'html': Markup(response['content']),
+        'plugins': response['plugins'],
     }
 
     return processed_entry

@@ -160,9 +160,9 @@ def add_entry():
     # If we succeeded
     if entry:
         # Prep the HTML
-        html, plugins = utils.text.process(content,
-                                           entry,
-                                           '%s%s' % (url_for('index'), notebook))
+        response = utils.text.process(content,
+                                      entry,
+                                      '%s%s' % (url_for('index'), notebook))
 
         # Send the info we need to generate the entry HTML
         response = {
@@ -172,9 +172,11 @@ def add_entry():
             'date': entry.date.strftime('%a, %d %b %Y'),
             'time': entry.date.strftime('%l:%M %p').strip(),
             'datetime': entry.date.strftime('%Y-%m-%d %H:%M:%S'),
-            'html': html,
+            'html': response['content'],
             'content': content,
-            'plugins': plugins,
+            'title': response['title'],
+            'slug': response['slug'],
+            'plugins': response['plugins'],
         }
 
         return response_with_callback(response, callback)
@@ -232,9 +234,9 @@ def edit_entry():
     # If we succeeded
     if entry:
         # Prep the HTML
-        html, plugins = utils.text.process(content,
-                                           entry,
-                                           '%s%s' % (url_for('index'), notebook))
+        response = utils.text.process(content,
+                                      entry,
+                                      '%s%s' % (url_for('index'), notebook))
 
         # Send the info we need to generate the entry HTML
         response = {
@@ -244,9 +246,11 @@ def edit_entry():
             'date': entry.date.strftime('%a, %d %b %Y'),
             'time': entry.date.strftime('%l:%M %p').strip(),
             'datetime': entry.date.strftime('%Y-%m-%d %H:%M:%S'),
-            'html': html,
+            'html': response['content'],
             'content': content,
-            'plugins': plugins,
+            'title': response['title'],
+            'slug': response['slug'],
+            'plugins': response['plugins'],
         }
 
         return response_with_callback(response, callback)

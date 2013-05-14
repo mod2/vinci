@@ -9,7 +9,7 @@
 
 	<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css" charset="utf-8" />
     {% if custom and custom.css %}
-    <link href="{{ url_for('static', filename='/custom/css/' ~ notebook.slug ~ '.css') }}" rel="stylesheet" type="text/css" charset="utf-8" />
+    <link href="{{ url_for('static', filename='custom/css/' ~ notebook.slug ~ '.css') }}" rel="stylesheet" type="text/css" charset="utf-8" />
     {% endif %}
     {% for plugin in config.plugins %}{% for file in config.plugins[plugin].css %}
 	<link href="{{ url_for('static', filename='plugins/' ~ plugin ~ '/' ~ file) }}" rel="stylesheet" type="text/css" charset="utf-8" />

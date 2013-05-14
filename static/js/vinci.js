@@ -131,6 +131,7 @@ $(document).ready(function() {
 
 		if (entry.find(".content:visible").length > 0) {
 			// Show the editbox
+			$(this).html("Cancel");
 			entry.find(".content").fadeOut(75, function() {
 				entry.find(".editbox").fadeIn(75, function() {
 					$(this).find("textarea").focus()
@@ -138,6 +139,7 @@ $(document).ready(function() {
 			});
 		} else {
 			// Hide the editbox
+			$(this).html("Edit");
 			entry.find(".editbox").fadeOut(75, function() {
 				entry.find(".content").fadeIn(75);
 			});
@@ -174,6 +176,9 @@ $(document).ready(function() {
                 // Add yellow highlight
                 entry.addClass("new");
 
+				// Make sure the edit button says "Edit"
+				entry.find(".metadata .controls a.edit").html("Edit");
+
                 // Remove the yellow after two seconds
                 setTimeout(function() {
                     entry.removeClass("new");
@@ -189,6 +194,14 @@ $(document).ready(function() {
         });
 
         return false;
+	});
+
+	// If you tap Save Entry, don't blur the textarea
+	$("#entries").delegate(".entry .editbox input[type=submit]", "mousedown", function() {
+		return false;
+	});
+	$("#entries").delegate(".entry .editbox input[type=submit]", "touchstart", function() {
+		return false;
 	});
 
 	$("#entries").on("keydown", ".entry .editbox textarea, .entry .editbox input[type=text]", "shift+return", function() {

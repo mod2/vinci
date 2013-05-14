@@ -4,7 +4,8 @@
 
 {% block entry %}
 <div class="container">
-	<section id="entries">
+	<section id="entries" class="detail">
+	{% set page_type = 'detail' %}
 	{% include '_entry.html' %}
 	</section>
 </div>

@@ -21,7 +21,8 @@
 {% block page_content %}
 <div class="container">
 	{% block entries %}
-	<section id="entries">
+	<section id="entries" class="list">
+		{% set page_type = 'list' %}
 		{% for entry in entries %}
 		{% include '_entry.html' %}
 		{% else %}

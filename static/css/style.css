@@ -45,6 +45,11 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 .entry .content				{ line-height: 1.4em; }
 .entry .content p:first-child	{ margin-top: 0; }
 .entry .content p:last-child	{ margin-bottom: 0; }
+.entry .content figure:last-child	{ margin-bottom: 0; }
+.entry .content blockquote:last-child	{ margin-bottom: 0; }
+.entry .content ol:last-child	{ margin-bottom: 0; }
+.entry .content ul:last-child	{ margin-bottom: 0; }
+.entry .content pre:last-child	{ margin-bottom: 0; }
 
 .entry .content div			{ max-width: 100%; overflow: auto; }
 

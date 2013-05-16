@@ -15,6 +15,7 @@ body > header a.notebooks	{ display: block; text-decoration: none; color: #41838
 body > header a.notebooks:hover	{ color: #fff; }
 
 body > header h1			{ color: #fff; font-weight: 600; font-size: 1.6em; margin: 0; padding-top: 1em; display: inline-block; line-height: 1em; }
+body > header h1 a			{ color: #fff; text-decoration: none; }
 body > header a.notebooks + h1	{ padding-top: 0; }
 
 body > header #search		{ position: absolute; bottom: 0px; right: 0px; }

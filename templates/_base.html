@@ -44,7 +44,7 @@
 		<div class="container">
 			<a class="notebooks" href="{{ url_for('index') }}">Notebooks</a>
 
-			<h1>{{ title }}</h1>
+			<h1>{% if notebook %}<a href="{{ url_for('index') ~ notebook.slug }}">{% endif %}{{ title }}{% if notebook %}</a>{% endif %}</h1>
 
 			<form id="search">
 				<input type="text"{% if query %}value="{{ query }}"{% endif %}/>

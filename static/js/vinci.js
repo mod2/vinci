@@ -152,10 +152,16 @@ $(document).ready(function() {
 		var entry = $(this).parents(".entry:first");
         var id = entry.attr("data-id");
 		var text = encodeURIComponent(entry.find(".editbox textarea").val().trim());
-        var date = encodeURIComponent(entry.find(".editbox input[type=text]").val().trim());
+		var date = '';
+		if (entry.find(".editbox input[type=text]").length > 0) {
+			date = encodeURIComponent(entry.find(".editbox input[type=text]").val().trim());
+		}
 
 		// Call edit entry web service
-        var url = config.url + "edit/entry?id=" + id + "&notebook=" + config.notebook + "&date=" + date + "&content=" + text;
+        var url = config.url + "edit/entry?id=" + id + "&notebook=" + config.notebook + "&content=" + text;
+		if (date) {
+			url += "&date=" + date;
+		}
 
         $.get(url, function(data) {
             if (data.status == 'success') {

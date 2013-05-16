@@ -9,6 +9,7 @@ import math
 def init_db(database_file=config.database_file, admin=config.admin):
     """Initializes the database creating a connection."""
     m.init_db(database_file, admin)
+    si.get_or_create_index()
 
 
 def add_notebook(name, description=None):
@@ -69,24 +70,29 @@ def get_all_notebooks():
     return notebooks
 
 
-def add_entry(content, notebook_slug, date=None, title=None, slug=None):
+def add_entry(content, notebook_slug, date=None, title='', slug=''):
     """Add a new entry to a notebook."""
     nb = get_notebook(notebook_slug)
-    if date is None:
-        new_entry = m.Entry(content=content, notebook=nb)
-    else:
-        new_entry = m.Entry(content=content, notebook=nb, date=date)
+    kwargs = {'content': content,
+              'notebook': nb,
+              'title': title,
+              'slug': slug}
+    if date is not None:
+        kwargs['date'] = date
+    new_entry = m.Entry(**kwargs)
     new_entry.save()
     si.add_or_update_index(new_entry, new=True)
     return new_entry
 
 
-def edit_entry(id, content, notebook_slug, date=None, title=None, slug=None):
+def edit_entry(id, content, notebook_slug, date=None, title='', slug=''):
     """Edit an entry."""
     entry = m.Entry.get(id=id)
 
     # Update the content
     entry.content = content
+    entry.title = title
+    entry.slug = slug
 
     # Revise the date if passed in
     if date:
@@ -123,9 +129,14 @@ def get_entries(notebook_slug,
     return entries.paginate(page, num_per_page), total_entries, total_pages
 
 
-def get_entry(id, notebook_slug):
+def get_entry(notebook_slug, id=-1, slug=''):
     """Get a specific entry"""
-    return m.Entry.get(m.Entry.id == id)
+    if id != -1:
+        return m.Entry.get(m.Entry.id == id)
+    elif slug != '':
+        return m.Entry.get(m.Entry.slug == slug)
+    else:
+        return None
 
 
 def search(query, page=1, sort_order='relevance'):

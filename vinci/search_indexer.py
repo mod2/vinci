@@ -14,11 +14,10 @@ def get_or_create_index():
     """Returns an index object. Creats it if is doesn't exist."""
     if not os.path.exists(config.index_dir):
         os.mkdir(config.index_dir)
+        return full_index()
 
     if index.exists_in(config.index_dir):
         return index.open_dir(config.index_dir)
-    else:
-        return full_index()
 
 
 def default_index_schema():
@@ -26,6 +25,7 @@ def default_index_schema():
                   notebook=ID,
                   content=TEXT(analyzer=StemmingAnalyzer()),
                   tag=KEYWORD(field_boost=2.0),
+                  type=ID,
                   date=DATETIME)
 
 
@@ -35,10 +35,12 @@ def full_index(database_file=config.database_file, admin=config.admin):
     ix = index.create_in(config.index_dir, default_index_schema())
     writer = ix.writer()
     for entry in Entry.select():
+        etype = u'page' if entry.slug != '' else u'entry'
         writer.add_document(id=unicode(entry.id),
                             notebook=entry.notebook.slug,
                             content=entry.content,
                             tag=u" ".join(_get_tags(entry)),
+                            type=etype,
                             date=entry.date)
     writer.commit()
 
@@ -47,17 +49,20 @@ def add_or_update_index(document, new=False):
     """Adds or updates the document in the index."""
     ix = get_or_create_index()
     writer = ix.writer()
+    etype = u'page' if document.slug != '' else u'entry'
     if new:
         writer.add_document(id=unicode(document.id),
                             notebook=document.notebook.slug,
                             content=document.content,
                             tag=u" ".join(_get_tags(document)),
+                            type=etype,
                             date=document.date)
     else:
         writer.update_document(id=unicode(document.id),
                                notebook=document.notebook.slug,
                                content=document.content,
                                tag=u" ".join(_get_tags(document)),
+                               type=etype,
                                date=document.date)
 
     writer.commit()
@@ -86,12 +91,22 @@ def search(query_string, page=1, results_per_page=10, sort_order='relevance'):
     results = None
     with ix.searcher() as searcher:
         if sort_order == 'date_desc':
-            results = searcher.search_page(query, page, pagelen=results_per_page,
-                                           sortedby='date', reverse=True)
+            results = searcher.search_page(query,
+                                           page,
+                                           pagelen=results_per_page,
+                                           sortedby='date',
+                                           reverse=True)
         elif sort_order == 'date_asc':
-            results = searcher.search_page(query, page, pagelen=results_per_page,
+            results = searcher.search_page(query,
+                                           page,
+                                           pagelen=results_per_page,
                                            sortedby='date')
         else:
-            results = searcher.search_page(query, page, pagelen=results_per_page)
+            results = searcher.search_page(query,
+                                           page,
+                                           pagelen=results_per_page)
         entry_ids = {int(entry['id']): entry.rank for entry in results}
-    return entry_ids, len(results), math.ceil(len(results)/float(results_per_page))
+
+    return (entry_ids,
+            len(results),
+            math.ceil(len(results) / float(results_per_page)))

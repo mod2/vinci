@@ -374,7 +374,7 @@ def search_all_notebooks(query):
     db_entries, total_hits, total_pages = vinci.search(query, page, sortby)
     entries = utils.entries.process_entries(db_entries)
 
-    base_url = '%ssearch/%s' % (url_for('index'), query) 
+    base_url = '%ssearch/%s' % (url_for('index'), query)
     pagination = utils.pagination.get_pagination(page, total_hits, total_pages, sortby, base_url)
 
     return utils.template.render('list',
@@ -403,7 +403,7 @@ def search_all_tags(tag):
     db_entries, total_hits, total_pages = vinci.search(search_query, page, sortby)
     entries = utils.entries.process_entries(db_entries)
 
-    base_url = '%stag/%s' % (url_for('index'), tag) 
+    base_url = '%stag/%s' % (url_for('index'), tag)
     pagination = utils.pagination.get_pagination(page, total_hits, total_pages, sortby, base_url)
 
     return utils.template.render('list',
@@ -434,7 +434,7 @@ def search_notebook(notebook_slug, query):
     db_entries, total_hits, total_pages = vinci.search(query, page, sortby)
     entries = utils.entries.process_entries(db_entries)
 
-    base_url = '%s%s/search/%s' % (url_for('index'), notebook_slug, original_query) 
+    base_url = '%s%s/search/%s' % (url_for('index'), notebook_slug, original_query)
     pagination = utils.pagination.get_pagination(page, total_hits, total_pages, sortby, base_url)
 
     return utils.template.render('list',
@@ -465,7 +465,7 @@ def search_tags_in_notebook(notebook_slug, tag):
     db_entries, total_hits, total_pages = vinci.search(search_query, page, sortby)
     entries = utils.entries.process_entries(db_entries)
 
-    base_url = '%s%s/tag/%s' % (url_for('index'), notebook_slug, tag) 
+    base_url = '%s%s/tag/%s' % (url_for('index'), notebook_slug, tag)
     pagination = utils.pagination.get_pagination(page, total_hits, total_pages, sortby, base_url)
 
     return utils.template.render('list',
@@ -486,12 +486,16 @@ def display_entry(notebook_slug, entry_id):
     # Defaults and parameters
     type = request.args.get('type') or 'html'
 
-    # Parse the entry ID out
-    id = entry_id[entry_id.find('.')+1:]
+    if re.match(r'^\d{4}-\d{2}-\d{2}\.\d+$', entry_id):
+        # Parse the entry ID out
+        id = entry_id[entry_id.find('.')+1:]
+        db_entry = vinci.get_entry(notebook_slug, id=id)
+    else:
+        db_entry = vinci.get_entry(notebook_slug, slug=entry_id)
+
 
     # Data
     notebook = vinci.get_notebook(notebook_slug)
-    db_entry = vinci.get_entry(id, notebook_slug)
     entry = utils.entries.process_entry(db_entry)
 
     return utils.template.render('entry',
@@ -520,7 +524,7 @@ def display_entries(notebook_slug):
                                                             config.results_per_page)
     entries = utils.entries.process_entries(db_entries)
 
-    base_url = '%s%s' % (url_for('index'), notebook_slug) 
+    base_url = '%s%s' % (url_for('index'), notebook_slug)
     pagination = utils.pagination.get_pagination(page, total_hits, total_pages, sortby, base_url)
 
     return utils.template.render('list',

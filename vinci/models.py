@@ -1,7 +1,6 @@
 from datetime import datetime
 import vinci.utils as utils
 import peewee as p
-import json
 
 db = p.SqliteDatabase(None, threadlocals=True)
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
@@ -20,7 +19,7 @@ class Notebook(BaseModel):
     def set_slug(self):
         slug = utils.slugify(self.name)
         num = Notebook.select().where(
-                p.fn.Substr(Notebook.slug, 1, len(slug)) == slug).count()
+            p.fn.Substr(Notebook.slug, 1, len(slug)) == slug).count()
         if num > 0:
             slug += '-' + str(num)
         self.slug = slug
@@ -35,6 +34,8 @@ class User(BaseModel):
 class Entry(BaseModel):
     content = p.TextField()
     notebook = p.ForeignKeyField(Notebook, related_name='entries')
+    title = p.TextField(default='')
+    slug = p.TextField(default='')
     author = p.ForeignKeyField(User, related_name='entries')
     date = p.DateTimeField(default=datetime.now)
     last_modified = p.DateTimeField(default=datetime.now)

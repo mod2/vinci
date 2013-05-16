@@ -4,6 +4,7 @@ import utils.text
 from jinja2 import Markup
 from flask import url_for
 
+
 def process_entries(entries):
     processed_entries = []
 
@@ -13,6 +14,7 @@ def process_entries(entries):
 
     return processed_entries
 
+
 def process_entry(entry):
     notebook_url = '%s%s' % (url_for('index'), entry.notebook.slug)
 
@@ -20,13 +22,13 @@ def process_entry(entry):
     response = utils.text.process(entry.content,
                                   entry,
                                   notebook_url)
-    
+
     processed_entry = {
         'id': entry.id,
         'notebook': {
             'slug': entry.notebook.slug,
-            'name': entry.notebook.name
-            },
+            'name': entry.notebook.name,
+        },
         'date': entry.date,
         'content': entry.content,
         'title': response['title'],

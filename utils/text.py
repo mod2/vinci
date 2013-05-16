@@ -1,8 +1,8 @@
 # Text-related utility functions
 
-import re
 import config
 import vinci.utils
+
 
 def run_plugin(name, content, entry, notebook_url):
     # Import the plugin function
@@ -11,6 +11,7 @@ def run_plugin(name, content, entry, notebook_url):
 
     # Process it
     return plugin.process(content, entry, notebook_url)
+
 
 def parse_header(content):
     response = {
@@ -51,6 +52,7 @@ def parse_header(content):
 
     return response
 
+
 def process(content, entry, notebook_url):
     """Process an entry for display in HTML."""
 
@@ -62,19 +64,26 @@ def process(content, entry, notebook_url):
     for plugin_name in response['plugins']:
         name = str(plugin_name)
 
-        # If the name starts with - ('-md', etc.), add to exclude list for default plugins
+        # If the name starts with - ('-md', etc.), add to exclude list
+        # for default plugins
         if name[0] == '-':
             exclude_list.append(name[1:])
         elif name in config.plugins:
             # Otherwise run the plugin
-            response['content'] = run_plugin(name, response['content'], entry, notebook_url)
+            response['content'] = run_plugin(name,
+                                             response['content'],
+                                             entry,
+                                             notebook_url)
 
     # Check for entry-specific plugins
-    lines = content.split('\n')
+    # lines = content.split('\n')
     # Run default plugins last
     for plugin_name in config.default_plugins:
         name = str(plugin_name)
         if name not in exclude_list:
-            response['content'] = run_plugin(name, response['content'], entry, notebook_url)
+            response['content'] = run_plugin(name,
+                                             response['content'],
+                                             entry,
+                                             notebook_url)
 
     return response

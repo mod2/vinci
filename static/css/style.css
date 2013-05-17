@@ -68,6 +68,15 @@ h2.page-title				{ color: #345678; font-size: 1.8em; margin: 0; }
 .entry .content h5:first-child,
 .entry .content h6:first-child		{ margin-top: 0; }
 
+.entry .content h2 + ul,
+.entry .content h3 + ul,
+.entry .content h4 + ul,
+.entry .content h5 + ul,
+.entry .content h6 + ul		{ margin-top: 0; }
+
+.entry .content h3			{ font-size: 1.1em; }
+.entry .content h4			{ font-size: 1em; }
+
 .entry .content figure		{ margin: 1em 0; }
 .entry .content figure img	{ max-width: 100%; border: solid 1px #ccc; }
 

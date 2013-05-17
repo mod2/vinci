@@ -64,6 +64,7 @@ $(document).ready(function() {
 	$("#add").bind('keydown', 'shift+return', function() {
 		var val = $(this).val().trim();
 		addEntry(val);
+		$(this).removeClass('has-text');
 
 		return false;
 	});
@@ -85,8 +86,17 @@ $(document).ready(function() {
 	$("form#input").on("submit", function() {
 		var val = $(this).find("#add").val().trim();
 		addEntry(val);
+		$(this).removeClass('has-text');
 
 		return false;
+	});
+
+	$("#add").on('change', function() {
+		if ($(this).val().trim().length > 0 && !$(this).hasClass('has-text')) {
+			$(this).addClass('has-text');
+		} else if ($(this).val().trim().length == 0) {
+			$(this).removeClass('has-text');
+		}
 	});
 
 

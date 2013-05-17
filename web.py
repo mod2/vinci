@@ -554,13 +554,13 @@ def index():
 # 404
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template('404.html', title='File Not Found'), 404
+    return utils.template.render('404', 'html', title='File Not Found'), 404
 
 
 # 500
 @app.errorhandler(500)
 def server_error(error):
-    return render_template('500.html', title='Something crashed.'), 500
+    return utils.template.render('500', 'html', title='Something crashed.', error='hello'), 500
 
 
 # Redirect if callback, otherwise return JSONed response

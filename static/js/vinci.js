@@ -418,10 +418,16 @@ function addEntry(text) {
 	$.get(config.url + "add/entry?notebook=" + config.notebook + "&content=" + encodeURIComponent(text), function(data) {
 	 	if (data.status == 'success') {
 			var entryHTML = '<article class="entry" data-id="' + data.id + '" data-plugins="' + data.plugins.join(',') + '">';
-			entryHTML += '<div class="metadata"><a href="' + config.url + config.notebook + '/entry/' + data.url + '">';
-			entryHTML += '<date>' + data.date + '</date><time>' + data.time + '</time>';
-			entryHTML += '</a>';
+			entryHTML += '<div class="metadata">';
+			if (data.title == '' && data.slug == '') {
+				entryHTML += '<a href="' + config.url + config.notebook + '/entry/' + data.url + '">';
+				entryHTML += '<date>' + data.date + '</date><time>' + data.time + '</time>';
+				entryHTML += '</a>';
+			}
 			entryHTML += '<div class="controls"><a href="" class="delete">Delete</a><a href="" class="edit">Edit</a></div>';
+			if (data.title != '' || data.slug != '') {
+				entryHTML += '<h2 class="page-title">' + ((data.title != '') ? data.title : data.slug) + '</h2>';
+			}
 			entryHTML += '</div>';
 			entryHTML += '<div class="content">' + data.html + '</div>';
 			entryHTML += '<form class="editbox">';

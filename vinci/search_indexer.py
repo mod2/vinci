@@ -79,7 +79,14 @@ def delete_from_index(document):
 def _get_tags(entry):
     """Parses the entry content and returns a list of tags found in it."""
     tag_re = re.compile(r"#(\w+)")
-    return tag_re.findall(entry.content)
+    other_tags_re = re.compile(r"^tags:(.*)")
+    tags = tag_re.findall(entry.content)
+    header = entry.content.split('----')[0]
+    if header != '':
+        other_tags = other_tags_re.findall(header)
+        if len(other_tags) > 0:
+            tags.extend(other_tags[0].split(','))
+    return tags
 
 
 def search(query_string, page=1, results_per_page=10, sort_order='relevance'):

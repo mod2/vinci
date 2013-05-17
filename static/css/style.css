@@ -131,7 +131,7 @@ a.addnotebook:hover			{ }
 	body > header #search input	{ width: 100px; }
 
 	#input					{ padding: 15px; }
-	#input .content input[type=submit]	{ display: block; width: 100%; background: #728161; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: "Avenir Next", Helvetica, Arial, sans-serif; padding: 5px 8px; font-size: .9em; font-weight: 600; cursor: pointer; -webkit-appearance: none; }
+	#input .content input[type=submit]	{ display: block; width: 100%; background: #728161; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: "Avenir Next", Helvetica, Arial, sans-serif; padding: 5px 8px; font-size: 1.1em; font-weight: 600; cursor: pointer; -webkit-appearance: none; }
 
 	nav[role=pagination]	{ padding: 5px 15px; }
 
@@ -145,11 +145,11 @@ a.addnotebook:hover			{ }
 	.entry .controls a		{ font-size: 1.2em; }
 	.controls a	+ a			{ margin-left: 20px; }
 
-	.entry .editbox input[type=submit]	{ display: block; width: 100%; background: #728161; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: "Avenir Next", Helvetica, Arial, sans-serif; padding: 5px 8px; font-size: .9em; font-weight: 600; cursor: pointer; -webkit-appearance: none; }
+	.entry .editbox input[type=submit]	{ display: block; width: 100%; background: #728161; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: "Avenir Next", Helvetica, Arial, sans-serif; padding: 5px 8px; font-size: 1.1em; font-weight: 600; cursor: pointer; -webkit-appearance: none; }
 
 	#entries.list .entry.page	{ border: none; border-left: solid 15px #c6d3e4; padding: 6px 0; padding-left: 10px; -moz-border-radius: 0; border-radius: 0; margin-left: 15px; margin-right: 15px; }
 
-	.addbox input[type=submit]	{ display: block; width: 100%; background: #728161; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: "Avenir Next", Helvetica, Arial, sans-serif; padding: 5px 8px; font-size: .9em; font-weight: 600; cursor: pointer; -webkit-appearance: none; }
+	.addbox input[type=submit]	{ display: block; width: 100%; background: #728161; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: "Avenir Next", Helvetica, Arial, sans-serif; padding: 5px 8px; font-size: 1.1em; font-weight: 600; cursor: pointer; -webkit-appearance: none; }
 
 	#notebooks				{ padding: 10px 15px; }
 	#notebooks .notebook	{ margin-bottom: 1em; border-left-width: 15px; }

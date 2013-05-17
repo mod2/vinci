@@ -1,6 +1,14 @@
 # Vinci web app
 
-from flask import Flask, request, render_template, url_for, send_from_directory, jsonify, redirect, session, g, flash
+from flask import (Flask,
+                   request,
+                   url_for,
+                   send_from_directory,
+                   jsonify,
+                   redirect,
+                   session,
+                   g,
+                   flash)
 from flask.ext.openid import OpenID
 from datetime import datetime
 import os
@@ -11,11 +19,11 @@ from functools import wraps
 
 import config
 import vinci
+from vinci.models import Entry
 import utils.text
 import utils.entries
 import utils.pagination
 import utils.template
-import plugins
 
 # set up some debugging stuff
 if config.debug:
@@ -40,6 +48,7 @@ oid = OpenID(app, join(dirname(__file__), config.openid_store))
 
 # Initialize database
 vinci.init_db()
+
 
 #Authentication and Authentication Decorators
 def logged_in(func):
@@ -67,7 +76,9 @@ def notebook_access(func):
     def wrapper(*args, **kwargs):
         notebook = str(kwargs['notebook_slug'])
         username = str(g.user.username)
-        notebook_access = [] if notebook not in config.notebook_access.keys() else config.notebook_access[notebook]
+        notebook_access = []
+        if notebook in config.notebook_access.keys():
+            notebook_access = config.notebook_access[notebook]
         if g.user.admin is False and username not in notebook_access:
             return redirect(url_for('no_permission'))
         return func(*args, **kwargs)
@@ -137,6 +148,7 @@ def favicon():
 
 #routes
 
+
 @app.route('/add/entry/')
 @ws_access
 def add_entry():
@@ -156,7 +168,11 @@ def add_entry():
     header = utils.text.parse_header(content)
 
     # Add the entry
-    entry = vinci.add_entry(content=content, notebook_slug=notebook, date=date, title=header['title'], slug=header['slug'])
+    entry = vinci.add_entry(content=content,
+                            notebook_slug=notebook,
+                            date=date,
+                            title=header['title'],
+                            slug=header['slug'])
 
     # If we succeeded
     if entry:
@@ -333,7 +349,9 @@ def edit_notebook():
     #type = request.args.get('type') or 'json'
 
     # Edit the entry
-    notebook = vinci.edit_notebook(notebook_slug=notebook, name=name, description=description)
+    notebook = vinci.edit_notebook(notebook_slug=notebook,
+                                   name=name,
+                                   description=description)
 
     # If we succeeded
     if notebook:
@@ -375,7 +393,11 @@ def search_all_notebooks(query):
     entries = utils.entries.process_entries(db_entries)
 
     base_url = '%ssearch/%s' % (url_for('index'), query)
-    pagination = utils.pagination.get_pagination(page, total_hits, total_pages, sortby, base_url)
+    pagination = utils.pagination.get_pagination(page,
+                                                 total_hits,
+                                                 total_pages,
+                                                 sortby,
+                                                 base_url)
 
     return utils.template.render('list',
                                  type,
@@ -400,11 +422,17 @@ def search_all_tags(tag):
     tags = tag.split(' ')
     query = " ".join(["#" + t for t in tags])
     search_query = " ".join(["tag:" + t for t in tags])
-    db_entries, total_hits, total_pages = vinci.search(search_query, page, sortby)
+    db_entries, total_hits, total_pages = vinci.search(search_query,
+                                                       page,
+                                                       sortby)
     entries = utils.entries.process_entries(db_entries)
 
     base_url = '%stag/%s' % (url_for('index'), tag)
-    pagination = utils.pagination.get_pagination(page, total_hits, total_pages, sortby, base_url)
+    pagination = utils.pagination.get_pagination(page,
+                                                 total_hits,
+                                                 total_pages,
+                                                 sortby,
+                                                 base_url)
 
     return utils.template.render('list',
                                  type,
@@ -434,8 +462,14 @@ def search_notebook(notebook_slug, query):
     db_entries, total_hits, total_pages = vinci.search(query, page, sortby)
     entries = utils.entries.process_entries(db_entries)
 
-    base_url = '%s%s/search/%s' % (url_for('index'), notebook_slug, original_query)
-    pagination = utils.pagination.get_pagination(page, total_hits, total_pages, sortby, base_url)
+    base_url = '{0}{1}/search/{2}'.format(url_for('index'),
+                                          notebook_slug,
+                                          original_query)
+    pagination = utils.pagination.get_pagination(page,
+                                                 total_hits,
+                                                 total_pages,
+                                                 sortby,
+                                                 base_url)
 
     return utils.template.render('list',
                                  type,
@@ -461,12 +495,22 @@ def search_tags_in_notebook(notebook_slug, tag):
     notebook = vinci.get_notebook(notebook_slug)
     tags = tag.split(' ')
     query = " ".join(["#" + t for t in tags])
-    search_query = " ".join(["tag:" + t for t in tags]) + ' notebook:' + notebook_slug
-    db_entries, total_hits, total_pages = vinci.search(search_query, page, sortby)
+    notebook_query = 'notebook:' + notebook_slug
+    search_query = " ".join(["tag:" + t for t in tags])
+    search_query += ' ' + notebook_query
+    db_entries, total_hits, total_pages = vinci.search(search_query,
+                                                       page,
+                                                       sortby)
     entries = utils.entries.process_entries(db_entries)
 
-    base_url = '%s%s/tag/%s' % (url_for('index'), notebook_slug, tag)
-    pagination = utils.pagination.get_pagination(page, total_hits, total_pages, sortby, base_url)
+    base_url = '{0}{1}/tag/{2}'.format(url_for('index'),
+                                       notebook_slug,
+                                       tag)
+    pagination = utils.pagination.get_pagination(page,
+                                                 total_hits,
+                                                 total_pages,
+                                                 sortby,
+                                                 base_url)
 
     return utils.template.render('list',
                                  type,
@@ -488,11 +532,16 @@ def display_entry(notebook_slug, entry_id):
 
     if re.match(r'^\d{4}-\d{2}-\d{2}\.\d+$', entry_id):
         # Parse the entry ID out
-        id = entry_id[entry_id.find('.')+1:]
+        id = entry_id[entry_id.find('.') + 1:]
         db_entry = vinci.get_entry(notebook_slug, id=id)
     else:
-        db_entry = vinci.get_entry(notebook_slug, slug=entry_id)
-
+        try:
+            db_entry = vinci.get_entry(notebook_slug, slug=entry_id)
+        except Entry.DoesNotExist:
+            content = unicode("\n".join(['slug:' + entry_id,
+                                         '----',
+                                         'No content']))
+            db_entry = vinci.add_entry(content, notebook_slug, slug=entry_id)
 
     # Data
     notebook = vinci.get_notebook(notebook_slug)
@@ -518,14 +567,19 @@ def display_entries(notebook_slug):
 
     # Data
     notebook = vinci.get_notebook(notebook_slug)
-    db_entries, total_hits, total_pages = vinci.get_entries(notebook_slug,
-                                                            sortby,
-                                                            page,
-                                                            config.results_per_page)
+    results_per_page = config.results_per_page
+    (db_entries, total_hits, total_pages) = vinci.get_entries(notebook_slug,
+                                                              sortby,
+                                                              page,
+                                                              results_per_page)
     entries = utils.entries.process_entries(db_entries)
 
     base_url = '%s%s' % (url_for('index'), notebook_slug)
-    pagination = utils.pagination.get_pagination(page, total_hits, total_pages, sortby, base_url)
+    pagination = utils.pagination.get_pagination(page,
+                                                 total_hits,
+                                                 total_pages,
+                                                 sortby,
+                                                 base_url)
 
     return utils.template.render('list',
                                  type,
@@ -560,7 +614,10 @@ def page_not_found(error):
 # 500
 @app.errorhandler(500)
 def server_error(error):
-    return utils.template.render('500', 'html', title='Something crashed.', error='hello'), 500
+    return utils.template.render('500',
+                                 'html',
+                                 title='Something crashed.',
+                                 error='hello'), 500
 
 
 # Redirect if callback, otherwise return JSONed response

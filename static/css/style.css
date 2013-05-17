@@ -34,7 +34,7 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 
 #page						{ padding: 35px; padding-bottom: 100px; background: #eee; }
 
-h2.page-title				{ color: #345678; font-size: 1.2em; margin-bottom: 10px; }
+h2.page-title				{ color: #345678; font-size: 1.8em; margin: 0; }
 
 .entry						{ margin-bottom: 1.5em; overflow: auto; clear: both; background: #fff; padding: 15px; -moz-border-radius: 3px; border-radius: 3px; box-shadow: 1px 1px 15px #ccc; -webkit-transition: background .35s ease-in-out; -moz-transition: background .35s ease-in-out; transition: background .35s ease-in-out; }
 .entry.new					{ background: #ffffd8; }

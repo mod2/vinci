@@ -86,7 +86,6 @@ $(document).ready(function() {
 	$("form#input").on("submit", function() {
 		var val = $(this).find("#add").val().trim();
 		addEntry(val);
-		$(this).removeClass('has-text');
 
 		return false;
 	});
@@ -461,6 +460,7 @@ function addEntry(text) {
 			// And update the # entries
 			var numEntries = parseInt($("label.num_entries").html().match(/^(\d+)/)[1]);
 			$("label.num_entries").html((numEntries + 1) + " entries");
+
 		} else {
 			alert("Error adding entry");
 		}
@@ -471,6 +471,7 @@ function addEntry(text) {
 
 	// Blur entry box
 	$("#add").blur();
+	$("#add").removeClass('has-text');
 }
 
 function loadPlugins(content, plugins) {

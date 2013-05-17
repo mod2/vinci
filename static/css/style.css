@@ -142,6 +142,7 @@ a.addnotebook:hover			{ }
 
 	.entry					{ border-top: solid 1px #ddd; padding-top: 5px; box-shadow: none; } 
 	.entry .metadata a		{ color: #bbb; }
+	.entry .controls a		{ font-size: 1.2em; }
 	.controls a	+ a			{ margin-left: 20px; }
 
 	.entry .editbox input[type=submit]	{ display: block; width: 100%; background: #728161; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: "Avenir Next", Helvetica, Arial, sans-serif; padding: 5px 8px; font-size: .9em; font-weight: 600; cursor: pointer; -webkit-appearance: none; }

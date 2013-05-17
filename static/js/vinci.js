@@ -166,7 +166,15 @@ $(document).ready(function() {
         $.get(url, function(data) {
             if (data.status == 'success') {
                 // Update content
-                entry.find(".content").html(data.html);
+				var content = data.html;
+				if (data.slug) {
+				   	if (data.title) {
+						content = '<h2 class="page-title">' + data.title + '</h2>' + content;
+					} else {
+						content = '<h2 class="page-title">' + data.slug + '</h2>' + content;
+					}
+				}
+                entry.find(".content").html(content);
 
 				// Update plugins list
 				entry.attr("data-plugins", data.plugins.join(","));

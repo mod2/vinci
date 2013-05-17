@@ -15,7 +15,6 @@ import os
 from os.path import join, dirname
 import re
 import logging
-from functools import wraps
 
 import config
 import vinci
@@ -24,6 +23,7 @@ import utils.text
 import utils.entries
 import utils.pagination
 import utils.template
+from access_utils import admin_only, notebook_access, ws_access
 
 # set up some debugging stuff
 if config.debug:
@@ -50,59 +50,53 @@ oid = OpenID(app, join(dirname(__file__), config.openid_store))
 vinci.init_db()
 
 
-#Authentication and Authentication Decorators
-def logged_in(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        if g.user is None:
-            return redirect(url_for('login'))
-        return func(*args, **kwargs)
-    return wrapper
-
-
-def admin_only(func):
-    @wraps(func)
-    @logged_in
-    def wrapper(*args, **kwargs):
-        if g.user.admin is False:
-            return redirect(url_for('no_permission'))
-        return func(*args, **kwargs)
-    return wrapper
-
-
-def notebook_access(func):
-    @wraps(func)
-    @logged_in
-    def wrapper(*args, **kwargs):
-        notebook = str(kwargs['notebook_slug'])
-        username = str(g.user.username)
-        notebook_access = []
-        if notebook in config.notebook_access.keys():
-            notebook_access = config.notebook_access[notebook]
-        if g.user.admin is False and username not in notebook_access:
-            return redirect(url_for('no_permission'))
-        return func(*args, **kwargs)
-    return wrapper
-
-
-def ws_access(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        if g.user is None and request.args.get('key', '') != config.ws_key:
-            return redirect(url_for('no_permission'))
-        return func(*args, **kwargs)
-    return wrapper
-
-
 def get_user():
+    """Get the current user object if one exists.
+    :returns: User object
+    """
     return vinci.get_user(session.get('openid-email', ''))
 
 
+def response_with_callback(response, callback):
+    """Redirect if callback, otherwise return JSONed response."""
+    if callback:
+        return redirect(callback)
+    else:
+        return jsonify(response)
+
+
+# callbacks
 @app.before_request
 def lookup_current_user():
+    """Store the currently authenticated user to the global session
+    before each request."""
     g.user = get_user()
 
 
+@oid.after_login
+def create_user(resp):
+    """After successfull login (oid) make sure there is a user that
+    matches the use in the database."""
+    session['openid'] = resp.identity_url
+    session['openid-email'] = resp.email
+    if get_user() is None:
+        new_user = vinci.get_new_user()
+        new_user.username = resp.email
+        new_user.display = resp.email
+        new_user.save()
+    return redirect(oid.get_next_url())
+
+
+#Static routes
+@app.route('/favicon.ico/')
+def favicon():
+    """Serve up the favicon."""
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico',
+                               mimetype='image/vnd.microsoft.icon')
+
+
+#routes
 @app.route('/login/')
 @oid.loginhandler
 def login():
@@ -121,32 +115,9 @@ def logout():
     return redirect(oid.get_next_url())
 
 
-@oid.after_login
-def new_user(resp):
-    session['openid'] = resp.identity_url
-    session['openid-email'] = resp.email
-    if get_user() is None:
-        new_user = vinci.get_new_user()
-        new_user.username = resp.email
-        new_user.display = resp.email
-        new_user.save()
-    return redirect(oid.get_next_url())
-
-
 @app.route('/nopermission/')
 def no_permission():
     return "Not authorized"
-
-
-#Static routes
-@app.route('/favicon.ico/')
-def favicon():
-    """Serve up the favicon."""
-    return send_from_directory(os.path.join(app.root_path, 'static'),
-                               'favicon.ico',
-                               mimetype='image/vnd.microsoft.icon')
-
-#routes
 
 
 @app.route('/add/entry/')
@@ -207,7 +178,6 @@ def add_entry():
 @ws_access
 def delete_entry():
     """Delete an entry."""
-
     # Defaults and parameters
     notebook = request.args.get('notebook')
     id = request.args.get('id')
@@ -233,7 +203,6 @@ def delete_entry():
 @ws_access
 def edit_entry():
     """Edit an entry."""
-
     # Defaults and parameters
     notebook = request.args.get('notebook')
     id = request.args.get('id')
@@ -286,7 +255,6 @@ def edit_entry():
 @ws_access
 def add_notebook():
     """Add a notebook."""
-
     # Defaults and parameters
     name = request.args.get('name')
     description = request.args.get('description')
@@ -316,7 +284,6 @@ def add_notebook():
 @ws_access
 def delete_notebook():
     """Delete a notebook."""
-
     # Defaults and parameters
     notebook = request.args.get('notebook')
     callback = request.args.get('callback')
@@ -340,7 +307,6 @@ def delete_notebook():
 @ws_access
 def edit_notebook():
     """Edit a notebook."""
-
     # Defaults and parameters
     notebook = request.args.get('notebook')
     name = request.args.get('name')
@@ -373,7 +339,6 @@ def edit_notebook():
 @admin_only
 def reindex():
     """Reindex the index."""
-
     vinci.reindex()
     return redirect(url_for('index'))
 
@@ -382,7 +347,6 @@ def reindex():
 @admin_only
 def search_all_notebooks(query):
     """Search within all notebooks."""
-
     # Defaults and parameters
     type = request.args.get('type') or 'html'
     sortby = request.args.get('sort') or config.default_search_order
@@ -618,14 +582,6 @@ def server_error(error):
                                  'html',
                                  title='Something crashed.',
                                  error='hello'), 500
-
-
-# Redirect if callback, otherwise return JSONed response
-def response_with_callback(response, callback):
-    if callback:
-        return redirect(callback)
-    else:
-        return jsonify(response)
 
 
 if __name__ == '__main__':

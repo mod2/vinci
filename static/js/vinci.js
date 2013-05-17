@@ -176,15 +176,7 @@ $(document).ready(function() {
         $.get(url, function(data) {
             if (data.status == 'success') {
                 // Update content
-				var content = data.html;
-				if (data.slug) {
-				   	if (data.title) {
-						content = '<h2 class="page-title">' + data.title + '</h2>' + content;
-					} else {
-						content = '<h2 class="page-title">' + data.slug + '</h2>' + content;
-					}
-				}
-                entry.find(".content").html(content);
+                entry.find(".content").html(data.html);
 
 				// Update plugins list
 				entry.attr("data-plugins", data.plugins.join(","));
@@ -196,6 +188,22 @@ $(document).ready(function() {
                 // Update date
                 entry.find(".metadata date").html(data.date);
                 entry.find(".metadata time").html(data.time);
+
+				var title = '';
+				if (data.slug) {
+					title = (data.title) ? data.title : data.slug;
+				}
+
+				if (title != '') {
+					if (entry.find(".metadata h2.page-title").length > 0) {
+						console.log("exists, replacing", title);
+						entry.find(".metadata h2.page-title").html(title);
+					} else {
+						console.log("doesn't exist, appending", title);
+						$('<h2 class="page-title">' + title + '</h2>').appendTo(".metadata");
+						entry.find(".metadata a").remove();
+					}
+				}
 
                 // Add yellow highlight
                 entry.addClass("new");

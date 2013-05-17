@@ -40,7 +40,7 @@ h2.page-title				{ color: #345678; font-size: 1.8em; margin: 0; }
 .entry.new					{ background: #ffffd8; }
 
 .entry .metadata			{ font-size: .7em; color: #ddd; font-weight: 500; margin-bottom: 8px; }
-.entry .metadata a			{ text-decoration: none; color: #ddd; -webkit-transition: color .35s ease-in-out; -moz-transition: color .35s ease-in-out; transition: color .35s ease-in-out; }
+.entry .metadata a			{ text-decoration: none; color: #ddd; }
 .entry .metadata a:hover	{ color: #000; }
 
 .entry.new .metadata a		{ color: #c4c092; }
@@ -65,7 +65,7 @@ h2.page-title				{ color: #345678; font-size: 1.8em; margin: 0; }
 .entry .content code		{ font-family: Monaco, Courier; font-size: .9em; }
 .entry .content p code		{ color: #345678; padding: 2px 5px; -moz-border-radius: 3px; border-radius: 3px; background: #eee; font-size: .8em; }
 
-.entry .content blockquote	{ border-left: solid 5px #ddd; padding-left: 15px; margin-left: 25px; }
+.entry .content blockquote	{ border-left: solid 5px #ddd; padding-left: 15px; margin-left: 25px; margin-right: 0; }
 
 .entry .metadata date		{ display: inline-block; }
 .entry .metadata time		{ display: inline-block; }
@@ -89,7 +89,7 @@ h2.page-title				{ color: #345678; font-size: 1.8em; margin: 0; }
 .submitbutton				{ display: none; }
 
 .controls					{ float: right; }
-.controls a					{ display: inline-block; }
+.controls a					{ display: inline-block; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
 .controls a + a				{ margin-left: 10px; }
 
 #input						{ padding: 15px 35px; background: #9fad95; }
@@ -142,7 +142,6 @@ a.addnotebook:hover			{ }
 
 	.entry					{ border-top: solid 1px #ddd; padding-top: 5px; box-shadow: none; } 
 	.entry .metadata a		{ color: #bbb; }
-	.entry .metadata a.edit	{ font-size: 1.3em; }
 	.controls a	+ a			{ margin-left: 20px; }
 
 	.entry .editbox input[type=submit]	{ display: block; width: 100%; background: #728161; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: "Avenir Next", Helvetica, Arial, sans-serif; padding: 5px 8px; font-size: .9em; font-weight: 600; cursor: pointer; -webkit-appearance: none; }

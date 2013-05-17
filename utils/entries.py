@@ -33,6 +33,7 @@ def process_entry(entry):
         'content': entry.content,
         'title': response['title'],
         'slug': response['slug'],
+        'tags': response['tags'],
         'html': Markup(response['content']),
         'plugins': response['plugins'],
     }

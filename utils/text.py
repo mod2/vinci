@@ -2,6 +2,7 @@
 
 import config
 import vinci.utils
+import re
 
 
 def run_plugin(name, content, entry, notebook_url):
@@ -18,7 +19,8 @@ def parse_header(content):
         'content': content,
         'title': '',
         'slug': '',
-        'plugins': []
+        'plugins': [],
+        'tags': []
     }
 
     # Split entry by ----
@@ -45,6 +47,9 @@ def parse_header(content):
 
             if keyword == 'slug':
                 response['slug'] = value
+
+            if keyword == 'tags' or keyword == 'tag':
+                response['tags'] = [x.strip() for x in value.split(',')]
 
         # If there is a header, the content now is the rest after the header
         # Otherwise leave it intact
@@ -85,5 +90,11 @@ def process(content, entry, notebook_url):
                                              response['content'],
                                              entry,
                                              notebook_url)
+
+    # Pull in any hashtags from the content
+    m = re.findall(r"#(\w+)", response['content'])
+    for tag in m:
+        if tag not in response['tags']:
+            response['tags'].append(tag)
 
     return response

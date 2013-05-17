@@ -101,6 +101,8 @@ h2.page-title				{ color: #345678; font-size: 1.8em; margin: 0; }
 .entry ul.tags li a			{ text-decoration: none; color: #7499b6; cursor: pointer; display: inline-block; }
 .entry ul.tags li a:hover	{ color: #930; }
 
+.list .entry.page ul.tags         { margin: 10px -10px -10px; padding: 4px 10px; -moz-border-radius: 3px; border-radius: 3px; }
+
 .entry .editbox             { display: none; }
 .entry .editbox .group      { margin: 3px 0 10px; }
 .entry .editbox .group label    { font-size: .9em; color: #999; margin-right: 5px; }
@@ -174,6 +176,7 @@ a.addnotebook:hover			{ }
 
 	.entry ul.tags			{ background: none; border: none; margin-top: 0px; }
 	.entry ul.tags li a		{ padding: 1px 5px; background: #eee; -moz-border-radius: 3px; border-radius: 3px; }
+    .detail .entry ul.tags    { margin-top: 1em; }
 
 	.entry .editbox input[type=submit]	{ display: block; width: 100%; background: #728161; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: "Avenir Next", Helvetica, Arial, sans-serif; padding: 5px 8px; font-size: 1.1em; font-weight: 600; cursor: pointer; -webkit-appearance: none; }
 

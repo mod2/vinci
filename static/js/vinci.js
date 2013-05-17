@@ -143,7 +143,7 @@ $(document).ready(function() {
 			$(this).html("Cancel");
 			entry.find(".content").fadeOut(75, function() {
 				entry.find(".editbox").fadeIn(75, function() {
-					$(this).find("textarea").focus()
+					$(this).find("textarea").focus();
 				});
 			});
 		} else {
@@ -188,6 +188,31 @@ $(document).ready(function() {
                 entry.find(".metadata date").html(data.date);
                 entry.find(".metadata time").html(data.time);
 
+				// Update tags
+				if (data.tags.length > 0) {
+					// Add the container if it isn't there
+					if (entry.find("ul.tags").length == 0) {
+						$("<ul class='tags'></ul>").appendTo(entry);
+					} else {
+						// Wipe it out
+						entry.find("ul.tags").html('');
+					}
+
+					var tagHTML = '';
+					for (var i in data.tags) {
+						var tag = data.tags[i];
+						tagHTML += '<li><a href="' + config.url + config.notebook + '/tag/' + tag + '">#' + tag + '</a></li>';
+					}
+
+					$(tagHTML).appendTo(entry.find("ul.tags"));
+				} else {
+					// If there aren't any tags but we still have a container, kill it
+					if (entry.find("ul.tags").length > 0) {
+						entry.find("ul.tags").remove();
+					}
+				}
+
+				// Update title
 				var title = '';
 				if (data.slug) {
 					title = (data.title) ? data.title : data.slug;
@@ -195,10 +220,8 @@ $(document).ready(function() {
 
 				if (title != '') {
 					if (entry.find(".metadata h2.page-title").length > 0) {
-						console.log("exists, replacing", title);
 						entry.find(".metadata h2.page-title").html(title);
 					} else {
-						console.log("doesn't exist, appending", title);
 						$('<h2 class="page-title">' + title + '</h2>').appendTo(".metadata");
 						entry.find(".metadata a").remove();
 					}
@@ -429,6 +452,14 @@ function addEntry(text) {
 			}
 			entryHTML += '</div>';
 			entryHTML += '<div class="content">' + data.html + '</div>';
+			if (data.tags) {
+				entryHTML += '<ul class="tags">';
+				for (var i in data.tags) {
+					var tag = data.tags[i];
+					entryHTML += '<li><a href="' + config.url + config.notebook + '/tag/' + tag + '">#' + tag + '</a></li>';
+				}
+				entryHTML += '</ul>';
+			}
 			entryHTML += '<form class="editbox">';
 			entryHTML += '<textarea>' + data.content + '</textarea>';
 			entryHTML += '<div class="group"><label>Date:</label><input type="text" value="' + data.datetime + '" /></div>';

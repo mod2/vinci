@@ -164,6 +164,7 @@ def add_entry():
             'content': content,
             'title': response['title'],
             'slug': response['slug'],
+            'tags': response['tags'],
             'plugins': response['plugins'],
         }
 
@@ -241,6 +242,7 @@ def edit_entry():
             'content': content,
             'title': response['title'],
             'slug': response['slug'],
+            'tags': response['tags'],
             'plugins': response['plugins'],
         }
 

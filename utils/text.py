@@ -33,7 +33,7 @@ def parse_header(content):
 
         for line in header_lines:
             # Get the keyword
-            keyword = line.split(':')[0].strip()
+            keyword = line.split(':')[0].strip().lower()
 
             # Get the value (and keep existing colons)
             value = ':'.join(line.split(':')[1:]).strip()

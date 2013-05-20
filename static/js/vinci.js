@@ -250,14 +250,6 @@ $(document).ready(function() {
         return false;
 	});
 
-	// If you tap Save Entry, don't blur the textarea
-	$("#entries").delegate(".entry .editbox input[type=submit]", "mousedown", function() {
-		return false;
-	});
-	$("#entries").delegate(".entry .editbox input[type=submit]", "touchstart", function() {
-		return false;
-	});
-
 	$("#entries").on("keydown", ".entry .editbox textarea, .entry .editbox input[type=text]", "shift+return", function() {
 		$(this).parents(".editbox").submit();
 
@@ -452,7 +444,7 @@ function addEntry(text) {
 			}
 			entryHTML += '</div>';
 			entryHTML += '<div class="content">' + data.html + '</div>';
-			if (data.tags) {
+			if (data.tags.length > 0) {
 				entryHTML += '<ul class="tags">';
 				for (var i in data.tags) {
 					var tag = data.tags[i];

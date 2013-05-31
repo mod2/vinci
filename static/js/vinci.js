@@ -160,19 +160,19 @@ $(document).ready(function() {
 	$("#entries").on("submit", ".entry .editbox", function() {
 		var entry = $(this).parents(".entry:first");
         var id = entry.attr("data-id");
-		var text = encodeURIComponent(entry.find(".editbox textarea").val().trim());
+		var text = entry.find(".editbox textarea").val().trim();
 		var date = '';
 		if (entry.find(".editbox input[type=text]").length > 0) {
 			date = encodeURIComponent(entry.find(".editbox input[type=text]").val().trim());
 		}
 
 		// Call edit entry web service
-        var url = config.url + "edit/entry?id=" + id + "&notebook=" + config.notebook + "&content=" + text;
+        var url = config.url + "edit/entry/?id=" + id + "&notebook=" + config.notebook;
 		if (date) {
 			url += "&date=" + date;
 		}
 
-        $.get(url, function(data) {
+        $.post(url, { content: text }, function(data) {
             if (data.status == 'success') {
                 // Update content
                 entry.find(".content").html(data.html);
@@ -429,7 +429,7 @@ $(document).ready(function() {
 
 function addEntry(text) {
 	// Add the entry
-	$.get(config.url + "add/entry?notebook=" + config.notebook + "&content=" + encodeURIComponent(text), function(data) {
+	$.post(config.url + "add/entry/?notebook=" + config.notebook, { content: text }, function(data) {
 	 	if (data.status == 'success') {
 			var entryHTML = '<article class="entry" data-id="' + data.id + '" data-plugins="' + data.plugins.join(',') + '">';
 			entryHTML += '<div class="metadata">';

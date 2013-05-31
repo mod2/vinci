@@ -120,15 +120,19 @@ def no_permission():
     return "Not authorized"
 
 
-@app.route('/add/entry/')
+@app.route('/add/entry/', methods = [ 'GET', 'POST' ])
 @ws_access
 def add_entry():
     """Add an entry."""
     # Defaults and parameters
     notebook = request.args.get('notebook')
-    content = request.args.get('content')
     date = request.args.get('date')
     callback = request.args.get('callback')
+
+    if request.method == 'POST':
+        content = request.form['content']
+    else:
+        content = request.args.get('content')
 
     # If the date is a string, convert it to datetime first
     if date and isinstance(date, unicode):
@@ -200,17 +204,20 @@ def delete_entry():
 
 
 # TODO: refactor this, lots of shared code with add_entry()
-@app.route('/edit/entry/')
+@app.route('/edit/entry/', methods = [ 'GET', 'POST' ])
 @ws_access
 def edit_entry():
     """Edit an entry."""
     # Defaults and parameters
     notebook = request.args.get('notebook')
     id = request.args.get('id')
-    content = request.args.get('content')
     date = request.args.get('date')
     callback = request.args.get('callback')
-    #type = request.args.get('type') or 'json'
+
+    if request.method == 'POST':
+        content = request.form['content']
+    else:
+        content = request.args.get('content')
 
     # Parse the header
     header = utils.text.parse_header(content)

@@ -130,11 +130,13 @@ def get_entries(notebook_slug,
 
 
 def get_entry(notebook_slug, id=-1, slug=''):
+    nb = get_notebook(notebook_slug)
+
     """Get a specific entry"""
     if id != -1:
-        return m.Entry.get(m.Entry.id == id)
+        return m.Entry.get(m.Entry.id == id, m.Entry.notebook == nb)
     elif slug != '':
-        return m.Entry.get(m.Entry.slug == slug)
+        return m.Entry.get(m.Entry.slug == slug, m.Entry.notebook == nb)
     else:
         return None
 

@@ -83,8 +83,7 @@ h2.page-title				{ color: #345678; font-size: 1.8em; margin: 0; }
 .entry .content strong		{ font-weight: 600; }
 
 .entry .content pre			{ font-family: Monaco, Courier; border-top: solid 2px #ddd; border-bottom: solid 2px #ddd; background: #f3f3f3; padding: 10px; font-size: .8em; overflow-x: auto; line-height: 1.35em; margin: 1.5em 0; }
-.entry .content code		{ font-family: Monaco, Courier; font-size: .9em; }
-.entry .content p code		{ color: #345678; padding: 2px 5px; -moz-border-radius: 3px; border-radius: 3px; background: #eee; font-size: .8em; }
+.entry .content code		{ font-family: Monaco, Courier; color: #345678; padding: 2px 5px; -moz-border-radius: 3px; border-radius: 3px; background: #eee; font-size: .8em; }
 
 .entry .content blockquote	{ border-left: solid 5px #ddd; padding-left: 15px; margin-left: 25px; margin-right: 0; }
 

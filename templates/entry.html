@@ -1,5 +1,7 @@
 {% extends '_base.html' %}
 
+{% block title %}{% if entry.title != '' %}{{ entry.title }}{% elif entry.slug != '' %}{{ entry.slug }}{% else %}{{ entry.date.strftime('%Y-%m-%d') ~ entry.id }}{% endif %} | {{ entry.notebook.name }} | Vinci{% endblock title %}
+
 {% block page_content %}
 
 {% block entry %}

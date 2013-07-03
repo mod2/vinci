@@ -256,6 +256,38 @@ $(document).ready(function() {
 		return false;
 	});
 
+	$("#entries").on("keydown", ".entry .editbox textarea, .entry .editbox input[type=text]", "esc", function() {
+		var entry = $(this).parents(".entry:first");
+
+		entry.find(".metadata .controls a.edit").html("Edit");
+
+		// Hide the editbox
+		entry.find(".editbox").fadeOut(75, function() {
+			entry.find(".content").fadeIn(75);
+		});
+
+		return false;
+	});
+
+	$(document).bind("keydown", "shift+return", function() {
+		console.log("shift+return");
+		// Detail, so there's only one entry
+		if ($("#entries .entry").length == 1) {
+			// Show the editbox
+			var entry = $("#entries .entry");
+
+			entry.find(".metadata .controls a.edit").html("Cancel");
+
+			entry.find(".content").fadeOut(75, function() {
+				entry.find(".editbox").fadeIn(75, function() {
+					$(this).find("textarea").focus();
+				});
+			});
+		}
+
+		return false;
+	});
+
 	$("#entries").on("click", ".entry .metadata .controls a.delete", function() {
 		if (confirm("Do you really want to delete that entry?")) {
 			var entry = $(this).parents(".entry:first");

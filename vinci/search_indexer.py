@@ -11,7 +11,7 @@ from models import Entry, init_db
 
 
 def get_or_create_index():
-    """Returns an index object. Creats it if is doesn't exist."""
+    """Returns an index object. Create it if it doesn't exist."""
     if not os.path.exists(config.index_dir):
         os.mkdir(config.index_dir)
         return full_index()

@@ -590,7 +590,7 @@ def server_error(error):
     return utils.template.render('500',
                                  'html',
                                  title='Something crashed.',
-                                 error='hello'), 500
+                                 error=error), 500
 
 
 if __name__ == '__main__':

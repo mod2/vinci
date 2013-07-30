@@ -120,7 +120,7 @@ def no_permission():
     return "Not authorized"
 
 
-@app.route('/add/entry/', methods = [ 'GET', 'POST' ])
+@app.route('/add/entry/', methods=['GET', 'POST'])
 @ws_access
 def add_entry():
     """Add an entry."""
@@ -204,7 +204,7 @@ def delete_entry():
 
 
 # TODO: refactor this, lots of shared code with add_entry()
-@app.route('/edit/entry/', methods = [ 'GET', 'POST' ])
+@app.route('/edit/entry/', methods=['GET', 'POST'])
 @ws_access
 def edit_entry():
     """Edit an entry."""
@@ -357,11 +357,12 @@ def reindex():
 def search_all_notebooks(query):
     """Search within all notebooks."""
     # Defaults and parameters
-    type = request.args.get('type') or 'html'
-    sortby = request.args.get('sort') or config.default_search_order
-    page = int(request.args.get('page') or 1)
+    type = request.args.get('type', 'html')
+    sortby = request.args.get('sort', config.default_search_order)
+    page = int(request.args.get('page', 1))
 
     # Data
+    display_query = re.sub(r'tags:', '#', query)
     db_entries, total_hits, total_pages = vinci.search(query, page, sortby)
     entries = utils.entries.process_entries(db_entries)
 
@@ -375,7 +376,7 @@ def search_all_notebooks(query):
     return utils.template.render('list',
                                  type,
                                  title="Search All Notebooks",
-                                 query=query,
+                                 query=display_query,
                                  entries=entries,
                                  pagination=pagination,
                                  config=config)
@@ -423,13 +424,14 @@ def search_notebook(notebook_slug, query):
     """Search within a notebook"""
 
     # Defaults and parameters
-    type = request.args.get('type') or 'html'
-    sortby = request.args.get('sort') or config.default_search_order
-    page = int(request.args.get('page') or 1)
+    type = request.args.get('type', 'html')
+    sortby = request.args.get('sort', config.default_search_order)
+    page = int(request.args.get('page', 1))
 
     # Data
     notebook = vinci.get_notebook(notebook_slug)
     original_query = query
+    display_query = re.sub(r'tag:', '#', original_query)
     search_query = original_query + ' notebook:' + notebook_slug
     query = re.sub(r'tag:', '#', search_query)
     db_entries, total_hits, total_pages = vinci.search(query, page, sortby)
@@ -448,7 +450,7 @@ def search_notebook(notebook_slug, query):
                                  type,
                                  title=notebook.name,
                                  notebook=notebook,
-                                 query=query,
+                                 query=display_query,
                                  entries=entries,
                                  pagination=pagination,
                                  config=config)

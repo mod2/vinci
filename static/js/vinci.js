@@ -36,7 +36,7 @@ $(document).ready(function() {
 		}
 
 		if (query.length > 0) {
-			var q = query.replace(/#(\w+)/, 'tag:$1');
+			var q = query.replace(/#(\w+)/g, 'tag:$1');
 
 			url += 'search/' + q;
 		} else {

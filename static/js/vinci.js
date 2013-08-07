@@ -142,14 +142,18 @@ $(document).ready(function() {
 
 	// Notebook page
 	$(document).bind('keydown', 'n', function() {
-		window.location.href = config.url + config.notebook;
+		if (config.notebook) {
+			window.location.href = config.url + config.notebook;
+		}
 
 		return false;
 	});
 
 	// Notebook/entry/home
 	$(document).bind('keydown', 'h', function() {
-		window.location.href = config.url + config.notebook + '/entry/home';
+		if (config.notebook) {
+			window.location.href = config.url + config.notebook + '/entry/home';
+		}
 
 		return false;
 	});

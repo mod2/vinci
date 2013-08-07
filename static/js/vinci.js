@@ -35,6 +35,7 @@ $(document).ready(function() {
 
 	$(document).bind('keydown', '/', function() {
 		// Focus on the search box
+		$("#search").show();
 		$("#search input").focus();
 
 		return false;
@@ -43,6 +44,7 @@ $(document).ready(function() {
 	$("#search input").bind('keydown', 'esc', function() {
 		// Unfocus the search box
 		$("#search input").blur();
+		$("#search").hide();
 
 		return false;
 	});

@@ -226,9 +226,12 @@ a.addnotebook:hover			{ }
 	.detail .entry ul.tags    { margin-top: 1em; }
 
 	.entry.page					{ padding: 0 15px; }
-	.entry.page .metadata	{ max-width: 100px; }
+	.detail .entry.page			{ padding: 0 15px; }
 
+	.entry.page .metadata	{ max-width: 100px; }
 	.entry.page .controls	{ float: none; }
+
+	h2.page-title			{ font-size: 1.4em; }
 
 	.entry.page ul.tags			{ margin-top: 3px; }
 	.entry.page ul.tags li a	{ padding: 1px 0; }

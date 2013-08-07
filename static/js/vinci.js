@@ -27,7 +27,7 @@ $(document).ready(function() {
 	// Search box
 	// --------------------------------------------------
 
-	$("body > header nav ul li a.search").click(function() {
+	$("body > header nav ul li a.search").on("click touchstart", function() {
 		$("#search").toggle();
 
 		return false;

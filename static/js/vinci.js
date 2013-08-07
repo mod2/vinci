@@ -112,6 +112,23 @@ $(document).ready(function() {
 	});
 
 
+	$(document).bind('keydown', 'return', function() {
+		if ($(".list .entry.selected").length > 0) {
+			// Go to the selected entry
+
+			if ($(".list .entry.selected .metadata > a").length > 0) {
+				// Entry
+				window.location.href = $(".list .entry.selected .metadata > a").attr('href');
+			} else if ($(".list .entry.selected h3 a").length > 0) {
+				// Page
+				window.location.href = $(".list .entry.selected h3 a").attr('href');
+			}
+
+			return false;
+		}
+	});
+
+
 	// Entry box
 	// --------------------------------------------------
 
@@ -310,6 +327,7 @@ $(document).ready(function() {
 
 	$("#entries").on("keydown", ".entry .editbox textarea, .entry .editbox input[type=text]", "shift+return", function() {
 		$(this).parents(".editbox").submit();
+		$("#entries").focus();
 
 		return false;
 	});
@@ -326,12 +344,16 @@ $(document).ready(function() {
 	});
 
 	$(document).bind("keydown", "shift+return", function() {
-		console.log("shift+return");
-		// Detail, so there's only one entry
 		if ($("#entries .entry").length == 1) {
-			// Show the editbox
+			// Detail, so there's only one entry
 			var entry = $("#entries .entry");
+		} else {
+			// List page, see if we have a selected entry
+			var entry = $(".list .entry.selected");
+		}
 
+		if (entry) {
+			// Show the editbox
 			entry.find(".content").fadeOut(75, function() {
 				entry.find(".editbox").fadeIn(75, function() {
 					$(this).find("textarea").focus();

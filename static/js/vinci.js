@@ -140,7 +140,6 @@ $(document).ready(function() {
 
 		if (entry.find(".content:visible").length > 0) {
 			// Show the editbox
-			$(this).html("Cancel");
 			entry.find(".content").fadeOut(75, function() {
 				entry.find(".editbox").fadeIn(75, function() {
 					$(this).find("textarea").focus();
@@ -148,7 +147,6 @@ $(document).ready(function() {
 			});
 		} else {
 			// Hide the editbox
-			$(this).html("Edit");
 			entry.find(".editbox").fadeOut(75, function() {
 				entry.find(".content").fadeIn(75);
 			});
@@ -219,8 +217,8 @@ $(document).ready(function() {
 				}
 
 				if (title != '') {
-					if (entry.find(".metadata h2.page-title").length > 0) {
-						entry.find(".metadata h2.page-title").html(title);
+					if (entry.find("h2.page-title").length > 0) {
+						entry.find("h2.page-title").html(title);
 					} else {
 						$('<h2 class="page-title">' + title + '</h2>').appendTo(".metadata");
 						entry.find(".metadata a").remove();
@@ -229,9 +227,6 @@ $(document).ready(function() {
 
                 // Add yellow highlight
                 entry.addClass("new");
-
-				// Make sure the edit button says "Edit"
-				entry.find(".metadata .controls a.edit").html("Edit");
 
                 // Remove the yellow after two seconds
                 setTimeout(function() {
@@ -259,8 +254,6 @@ $(document).ready(function() {
 	$("#entries").on("keydown", ".entry .editbox textarea, .entry .editbox input[type=text]", "esc", function() {
 		var entry = $(this).parents(".entry:first");
 
-		entry.find(".metadata .controls a.edit").html("Edit");
-
 		// Hide the editbox
 		entry.find(".editbox").fadeOut(75, function() {
 			entry.find(".content").fadeIn(75);
@@ -275,8 +268,6 @@ $(document).ready(function() {
 		if ($("#entries .entry").length == 1) {
 			// Show the editbox
 			var entry = $("#entries .entry");
-
-			entry.find(".metadata .controls a.edit").html("Cancel");
 
 			entry.find(".content").fadeOut(75, function() {
 				entry.find(".editbox").fadeIn(75, function() {
@@ -470,12 +461,7 @@ function addEntry(text) {
 				entryHTML += '<date>' + data.date + '</date><time>' + data.time + '</time>';
 				entryHTML += '</a>';
 			}
-			entryHTML += '<div class="controls"><a href="" class="delete">Delete</a><a href="" class="edit">Edit</a></div>';
-			if (data.title != '' || data.slug != '') {
-				entryHTML += '<h2 class="page-title">' + ((data.title != '') ? data.title : data.slug) + '</h2>';
-			}
-			entryHTML += '</div>';
-			entryHTML += '<div class="content">' + data.html + '</div>';
+			entryHTML += '<div class="controls"><a href="" class="icon-pencil edit"></a><a href="" class="icon-remove delete"></a></div>';
 			if (data.tags.length > 0) {
 				entryHTML += '<ul class="tags">';
 				for (var i in data.tags) {
@@ -484,6 +470,11 @@ function addEntry(text) {
 				}
 				entryHTML += '</ul>';
 			}
+			entryHTML += '</div>';
+			if (data.title != '' || data.slug != '') {
+				entryHTML += '<h2 class="page-title">' + ((data.title != '') ? data.title : data.slug) + '</h2>';
+			}
+			entryHTML += '<div class="content">' + data.html + '</div>';
 			entryHTML += '<form class="editbox">';
 			entryHTML += '<textarea>' + data.content + '</textarea>';
 			entryHTML += '<div class="group"><label>Date:</label><input type="text" value="' + data.datetime + '" /></div>';

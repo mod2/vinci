@@ -289,6 +289,12 @@ $(document).ready(function() {
 
         $.post(url, { content: text }, function(data) {
             if (data.status == 'success') {
+				// Reload the page
+				location.reload(false);
+
+				// TODO: get the rest
+				/*
+
                 // Update content
                 entry.find(".content").html(data.html);
 
@@ -354,6 +360,7 @@ $(document).ready(function() {
                 entry.find(".editbox").fadeOut(75, function() {
                     entry.find(".content").fadeIn(75);
                 });
+				*/
             } else {
                 alert("Error editing entry");
             }
@@ -364,7 +371,6 @@ $(document).ready(function() {
 
 	$("#entries").on("keydown", ".entry .editbox textarea, .entry .editbox input[type=text]", "shift+return", function() {
 		$(this).parents(".editbox").submit();
-		$("#entries").focus();
 
 		return false;
 	});

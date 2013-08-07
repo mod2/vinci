@@ -8,7 +8,7 @@ a							{ color: #558bc0; }
 
 h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, h6:first-child	{ margin-top: 0; }
 
-body > header				{ background: #973939; overflow: auto; clear: both; padding: 15px 35px; width: 100%; border-bottom: solid 1px #ddd; }
+body > header				{ background: #973939; overflow: auto; clear: both; padding: 15px 35px; width: 100%; }
 body > header div.container	{ position: relative; }
 
 body > header h1			{ color: #fff; font-family: Charter, serif; font-style: italic; font-weight: normal; font-size: 1.7em; margin: 0; display: inline-block; line-height: 1em; letter-spacing: -0.03em; }
@@ -117,7 +117,7 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 .detail .entry.page ul.tags li		{ display: block; }
 .detail .entry.page ul.tags li a	{ padding: 3px 0; }
 
-.detail .entry.page .controls		{ font-size: 2em; }
+.detail .entry.page .controls		{ font-size: 1.5em; }
 
 
 /* Metadata (date/time, edit/delete) */

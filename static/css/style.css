@@ -8,21 +8,21 @@ a							{ color: #558bc0; }
 
 h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, h6:first-child	{ margin-top: 0; }
 
-body > header				{ background: #f5f5f5; overflow: auto; clear: both; padding: 15px 35px; width: 100%; border-bottom: solid 1px #ddd; }
+body > header				{ background: #973939; overflow: auto; clear: both; padding: 15px 35px; width: 100%; border-bottom: solid 1px #ddd; }
 body > header div.container	{ position: relative; }
 
-body > header h1			{ color: #000; font-family: Charter, serif; font-style: italic; font-weight: normal; font-size: 1.7em; margin: 0; display: inline-block; line-height: 1em; letter-spacing: -0.03em; }
-body > header h1 a			{ color: #000; text-decoration: none; }
+body > header h1			{ color: #fff; font-family: Charter, serif; font-style: italic; font-weight: normal; font-size: 1.7em; margin: 0; display: inline-block; line-height: 1em; letter-spacing: -0.03em; }
+body > header h1 a			{ color: #fff; text-decoration: none; }
 
 body > header nav			{ float: right; text-align: right; }
 body > header nav ul		{ padding: 0; margin: 0; list-style: none; }
 body > header nav ul li		{ padding: 0; display: inline-block; }
-body > header nav ul li a	{ font-size: 1.3em; display: inline-block; color: #ccc; }
+body > header nav ul li a	{ font-size: 1.3em; display: inline-block; color: #fff; }
 body > header nav ul li + li	{ margin-left: 10px; }
 
 body > header #search		{ display: none; text-align: right; margin-top: 5px; }
-body > header #search input	{ font-size: 1em; padding: 2px 4px; border: solid 1px #bbb; -moz-border-radius: 3px; border-radius: 3px; font-family: Helvetica, Arial, sans-serif; line-height: 1em; font-weight: bold; -webkit-transition: all .15s ease-in-out; -moz-transition: all .15s ease-in-out; transition: all .15s ease-in-out; color: #000; width: 100px; }
-body > header #search input:focus	{ outline: none; border-color: #6b8380; }
+body > header #search input	{ font-size: 1em; padding: 2px 4px; border: solid 1px #fff; -moz-border-radius: 3px; border-radius: 3px; font-family: Helvetica, Arial, sans-serif; line-height: 1em; font-weight: bold; color: #fff; width: 100px; background: none; }
+body > header #search input:focus	{ outline: none; }
 
 #page						{ padding: 15px 35px 100px; background: #fff; }
 body > header + #page		{ padding-top: 35px; }
@@ -33,7 +33,7 @@ h2.page-title				{ color: #345678; font-size: 1.6em; margin: 0 0 .5em 0; font-we
 /* Nav */
 /* -------------------------------------------------- */
 
-nav[role=pagination]		{ font-size: .8em; padding: 5px 35px; clear: both; overflow: auto; background: #fff; border-bottom: solid 1px #ddd; }
+nav[role=pagination]		{ font-size: .8em; padding: 5px 35px; clear: both; overflow: auto; background: #fff; border-bottom: solid 1px #ddd; display: none; }
 nav[role=pagination] label	{ color: #ccc; float: left; line-height: 1.9em; margin-right: 20px; }
 nav[role=pagination] .sort	{ float: left; }
 nav[role=pagination] .sort select	{ background: #eee; border: solid 1px #eee; -webkit-appearance: none; color: #bbb; padding: 2px 5px 2px; margin-left: 5px; cursor: pointer; font-family: Helvetica, Arial, sans-serif; }
@@ -102,7 +102,7 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 .list .entry.selected + .entry	{ margin-left: -15px; margin-right: -15px; padding-left: 15px; padding-right: 15px; }
 
 
-/* Pages in entry list */
+/* Pages */
 /* -------------------------------------------------- */
 
 .entry.page .metadata				{ float: right; margin: 0 0 15px 0; text-align: right; max-width: 200px; }
@@ -117,11 +117,13 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 .detail .entry.page ul.tags li		{ display: block; }
 .detail .entry.page ul.tags li a	{ padding: 3px 0; }
 
+.detail .entry.page .controls		{ font-size: 2em; }
+
 
 /* Metadata (date/time, edit/delete) */
 /* -------------------------------------------------- */
 
-.entry .metadata			{ font-size: .7em; color: #ddd; font-weight: normal; float: left; width: 180px; margin-right: 25px; margin-top: 3px; }
+.entry .metadata			{ font-size: .9em; color: #ddd; font-weight: normal; float: left; width: 180px; margin-right: 25px; margin-top: 3px; }
 .entry .metadata a			{ text-decoration: none; color: #ccc; }
 .entry .metadata a:hover	{ color: #000; }
 .entry.new .metadata a		{ color: #c4c092; }
@@ -206,8 +208,10 @@ a.addnotebook:hover			{ }
 
 	body > header + #page		{ padding-top: 15px; }
 
+	.submitbutton			{ background: #973939; color: #fff; }
+
 	#input					{ padding: 15px; }
-	#input .content input[type=submit]	{ display: block; width: 100%; background: #b9caa5; color: #6f8668; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: Helvetica, Arial, sans-serif; padding: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; -webkit-appearance: none; }
+	#input .content input[type=submit]	{ display: block; width: 100%; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: Helvetica, Arial, sans-serif; padding: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; -webkit-appearance: none; }
 
 	nav[role=pagination]	{ padding: 5px 15px; }
 
@@ -221,7 +225,7 @@ a.addnotebook:hover			{ }
 	.list .entry.selected	{ margin-left: 0; margin-right: 0; }
 	.list .entry.selected + .entry	{ margin-left: 0; margin-right: 0; }
 
-	.entry .metadata		{ float: none; width: auto; margin: 0; margin-bottom: 8px; }
+	.entry .metadata		{ float: none; width: auto; margin: 0; margin-bottom: 8px; font-size: .7em; }
 	.entry .metadata a		{ color: #bbb; }
 
 	.entry .controls		{ float: right; margin-top: 0; }
@@ -232,6 +236,7 @@ a.addnotebook:hover			{ }
 
 	.entry.page					{ padding: 0 15px; }
 	.detail .entry.page			{ padding: 0 15px; }
+	.detail .entry.page .controls		{ font-size: 1em; }
 
 	.entry.page .metadata	{ max-width: 100px; }
 	.entry.page .controls	{ float: none; }
@@ -242,18 +247,18 @@ a.addnotebook:hover			{ }
 	.entry.page ul.tags li a	{ padding: 1px 0; }
 
 	.entry .editbox			{ margin-left: 0; }
-	.entry .editbox input[type=submit]	{ display: block; width: 100%; background: #b9caa5; color: #6f8668; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: Helvetica, Arial, sans-serif; padding: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; -webkit-appearance: none; }
+	.entry .editbox input[type=submit]	{ display: block; width: 100%; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: Helvetica, Arial, sans-serif; padding: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; -webkit-appearance: none; }
 
 	.entry .editbox textarea    { font-size: 1em; }
 	#input .content textarea	{ font-size: 1em; }
 
 	#entries.list .entry.page	{ border: none; border-top: solid 1px #ddd; padding: 6px 15px; -moz-border-radius: 0; border-radius: 0; }
 
-	.addbox input[type=submit]	{ display: block; width: 100%; background: #b9caa5; color: #6f8668; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: Helvetica, Arial, sans-serif; padding: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; -webkit-appearance: none; }
+	.addbox input[type=submit]	{ display: block; width: 100%; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: Helvetica, Arial, sans-serif; padding: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; -webkit-appearance: none; }
 
 	#notebooks				{ padding: 10px 15px; }
 	#notebooks .notebook > a h2	{ font-size: 1.2em; }
-	#notebooks .notebook input[type=submit]	{ display: block; width: 100%; background: #b9caa5; color: #6f8668; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: Helvetica, Arial, sans-serif; padding: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; -webkit-appearance: none; }
+	#notebooks .notebook input[type=submit]	{ display: block; width: 100%; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: Helvetica, Arial, sans-serif; padding: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; -webkit-appearance: none; }
 
 	#nb-add-box				{ padding: 0 15px; }
 }

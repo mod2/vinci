@@ -27,6 +27,12 @@ $(document).ready(function() {
 	// Search box
 	// --------------------------------------------------
 
+	$("body > header nav ul li a.search").click(function() {
+		$("#search").toggle();
+
+		return false;
+	});
+
 	$(document).bind('keydown', '/', function() {
 		// Focus on the search box
 		$("#search input").focus();

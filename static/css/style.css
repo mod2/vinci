@@ -8,21 +8,24 @@ a							{ color: #558bc0; }
 
 h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, h6:first-child	{ margin-top: 0; }
 
-body > header				{ background: #2f4044; overflow: auto; clear: both; padding: 15px 35px; width: 100%; }
+body > header				{ background: #fff; overflow: auto; clear: both; padding: 15px 35px; width: 100%; border-bottom: solid 1px #ddd; }
 body > header div.container	{ position: relative; }
 
-body > header a.notebooks	{ display: block; text-decoration: none; color: #418383; font-size: .8em; text-transform: uppercase; margin-bottom: 3px; }
-body > header a.notebooks:hover	{ color: #fff; }
+body > header h1			{ color: #000; font-family: Charter, serif; font-style: italic; font-weight: normal; font-size: 1.7em; margin: 0; display: inline-block; line-height: 1em; letter-spacing: -0.03em; }
+body > header h1 a			{ color: #000; text-decoration: none; }
 
-body > header h1			{ color: #fff; font-weight: bold; font-size: 1.6em; margin: 0; padding-top: 1em; display: inline-block; line-height: 1em; }
-body > header h1 a			{ color: #fff; text-decoration: none; }
-body > header a.notebooks + h1	{ padding-top: 0; }
+body > header nav			{ float: right; text-align: right; }
+body > header nav ul		{ padding: 0; margin: 0; list-style: none; }
+body > header nav ul li		{ padding: 0; display: inline-block; }
+body > header nav ul li a	{ font-size: 1.3em; display: inline-block; color: #ccc; }
+body > header nav ul li + li	{ margin-left: 10px; }
 
-body > header #search		{ position: absolute; bottom: 0px; right: 0px; }
-body > header #search input	{ font-size: 1em; padding: 1px 8px; border: solid 1px #4b6360; background: #232b2a; -moz-border-radius: 1em; border-radius: 1em; font-family: Helvetica, Arial, sans-serif; line-height: 1em; font-weight: bold; -webkit-transition: all .15s ease-in-out; -moz-transition: all .15s ease-in-out; transition: all .15s ease-in-out; color: #fff; width: 250px; }
+body > header #search		{ display: none; text-align: right; margin-top: 5px; }
+body > header #search input	{ font-size: 1em; padding: 2px 4px; border: solid 1px #bbb; -moz-border-radius: 3px; border-radius: 3px; font-family: Helvetica, Arial, sans-serif; line-height: 1em; font-weight: bold; -webkit-transition: all .15s ease-in-out; -moz-transition: all .15s ease-in-out; transition: all .15s ease-in-out; color: #000; width: 100px; }
 body > header #search input:focus	{ outline: none; border-color: #6b8380; }
 
-#page						{ padding: 35px; padding-bottom: 100px; background: #fff; }
+#page						{ padding: 15px 35px 100px; background: #fff; }
+body > header + #page		{ padding-top: 35px; }
 
 h2.page-title				{ color: #345678; font-size: 1.6em; margin: 0 0 .5em 0; font-weight: normal; font-family: Charter; }
 
@@ -30,11 +33,12 @@ h2.page-title				{ color: #345678; font-size: 1.6em; margin: 0 0 .5em 0; font-we
 /* Nav */
 /* -------------------------------------------------- */
 
-nav[role=pagination]		{ font-size: .8em; padding: 5px 35px; clear: both; overflow: auto; background: #dde4d0; }
-nav[role=pagination] label	{ color: #adb695; float: left; line-height: 1.9em; margin-right: 20px; }
+nav[role=pagination]		{ font-size: .8em; padding: 5px 35px; clear: both; overflow: auto; background: #fff; border-bottom: solid 1px #ddd; }
+nav[role=pagination] label	{ color: #ccc; float: left; line-height: 1.9em; margin-right: 20px; }
 nav[role=pagination] .sort	{ float: left; }
-nav[role=pagination] .sort select	{ background: #ced6c5; border: solid 1px #ced6c5; -webkit-appearance: none; color: #9aa790; padding: 2px 5px 2px; margin-left: 5px; cursor: pointer; font-family: Helvetica, Arial, sans-serif; }
+nav[role=pagination] .sort select	{ background: #eee; border: solid 1px #eee; -webkit-appearance: none; color: #bbb; padding: 2px 5px 2px; margin-left: 5px; cursor: pointer; font-family: Helvetica, Arial, sans-serif; }
 nav[role=pagination] .sort select:hover	{ background: #fff; border-color: #fff; color: #000; }
+nav[role=pagination] .sort select:focus	{ border-color: #999; outline: none; }
 nav[role=pagination] .links	{ float: right; display: none; }
 nav[role=pagination] .links a	{ color: #91aa80; text-decoration: none; display: inline-block; line-height: 1.8em; }
 nav[role=pagination] .links a:hover	{ color: #fff; }
@@ -156,9 +160,9 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 
 .submitbutton				{ display: none; }
 
-#input						{ padding: 15px 35px; background: #9fad95; }
+#input						{ padding: 15px 35px; background: #f0f0f0; }
 #input .content				{ margin: 0px auto; width: 100%; }
-#input .content textarea	{ font-size: 1.1em; padding: 10px; -moz-border-radius: 3px; border-radius: 3px; width: 100%; height: 3em; font-family: Charter, Helvetica, Arial, sans-serif; background: #fff; border: solid 1px #808d69; }
+#input .content textarea	{ font-size: 1.1em; padding: 10px; -moz-border-radius: 3px; border-radius: 3px; width: 100%; height: 3em; font-family: Charter, Helvetica, Arial, sans-serif; background: #fff; border: solid 1px #bebebe; }
 #input .content textarea:focus	{ outline: none; height: 200px; }
 #input .content textarea.has-text	{ height: 200px; }
 
@@ -198,11 +202,11 @@ a.addnotebook:hover			{ }
 	body					{ background: #fff; }
 
 	body > header			{ padding: 10px 15px; }
-	body > header a.notebooks + h1	{ font-size: 1.2em; }
+	body > header h1			{ font-size: 1.4em; }
 	body > header #search input	{ width: 100px; }
 
 	#input					{ padding: 15px; }
-	#input .content input[type=submit]	{ display: block; width: 100%; background: #728161; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: Helvetica, Arial, sans-serif; padding: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; -webkit-appearance: none; }
+	#input .content input[type=submit]	{ display: block; width: 100%; background: #b9caa5; color: #6f8668; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: Helvetica, Arial, sans-serif; padding: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; -webkit-appearance: none; }
 
 	nav[role=pagination]	{ padding: 5px 15px; }
 

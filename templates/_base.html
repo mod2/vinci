@@ -46,13 +46,18 @@
 	{% block header %}
 	<header>
 		<div class="container">
-			<a class="notebooks" href="{{ url_for('index') }}">Notebooks</a>
+			<nav>
+				<ul>
+					<li><a class="icon-search search" href=""></a></li>
+					<li><a class="icon-home notebooks" href="{{ url_for('index') }}"></a></li>
+				</ul>
+
+				<form id="search">
+					<input type="text"{% if query %}value="{{ query }}"{% endif %}/>
+				</form>
+			</nav>
 
 			<h1>{% if notebook %}<a href="{{ url_for('index') ~ notebook.slug }}">{% endif %}{{ title }}{% if notebook %}</a>{% endif %}</h1>
-
-			<form id="search">
-				<input type="text"{% if query %}value="{{ query }}"{% endif %}/>
-			</form>
 		</div>
 	</header>
 	{% endblock header %}

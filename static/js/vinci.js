@@ -129,6 +129,31 @@ $(document).ready(function() {
 	});
 
 
+	// Shortcuts
+	// --------------------------------------------------
+
+	// Notebook page
+	$(document).bind('keydown', 'h', function() {
+		window.location.href = config.url + config.notebook;
+
+		return false;
+	});
+
+	// Notebook/entry/home
+	$(document).bind('keydown', 'shift+h', function() {
+		window.location.href = config.url + config.notebook + '/entry/home';
+
+		return false;
+	});
+
+	// All notebooks
+	$(document).bind('keydown', 'n', function() {
+		window.location.href = config.url;
+
+		return false;
+	});
+
+
 	// Entry box
 	// --------------------------------------------------
 

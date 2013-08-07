@@ -117,7 +117,6 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 .detail .entry.page ul.tags li		{ display: block; }
 .detail .entry.page ul.tags li a	{ padding: 3px 0; }
 
-.detail .entry.page .controls		{ font-size: 1.5em; }
 
 
 /* Metadata (date/time, edit/delete) */
@@ -132,6 +131,8 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 .entry .controls a			{ display: inline-block; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
 .entry .controls a + a		{ margin-left: 4px; }
 
+.detail .entry .controls	{ font-size: 1.5em; }
+
 .entry .metadata date		{ display: inline-block; }
 .entry .metadata time		{ display: inline-block; }
 
@@ -142,7 +143,7 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 .entry a.tag				{ color: #7499b6; cursor: pointer; text-decoration: none; }
 .entry a.tag:hover			{ color: #930; }
 
-.entry ul.tags				{ list-style: none; padding: 0; margin: 5px 0 0 0; }
+.entry ul.tags				{ list-style: none; padding: 0; margin: 0; }
 .entry ul.tags li			{ display: inline-block; }
 .entry ul.tags li + li		{ margin-left: 10px; }
 .entry ul.tags li a			{ text-decoration: none; color: #a9c7df; cursor: pointer; display: inline-block; padding: 4px 0; }
@@ -218,7 +219,7 @@ a.addnotebook:hover			{ }
 	#page					{ padding: 15px 0; background: #fff; }
 	#infscr-loading			{ padding: 0 15px; }
 
-	.entry					{ padding: 5px 15px 15px; } 
+	.entry					{ padding: 5px 15px 25px; } 
 	.entry:first-child		{ padding-top: 0; }
 	.entry .content			{ margin-left: 0; font-size: 1.05em; }
 
@@ -232,7 +233,8 @@ a.addnotebook:hover			{ }
 	.entry .controls a		{ font-size: 1.3em; color: #ddd; }
 	.entry .controls a + a	{ margin-left: 8px; }
 
-	.detail .entry ul.tags    { margin-top: 1em; }
+	.detail .entry .controls	{ font-size: 1.2em; }
+	.detail .entry ul.tags    { margin-top: 0; }
 
 	.entry.page					{ padding: 0 15px; }
 	.detail .entry.page			{ padding: 0 15px; }
@@ -252,7 +254,7 @@ a.addnotebook:hover			{ }
 	.entry .editbox textarea    { font-size: 1em; }
 	#input .content textarea	{ font-size: 1em; }
 
-	#entries.list .entry.page	{ border: none; border-top: solid 1px #ddd; padding: 6px 15px; -moz-border-radius: 0; border-radius: 0; }
+	#entries.list .entry.page	{ border: none; border-top: solid 1px #ddd; padding: 15px 15px 25px; -moz-border-radius: 0; border-radius: 0; }
 
 	.addbox input[type=submit]	{ display: block; width: 100%; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: Helvetica, Arial, sans-serif; padding: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; -webkit-appearance: none; }
 

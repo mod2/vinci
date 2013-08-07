@@ -1,6 +1,6 @@
 *							{ -moz-box-sizing: border-box; box-sizing: border-box; }
 
-body						{ margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif; background: #fff; }
+body						{ margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif; background: #fff; text-rendering: optimizeLegibility; }
 
 .container					{ width: 100%; max-width: 800px; margin: 0px auto; }
 
@@ -8,7 +8,7 @@ a							{ color: #558bc0; }
 
 h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, h6:first-child	{ margin-top: 0; }
 
-body > header				{ background: #fff; overflow: auto; clear: both; padding: 15px 35px; width: 100%; border-bottom: solid 1px #ddd; }
+body > header				{ background: #f5f5f5; overflow: auto; clear: both; padding: 15px 35px; width: 100%; border-bottom: solid 1px #ddd; }
 body > header div.container	{ position: relative; }
 
 body > header h1			{ color: #000; font-family: Charter, serif; font-style: italic; font-weight: normal; font-size: 1.7em; margin: 0; display: inline-block; line-height: 1em; letter-spacing: -0.03em; }
@@ -170,17 +170,16 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 /* Notebooks page */
 /* -------------------------------------------------- */
 
-#notebooks .notebook		{ background: #fff; margin-bottom: 2em; -moz-border-radius: 3px; border-radius: 3px;
-box-shadow: 1px 1px 15px #ccc; border-left: solid 25px #c7b58e; }
-#notebooks .notebook:hover	{ box-shadow: 1px 1px 15px #999; }
-#notebooks .notebook:last-child	{ margin-bottom: 0; }
-#notebooks .notebook > a		{ text-decoration: none; display: block; padding: 15px; }
-#notebooks .notebook > a h2	{ margin: 0; line-height: 1.2em; color: #43a2b9; }
+#notebooks .notebook		{ padding-bottom: .5em; margin-bottom: .5em; border-bottom: solid 1px #ddd; }
+#notebooks .notebook:last-child	{ margin-bottom: 0; border-bottom: none; }
+#notebooks .notebook > a		{ text-decoration: none; display: block; padding: 5px; }
+#notebooks .notebook > a h2	{ margin: 0; line-height: 1em; color: #43a2b9; font-family: Charter, serif; font-weight: normal; font-style: italic; }
 #notebooks .notebook > a p	{ margin: 0; font-size: .9em; font-weight: normal; color: #999; }
 
-#notebooks .notebook .controls	{ padding: 15px; font-size: .9em; }
+#notebooks .notebook .controls	{ padding: 5px; font-size: 1.2em; float: right; }
 #notebooks .notebook .controls a	{ color: #ccc; text-decoration: none; -webkit-transition: color .35s ease-in-out; -moz-transition: color .35s ease-in-out; transition: color .35s ease-in-out; }
 #notebooks .notebook .controls a:hover	{ color: #000; }
+#notebooks .notebook .controls a + a	{ margin-left: 5px; }
 
 a.addnotebook				{ color: #999; text-decoration: none; display: block; margin-top: 1.5em; }
 a.addnotebook:hover			{ }
@@ -205,6 +204,8 @@ a.addnotebook:hover			{ }
 	body > header h1			{ font-size: 1.4em; }
 	body > header #search input	{ width: 100px; }
 
+	body > header + #page		{ padding-top: 15px; }
+
 	#input					{ padding: 15px; }
 	#input .content input[type=submit]	{ display: block; width: 100%; background: #b9caa5; color: #6f8668; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: Helvetica, Arial, sans-serif; padding: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; -webkit-appearance: none; }
 
@@ -215,7 +216,7 @@ a.addnotebook:hover			{ }
 
 	.entry					{ padding: 5px 15px 15px; } 
 	.entry:first-child		{ padding-top: 0; }
-	.entry .content			{ margin-left: 0; }
+	.entry .content			{ margin-left: 0; font-size: 1.05em; }
 
 	.list .entry.selected	{ margin-left: 0; margin-right: 0; }
 	.list .entry.selected + .entry	{ margin-left: 0; margin-right: 0; }
@@ -241,21 +242,18 @@ a.addnotebook:hover			{ }
 	.entry.page ul.tags li a	{ padding: 1px 0; }
 
 	.entry .editbox			{ margin-left: 0; }
-	.entry .editbox input[type=submit]	{ display: block; width: 100%; background: #728161; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: Helvetica, Arial, sans-serif; padding: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; -webkit-appearance: none; }
+	.entry .editbox input[type=submit]	{ display: block; width: 100%; background: #b9caa5; color: #6f8668; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: Helvetica, Arial, sans-serif; padding: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; -webkit-appearance: none; }
 
 	.entry .editbox textarea    { font-size: 1em; }
 	#input .content textarea	{ font-size: 1em; }
 
 	#entries.list .entry.page	{ border: none; border-top: solid 1px #ddd; padding: 6px 15px; -moz-border-radius: 0; border-radius: 0; }
 
-	.addbox input[type=submit]	{ display: block; width: 100%; background: #728161; color: #fff; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: Helvetica, Arial, sans-serif; padding: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; -webkit-appearance: none; }
+	.addbox input[type=submit]	{ display: block; width: 100%; background: #b9caa5; color: #6f8668; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: Helvetica, Arial, sans-serif; padding: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; -webkit-appearance: none; }
 
 	#notebooks				{ padding: 10px 15px; }
-	#notebooks .notebook	{ margin-bottom: 1em; border-left-width: 15px; }
-	#notebooks .notebook .controls	{ padding: 10px; }
-	#notebooks .notebook > a	{ padding: 10px; }
 	#notebooks .notebook > a h2	{ font-size: 1.2em; }
-	#notebooks .notebook .editbox	{ padding: 10px; padding-top: 0; }
-	a.addnotebook			{ margin-top: 1em; font-size: .9em; }
+	#notebooks .notebook input[type=submit]	{ display: block; width: 100%; background: #b9caa5; color: #6f8668; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: Helvetica, Arial, sans-serif; padding: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; -webkit-appearance: none; }
+
 	#nb-add-box				{ padding: 0 15px; }
 }

@@ -11,6 +11,19 @@ $(document).ready(function() {
 		}, processEntries);
 	}
 
+
+	// Add viewport to the window object
+	// http://geekswithblogs.net/khillinger/archive/2009/06/04/jquery-and-the-viewport-dimensions.aspx
+	// --------------------------------------------------
+
+	window.viewport = {
+		height: function() { return $(window).height(); },
+		width: function() { return $(window).width(); },
+		scrollTop: function() { return $(window).scrollTop(); },
+		scrollLeft: function() { return $(window).scrollLeft(); }
+	};
+
+
 	// Search box
 	// --------------------------------------------------
 
@@ -44,6 +57,56 @@ $(document).ready(function() {
 		}
 
 		window.location.href = url;
+
+		return false;
+	});
+
+
+	// Entry list
+	// --------------------------------------------------
+
+	$(document).bind('keydown', 'j', function() {
+		// If nothing selected, select the first
+		if ($(".list .entry.selected").length == 0) {
+			$(".list .entry:first-child").addClass("selected");
+		} else {
+			var selected = $(".list .entry.selected");
+			var nextEntry = selected.next();
+
+			if (nextEntry.length > 0) {
+				nextEntry.addClass("selected");
+				selected.removeClass("selected");
+
+				if (nextEntry.offset().top + nextEntry.height() > $(window).scrollTop() + viewport.height() - 100) {
+					$(window).scrollTop($(window).scrollTop() + nextEntry.height() + 100);
+				}
+			}
+		}
+
+		// TODO: pagination
+
+		return false;
+	});
+
+	$(document).bind('keydown', 'k', function() {
+		// If nothing selected, select the first
+		if ($(".list .entry.selected").length == 0) {
+			$(".list .entry:first-child").addClass("selected");
+		} else {
+			var selected = $(".list .entry.selected");
+			var prevEntry = selected.prev();
+
+			if (prevEntry.length > 0) {
+				prevEntry.addClass("selected");
+				selected.removeClass("selected");
+
+				if (prevEntry.offset().top < $(window).scrollTop()) {
+					$(window).scrollTop($(window).scrollTop() - prevEntry.height() - 80);
+				}
+			}
+		}
+
+		// TODO: pagination
 
 		return false;
 	});

@@ -44,8 +44,8 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 /* Entries */
 /* -------------------------------------------------- */
 
-.entry						{ padding: 1.25em 0; overflow: hidden; overflow-x: auto; clear: both; -webkit-transition: background .35s ease-in-out; -moz-transition: background .35s ease-in-out; transition: background .35s ease-in-out; border-top: solid 1px #ddd; }
-.entry.new					{ background: #ffffed; }
+.entry						{ padding: 1.25em 0; overflow: hidden; overflow-x: auto; clear: both; -webkit-transition: background .2s ease-in-out; -moz-transition: background .2s ease-in-out; transition: background .2s ease-in-out; border-top: solid 1px #ddd; }
+.entry.new					{ background: #ffffe0; }
 .entry:first-child			{ border-top: none; padding-top: 0; }
 
 .entry .content				{ line-height: 1.4em; margin-left: 205px; font-family: Charter; font-size: 1.1em; }
@@ -94,7 +94,8 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 /* Selected entries */
 /* -------------------------------------------------- */
 
-.list .entry.selected		{ background: #ffffed; }
+.list .entry.selected		{ background: #ffffe0; margin-left: -15px; margin-right: -15px; padding-left: 15px; padding-right: 15px; }
+.list .entry.selected + .entry	{ margin-left: -15px; margin-right: -15px; padding-left: 15px; padding-right: 15px; }
 
 
 /* Pages in entry list */

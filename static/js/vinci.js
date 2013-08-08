@@ -586,10 +586,9 @@ function addEntry(text) {
 			entryHTML += '<div class="metadata">';
 			if (data.title == '' && data.slug == '') {
 				entryHTML += '<a href="' + config.url + config.notebook + '/entry/' + data.url + '">';
-				entryHTML += '<date>' + data.date + '</date><time>' + data.time + '</time>';
+				entryHTML += '<time>' + data.time + '</time>, <date>' + data.date + '</date>';
 				entryHTML += '</a>';
 			}
-			entryHTML += '<div class="controls"><a href="" class="icon-pencil edit"></a><a href="" class="icon-remove delete"></a></div>';
 			if (data.tags.length > 0) {
 				entryHTML += '<ul class="tags">';
 				for (var i in data.tags) {

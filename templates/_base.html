@@ -7,7 +7,6 @@
 
 	<title>{% block title %}{{ title }} | Vinci{% endblock title %}</title>
 
-	<link href="{{ url_for('static', filename='css/fonts.css') }}" rel="stylesheet" type="text/css" charset="utf-8" />
 	<link href="{{ url_for('static', filename='css/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css" charset="utf-8" />
 	<link href="{{ url_for('static', filename='css/style.css') }}?v4" rel="stylesheet" type="text/css" charset="utf-8" />
     {% if custom and custom.css %}

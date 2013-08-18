@@ -47,7 +47,7 @@ h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, 
 body > header				{ background: #973939; overflow: auto; clear: both; padding: 15px 35px; width: 100%; }
 body > header div.container	{ position: relative; }
 
-body > header h1			{ color: #fff; font-family: Charter, serif; font-style: italic; font-weight: normal; font-size: 1.7em; margin: 0; display: inline-block; line-height: 1em; letter-spacing: -0.03em; }
+body > header h1			{ color: #fff; font-family: Charter, serif; font-style: italic; font-weight: normal; font-size: 1.7em; margin: 0; display: inline; line-height: 1em; letter-spacing: -0.03em; }
 body > header h1 a			{ color: #fff; text-decoration: none; }
 
 body > header nav			{ float: right; text-align: right; }

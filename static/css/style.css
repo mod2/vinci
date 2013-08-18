@@ -194,7 +194,8 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 .entry .editbox .group      { margin: 3px 0 10px; }
 .entry .editbox .group label    { font-size: .9em; color: #999; margin-right: 5px; }
 .entry .editbox .group input[type=text] { font-size: .9em; padding: 2px 3px; -moz-border-radius: 3px; border-radius: 3px; border: solid 1px #bbb; font-family: Charter, Helvetica, Arial, sans-serif; width: 250px; }
-.entry .editbox textarea    { font-size: 1.1em; padding: 10px; -moz-border-radius: 3px; border-radius: 3px; width: 100%; height: 200px; font-family: Charter, Helvetica, Arial, sans-serif; background: #fff; border: solid 1px #bbb; -webkit-appearance: none; }
+.entry .editbox textarea    { font-size: 1.1em; padding: 10px; -moz-border-radius: 3px; border-radius: 3px; width: 100%; height: 600px; font-family: Charter, Helvetica, Arial, sans-serif; background: #fff; border: solid 1px #bbb; -webkit-appearance: none; }
+.list .entry .editbox textarea    { height: 200px; }
 .entry .editbox textarea:focus { outline: none; }
 
 .submitbutton				{ display: none; }
@@ -202,7 +203,7 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 #input						{ padding: 15px 35px; background: #f0f0f0; }
 #input .content				{ margin: 0px auto; width: 100%; }
 #input .content textarea	{ font-size: 1.1em; padding: 10px; -moz-border-radius: 3px; border-radius: 3px; width: 100%; height: 3em; font-family: Charter, Helvetica, Arial, sans-serif; background: #fff; border: solid 1px #bebebe; -webkit-appearance: none; }
-#input .content textarea:focus	{ outline: none; height: 200px; }
+#input .content textarea:focus	{ outline: none; height: 400px; }
 #input .content textarea.has-text	{ height: 200px; }
 
 
@@ -287,8 +288,9 @@ a.addnotebook:hover			{ }
 	.entry .editbox			{ margin-left: 0; }
 	.entry .editbox input[type=submit]	{ display: block; width: 100%; border: none; -moz-border-radius: 5px; border-radius: 5px; font-family: Helvetica, Arial, sans-serif; padding: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; -webkit-appearance: none; }
 
-	.entry .editbox textarea    { font-size: 1em; }
+	.entry .editbox textarea    { font-size: 1em; height: 200px; }
 	#input .content textarea	{ font-size: 1em; }
+	#input .content textarea:focus	{ height: 200px; }
 
 	#entries.list .entry.page	{ border: none; border-top: solid 1px #ddd; padding: 15px 15px 25px; -moz-border-radius: 0; border-radius: 0; }
 

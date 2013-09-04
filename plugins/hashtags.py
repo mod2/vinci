@@ -6,4 +6,4 @@ import re
 def process(content, entry, notebook_url):
     """ Convert hashtags to links """
 
-    return re.sub(r"#(\w+)", r'<a href="%s/tag/\1" class="tag">#\1</a>' % notebook_url, content)
+    return re.sub(r"\s#(\w+)", r'<a href="%s/tag/\1" class="tag">#\1</a>' % notebook_url, content)

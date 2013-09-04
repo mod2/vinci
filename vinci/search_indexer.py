@@ -78,7 +78,7 @@ def delete_from_index(document):
 
 def _get_tags(entry):
     """Parses the entry content and returns a list of tags found in it."""
-    tag_re = re.compile(r"#(\w+)")
+    tag_re = re.compile(r"\s#(\w+)")
     other_tags_re = re.compile(r"^tags:(.*)")
     tags = tag_re.findall(entry.content)
     header = entry.content.split('----')[0]

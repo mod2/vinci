@@ -129,14 +129,18 @@ def get_entries(notebook_slug,
     return entries.paginate(page, num_per_page), total_entries, total_pages
 
 
-def get_entry(notebook_slug, id=-1, slug=''):
-    nb = get_notebook(notebook_slug)
-
+def get_entry(notebook_slug='', id=-1, slug=''):
     """Get a specific entry"""
-    if id != -1:
+    nb = None
+    if notebook_slug != '':
+        nb = get_notebook(notebook_slug)
+
+    if id != -1 and nb is not None:
         return m.Entry.get(m.Entry.id == id, m.Entry.notebook == nb)
-    elif slug != '':
+    elif slug != '' and nb is not None:
         return m.Entry.get(m.Entry.slug == slug, m.Entry.notebook == nb)
+    elif nb is None and slug != '':
+        return m.Entry.get(m.Entry.slug == slug)
     else:
         return None
 
@@ -153,7 +157,7 @@ def search(query, page=1, sort_order='relevance'):
 
     for entry in entries:
         results.append((page_results[entry.id], entry))
-    results.sort() # depends on sort
+    results.sort()  # depends on sort
     return [entry for rank, entry in results], total_hits, total_pages
 
 

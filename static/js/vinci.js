@@ -11,11 +11,31 @@ $(document).ready(function() {
 		}, processEntries);
 	}
 
+
+	// Add viewport to the window object
+	// http://geekswithblogs.net/khillinger/archive/2009/06/04/jquery-and-the-viewport-dimensions.aspx
+	// --------------------------------------------------
+
+	window.viewport = {
+		height: function() { return $(window).height(); },
+		width: function() { return $(window).width(); },
+		scrollTop: function() { return $(window).scrollTop(); },
+		scrollLeft: function() { return $(window).scrollLeft(); }
+	};
+
+
 	// Search box
 	// --------------------------------------------------
 
+	$("body > header nav ul li a.search").on("click touchstart", function() {
+		$("#search").toggle();
+
+		return false;
+	});
+
 	$(document).bind('keydown', '/', function() {
 		// Focus on the search box
+		$("#search").show();
 		$("#search input").focus();
 
 		return false;
@@ -24,6 +44,7 @@ $(document).ready(function() {
 	$("#search input").bind('keydown', 'esc', function() {
 		// Unfocus the search box
 		$("#search input").blur();
+		$("#search").hide();
 
 		return false;
 	});
@@ -44,6 +65,102 @@ $(document).ready(function() {
 		}
 
 		window.location.href = url;
+
+		return false;
+	});
+
+
+	// Entry list
+	// --------------------------------------------------
+
+	$(document).bind('keydown', 'j', function() {
+		// If nothing selected, select the first
+		if ($(".list .entry.selected").length == 0) {
+			$(".list .entry:first-child").addClass("selected");
+		} else {
+			var selected = $(".list .entry.selected");
+			var nextEntry = selected.next();
+
+			if (nextEntry.length > 0) {
+				nextEntry.addClass("selected");
+				selected.removeClass("selected");
+
+				if (nextEntry.offset().top + nextEntry.height() > $(window).scrollTop() + viewport.height() - 100) {
+					$(window).scrollTop($(window).scrollTop() + nextEntry.height() + 100);
+				}
+			}
+		}
+
+		// TODO: pagination
+
+		return false;
+	});
+
+	$(document).bind('keydown', 'k', function() {
+		// If nothing selected, select the first
+		if ($(".list .entry.selected").length == 0) {
+			$(".list .entry:first-child").addClass("selected");
+		} else {
+			var selected = $(".list .entry.selected");
+			var prevEntry = selected.prev();
+
+			if (prevEntry.length > 0) {
+				prevEntry.addClass("selected");
+				selected.removeClass("selected");
+
+				if (prevEntry.offset().top < $(window).scrollTop()) {
+					$(window).scrollTop($(window).scrollTop() - prevEntry.height() - 80);
+				}
+			}
+		}
+
+		// TODO: pagination
+
+		return false;
+	});
+
+
+	$(document).bind('keydown', 'return', function() {
+		if ($(".list .entry.selected").length > 0) {
+			// Go to the selected entry
+
+			if ($(".list .entry.selected .metadata > a").length > 0) {
+				// Entry
+				window.location.href = $(".list .entry.selected .metadata > a").attr('href');
+			} else if ($(".list .entry.selected h3 a").length > 0) {
+				// Page
+				window.location.href = $(".list .entry.selected h3 a").attr('href');
+			}
+
+			return false;
+		}
+	});
+
+
+	// Shortcuts
+	// --------------------------------------------------
+
+	// Notebook page
+	$(document).bind('keydown', 'n', function() {
+		if (config.notebook) {
+			window.location.href = config.url + config.notebook;
+		}
+
+		return false;
+	});
+
+	// Notebook/entry/home
+	$(document).bind('keydown', 'h', function() {
+		if (config.notebook) {
+			window.location.href = config.url + config.notebook + '/entry/home';
+		}
+
+		return false;
+	});
+
+	// All notebooks
+	$(document).bind('keydown', 'a', function() {
+		window.location.href = config.url;
 
 		return false;
 	});
@@ -140,7 +257,6 @@ $(document).ready(function() {
 
 		if (entry.find(".content:visible").length > 0) {
 			// Show the editbox
-			$(this).html("Cancel");
 			entry.find(".content").fadeOut(75, function() {
 				entry.find(".editbox").fadeIn(75, function() {
 					$(this).find("textarea").focus();
@@ -148,7 +264,6 @@ $(document).ready(function() {
 			});
 		} else {
 			// Hide the editbox
-			$(this).html("Edit");
 			entry.find(".editbox").fadeOut(75, function() {
 				entry.find(".content").fadeIn(75);
 			});
@@ -174,6 +289,12 @@ $(document).ready(function() {
 
         $.post(url, { content: text }, function(data) {
             if (data.status == 'success') {
+				// Reload the page
+				location.reload(false);
+
+				// TODO: get the rest
+				/*
+
                 // Update content
                 entry.find(".content").html(data.html);
 
@@ -219,8 +340,8 @@ $(document).ready(function() {
 				}
 
 				if (title != '') {
-					if (entry.find(".metadata h2.page-title").length > 0) {
-						entry.find(".metadata h2.page-title").html(title);
+					if (entry.find("h2.page-title").length > 0) {
+						entry.find("h2.page-title").html(title);
 					} else {
 						$('<h2 class="page-title">' + title + '</h2>').appendTo(".metadata");
 						entry.find(".metadata a").remove();
@@ -229,9 +350,6 @@ $(document).ready(function() {
 
                 // Add yellow highlight
                 entry.addClass("new");
-
-				// Make sure the edit button says "Edit"
-				entry.find(".metadata .controls a.edit").html("Edit");
 
                 // Remove the yellow after two seconds
                 setTimeout(function() {
@@ -242,6 +360,7 @@ $(document).ready(function() {
                 entry.find(".editbox").fadeOut(75, function() {
                     entry.find(".content").fadeIn(75);
                 });
+				*/
             } else {
                 alert("Error editing entry");
             }
@@ -259,8 +378,6 @@ $(document).ready(function() {
 	$("#entries").on("keydown", ".entry .editbox textarea, .entry .editbox input[type=text]", "esc", function() {
 		var entry = $(this).parents(".entry:first");
 
-		entry.find(".metadata .controls a.edit").html("Edit");
-
 		// Hide the editbox
 		entry.find(".editbox").fadeOut(75, function() {
 			entry.find(".content").fadeIn(75);
@@ -270,14 +387,16 @@ $(document).ready(function() {
 	});
 
 	$(document).bind("keydown", "shift+return", function() {
-		console.log("shift+return");
-		// Detail, so there's only one entry
 		if ($("#entries .entry").length == 1) {
-			// Show the editbox
+			// Detail, so there's only one entry
 			var entry = $("#entries .entry");
+		} else {
+			// List page, see if we have a selected entry
+			var entry = $(".list .entry.selected");
+		}
 
-			entry.find(".metadata .controls a.edit").html("Cancel");
-
+		if (entry) {
+			// Show the editbox
 			entry.find(".content").fadeOut(75, function() {
 				entry.find(".editbox").fadeIn(75, function() {
 					$(this).find("textarea").focus();
@@ -467,15 +586,9 @@ function addEntry(text) {
 			entryHTML += '<div class="metadata">';
 			if (data.title == '' && data.slug == '') {
 				entryHTML += '<a href="' + config.url + config.notebook + '/entry/' + data.url + '">';
-				entryHTML += '<date>' + data.date + '</date><time>' + data.time + '</time>';
+				entryHTML += '<time>' + data.time + '</time>, <date>' + data.date + '</date>';
 				entryHTML += '</a>';
 			}
-			entryHTML += '<div class="controls"><a href="" class="delete">Delete</a><a href="" class="edit">Edit</a></div>';
-			if (data.title != '' || data.slug != '') {
-				entryHTML += '<h2 class="page-title">' + ((data.title != '') ? data.title : data.slug) + '</h2>';
-			}
-			entryHTML += '</div>';
-			entryHTML += '<div class="content">' + data.html + '</div>';
 			if (data.tags.length > 0) {
 				entryHTML += '<ul class="tags">';
 				for (var i in data.tags) {
@@ -484,6 +597,11 @@ function addEntry(text) {
 				}
 				entryHTML += '</ul>';
 			}
+			entryHTML += '</div>';
+			if (data.title != '' || data.slug != '') {
+				entryHTML += '<h2 class="page-title">' + ((data.title != '') ? data.title : data.slug) + '</h2>';
+			}
+			entryHTML += '<div class="content">' + data.html + '</div>';
 			entryHTML += '<form class="editbox">';
 			entryHTML += '<textarea>' + data.content + '</textarea>';
 			entryHTML += '<div class="group"><label>Date:</label><input type="text" value="' + data.datetime + '" /></div>';

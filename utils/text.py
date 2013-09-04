@@ -66,10 +66,10 @@ def process(content, entry, notebook_url):
     response = parse_header(content)
 
     # Pull in any hashtags from the content
-    m = re.findall(r"\s#(\w+)", response['content'])
-    for tag in m:
-        if tag not in response['tags']:
-            response['tags'].append(tag)
+    #m = re.findall(r"\s#(\w+)", response['content'])
+    #for tag in m:
+    #    if tag not in response['tags']:
+    #        response['tags'].append(tag)
 
     # Go through the list (if present) and apply each plugin
     for plugin_name in response['plugins']:

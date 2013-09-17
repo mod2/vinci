@@ -38,4 +38,7 @@ plugins = {
     'poetry': {
         'css': ['poetry.css']
     },
+    'langforms': {
+        'css': ['langforms.css']
+    },
 }

@@ -8,6 +8,7 @@ Web-based notebook.
 2. Activate your virtualenv.
 3. Run `pip install -r requirements.txt`.
 4. Copy `config_sample.py` to `config.py` and edit.
+5. `mkdir data`
 
 ### Plugins
 

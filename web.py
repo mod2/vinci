@@ -597,4 +597,4 @@ def server_error(error):
 
 if __name__ == '__main__':
     app.debug = config.debug
-    app.run()
+    app.run(config.host, config.port)

@@ -9,6 +9,10 @@ results_per_page = 10
 default_sort_order = 'date_desc' # date_asc, date_desc
 default_search_order = 'relevance' # relevance, date_asc, date_desc
 
+# host/port settings for running via Flask web server
+host = '127.0.0.1'
+port = 5001
+
 # main admin user
 admin = {
     'username': 'example@example.com',

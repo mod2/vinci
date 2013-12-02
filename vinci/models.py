@@ -31,14 +31,13 @@ class User(BaseModel):
     admin = p.BooleanField(default=False)
 
 
-class Entry(BaseModel):
+class Revision(BaseModel):
     content = p.TextField()
-    notebook = p.ForeignKeyField(Notebook, related_name='entries')
+    parent = p.ForeignKeyField('self', related_name='children', null=True)
     title = p.TextField(default='')
     slug = p.TextField(default='')
-    author = p.ForeignKeyField(User, related_name='entries')
+    author = p.ForeignKeyField(User, related_name='revisions')
     date = p.DateTimeField(default=datetime.now)
-    last_modified = p.DateTimeField(default=datetime.now)
 
     class Meta:
         order_by = ('-date',)
@@ -49,12 +48,21 @@ class Entry(BaseModel):
                 pass
         except p.DoesNotExist:
             self.author = User.get(User.id == 1)
-        self.last_modified = datetime.now()
-        return super(Entry, self).save(force_insert, only)
+        self.date = datetime.now()
+        return super(Revision, self).save(force_insert, only)
+
+
+class Entry(BaseModel):
+    current_revision = p.ForeignKeyField(Revision, null=True, default=None)
+    notebook = p.ForeignKeyField(Notebook, related_name='entries')
+    date = p.DateTimeField(default=datetime.now)
+
+    class Meta:
+        order_by = ('-date',)
 
     def serializable(self):
         entry = {}
-        entry['content'] = self.content
+        entry['content'] = self.current_revision.content
         entry['notebook'] = self.notebook.slug
         entry['author'] = self.author.display
         entry['date'] = self.date.strftime(DATETIME_FORMAT)
@@ -67,6 +75,7 @@ def init_db(dbname, admin):
     Notebook.create_table(True)
     Entry.create_table(True)
     User.create_table(True)
+    Revision.create_table(True)
     # add the admin user if doesn't exist
     if User.select().count() == 0:
         admin = User(username=admin['username'],

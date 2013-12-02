@@ -19,7 +19,7 @@ def process_entry(entry):
     notebook_url = '%s%s' % (url_for('index'), entry.notebook.slug)
 
     # Prep the HTML
-    response = utils.text.process(entry.content,
+    response = utils.text.process(entry.current_revision.content,
                                   entry,
                                   notebook_url)
 
@@ -30,7 +30,7 @@ def process_entry(entry):
             'name': entry.notebook.name,
         },
         'date': entry.date,
-        'content': entry.content,
+        'content': entry.current_revision.content,
         'title': response['title'],
         'slug': response['slug'],
         'tags': response['tags'],

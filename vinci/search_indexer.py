@@ -35,10 +35,10 @@ def full_index(database_file=config.database_file, admin=config.admin):
     ix = index.create_in(config.index_dir, default_index_schema())
     writer = ix.writer()
     for entry in Entry.select():
-        etype = u'page' if entry.slug != '' else u'entry'
+        etype = u'page' if entry.current_revision.slug != '' else u'entry'
         writer.add_document(id=unicode(entry.id),
                             notebook=entry.notebook.slug,
-                            content=entry.content,
+                            content=entry.current_revision.content,
                             tag=u" ".join(_get_tags(entry)),
                             type=etype,
                             date=entry.date)
@@ -49,18 +49,18 @@ def add_or_update_index(document, new=False):
     """Adds or updates the document in the index."""
     ix = get_or_create_index()
     writer = ix.writer()
-    etype = u'page' if document.slug != '' else u'entry'
+    etype = u'page' if document.current_revision.slug != '' else u'entry'
     if new:
         writer.add_document(id=unicode(document.id),
                             notebook=document.notebook.slug,
-                            content=document.content,
+                            content=document.current_revision.content,
                             tag=u" ".join(_get_tags(document)),
                             type=etype,
                             date=document.date)
     else:
         writer.update_document(id=unicode(document.id),
                                notebook=document.notebook.slug,
-                               content=document.content,
+                               content=document.current_revision.content,
                                tag=u" ".join(_get_tags(document)),
                                type=etype,
                                date=document.date)
@@ -80,8 +80,8 @@ def _get_tags(entry):
     """Parses the entry content and returns a list of tags found in it."""
     tag_re = re.compile(r"\s#(\w+)")
     other_tags_re = re.compile(r"^tags:(.*)")
-    tags = tag_re.findall(entry.content)
-    header = entry.content.split('----')[0]
+    tags = tag_re.findall(entry.current_revision.content)
+    header = entry.current_revision.content.split('----')[0]
     if header != '':
         other_tags = other_tags_re.findall(header)
         if len(other_tags) > 0:

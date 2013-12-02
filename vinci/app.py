@@ -73,13 +73,19 @@ def get_all_notebooks():
 def add_entry(content, notebook_slug, date=None, title='', slug=''):
     """Add a new entry to a notebook."""
     nb = get_notebook(notebook_slug)
-    kwargs = {'content': content,
-              'notebook': nb,
-              'title': title,
-              'slug': slug}
+    kwargs = {'notebook': nb}
     if date is not None:
         kwargs['date'] = date
     new_entry = m.Entry(**kwargs)
+    new_entry.save()
+
+    new_revision = m.Revision()
+    new_revision.content = content
+    new_revision.title = title
+    new_revision.slug = slug
+    new_revision.save()
+
+    new_entry.current_revision = new_revision
     new_entry.save()
     si.add_or_update_index(new_entry, new=True)
     return new_entry
@@ -88,15 +94,20 @@ def add_entry(content, notebook_slug, date=None, title='', slug=''):
 def edit_entry(id, content, notebook_slug, date=None, title='', slug=''):
     """Edit an entry."""
     entry = m.Entry.get(id=id)
+    new_revision = m.Revision()
 
     # Update the content
-    entry.content = content
-    entry.title = title
-    entry.slug = slug
+    new_revision.content = content
+    new_revision.title = title
+    new_revision.slug = slug
+    new_revision.parent = entry.current_revision
+    new_revision.save()
 
     # Revise the date if passed in
     if date:
         entry.date = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+
+    entry.current_revision = new_revision
 
     entry.save()
     si.add_or_update_index(entry)
@@ -138,9 +149,11 @@ def get_entry(notebook_slug='', id=-1, slug=''):
     if id != -1 and nb is not None:
         return m.Entry.get(m.Entry.id == id, m.Entry.notebook == nb)
     elif slug != '' and nb is not None:
-        return m.Entry.get(m.Entry.slug == slug, m.Entry.notebook == nb)
+        query = m.Entry.select(m.Entry, m.Revision).join(m.Revision)
+        return [e for e in query.where(m.Revision.slug == slug, m.Entry.notebook == nb)][0]
     elif nb is None and slug != '':
-        return m.Entry.get(m.Entry.slug == slug)
+        query = m.Entry.select(m.Entry, m.Revision).join(m.Revision)
+        return [e for e in query.where(m.Revision.slug == slug)][0]
     else:
         return None
 

@@ -150,10 +150,18 @@ def get_entry(notebook_slug='', id=-1, slug=''):
         return m.Entry.get(m.Entry.id == id, m.Entry.notebook == nb)
     elif slug != '' and nb is not None:
         query = m.Entry.select(m.Entry, m.Revision).join(m.Revision)
-        return [e for e in query.where(m.Revision.slug == slug, m.Entry.notebook == nb)][0]
+        entries = [e for e in query.where(m.Revision.slug == slug, m.Entry.notebook == nb)]
+        if entries:
+            return entries[0]
+        else:
+            raise m.Entry.DoesNotExist()
     elif nb is None and slug != '':
         query = m.Entry.select(m.Entry, m.Revision).join(m.Revision)
-        return [e for e in query.where(m.Revision.slug == slug)][0]
+        entries = [e for e in query.where(m.Revision.slug == slug)]
+        if entries:
+            return entries[0]
+        else:
+            raise m.Entry.DoesNotExist()
     else:
         return None
 

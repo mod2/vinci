@@ -6,7 +6,7 @@
 		{% for notebook in notebooks %}
 		<article class="notebook" data-slug="{{ notebook.slug }}">
 			<div class="controls"><a href="" class="icon-remove delete"></a> <a href="" class="icon-pencil edit"></a></div>
-			<a href="{{ url_for('index') ~ notebook.slug }}"><h2>{{ notebook.name }}</h2><p>{% if notebook.description %}{{ notebook.description }}{% endif %}</p></a>
+			<a href="{{ url_for('display_entries', notebook_slug=notebook.slug) }}"><h2>{{ notebook.name }}</h2><p>{% if notebook.description %}{{ notebook.description }}{% endif %}</p></a>
 			<form class="editbox nb-edit-box">
 				<div class="group"><label>Name:</label> <input type="text" class="name" value="{{ notebook.name }}" /></div>
 				<label>Description:</label>

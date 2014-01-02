@@ -322,12 +322,6 @@ $(document).ready(function() {
 	$("#entries").on("keydown", ".entry .editbox textarea, .entry .editbox input[type=text]", "shift+return", function() {
 		$(this).parents(".editbox").submit();
 
-		// Change text
-		entry.find(".metadata a.edit").html("Edit");
-
-		// Hide the menu
-		entry.find(".metadata .more").hide();
-
 		return false;
 	});
 

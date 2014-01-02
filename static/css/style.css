@@ -272,9 +272,10 @@ a.addnotebook:hover			{ }
 	.list .entry.selected	{ margin-left: 0; margin-right: 0; }
 	.list .entry.selected + .entry	{ margin-left: 0; margin-right: 0; }
 
-	.entry .metadata			{ float: none; width: auto; margin: 0; margin-bottom: 8px; font-size: .8em; }
+	.entry .metadata			{ float: none; width: auto; margin: 0; margin-bottom: 5px; font-size: .8em; }
 
 	.entry .metadata .action	{ display: inline-block; padding: 3px 0; }
+	.entry .metadata .action a	{ padding: 4px 0; display: inline-block; }
 
 	.entry .metadata .menu		{ float: right; margin-top: 0; }
 

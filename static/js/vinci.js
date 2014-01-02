@@ -383,6 +383,9 @@ $(document).ready(function() {
 					entry.fadeOut(75, function() {
 						entry.remove();
 					});
+
+					// Redirect to notebook page
+					window.location.href = config.url + config.notebook;
 				} else {
 					alert("Error deleting entry");
 				}

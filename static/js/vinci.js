@@ -252,7 +252,7 @@ $(document).ready(function() {
 	// Action bar
 	// --------------------------------------------------
 	
-	$("#entries").on("click tap", ".entry .menu a", function() {
+	$("#entries").on("click touchstart", ".entry .menu a", function() {
 		$(this).parents(".menu").siblings(".more").toggle();
 
 		return false;
@@ -263,7 +263,7 @@ $(document).ready(function() {
 	// Editing entries
 	// --------------------------------------------------
 
-	$("#entries").on("click", ".entry .metadata a.edit", function() {
+	$("#entries").on("click touchstart", ".entry .metadata a.edit", function() {
 		var entry = $(this).parents(".entry:first");
 
 		if (entry.find(".content:visible").length > 0) {

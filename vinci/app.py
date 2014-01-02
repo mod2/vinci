@@ -127,6 +127,51 @@ def delete_entry(id, notebook_slug):
         return False
 
 
+def append_today_entry(content, notebook_slug):
+    """Append/create today's entry."""
+
+    # See if we have an entry today
+    try:
+        # Today
+        now = datetime.datetime.now()
+        today = datetime.datetime(now.year, now.month, now.day)
+        tomorrow = today + datetime.timedelta(days=1)
+
+        # Notebook
+        nb = get_notebook(notebook_slug)
+
+        # Get first entry for today
+        results = m.Entry.select()
+        results = results.where(m.Entry.notebook == nb)
+        results = results.where((m.Entry.date >= today) & (m.Entry.date <= tomorrow))
+        results = results.order_by(m.Entry.date.asc())
+        results = results.limit(1)
+
+        if results.count() == 0:
+            raise m.Entry.DoesNotExist
+        else:
+            entry = results[0]
+
+        # Get the text
+        cur_rev = entry.current_revision
+
+        # Add new revision with appended content
+        new_revision = m.Revision()
+        new_revision.content = cur_rev.content + content
+        new_revision.save()
+
+        # Save the entry
+        entry.current_revision = new_revision
+        entry.save()
+
+        si.add_or_update_index(entry)
+    except m.Entry.DoesNotExist:
+        # We don't have an entry today, so create it
+        entry = add_entry(content, notebook_slug)
+
+    return entry
+
+
 def get_entries(notebook_slug,
                 sort=config.default_sort_order,
                 page=1,

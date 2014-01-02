@@ -43,7 +43,8 @@ def parse_header(content):
 
             if keyword == 'title':
                 response['title'] = value
-                response['slug'] = vinci.utils.slugify(response['title'])
+                if response['slug'] == '':
+                    response['slug'] = vinci.utils.slugify(response['title'])
 
             if keyword == 'slug':
                 response['slug'] = value

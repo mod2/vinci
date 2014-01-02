@@ -544,58 +544,8 @@ function addEntry(text) {
 	// Add the entry
 	$.post(config.url + "add/entry/?notebook=" + config.notebook, { content: text }, function(data) {
 	 	if (data.status == 'success') {
-			var entryHTML = '<article class="entry" data-id="' + data.id + '" data-plugins="' + data.plugins.join(',') + '">';
-			entryHTML += '<div class="metadata">';
-			if (data.title == '' && data.slug == '') {
-				entryHTML += '<a href="' + config.url + config.notebook + '/entry/' + data.url + '">';
-				entryHTML += '<time>' + data.time + '</time>, <date>' + data.date + '</date>';
-				entryHTML += '</a>';
-			}
-			if (data.tags.length > 0) {
-				entryHTML += '<ul class="tags">';
-				for (var i in data.tags) {
-					var tag = data.tags[i];
-					entryHTML += '<li><a href="' + config.url + config.notebook + '/tag/' + tag + '">#' + tag + '</a></li>';
-				}
-				entryHTML += '</ul>';
-			}
-			entryHTML += '</div>';
-			if (data.title != '' || data.slug != '') {
-				entryHTML += '<h2 class="page-title">' + ((data.title != '') ? data.title : data.slug) + '</h2>';
-			}
-			entryHTML += '<div class="content">' + data.html + '</div>';
-			entryHTML += '<form class="editbox">';
-			entryHTML += '<textarea>' + data.content + '</textarea>';
-			entryHTML += '<div class="group"><label>Date:</label><input type="text" value="' + data.datetime + '" /></div>';
-			entryHTML += '<input type="submit" value="Save Entry" class="submitbutton" />';
-			entryHTML += '</form>';
-			entryHTML += '</article>';
-
-			var entry = $(entryHTML).prependTo($("#entries"));	
-
-			// For any plugins, call the init function on the newly returned content
-			var content = entry.find(".content");
-			loadPlugins(content, data.plugins);
-
-			// Bind shift+return
-			entry.find(".editbox textarea, .editbox input[type=text]").bind('keydown', 'shift+return', function() {
-				$(this).parents(".editbox").submit();
-
-				return false;
-			});
-
-			// Add yellow highlight
-			entry.addClass("new");
-
-			// Remove the yellow after two seconds
-			setTimeout(function() {
-				entry.removeClass("new");
-			}, 2000);
-
-			// And update the # entries
-			var numEntries = parseInt($("label.num_entries").html().match(/^(\d+)/)[1]);
-			$("label.num_entries").html((numEntries + 1) + " entries");
-
+			// Reload the page
+			location.reload(false);
 		} else {
 			alert("Error adding entry");
 		}

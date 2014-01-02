@@ -259,6 +259,40 @@ def edit_entry():
 
         return jsonify(response)
 
+@app.route('/append/today/', methods=['GET', 'POST'])
+@ws_access
+def append_today_entry():
+    """Append to today's entry, or create it if it doesn't exist. If there are multiple entries today, append to the first one."""
+    # Defaults and parameters
+    notebook = request.args.get('notebook')
+    callback = request.args.get('callback')
+
+    if request.method == 'POST':
+        content = request.form['content']
+    else:
+        content = request.args.get('content')
+
+    # Append/create the entry
+    entry = vinci.append_today_entry(content=content,
+                            notebook_slug=notebook)
+
+    # If we succeeded
+    if entry:
+        # Send the info we need to generate the entry HTML
+        response = {
+            'status': 'success',
+            'id': entry.id,
+            'url': '%s.%s' % (entry.date.strftime('%Y-%m-%d'), entry.id),
+        }
+
+        return response_with_callback(response, callback)
+    else:
+        response = {
+            'status': 'error'
+        }
+
+        return jsonify(response)
+
 
 @app.route('/add/notebook/')
 @ws_access

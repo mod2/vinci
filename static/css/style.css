@@ -155,6 +155,9 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 .detail .entry.page					{ padding: 0; }
 .detail .entry.page .content		{ margin-left: 0; }
 
+.entry.page .metadata ul.tags li		{ display: inline-block; }
+.entry.page .metadata ul.tags li + li 	{ margin-left: 5px; }
+
 
 
 /* Metadata (date/time, edit/delete) */
@@ -294,6 +297,8 @@ a.addnotebook:hover			{ }
 
 	.entry.page .metadata		{ overflow: initial; margin: 0; }
 	.entry.page .metadata .more	{ margin: 1em -15px 1.5em; clear: both; }
+
+	.entry.page .metadata ul.tags			{ clear: both; }
 
 	.entry.page .content		{ clear: both; }
 

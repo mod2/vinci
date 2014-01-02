@@ -249,10 +249,21 @@ $(document).ready(function() {
 	});
 
 
+	// Action bar
+	// --------------------------------------------------
+	
+	$("#entries").on("click tap", ".entry .menu a", function() {
+		$(this).parents(".menu").siblings(".more").toggle();
+
+		return false;
+	});
+
+
+
 	// Editing entries
 	// --------------------------------------------------
 
-	$("#entries").on("click", ".entry .metadata .controls a.edit", function() {
+	$("#entries").on("click", ".entry .metadata a.edit", function() {
 		var entry = $(this).parents(".entry:first");
 
 		if (entry.find(".content:visible").length > 0) {
@@ -262,12 +273,21 @@ $(document).ready(function() {
 					$(this).find("textarea").focus();
 				});
 			});
+
+			// Change text
+			entry.find(".metadata a.edit").html("Cancel");
 		} else {
 			// Hide the editbox
 			entry.find(".editbox").fadeOut(75, function() {
 				entry.find(".content").fadeIn(75);
 			});
+
+			// Change text
+			entry.find(".metadata a.edit").html("Edit");
 		}
+
+		// Hide the menu
+		entry.find(".metadata .more").hide();
 
 		return false;
 	});
@@ -291,76 +311,6 @@ $(document).ready(function() {
             if (data.status == 'success') {
 				// Reload the page
 				location.reload(false);
-
-				// TODO: get the rest
-				/*
-
-                // Update content
-                entry.find(".content").html(data.html);
-
-				// Update plugins list
-				entry.attr("data-plugins", data.plugins.join(","));
-
-				// For any plugins, call the init function on the newly returned content
-				var content = entry.find(".content");
-				loadPlugins(content, data.plugins);
-
-                // Update date
-                entry.find(".metadata date").html(data.date);
-                entry.find(".metadata time").html(data.time);
-
-				// Update tags
-				if (data.tags.length > 0) {
-					// Add the container if it isn't there
-					if (entry.find("ul.tags").length == 0) {
-						$("<ul class='tags'></ul>").appendTo(entry);
-					} else {
-						// Wipe it out
-						entry.find("ul.tags").html('');
-					}
-
-					var tagHTML = '';
-					for (var i in data.tags) {
-						var tag = data.tags[i];
-						tagHTML += '<li><a href="' + config.url + config.notebook + '/tag/' + tag + '">#' + tag + '</a></li>';
-					}
-
-					$(tagHTML).appendTo(entry.find("ul.tags"));
-				} else {
-					// If there aren't any tags but we still have a container, kill it
-					if (entry.find("ul.tags").length > 0) {
-						entry.find("ul.tags").remove();
-					}
-				}
-
-				// Update title
-				var title = '';
-				if (data.slug) {
-					title = (data.title) ? data.title : data.slug;
-				}
-
-				if (title != '') {
-					if (entry.find("h2.page-title").length > 0) {
-						entry.find("h2.page-title").html(title);
-					} else {
-						$('<h2 class="page-title">' + title + '</h2>').appendTo(".metadata");
-						entry.find(".metadata a").remove();
-					}
-				}
-
-                // Add yellow highlight
-                entry.addClass("new");
-
-                // Remove the yellow after two seconds
-                setTimeout(function() {
-                    entry.removeClass("new");
-                }, 2000);
-
-                // Hide edit stuff, show content stuff
-                entry.find(".editbox").fadeOut(75, function() {
-                    entry.find(".content").fadeIn(75);
-                });
-				*/
             } else {
                 alert("Error editing entry");
             }
@@ -372,6 +322,12 @@ $(document).ready(function() {
 	$("#entries").on("keydown", ".entry .editbox textarea, .entry .editbox input[type=text]", "shift+return", function() {
 		$(this).parents(".editbox").submit();
 
+		// Change text
+		entry.find(".metadata a.edit").html("Edit");
+
+		// Hide the menu
+		entry.find(".metadata .more").hide();
+
 		return false;
 	});
 
@@ -382,6 +338,12 @@ $(document).ready(function() {
 		entry.find(".editbox").fadeOut(75, function() {
 			entry.find(".content").fadeIn(75);
 		});
+
+		// Change text
+		entry.find(".metadata a.edit").html("Edit");
+
+		// Hide the menu
+		entry.find(".metadata .more").hide();
 
 		return false;
 	});
@@ -402,12 +364,18 @@ $(document).ready(function() {
 					$(this).find("textarea").focus();
 				});
 			});
+
+			// Change text
+			entry.find(".metadata a.edit").html("Cancel");
+
+			// Hide the menu
+			entry.find(".metadata .more").hide();
 		}
 
 		return false;
 	});
 
-	$("#entries").on("click", ".entry .metadata .controls a.delete", function() {
+	$("#entries").on("click", ".entry .metadata a.delete", function() {
 		if (confirm("Do you really want to delete that entry?")) {
 			var entry = $(this).parents(".entry:first");
 			var id = entry.attr("data-id");
@@ -466,7 +434,7 @@ $(document).ready(function() {
 		$.get(url, function(data) {
 			if (data.status == 'success') {
 				var nbHTML = '<article class="notebook" data-slug="' + data.slug + '">';
-				nbHTML += '<div class="controls"><a href="" class="delete">Delete</a> <a href="" class="edit">Edit</a></div>';
+				nbHTML += '<div class="menu"><a href="" class="delete">Delete</a> <a href="" class="edit">Edit</a></div>';
 				nbHTML += '<a href="' + config.url + data.slug + '">';
 				nbHTML += '<h2>' + data.name + '</h2>';
 				if (data.description) {

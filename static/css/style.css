@@ -139,8 +139,8 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 /* Search results header */
 /* -------------------------------------------------- */
 
-body > #results				{ background: #c9e0c0; padding: 8px 35px; }
-body > #results h2			{ font-size: 1.1em; font-weight: normal; font-family: Charter, Helvetica, Arial, sans-serif; color: #617751; margin: 0; }
+body > #results				{ background: #e4e4e4; padding: 8px 35px 10px; }
+body > #results h2			{ font-size: 1em; font-weight: normal; font-family: Charter, Helvetica, Arial, sans-serif; color: #999; margin: 0; }
 body > #results h2 span		{ color: #000; font-weight: bold; }
 
 

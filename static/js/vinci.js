@@ -28,28 +28,36 @@ $(document).ready(function() {
 	// --------------------------------------------------
 
 	$("body > header nav ul li a.search").on("click touchstart", function() {
-		$("#search").toggle();
+		if ($("#cmdline:visible").length == 0) {
+			$("#cmdline input").val('');
+			$("#cmdline").slideDown(50);
+			$("#cmdline input").focus();
+		} else {
+			$("#cmdline input").blur();
+			$("#cmdline").slideUp(50);
+		}
 
 		return false;
 	});
 
 	$(document).bind('keydown', '/', function() {
-		// Focus on the search box
-		$("#search").show();
-		$("#search input").focus();
+		// Focus on the command line
+		$("#cmdline input").val('');
+		$("#cmdline").slideDown(50);
+		$("#cmdline input").focus();
 
 		return false;
 	});
 
-	$("#search input").bind('keydown', 'esc', function() {
+	$("#cmdline input").bind('keydown', 'esc', function() {
 		// Unfocus the search box
-		$("#search input").blur();
-		$("#search").hide();
+		$("#cmdline input").blur();
+		$("#cmdline").slideUp(50);
 
 		return false;
 	});
 
-	$("#search").on('submit', function() {
+	$("#cmdline").on('submit', function() {
 		var query = $(this).find("input").val().trim();
 		var url = config.url;
 		if (config.notebook) {

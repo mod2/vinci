@@ -7,7 +7,7 @@
 
 	<title>{% block title %}{{ title }} | Vinci{% endblock title %}</title>
 
-	<link href="{{ url_for('static', filename='css/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css" charset="utf-8" />
+	<link href="{{ url_for('static', filename='css/font-awesome-vinci/css/vincifont.css') }}" rel="stylesheet" type="text/css" charset="utf-8" />
 	<link href="{{ url_for('static', filename='css/style.css') }}?v5" rel="stylesheet" type="text/css" charset="utf-8" />
     {% if custom and custom.css %}
     <link href="{{ url_for('static', filename='custom/css/' ~ notebook.slug ~ '.css') }}" rel="stylesheet" type="text/css" charset="utf-8" />
@@ -42,18 +42,22 @@
 </head>
 
 <body>
+	{% block cmdline %}
+	<form id="cmdline">
+		<div class="container">
+			<input type="text"{% if query %}value="{{ query }}"{% endif %}/>
+		</div>
+	</form>
+	{% endblock cmdline %}
+
 	{% block header %}
 	<header>
 		<div class="container">
 			<nav>
 				<ul>
-					<li><a class="icon-search search" href=""></a></li>
-					<li><a class="icon-home notebooks" href="{{ url_for('index') }}"></a></li>
+					<li><a class="icon-th-list notebooks" href="{{ url_for('index') }}"></a></li>
+					<li><a class="icon-terminal search" href=""></a></li>
 				</ul>
-
-				<form id="search">
-					<input type="text"{% if query %}value="{{ query }}"{% endif %}/>
-				</form>
 			</nav>
 
 			<h1>{% if notebook %}<a href="{{ url_for('index') ~ notebook.slug }}">{% endif %}{{ title }}{% if notebook %}</a>{% endif %}</h1>

@@ -28,38 +28,89 @@ $(document).ready(function() {
 	// --------------------------------------------------
 
 	$("body > header nav ul li a.search").on("click touchstart", function() {
-		$("#search").toggle();
+		if ($("#cmdline:visible").length == 0) {
+			$("#cmdline input").val('');
+			$("#cmdline").slideDown(50);
+			$("#cmdline input").focus();
+		} else {
+			$("#cmdline input").blur();
+			$("#cmdline").slideUp(50);
+		}
 
 		return false;
 	});
 
 	$(document).bind('keydown', '/', function() {
-		// Focus on the search box
-		$("#search").show();
-		$("#search input").focus();
+		// Focus on the command line
+		$("#cmdline input").val('');
+		$("#cmdline").slideDown(50);
+		$("#cmdline input").focus();
 
 		return false;
 	});
 
-	$("#search input").bind('keydown', 'esc', function() {
+	$("#cmdline input").bind('keydown', 'esc', function() {
 		// Unfocus the search box
-		$("#search input").blur();
-		$("#search").hide();
+		$("#cmdline input").blur();
+		$("#cmdline").slideUp(50);
 
 		return false;
 	});
 
-	$("#search").on('submit', function() {
-		var query = $(this).find("input").val().trim();
+	$("#cmdline").on('submit', function() {
 		var url = config.url;
 		if (config.notebook) {
 			url += config.notebook + '/';
 		}
 
-		if (query.length > 0) {
-			var q = query.replace(/#(\w+)/g, 'tag:$1');
+		// Get whatever was entered
+		var query = $(this).find("input").val().trim();
 
-			url += 'search/' + q;
+		if (query.length > 0) {
+			// See if it was a search or a command (commands start with ':')
+			if (query[0] == ':') {
+				// Command
+				var commandString = query.slice(1);
+				var command = commandString.split(' ')[0];
+				var args = commandString.split(' ').slice(1);
+
+				// Convert args back to a string (do we really need to do this?)
+				if (args.length > 0) {
+					args = args.join(' ');
+				}
+
+				// Todo: make this better
+				if (command == 'g' || command == ':') {
+					// Go (g / :)
+				
+					// If there's not a slash, it's a notebook name
+					// If there's a slash, it's notebook/entry
+
+					if (args.indexOf('/')) {
+						// Notebook/entry
+						var argsArray = args.split('/');
+						url = config.url + argsArray[0] + '/entry/' + argsArray[1];
+					} else {
+						// Just a notebook name
+						url = config.url + args;
+					}
+
+					window.location.href = url;
+				} else if (command == 'ge') {
+					// Go to entry in current notebook (ge)
+
+					url += 'entry/' + args;
+
+					window.location.href = url;
+				}
+
+				return false;
+			} else {
+				// Search
+				var q = query.replace(/#(\w+)/g, 'tag:$1');
+
+				url += 'search/' + q;
+			}
 		} else {
 			// Empty search, clear results (don't need to change URL)
 		}

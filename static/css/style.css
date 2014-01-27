@@ -53,17 +53,21 @@ body > header h1 a			{ color: #fff; text-decoration: none; }
 body > header nav			{ float: right; text-align: right; }
 body > header nav ul		{ padding: 0; margin: 0; list-style: none; }
 body > header nav ul li		{ padding: 0; display: inline-block; }
-body > header nav ul li a	{ font-size: 1.3em; display: inline-block; color: #fff; }
+body > header nav ul li a	{ font-size: 1.3em; display: inline-block; color: #fff; text-decoration: none; }
 body > header nav ul li + li	{ margin-left: 10px; }
-
-body > header #search		{ display: none; text-align: right; margin-top: 5px; }
-body > header #search input	{ font-size: 1em; padding: 2px 4px; border: solid 1px #fff; -moz-border-radius: 3px; border-radius: 3px; font-family: Helvetica, Arial, sans-serif; line-height: 1em; font-weight: bold; color: #fff; width: 100px; background: none; }
-body > header #search input:focus	{ outline: none; }
 
 #page						{ padding: 15px 35px 100px; background: #fff; }
 body > header + #page		{ padding-top: 35px; }
 
 h2.page-title				{ color: #345678; font-size: 1.8em; margin: 0 0 .5em 0; font-weight: normal; font-family: Charter; }
+
+
+/* Cmdline */
+/* -------------------------------------------------- */
+
+body > #cmdline				{ display: none; background: #333; }
+body > #cmdline input		{ font-size: 1.1em; padding: 12px 0 15px; color: #fff; background: none; width: 100%; border: none; font-family: Monaco, Courier, monospace; }
+body > #cmdline input:focus	{ outline: none; }
 
 
 /* Nav */

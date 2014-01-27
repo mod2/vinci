@@ -219,6 +219,21 @@ $(document).ready(function() {
 
 	// Entry box
 	// --------------------------------------------------
+	//
+	$("body > header nav ul li a.addentry").on("click touchstart", function() {
+		if ($("#input:visible").length == 0) {
+			// Show the entry area
+			$("#input").slideDown(50);
+
+			// Focus the entry box
+			$("#add").focus();
+		} else {
+			// Unfocus the entry box
+			$("#input").slideUp(50);
+		}
+
+		return false;
+	});
 
 	$(document).bind('keydown', 'ctrl+return', function() {
 		if ($("#add:focus").length == 0) {
@@ -243,6 +258,7 @@ $(document).ready(function() {
 	$("#add").bind('keydown', 'ctrl+return', function() {
 		// Unfocus the entry box
 		$("#add").blur();
+		$("#input").slideUp(50);
 
 		return false;
 	});

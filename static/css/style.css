@@ -256,7 +256,8 @@ a.addnotebook:hover			{ }
 
 	body > header			{ padding: 10px 15px; }
 	body > header h1			{ font-size: 1.4em; }
-	body > header #search input	{ width: 100px; }
+
+	body > #cmdline input	{ padding-left: 15px; padding-right: 15px; }
 
 	body > header + #page		{ padding-top: 15px; }
 

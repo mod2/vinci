@@ -32,7 +32,7 @@
 		{% for entry in entries %}
 		{% include '_entry.html' %}
 		{% else %}
-		<div class="content">No entries yet.</div>
+		<article class="entry"><div class="content">No entries.</div></article>
 		{% endfor %}
 	</section>
 	{% endblock entries %}

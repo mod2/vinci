@@ -222,6 +222,9 @@ $(document).ready(function() {
 
 	$(document).bind('keydown', 'ctrl+return', function() {
 		if ($("#add:focus").length == 0) {
+			// Show the entry area
+			$("#input").slideDown(50);
+
 			// Focus the entry box
 			$("#add").focus();
 		}
@@ -247,6 +250,7 @@ $(document).ready(function() {
 	$("#add").bind('keydown', 'esc', function() {
 		// Unfocus the entry box
 		$("#add").blur();
+		$("#input").slideUp(50);
 
 		return false;
 	});
@@ -611,6 +615,9 @@ function addEntry(text) {
 	// Blur entry box
 	$("#add").blur();
 	$("#add").removeClass('has-text');
+	
+	// Hide input area
+	$("#input").slideUp(50);
 }
 
 function loadPlugins(content, plugins) {

@@ -9,6 +9,12 @@
     {
       "uid": "f805bb95d40c7ef2bc51b3d50d4f2e5c",
       "css": "th-list",
+      "code": 59394,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "44e04715aecbca7f266a17d5a7863c68",
+      "css": "plus",
       "code": 59392,
       "src": "fontawesome"
     },

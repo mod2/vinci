@@ -136,6 +136,14 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 .entry .content blockquote	{ border-left: solid 5px #ddd; padding-left: 15px; margin-left: 25px; margin-right: 0; }
 
 
+/* Search results header */
+/* -------------------------------------------------- */
+
+body > #results				{ background: #c9e0c0; padding: 8px 35px; }
+body > #results h2			{ font-size: 1.1em; font-weight: normal; font-family: Charter, Helvetica, Arial, sans-serif; color: #617751; margin: 0; }
+body > #results h2 span		{ color: #000; font-weight: bold; }
+
+
 /* Selected entries */
 /* -------------------------------------------------- */
 
@@ -260,6 +268,8 @@ a.addnotebook:hover			{ }
 	body > #cmdline			{ padding: 0 15px; }
 
 	body > header + #page		{ padding-top: 15px; }
+
+	body > #results			{ padding: 5px 15px; }
 
 	.submitbutton			{ background: #973939; color: #fff; }
 

@@ -45,7 +45,7 @@
 	{% block cmdline %}
 	<form id="cmdline">
 		<div class="container">
-			<input type="text"{% if query %}value="{{ query }}"{% endif %}/>
+			<input type="text" />
 		</div>
 	</form>
 	{% endblock cmdline %}
@@ -68,6 +68,7 @@
 
 	{% block input %}{% endblock input %}
 	{% block nav %}{% endblock nav %}
+	{% block page_header %}{% endblock page_header %}
 
 	<section id="page">
 		{% block page_content %}{% endblock page_content %}

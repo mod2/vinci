@@ -18,6 +18,12 @@
 </nav>
 {% endblock nav %}
 
+{% block page_header %}
+{% if query %}
+<section id="results"><div class="container"><h2>{{ pagination.hits }} results for <span>{{ query }}</span></h2></div></section>
+{% endif %}
+{% endblock page_header %}
+
 {% block page_content %}
 <div class="container">
 	{% block entries %}

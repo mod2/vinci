@@ -602,8 +602,8 @@ function addEntry(text) {
 	// Add the entry
 	$.post(config.url + "add/entry/?notebook=" + config.notebook, { content: text }, function(data) {
 	 	if (data.status == 'success') {
-			// Reload the page
-			location.reload(false);
+			// Reload notebook page
+			window.location.href = config.url + config.notebook + "/";
 		} else {
 			alert("Error adding entry");
 		}

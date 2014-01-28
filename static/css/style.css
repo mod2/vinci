@@ -222,9 +222,9 @@ body > #results h2 span		{ color: #000; font-weight: bold; }
 
 .submitbutton				{ display: none; }
 
-#input						{ padding: 15px 35px; background: #252525; display: none; }
+#input						{ padding: 15px 35px; background: none; display: none; border-bottom: solid 5px #ddd; }
 #input .content				{ margin: 0px auto; width: 100%; }
-#input .content textarea	{ font-size: 1.1em; width: 100%; height: 3em; font-family: Charter, Helvetica, Arial, sans-serif; background: none; -webkit-appearance: none; color: #fff; border: none; }
+#input .content textarea	{ font-size: 1.1em; width: 100%; height: 3em; font-family: Charter, Helvetica, Arial, sans-serif; background: none; -webkit-appearance: none; color: #111; border: none; }
 #input .content textarea:focus	{ outline: none; height: 200px; }
 #input .content textarea.has-text	{ height: 200px; }
 

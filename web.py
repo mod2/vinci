@@ -468,7 +468,7 @@ def search_notebook(notebook_slug, query):
     display_query = re.sub(r'tag:', '#', original_query)
     search_query = original_query + ' notebook:' + notebook_slug
     query = re.sub(r'tag:', '#', search_query)
-    db_entries, total_hits, total_pages = vinci.search(query, page, sortby)
+    db_entries, total_hits, total_pages = vinci.search(search_query, page, sortby)
     entries = utils.entries.process_entries(db_entries)
 
     base_url = '{0}{1}/search/{2}'.format(url_for('index'),

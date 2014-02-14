@@ -7,6 +7,7 @@ import whoosh.index as index
 from whoosh.fields import Schema, TEXT, KEYWORD, ID, DATETIME
 from whoosh.analysis import StemmingAnalyzer
 from whoosh.qparser import QueryParser
+from whoosh.qparser.dateparse import DateParserPlugin
 from models import Entry, init_db
 
 
@@ -92,10 +93,16 @@ def _get_tags(entry):
 def search(query_string, page=1, results_per_page=10, sort_order='relevance'):
     if isinstance(query_string, str):
         query_string = unicode(query_string)
+
     ix = get_or_create_index()
-    query = QueryParser('content', ix.schema).parse(query_string)
+
+    qp = QueryParser('content', ix.schema)
+    qp.add_plugin(DateParserPlugin(free=True))
+    query = qp.parse(query_string)
+
     entry_ids = {}
     results = None
+
     with ix.searcher() as searcher:
         if sort_order == 'date_desc':
             results = searcher.search_page(query,

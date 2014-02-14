@@ -257,6 +257,19 @@ a.addnotebook:hover			{ }
 #notebooks .notebook .editbox	{ padding: 15px; padding-top: 0; }
 
 
+/* Date browsing */
+/* -------------------------------------------------- */
+
+.datelist						{ font-family: Charter, Helvetica, Arial, sans-serif; padding: 0 35px; }
+.datelist a						{ text-decoration: none; }
+.datelist span					{ color: #bbb; }
+
+.datelist h3					{ display: inline-block; margin: 0; }
+.datelist ul					{ margin: .5em 0 0; }
+
+.datelist article + article		{ margin-top: 2em; }
+
+
 /* Smaller screens */
 
 @media screen and (max-width: 600px) {
@@ -270,6 +283,8 @@ a.addnotebook:hover			{ }
 	body > header + #page		{ padding-top: 15px; }
 
 	body > #results			{ padding: 5px 15px; }
+
+	.datelist				{ padding: 0 15px; }
 
 	.submitbutton			{ background: #973939; color: #fff; }
 

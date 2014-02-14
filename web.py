@@ -19,6 +19,7 @@ import logging
 import config
 import vinci
 from vinci.models import Entry
+from vinci.models import db
 import utils.text
 import utils.entries
 import utils.pagination
@@ -561,6 +562,73 @@ def display_entry(notebook_slug, entry_id):
                                  notebook=notebook,
                                  title=notebook.name,
                                  entry=entry,
+                                 config=config)
+
+
+@app.route('/<notebook_slug>/browse/dates/<target_date>')
+@ws_access
+def browse_target_date(notebook_slug, target_date):
+    """Web service."""
+
+    # Data
+    notebook = vinci.get_notebook(notebook_slug)
+
+    # Query database for counts
+    days = db.execute_sql('SELECT count(*) AS num, strftime("%Y-%m-%d", date) AS yearmonthdays FROM entry WHERE notebook_id = ? AND date BETWEEN ? AND ? GROUP BY strftime("%Y-%m-%d", date) ORDER BY date;', [notebook.id, '%s-01' % target_date, '%s-31' % target_date])
+    response = {
+        'days': [x for x in days] 
+    }
+
+    return jsonify(response)
+
+
+@app.route('/<notebook_slug>/browse/dates')
+@notebook_access
+def browse_dates(notebook_slug):
+    """Show dates that have entries."""
+
+    # Defaults and parameters
+    type = request.args.get('type') or 'html'
+
+    # Data
+    notebook = vinci.get_notebook(notebook_slug)
+
+    # Query database for counts
+    year_results = db.execute_sql('SELECT count(*) AS num, strftime("%Y", date) AS year FROM entry WHERE notebook_id = ? GROUP BY strftime("%Y", date) ORDER BY date;', [notebook.id])
+    month_results = db.execute_sql('SELECT count(*) AS num, strftime("%Y-%m", date) AS yearmonths FROM entry WHERE notebook_id = ? GROUP BY strftime("%Y-%m", date) ORDER BY date;', [notebook.id])
+
+    # Run through the result cursors
+    years = [x for x in year_results]
+    months = [x for x in month_results]
+
+    # For generating ranges
+    numdays = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    
+    data = []
+    for x in years:
+        year = x[1]
+
+        monthlist = []
+        for y in months:
+            if y[1][:4] == x[1]:
+                monthnum = int(y[1][5:7])
+                monthlist.append({
+                    'count': y[0],
+                    'month': y[1],
+                    'numdays': numdays[monthnum - 1]
+                    })
+
+        data.append({
+            'year': year,
+            'count': x[0],
+            'months': monthlist,
+        })
+
+    return utils.template.render('browse',
+                                 type,
+                                 notebook=notebook,
+                                 title="%s: Browse by Date" % notebook.name,
+                                 years=data,
                                  config=config)
 
 

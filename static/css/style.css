@@ -216,9 +216,9 @@ body > #results h2 span		{ color: #000; font-weight: bold; }
 .entry .editbox             { display: none; margin-left: 205px; }
 .entry.page .editbox		{ margin-left: 0; }
 .entry .editbox .group      { margin: 3px 0 10px; }
-.entry .editbox .group label    { font-size: .9em; color: #999; margin-right: 5px; }
+.entry .editbox .group label    { font-size: .9em; color: #999; margin-right: 5px; font-family: Charter, Helvetica, Arial, sans-serif; }
 .entry .editbox .group input[type=text] { font-size: .9em; padding: 2px 3px; -moz-border-radius: 3px; border-radius: 3px; border: solid 1px #bbb; font-family: Charter, Helvetica, Arial, sans-serif; width: 250px; }
-.entry .editbox textarea    { font-size: 1.1em; width: 100%; height: 600px; font-family: Charter, Helvetica, Arial, sans-serif; -webkit-appearance: none; border: none; }
+.entry .editbox textarea    { font-size: 1.1em; width: 100%; height: 600px; font-family: Charter, Helvetica, Arial, sans-serif; -webkit-appearance: none; border: none;  }
 .list .entry .editbox textarea    { height: 200px; }
 .entry .editbox textarea:focus { outline: none; }
 
@@ -354,4 +354,12 @@ a.addnotebook:hover			{ }
 	#nb-add-box				{ padding: 0 15px; }
 
 	body > #cmdline input		{ font-size: 1em; }
+}
+
+@media screen and (min-width: 600px) {
+    .entry .editbox { position: absolute; top: 0; bottom: 0; left: 0; right: 0; background: rgba(0, 0, 0, 0.8); margin-left: 0; text-align: center; }
+    .entry .editbox textarea    { margin: 15px auto 0px; max-width: 700px; height: calc(100% - 3.5em); padding: 65px; border-radius: 3px; box-shadow: 0 0 15px 3px #000; }
+    .entry .editbox .group	{ text-align: left; max-width: 700px; margin: 0px auto; }
+    .entry .editbox .group label	    { color: #666; }
+    .entry .editbox .group input[type=text] { color: #999; background: none; border: none; }
 }

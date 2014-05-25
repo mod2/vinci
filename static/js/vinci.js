@@ -102,6 +102,32 @@ $(document).ready(function() {
 					url += 'entry/' + args;
 
 					window.location.href = url;
+				} else if (command == 'x') {
+					// Execute Javascript
+
+					// Only do this on a detail page
+					if ($("#entries").hasClass("detail")) {
+						// Prep input
+						input = $(".editbox textarea").text();
+
+						try {
+							// Execute the command (which gets assigned to the output var)
+							eval("output = " + args);
+
+							// And update the textarea
+							$(".editbox textarea").text(output);
+
+							// Show the edit box so we can save it if we want
+							var entry = $("article.entry");
+							entry.find(".content").fadeOut(75, function() {
+								entry.find(".editbox").fadeIn(75, function() {
+									$(this).find("textarea").focus();
+								});
+							});
+						} catch (e) {
+							console.log("Failed to execute the command");
+						}
+					}
 				}
 
 				return false;

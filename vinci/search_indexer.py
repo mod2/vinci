@@ -24,7 +24,7 @@ def get_or_create_index():
 def default_index_schema():
     return Schema(id=ID(unique=True, stored=True),
                   notebook=ID,
-                  content=TEXT(analyzer=StemmingAnalyzer()),
+                  content=TEXT(analyzer=StemmingAnalyzer(), stored=True),
                   tag=KEYWORD(field_boost=2.0),
                   type=ID,
                   date=DATETIME)
@@ -119,7 +119,8 @@ def search(query_string, page=1, results_per_page=10, sort_order='relevance'):
             results = searcher.search_page(query,
                                            page,
                                            pagelen=results_per_page)
-        entry_ids = {int(entry['id']): entry.rank for entry in results}
+        entry_ids = {int(entry['id']): (entry.rank, entry.highlights('content'))
+                     for entry in results}
 
     return (entry_ids,
             len(results),

@@ -23,6 +23,7 @@ def process_entry(entry):
                                   entry,
                                   notebook_url)
 
+    excerpt = entry.excerpt if hasattr(entry, 'excerpt') else ''
     processed_entry = {
         'id': entry.id,
         'notebook': {
@@ -36,6 +37,7 @@ def process_entry(entry):
         'tags': response['tags'],
         'html': Markup(response['content']),
         'plugins': response['plugins'],
+        'excerpt': Markup(excerpt),
     }
 
     return processed_entry

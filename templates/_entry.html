@@ -18,6 +18,7 @@
 		{% if entry.tags|length > 0 %}<ul class="tags">{% for tag in entry.tags %}<li><a href="{{ url_for('index') ~ entry.notebook.slug ~ '/tag/' ~ tag }}">#{{ tag }}</a></li>{% endfor %}</ul>{% endif %}
 	</div>
 
+	{% if entry.excerpt %}<div class='excerpt'>{{ entry.excerpt }}</div>{% endif %}
 	<div class="content">{% if entry.slug != '' and page_type == 'list' %}<h3><a href="{{ url_for('index') ~ entry.notebook.slug ~ '/entry/' ~ entry.slug }}">{% if entry.title != '' %}{{ entry.title }}{% elif entry.slug != '' %}{{ entry.slug }}{% else %}no title!{% endif %}</a></h3>{% else %}{{ entry.html }}{% endif %}</div>
 	<form class="editbox"><textarea>{{ entry.content }}</textarea>{% if entry.slug == '' %}<div class="group"><label>Date:</label><input type="text" value="{{ entry.date.strftime('%Y-%m-%d %H:%M:%S') }}" /></div>{% endif %}<input type="submit" value="Save {% if entry.slug == '' %}Entry{% else %}Page{% endif %}" class="submitbutton" /></form>
 </article>

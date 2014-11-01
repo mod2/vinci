@@ -217,12 +217,13 @@ def search(query, page=1, sort_order='relevance'):
                                                       page,
                                                       config.results_per_page,
                                                       sort_order)
-    ids = [entry_id for entry_id, rank in page_results.items()]
+    ids = [entry_id for entry_id, __ in page_results.items()]
     entries = m.Entry.select().where(m.Entry.id << ids)
     results = []
 
     for entry in entries:
-        results.append((page_results[entry.id], entry))
+        entry.excerpt = page_results[entry.id][1]
+        results.append((page_results[entry.id][0], entry))
     results.sort()  # depends on sort
     return [entry for rank, entry in results], total_hits, total_pages
 

@@ -1,8 +1,9 @@
 /* Poetry */ 
 /* -------------------------------------------------- */
 
-.poetry							{ margin: 1em 0; margin-left: 15px; padding-left: 15px; font-size: 1.1em; line-height: 1.4em; border-left: solid 7px #d9e0f1; }
-.poetry p						{ margin: 0 0 0 4em; text-indent: -4em; }
+.poetry:first-child				{ margin-top: 0; }
+.poetry							{ line-height: 1.4em; }
+.poetry p						{ margin: 0 0 0 2em; text-indent: -2em; }
 .poetry p.stanza				{ margin-top: 1em; }
 .poetry p.indent-1				{ margin-left: 5em; }
 .poetry p.indent-2				{ margin-left: 6em; }

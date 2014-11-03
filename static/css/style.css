@@ -96,7 +96,7 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 /* -------------------------------------------------- */
 
 .entry						{ padding: 25px 40px; overflow: hidden; overflow-x: auto; clear: both; -webkit-transition: background .2s ease-in-out; -moz-transition: background .2s ease-in-out; transition: background .2s ease-in-out; border-top: solid 1px #ddd; }
-.entry.page					{ padding-bottom: 40px; }
+#entries.detail .entry.page		{ padding-bottom: 40px; }
 .entry.new					{ background: #ffffe0; }
 .entry:first-child			{ border-top: none !important; }
 

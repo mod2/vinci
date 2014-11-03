@@ -1,12 +1,11 @@
 <article class="entry{% if entry.slug != '' %} page{% endif %}" data-id="{{ entry.id }}" data-plugins="{{ entry.plugins|join(',') }}">
 	<div class="metadata">
 		{% if not notebook %}<a href="{{ url_for('index') ~ entry.notebook.slug }}">{{ entry.notebook.name }}</a> — {% endif %}
-		{% if entry.title == '' and entry.slug == '' %}<div class="date action"><a href="{{ url_for('index') ~ entry.notebook.slug ~ '/entry/' ~ entry.date.strftime('%Y-%m-%d') ~ '.' ~ entry.id }}"><date>{{ entry.date.strftime('%-d %b %Y') }}</date>, <time>{{ entry.date.strftime('%l:%M %p')|trim|lower }}</time></a></div>{% endif %}
-		{% if entry.slug != '' and page_type == 'detail' %}<h2 class="page-title">{% if entry.title != '' %}{{ entry.title }}{% elif entry.slug != '' %}{{ entry.slug }}{% else %}no title!{% endif %}</h2>{% endif %}
-        {% if not entry.excerpt %}
-		<div class="menu action"><a href="">Menu</a></div>
+
+		<div class="menu action"><a href="">&nbsp;</a></div>
 
 		<div class="more">
+			{% if entry.tags|length > 0 %}<ul class="tags">{% for tag in entry.tags %}<li><a href="{{ url_for('index') ~ entry.notebook.slug ~ '/tag/' ~ tag }}">#{{ tag }}</a></li>{% endfor %}</ul>{% endif %}
 			<nav>
 				<a href="" class="edit">Edit</a>
 				<a href="" class="prev">Prev</a>
@@ -16,8 +15,8 @@
 			<a href="" class="delete">Delete</a>
 		</div>
 
-		{% if entry.tags|length > 0 %}<ul class="tags">{% for tag in entry.tags %}<li><a href="{{ url_for('index') ~ entry.notebook.slug ~ '/tag/' ~ tag }}">#{{ tag }}</a></li>{% endfor %}</ul>{% endif %}
-        {% endif %}
+		{% if entry.title == '' and entry.slug == '' %}<div class="date action"><a href="{{ url_for('index') ~ entry.notebook.slug ~ '/entry/' ~ entry.date.strftime('%Y-%m-%d') ~ '.' ~ entry.id }}"><date>{{ entry.date.strftime('%-d %b %Y') }}</date><time>{{ entry.date.strftime('%l:%M %p')|trim|lower }}</time></a></div>{% endif %}
+		{% if entry.slug != '' and page_type == 'detail' %}<h2 class="page-title">{% if entry.title != '' %}{{ entry.title }}{% elif entry.slug != '' %}{{ entry.slug }}{% else %}no title!{% endif %}</h2>{% endif %}
 	</div>
 
 	{% if entry.excerpt %}<div class='content excerpt'>&hellip; {{ entry.excerpt }} &hellip;</div>

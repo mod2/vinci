@@ -154,26 +154,25 @@ body > #results h2 span		{ color: #3d5f13; font-weight: 600; }
 /* Pages */
 /* -------------------------------------------------- */
 
-.entry.page .metadata				{ margin: 0 0 30px 0; float: none; overflow: hidden; width: 100%; }
-.entry.page .metadata .more			{ margin: .5em 0 0; text-align: left; }
+.detail .entry.page .metadata				{ margin: 0 0 30px 0; float: none; overflow: hidden; width: 100%; }
+.detail .entry.page .metadata .more			{ margin: .5em 0 0; text-align: left; }
 
 .detail .entry.page .more nav a		{ display: none; }
 .detail .entry.page .more nav a.edit		{ display: block; }
 
-.list .entry.page ul.tags			{ display: none; }
-.list .entry.page .metadata			{ display: none; }
-.list .entry.page h3 a				{ font-weight: normal; font-style: italic; text-decoration: none; }
-
 .detail .entry.page .content		{ margin-left: 0; }
 
-.entry.page .metadata ul.tags li		{ display: inline-block; }
-.entry.page .metadata ul.tags li + li 	{ margin-left: 5px; }
+.detail .entry.page .metadata ul.tags li		{ display: inline-block; }
+.detail .entry.page .metadata ul.tags li + li 	{ margin-left: 5px; }
+
+.list .entry.page a					{ font-weight: normal; font-style: italic; text-decoration: none; color: #558bc0; font-size: .9em; }
+.list .entry.page a h3				{ display: inline-block; margin: 0; }
 
 
 /* Metadata (date/time, edit/delete) */
 /* -------------------------------------------------- */
 
-.entry .metadata			{ font-size: 1em; color: #ddd; font-weight: normal; float: left; width: 180px; margin-right: 25px; margin-top: 3px; }
+.entry .metadata			{ font-size: 1em; color: #ddd; font-weight: normal; float: left; width: 180px; margin-right: 25px; }
 .entry .metadata a			{ text-decoration: none; color: #aaa; }
 .entry .metadata a:hover	{ color: #000; }
 .entry.new .metadata a		{ color: #c4c092; }
@@ -189,7 +188,7 @@ body > #results h2 span		{ color: #3d5f13; font-weight: 600; }
 
 .entry .menu				{ float: left; }
 .entry .menu a				{ display: inline-block; width: 16px; height: 16px; margin-right: 10px; background: #b3e8ff; margin-top: 1px; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
-.entry.page .menu a			{ margin-top: 5px; }
+.detail .entry.page .menu a			{ margin-top: 5px; }
 
 .entry .more				{ margin: 1em -15px 1.5em; padding: 15px; background: #fff; display: none; position: absolute; z-index: 60000; width: 180px; box-shadow: 0 0 15px #666; -moz-border-radius: 5px; border-radius: 5px; }
 .entry .more nav			{ display: block; width: 100%; }
@@ -286,7 +285,7 @@ a.addnotebook:hover			{ background: #333; color: #fff; }
 /* Infinite scroll */
 /* -------------------------------------------------- */
 
-#infscr-loading					{ padding: 12px 40px; background: #e0f5cc; -webkit-animation: pulse 1s infinite; animation: pulse 2s infinite; }
+#infscr-loading					{ padding: 12px 40px; background: #e0f5cc; -webkit-animation: pulse 1s infinite; animation: pulse 2s infinite; color: #79945f; }
 #infscr-loading img				{ display: none; }
 
 @-webkit-keyframes pulse {
@@ -342,8 +341,8 @@ a.addnotebook:hover			{ background: #333; color: #fff; }
 	.entry .metadata		{ width: 100%; float: none; }
 	.entry.page .metadata	{ margin-bottom: 15px; }
 
-	.entry:not(.page) .menu			{ float: right; }
-	.entry:not(.page) .menu a			{ margin-left: 10px; }
+	.list .entry .menu		{ float: right; }
+	.list .entry .menu a	{ margin-left: 10px; }
 
 	.entry .metadata .date	{ margin-left: 0; }
 	.entry .metadata date	{ display: inline-block; font-size: .9em; }

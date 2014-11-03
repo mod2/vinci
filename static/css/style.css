@@ -333,10 +333,10 @@ a.addnotebook:hover			{ background: #333; color: #fff; }
 	.entry:not(.page) .menu a			{ margin-left: 10px; }
 
 	.entry .metadata .date	{ margin-left: 0; }
-	.entry .metadata date	{ display: inline-block; font-size: .8em; }
-	.entry .metadata time	{ display: inline-block; margin-left: 8px; }
+	.entry .metadata date	{ display: inline-block; font-size: .9em; }
+	.entry .metadata time	{ display: inline-block; margin-left: 8px; font-size: .9em; }
 
-	.entry .content			{ margin-top: .5em; margin-left: 0; font-size: 1em; line-height: 1.4em; }
+	.entry .content			{ margin-top: .5em; margin-left: 0; font-size: 1.1em; line-height: 1.4em; }
 
 	.entry .metadata .more	{ position: inherit; box-shadow: none; border-radius: none; width: 80%; margin: 0; padding: 0; }
 	.entry .metadata .more a.edit	{ padding-top: 10px; padding-bottom: 10px; }

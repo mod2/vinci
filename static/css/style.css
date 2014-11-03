@@ -283,6 +283,25 @@ a.addnotebook:hover			{ background: #333; color: #fff; }
 .datelist article + article		{ margin-top: 2em; }
 
 
+/* Infinite scroll */
+/* -------------------------------------------------- */
+
+#infscr-loading					{ padding: 12px 40px; background: #e0f5cc; -webkit-animation: pulse 1s infinite; animation: pulse 2s infinite; }
+#infscr-loading img				{ display: none; }
+
+@-webkit-keyframes pulse {
+	0% { background-color: #e0f5cc; }
+	50% { background-color: white; }
+	100% { background-color: #e0f5cc; }
+}
+
+@keyframes pulse {
+	0% { background-color: #e0f5cc; }
+	50% { background-color: white; }
+	100% { background-color: #e0f5cc; }
+}
+
+
 /* Smaller screens */
 @media screen and (max-width: 950px) {
 	.container				{ max-width: 750px; }
@@ -312,6 +331,7 @@ a.addnotebook:hover			{ background: #333; color: #fff; }
 	.nb-edit-box			{ padding-left: 20px; padding-right: 20px; }
 	#input .container		{ padding: 15px 20px; }
 	body > #results h2		{ padding-left: 20px; padding-right: 20px; }
+	#infscr-loading			{ padding-left: 20px; padding-right: 20px; }
 }
 
 @media screen and (max-width: 500px) {

@@ -5,6 +5,7 @@ import re
 import math
 import whoosh.index as index
 from whoosh.fields import Schema, TEXT, KEYWORD, ID, DATETIME
+from whoosh import highlight
 from whoosh.analysis import StemmingAnalyzer
 from whoosh.qparser import QueryParser
 from whoosh.qparser.dateparse import DateParserPlugin
@@ -102,6 +103,8 @@ def search(query_string, page=1, results_per_page=10, sort_order='relevance'):
 
     entry_ids = {}
     results = None
+    frag = highlight.ContextFragmenter(maxchars=300, surround=100)
+    hi = highlight.Highlighter(fragmenter=frag)
 
     with ix.searcher() as searcher:
         if sort_order == 'date_desc':
@@ -119,7 +122,8 @@ def search(query_string, page=1, results_per_page=10, sort_order='relevance'):
             results = searcher.search_page(query,
                                            page,
                                            pagelen=results_per_page)
-        entry_ids = {int(entry['id']): (entry.rank, entry.highlights('content'))
+        entry_ids = {int(entry['id']): (entry.rank, hi.highlight_hit(entry,
+                                                                     'content'))
                      for entry in results}
 
     return (entry_ids,

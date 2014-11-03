@@ -350,7 +350,7 @@ $(document).ready(function() {
 	// --------------------------------------------------
 	
 	$("#entries").on("click touchstart", ".entry .menu a", function() {
-		$(".more").hide();
+		$(this).parents(".entry").siblings(".entry").find(".more").hide();
 		$(this).parents(".menu").siblings(".more").toggle();
 
 		return false;

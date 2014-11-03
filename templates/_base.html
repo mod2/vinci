@@ -42,7 +42,7 @@
 	{% endblock head %}
 </head>
 
-<body>
+<body{% if page_type %} class="{{ page_type }}"{% endif %}>
 	{% block cmdline %}
 	<form id="cmdline">
 		<div class="container">

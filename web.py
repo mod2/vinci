@@ -679,7 +679,8 @@ def index():
     return utils.template.render('index',
                                  type,
                                  title="All Notebooks",
-                                 notebooks=notebooks)
+                                 notebooks=notebooks,
+                                 page_type="all")
 
 
 # 404

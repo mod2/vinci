@@ -253,7 +253,7 @@ body.all > header .container	{ background: #3a3d41; }
 
 #notebooks .notebook		{ border-bottom: solid 1px #ddd; }
 #notebooks .notebook > a		{ text-decoration: none; display: block; padding: 12px 40px; }
-#notebooks .notebook > a:hover	{ background: #398bbd; }
+#notebooks .notebook > a:hover	{ background: #398bbd; border-bottom: solid 1px #398bbd; }
 #notebooks .notebook > a:hover h2 { color: #fff; }
 #notebooks .notebook > a h2	{ margin: 0; line-height: 1em; color: #43a2b9; font-weight: normal; font-style: italic; font-size: 1.3em; }
 #notebooks .notebook > a p	{ margin: 0; font-size: .9em; font-weight: normal; color: #999; }
@@ -324,7 +324,7 @@ a.addnotebook:hover			{ background: #333; color: #fff; }
 @media screen and (max-width: 500px) {
 	#page					{ padding-bottom: 15px; }
 
-	.entry					{ padding-top: 12px; padding-bottom: 12px; }
+	.entry					{ padding-top: 12px; padding-bottom: 18px; }
 
 	.entry .metadata		{ width: 100%; float: none; }
 	.entry.page .metadata	{ margin-bottom: 15px; }
@@ -338,7 +338,7 @@ a.addnotebook:hover			{ background: #333; color: #fff; }
 
 	.entry .content			{ margin-top: .5em; margin-left: 0; font-size: 1.1em; line-height: 1.4em; }
 
-	.entry .metadata .more	{ position: inherit; box-shadow: none; border-radius: none; width: 80%; margin: 0; padding: 0; }
+	.entry .metadata .more	{ position: inherit; box-shadow: none; border-radius: none; width: 80%; margin: 0 0 20px 0; padding: 0; }
 	.entry .metadata .more a.edit	{ padding-top: 10px; padding-bottom: 10px; }
 
 	.entry .editbox         { margin-left: 0px; }

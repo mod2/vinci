@@ -86,7 +86,7 @@ $(document).ready(function() {
 					// If there's not a slash, it's a notebook name
 					// If there's a slash, it's notebook/entry
 
-					if (args.indexOf('/')) {
+					if (args.indexOf('/') != -1) {
 						// Notebook/entry
 						var argsArray = args.split('/');
 						url = config.url + argsArray[0] + '/entry/' + argsArray[1];
@@ -527,8 +527,6 @@ $(document).ready(function() {
 		var name = encodeURIComponent($(this).find(".name").val().trim());
 		var desc = encodeURIComponent($(this).find(".desc").val().trim());
 		var url = config.url + "add/notebook?name=" + name + "&description=" + desc;
-
-		console.log(url);
 
 		// Add the notebook
 		$.get(url, function(data) {

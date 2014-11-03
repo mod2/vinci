@@ -1,40 +1,30 @@
-/*
 @font-face {
-    font-family: 'Charter';
-    src: url('charter/charter_bold_italic-webfont.eot');
-    src: url('charter/charter_bold_italic-webfont.eot?#iefix') format('embedded-opentype'),
-         url('charter/charter_bold_italic-webfont.woff') format('woff');
-    font-weight: bold;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: 'Charter';
-    src: url('charter/charter_bold-webfont.eot');
-    src: url('charter/charter_bold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('charter/charter_bold-webfont.woff') format('woff');
-    font-weight: bold;
+    font-family: 'Source Sans Pro';
+    src: url('fonts/SourceSansPro-Regular.ttf');
+    font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'Charter';
-    src: url('charter/charter_italic-webfont.eot');
-    src: url('charter/charter_italic-webfont.eot?#iefix') format('embedded-opentype'),
-         url('charter/charter_italic-webfont.woff') format('woff');
+    font-family: 'Source Sans Pro';
+    src: url('fonts/SourceSansPro-Italic.ttf');
     font-weight: normal;
     font-style: italic;
 }
 
 @font-face {
-    font-family: 'Charter';
-    src: url('charter/charter_regular-webfont.eot');
-    src: url('charter/charter_regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('charter/charter_regular-webfont.woff') format('woff');
-    font-weight: normal;
+    font-family: 'Source Sans Pro';
+    src: url('fonts/SourceSansPro-Semibold.ttf');
+    font-weight: bold;
     font-style: normal;
 }
-*/
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('fonts/SourceSansPro-SemiboldItalic.ttf');
+    font-weight: bold;
+    font-style: italic;
+}
 
 *							{ -moz-box-sizing: border-box; box-sizing: border-box; font-family: Source Sans Pro, Helvetica Neue, Helvetica, Arial, sans-serif; }
 

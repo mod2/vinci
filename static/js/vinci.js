@@ -350,11 +350,17 @@ $(document).ready(function() {
 	// --------------------------------------------------
 	
 	$("#entries").on("click touchstart", ".entry .menu a", function() {
+		$(".more").hide();
 		$(this).parents(".menu").siblings(".more").toggle();
 
 		return false;
 	});
 
+	$("body").on("click", function() {
+		if ($(".more").length > 0) {
+			$(".more").hide();
+		}
+	});
 
 
 	// Editing entries

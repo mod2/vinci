@@ -5,7 +5,6 @@
 		<div class="menu action"><a href="">&nbsp;</a></div>
 
 		<div class="more">
-			{% if entry.tags|length > 0 %}<ul class="tags">{% for tag in entry.tags %}<li><a href="{{ url_for('index') ~ entry.notebook.slug ~ '/tag/' ~ tag }}">#{{ tag }}</a></li>{% endfor %}</ul>{% endif %}
 			<nav>
 				<a href="" class="edit">Edit</a>
 				<a href="" class="prev">Prev</a>
@@ -13,6 +12,8 @@
 			</nav>
 
 			<a href="" class="delete">Delete</a>
+
+			{% if entry.tags|length > 0 %}<ul class="tags">{% for tag in entry.tags %}<li><a href="{{ url_for('index') ~ entry.notebook.slug ~ '/tag/' ~ tag }}">#{{ tag }}</a></li>{% endfor %}</ul>{% endif %}
 		</div>
 
 		{% if entry.title == '' and entry.slug == '' %}<div class="date action"><a href="{{ url_for('index') ~ entry.notebook.slug ~ '/entry/' ~ entry.date.strftime('%Y-%m-%d') ~ '.' ~ entry.id }}"><date>{{ entry.date.strftime('%-d %b %Y') }}</date><time>{{ entry.date.strftime('%l:%M %p')|trim|lower }}</time></a></div>{% endif %}

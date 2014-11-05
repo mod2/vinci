@@ -319,10 +319,6 @@ a.addnotebook:hover			{ background: #333; color: #fff; }
 	.entry .content			{ margin-left: 145px; }
 }
 
-@media screen and (max-width: 600px) {
-	.container				{ box-shadow: none; }
-}
-
 @media screen and (max-width: 550px) {
 	body > #cmdline input	{ padding-left: 20px; padding-right: 20px; }
 	body > header div.container	{ padding-left: 20px; padding-right: 20px; }
@@ -340,9 +336,10 @@ a.addnotebook:hover			{ background: #333; color: #fff; }
 	#page					{ padding-bottom: 15px; }
 
 	.entry					{ padding-top: 12px; padding-bottom: 18px; }
+	.entry.page				{ padding-top: 20px; }
 
 	.entry .metadata		{ width: 100%; float: none; }
-	.entry.page .metadata	{ margin-bottom: 15px; }
+	.detail .entry.page .metadata	{ margin-bottom: 15px; }
 
 	.list .entry .menu		{ float: right; }
 	.list .entry .menu a	{ margin-left: 10px; }

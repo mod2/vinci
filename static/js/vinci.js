@@ -82,7 +82,7 @@ $(document).ready(function() {
 				// Todo: make this better
 				if (command == 'g' || command == ':') {
 					// Go (g / :)
-				
+
 					// If there's not a slash, it's a notebook name
 					// If there's a slash, it's notebook/entry
 
@@ -315,7 +315,7 @@ $(document).ready(function() {
 
 	// Sorting
 	// --------------------------------------------------
-	
+
 	$("select#sort").on("change", function() {
 		var val = $(this).val();
 		var url = window.location.href;
@@ -348,7 +348,7 @@ $(document).ready(function() {
 
 	// Action bar
 	// --------------------------------------------------
-	
+
 	$("#entries").on("click touchstart", ".entry .menu a", function() {
 		$(this).parents(".entry").siblings(".entry").find(".more").hide();
 		$(this).parents(".menu").siblings(".more").toggle();
@@ -420,6 +420,28 @@ $(document).ready(function() {
         });
 
         return false;
+	});
+
+	$(document).on("keydown", "textarea#add, .editbox textarea", function(e) {
+		if (e.keyCode === 9) { // tab was pressed
+			// get caret position/selection
+			var start = this.selectionStart;
+			var end = this.selectionEnd;
+
+			var $this = $(this);
+			var value = $this.val();
+
+			// set textarea value to: text before caret + tab + text after caret
+			$this.val(value.substring(0, start)
+						+ "\t"
+						+ value.substring(end));
+
+			// put caret at right position again (add one for the tab)
+			this.selectionStart = this.selectionEnd = start + 1;
+
+			// prevent the focus lose
+			e.preventDefault();
+		}
 	});
 
 	$("#entries").on("keydown", ".entry .editbox textarea, .entry .editbox input[type=text]", "shift+return", function() {
@@ -505,7 +527,7 @@ $(document).ready(function() {
 	$("a.addnotebook").on("click", function() {
 		// Toggle the view
 		if ($(".addbox:visible").length > 0) {
-			// Hide the addbox 
+			// Hide the addbox
 			$(".addbox").fadeOut(75);
 		} else {
 			// Show the addbox
@@ -547,9 +569,9 @@ $(document).ready(function() {
 				nbHTML += '<input type="submit" value="Save Notebook" class="submitbutton" />';
 				nbHTML += '</form>';
 				nbHTML += '</article>';
-			
+
 				var nb = $(nbHTML).appendTo($("#notebooks"));
-				
+
 				nb.find(".editbox textarea, .editbox input[type=text]").bind('keydown', 'shift+return', function() {
 					$(this).parents(".editbox").submit();
 
@@ -661,7 +683,7 @@ function addEntry(text) {
 	// Blur entry box
 	$("#add").blur();
 	$("#add").removeClass('has-text');
-	
+
 	// Hide input area
 	$("#input").slideUp(50);
 }

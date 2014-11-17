@@ -1,9 +1,5 @@
-Flask==0.9
-Jinja2==2.6
-Werkzeug==0.8.3
-peewee==2.0.9
+Django==1.7.1
 Whoosh==2.6.0
-nose==1.2.1
-Flask-Markdown==0.3
-smartypants==1.6.0.3
-Flask-OpenID==1.1.1
+mistune==0.4.1
+requests==2.4.3
+smartypants==1.8.6

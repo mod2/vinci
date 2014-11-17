@@ -1,9 +1,10 @@
 *.pyc
-data
 *.db
 *.idx
-config.py
 *.log
-static/custom/css/*
-static/custom/js/*
-static/images/*
+
+local_settings.py
+
+/static
+/data
+/env

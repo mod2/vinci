@@ -4,13 +4,11 @@ Web-based notebook.
 
 ### Installation
 
-1. Create a virtualenv (we recommend virtualenvwrapper).
-2. Activate your virtualenv.
-3. Run `pip install -r requirements.txt`.
-4. Copy `config_sample.py` to `config.py` and edit.
-5. `mkdir data`
+**needs to be updated**
 
 ### Plugins
+
+**needs to be updated**
 
 Plugins come in two parts: a Python preprocessor (located in `plugins/[pluginname].py`) and a JavaScript postprocessor (located in `static/plugins/[pluginname]/[pluginname].js`). See examples.
 

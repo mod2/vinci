@@ -166,8 +166,9 @@ def append_today_entry(content, notebook_slug):
 
         si.add_or_update_index(entry)
     except m.Entry.DoesNotExist:
-        # We don't have an entry today, so create it
-        entry = add_entry(content, notebook_slug)
+        # We don't have an entry today, so create it (strip it first
+        # so there's no initial newline)
+        entry = add_entry(content.strip(), notebook_slug)
 
     return entry
 

@@ -250,7 +250,8 @@ body.all > header .container	{ background: #3a3d41; }
 #notebooks .notebook > a		{ text-decoration: none; display: block; padding: 12px 40px; }
 #notebooks .notebook > a:hover	{ background: #398bbd; border-bottom: solid 1px #398bbd; }
 #notebooks .notebook > a:hover h2 { color: #fff; }
-#notebooks .notebook > a h2	{ margin: 0; line-height: 1em; color: #43a2b9; font-weight: normal; font-style: italic; font-size: 1.3em; }
+#notebooks .notebook > a h2	{ margin: 0; line-height: 1em; color: #43a2b9; font-weight: normal; font-style: italic; font-size: 1.3em; display: inline; }
+#notebooks .notebook > a span	{ display: inline; color: #bbb; margin-left: 5px; }
 #notebooks .notebook > a p	{ margin: 0; font-size: .9em; font-weight: normal; color: #999; }
 
 #notebooks .notebook .controls	{ margin-right: 40px; margin-top: 1em; font-size: .8em; float: right; }

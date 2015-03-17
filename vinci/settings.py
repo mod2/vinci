@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'vinci',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -87,4 +88,4 @@ STATIC_URL = '/static/'
 from local_settings import *  # noqa
 
 if SECRET_KEY == 'vinci':
-    pass  # raise improperlyconfiguredError
+    raise ImproperlyConfigured('SECRET_KEY must be provided.')

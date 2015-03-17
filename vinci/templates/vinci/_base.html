@@ -1,0 +1,84 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	{% block head %}
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+
+	<title>{% block title %}{{ title }}{% endblock title %}{{ SITE_TITLE_SEP }}{{ SITE_TITLE }}</title>
+
+	<link href="{% static 'css/font-awesome-vinci/css/vincifont.css' %}" rel="stylesheet" type="text/css" charset="utf-8" />
+	<link href="{% static 'css/style.css' %}?v9" rel="stylesheet" type="text/css" charset="utf-8" />
+	<link href="{% static 'css/prism.css' %}" rel="stylesheet" type="text/css" charset="utf-8" />
+    {% if custom and custom.css %}
+		<link href="{% static '' %}custom/css/{{ notebook.slug }}.css" rel="stylesheet" type="text/css" charset="utf-8" />
+    {% endif %}
+	{% comment %}
+    {% for plugin in config.plugins %}{% for file in config.plugins[plugin].css %}
+		<link href="{% static '' %}plugins/{{ plugin }}/{{ file }}" rel="stylesheet" type="text/css" charset="utf-8" />
+	{% endfor %}{% endfor %}
+	{% endcomment %}
+
+	<script src="{% static 'js/jquery-2.0.3.min.js' %}" type="text/javascript" charset="utf-8"></script>
+	<script src="{% static 'js/jquery.hotkeys.js' %}" type="text/javascript" charset="utf-8"></script>
+	<script src="{% static 'js/jquery.infinitescroll.min.js' %}" type="text/javascript" charset="utf-8"></script>
+	<script src="{% static 'js/prism.js' %}" type="text/javascript" charset="utf-8"></script>
+
+	<script src="{% static 'js/vinci.js' %}?v10" type="text/javascript" charset="utf-8"></script>
+    {% if custom and custom.js %}
+		<script src="{% static '' %}custom/js/{{ notebook.slug }}.js" type="text/javascript" charset="utf-8"></script>
+    {% endif %}
+	{% comment %}
+    {% for plugin in config.plugins %}{% for file in config.plugins[plugin].js %}
+		<script src="{% static '' %}plugins/{{ plugin }}/{{ file }}" type="text/javascript" charset="utf-8"></script>
+	{% endfor %}{% endfor %}
+	{% endcomment %}
+
+	<script type="text/javascript" charset="utf-8">
+		var config = {};
+		config.url = "{% url 'notebooks_list' %}";
+{% if notebook %}		config.notebook = "{{ notebook.slug }}";{% endif %}
+	</script>
+
+	<link rel="shortcut icon" href="{% static 'favicon.png' %}">
+	<link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+	<link rel="apple-touch-icon-precomposed" href="{% static 'apple-touch-icon.png' %}">
+
+	{% endblock head %}
+</head>
+
+<body{% if page_type %} class="{{ page_type }}"{% endif %}>
+	{% block cmdline %}
+	<form id="cmdline">
+		<div class="container">
+			<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" />
+		</div>
+	</form>
+	{% endblock cmdline %}
+
+	{% block header %}
+	<header>
+		<div class="container">
+			<nav>
+				<ul>
+					<li><a class="icon-plus addentry" href=""></a></li>
+					<li><a class="icon-th-list notebooks" href="{% url 'notebooks_list' %}"></a></li>
+					<li><a class="icon-terminal search" href=""></a></li>
+				</ul>
+			</nav>
+
+			<h1>{% if notebook %}<a href="{{ notebook.get_absolute_url }}">{% endif %}{{ title }}{% if notebook %}</a>{% endif %}</h1>
+		</div>
+	</header>
+	{% endblock header %}
+
+	{% block input %}{% endblock input %}
+	{% block nav %}{% endblock nav %}
+	{% block page_header %}{% endblock page_header %}
+
+	<section id="page">
+		{% block page_content %}{% endblock page_content %}
+	</section>
+</body>
+</html>

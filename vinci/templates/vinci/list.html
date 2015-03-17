@@ -1,0 +1,15 @@
+{% extends 'vinci/_base.html' %}
+
+{% block page_content %}
+<div class="container">
+	{% block entries %}
+	<section id="entries" class="list">
+		{% for entry in entries %}
+            {% include '_entry.html' %}
+		{% empty %}
+            <article class="entry">No entries.</article>
+		{% endfor %}
+	</section>
+	{% endblock entries %}
+</div>
+{% endblock page_content %}

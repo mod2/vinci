@@ -1,21 +1,20 @@
 from django.db import models
 from django.conf import settings
+from django.shortcuts import resolve_url
+from django_extensions.db.fields import AutoSlugField
 
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
 class Notebook(models.Model):
-    slug = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=100)
-    description = models.TextField(null=True)
+    slug = AutoSlugField(populate_from='name', unique=True, editable=True)
 
-    # def set_slug(self):
-    #     slug = utils.slugify(self.name)
-    #     num = Notebook.select().where(
-    #         p.fn.Substr(Notebook.slug, 1, len(slug)) == slug).count()
-    #     if num > 0:
-    #         slug += '-' + str(num)
-    #     self.slug = slug
+    def __unicode__(self):
+        return "{0.name} ({0.slug})".format(self)
+
+    def get_absolute_url(self):
+        return resolve_url('notebook', self.slug)
 
 
 class Revision(models.Model):

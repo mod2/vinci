@@ -10,9 +10,11 @@
 
 import re
 
+
 def process(content, entry, notebook_url):
-    # Convert to checkboxes
-    content = re.sub(r'\* (.*)', r'<div class="checklist-group"><input type=checkbox><label>\1</label></div>', content)
+    """Convert to checkboxes"""
+    content = re.sub(r'\* (.*)',
+                     r'<div class="checklist-group"><input type=checkbox><label>\1</label></div>',  # noqa
+                     content)
 
     return content
-

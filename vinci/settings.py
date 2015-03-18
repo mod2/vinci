@@ -82,7 +82,7 @@ VINCI_RESULTS_PER_PAGE = 10
 VINCI_PLUGINS = [
     'youtube',
     'hashtags',
-    'image'
+    'image',
     'pagelink',
     'md',
     'sp',

@@ -6,13 +6,14 @@
 import re
 
 # Example:
-# 
+#
 # {forms
 #   classes: wide
 #   labels: nom | acc | gen | dat
 #   sg: iċ | mē, mec | mīn | mē
 #   pl: wē | ūs | ūre | ūs
 # }
+
 
 # Convert the syntax to an HTML table
 def convert(m):
@@ -65,6 +66,7 @@ def convert(m):
     html += '</table>'
 
     return html
+
 
 def process(content, entry, notebook_url):
     # Convert {forms ... } notation to the HTML we need

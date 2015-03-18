@@ -1,7 +1,8 @@
 # SmartyPants plugin
 # Formats text through SmartyPants
 
-from smartypants import smartyPants
+from smartypants import smartypants
+
 
 def process(content, entry, notebook_url):
-    return smartyPants(content)
+    return smartypants(content)

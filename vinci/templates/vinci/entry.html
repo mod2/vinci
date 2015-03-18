@@ -1,0 +1,23 @@
+{% extends 'vinci/_base.html' %}
+
+{% block title %}{% if entry.title != '' %}{{ entry.title }}{% elif entry.slug != '' %}{{ entry.slug }}{% else %}{{ entry.date|date:'Y-m-d' }}{% endif %} | {{ entry.notebook.name }} | Vinci{% endblock title %}
+
+{% block input %}
+<form id="input">
+	<div class="container">
+		<div class="content"><textarea id="add" name="add"></textarea><input type="submit" value="Add Entry" class="submitbutton" /></div>
+	</div>
+</form>
+{% endblock input %}
+
+{% block page_content %}
+
+{% block entry %}
+<div class="container">
+	<section id="entries" class="detail">
+		{% include 'vinci/_entry.html' %}
+	</section>
+</div>
+{% endblock entry %}
+
+{% endblock page_content %}

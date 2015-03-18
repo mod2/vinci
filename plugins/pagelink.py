@@ -6,7 +6,7 @@
 
 import re
 import string
-from flask import url_for
+
 
 def parse_match(m):
     link_text = m.group(1)
@@ -20,9 +20,11 @@ def parse_match(m):
 
     return link_html
 
+
 def process(content, entry, notebook_url):
     # Do the bulk of the work here
-    content = re.sub(r'\[\[\s*(.*?)\s*\|\s*(.*?/)?(.*?)\s*\]\]', parse_match, content)
+    content = re.sub(r'\[\[\s*(.*?)\s*\|\s*(.*?/)?(.*?)\s*\]\]',
+                     parse_match, content)
 
     # Replace the placeholder with the current notebook's slug
     # (Since we can't pass the slug in to parse_match)

@@ -30,7 +30,8 @@ def entries_list(request, notebook_slug):
 def entry_detail(request, notebook_slug, entry_slug):
     try:
         entry = Entry.objects.get(Q(notebook__slug=notebook_slug)
-                                  & (Q(id=entry_slug) | Q(slug=entry_slug)))
+                                  & (Q(id=int(entry_slug))
+                                     | Q(slug=entry_slug)))
     except Entry.DoesNotExist:
         return HttpResponseNotFound('Entry does not exist.')
     context = {

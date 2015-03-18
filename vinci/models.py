@@ -7,6 +7,15 @@ from django.utils.text import slugify
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
+class EntryManager(models.Manager):
+    def from_slug(self, slug):
+        qs = self.get_queryset()
+        try:
+            slug_id = int(slug)
+        except:
+            slug_id = 0
+        return qs.filter(models.Q(slug=slug) | models.Q(pk=slug_id))
+
 class Notebook(models.Model):
     name = models.CharField(max_length=100)
     slug = AutoSlugField(populate_from='name', unique=True, editable=True)
@@ -23,6 +32,8 @@ class Entry(models.Model):
     slug = models.SlugField(null=True, blank=True)
     notebook = models.ForeignKey(Notebook, related_name='entries')
     date = models.DateTimeField(auto_now_add=True)
+
+    objects = EntryManager()
 
     @property
     def current_revision(self):

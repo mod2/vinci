@@ -1,24 +1,15 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
-from .models import Revision
+# from django.contrib.auth.models import User
+from .models import Entry, Notebook
 
 
-class NotebookSlugField(serializers.RelatedField):
-    def get_attribute(self, instance):
-        try:
-            return instance.entry.first().notebook
-        except AttributeError:
-            return instance
-
-    def to_representation(self, value):
-        return value.slug
-
-
-class RevisionSerializer(serializers.ModelSerializer):
-    notebook = NotebookSlugField(read_only=True)
-    author = serializers.SlugRelatedField(slug_field='first_name',
-                                          queryset=User.objects.all())
-
+class EntrySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Revision
-        fields = ('content', 'author', 'date', 'slug', 'title', 'notebook')
+        model = Entry
+        fields = ('title', 'slug', 'date', 'content', 'html')
+
+
+class NotebookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notebook
+        fields = ('name', 'slug')

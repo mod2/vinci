@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 from django.conf import settings
+import django_extensions.db.fields
 
 
 class Migration(migrations.Migration):
@@ -16,10 +17,14 @@ class Migration(migrations.Migration):
             name='Entry',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('title', models.CharField(default=b'', max_length=100, null=True, blank=True)),
+                ('slug', django_extensions.db.fields.AutoSlugField(editable=False, populate_from=b'title', blank=True, overwrite=True)),
                 ('date', models.DateTimeField(auto_now_add=True)),
             ],
             options={
                 'ordering': ['-date'],
+                'verbose_name': 'Entry',
+                'verbose_name_plural': 'Entries',
             },
             bases=(models.Model,),
         ),
@@ -27,9 +32,8 @@ class Migration(migrations.Migration):
             name='Notebook',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('slug', models.CharField(unique=True, max_length=100)),
                 ('name', models.CharField(max_length=100)),
-                ('description', models.TextField(null=True)),
+                ('slug', django_extensions.db.fields.AutoSlugField(editable=False, populate_from=b'name', blank=True, unique=True)),
             ],
             options={
             },
@@ -40,27 +44,20 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('content', models.TextField()),
-                ('title', models.TextField()),
-                ('slug', models.TextField()),
-                ('date', models.DateTimeField(auto_now_add=True)),
-                ('author', models.ForeignKey(related_name=b'revisions', to=settings.AUTH_USER_MODEL)),
-                ('parent', models.ForeignKey(related_name=b'children', to='vinci.Revision', null=True)),
+                ('last_modified', models.DateTimeField(auto_now_add=True)),
+                ('author', models.ForeignKey(related_name='revisions', to=settings.AUTH_USER_MODEL)),
+                ('entry', models.ForeignKey(related_name='revisions', to='vinci.Entry')),
+                ('parent', models.ForeignKey(related_name='children', blank=True, to='vinci.Revision', null=True)),
             ],
             options={
-                'ordering': ['-date'],
+                'ordering': ['-last_modified'],
             },
             bases=(models.Model,),
         ),
         migrations.AddField(
             model_name='entry',
-            name='current_revision',
-            field=models.ForeignKey(default=None, to='vinci.Revision', null=True),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='entry',
             name='notebook',
-            field=models.ForeignKey(related_name=b'entries', to='vinci.Notebook'),
+            field=models.ForeignKey(related_name='entries', to='vinci.Notebook'),
             preserve_default=True,
         ),
     ]

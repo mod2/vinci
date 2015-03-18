@@ -5,7 +5,7 @@
 	{% block entries %}
 	<section id="entries" class="list">
 		{% for entry in entries %}
-            {% include '_entry.html' %}
+            {% include 'vinci/_entry.html' %}
 		{% empty %}
             <article class="entry">No entries.</article>
 		{% endfor %}

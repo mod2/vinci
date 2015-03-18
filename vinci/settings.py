@@ -79,6 +79,14 @@ VINCI_SITE_TITLE = 'Vinci'
 VINCI_SITE_TITLE_SEP = ' | '
 VINCI_DEFAULT_SEARCH_ORDER = '-date'
 VINCI_RESULTS_PER_PAGE = 10
+VINCI_PLUGINS = [
+    'youtube',
+    'hashtags',
+    'image'
+    'pagelink',
+    'md',
+    'sp',
+]
 
 
 from django.conf import global_settings

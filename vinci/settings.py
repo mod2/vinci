@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'vinci',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -73,8 +74,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-SITE_TITLE = 'Vinci'
-SITE_TITLE_SEP = ' | '
+# Vinci settings
+VINCI_SITE_TITLE = 'Vinci'
+VINCI_SITE_TITLE_SEP = ' | '
+VINCI_DEFAULT_SEARCH_ORDER = '-date'
+VINCI_RESULTS_PER_PAGE = 10
+
 
 from django.conf import global_settings
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (

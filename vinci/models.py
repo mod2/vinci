@@ -18,31 +18,35 @@ class Notebook(models.Model):
 
 
 class Revision(models.Model):
+    title = models.CharField(max_length=100)
+    slug = models.CharField(max_length=100)
     content = models.TextField()
-    parent = models.ForeignKey('self', related_name='children', null=True)
-    title = models.TextField()
-    slug = models.TextField()
+    parent = models.ForeignKey('self', related_name='children',
+                               null=True, blank=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL,
                                related_name='revisions')
     date = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return "revision: {title} by {author} - {content}".format(
+            title=self.title,
+            author=self.author,
+            content=self.content[:50],
+        )
 
     class Meta:
         ordering = ['-date']
 
 
 class Entry(models.Model):
-    current_revision = models.ForeignKey(Revision, null=True, default=None)
+    current_revision = models.ForeignKey(Revision, related_name='entry')
     notebook = models.ForeignKey(Notebook, related_name='entries')
     date = models.DateTimeField(auto_now_add=True)
 
+    def __unicode__(self):
+        return "entry: {}".format(self.current_revision)
+
     class Meta:
         ordering = ['-date']
-
-    def serialize(self):
-        entry = {}
-        entry['content'] = self.current_revision.content
-        entry['notebook'] = self.notebook.slug
-        entry['author'] = self.author.display
-        entry['date'] = self.date.strftime(DATETIME_FORMAT)
-        entry['last_modified'] = self.last_modified.strftime(DATETIME_FORMAT)
-        return entry
+        verbose_name = 'Entry'
+        verbose_name_plural = 'Entries'

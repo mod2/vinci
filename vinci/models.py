@@ -8,6 +8,20 @@ from model_utils import Choices
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
+class NotebookManager(models.Manager):
+    def active(self):
+        qs = self.get_queryset()
+        return qs.filter(status='active')
+
+    def archived(self):
+        qs = self.get_queryset()
+        return qs.filter(status='archived')
+
+    def deleted(self):
+        qs = self.get_queryset()
+        return qs.filter(status='deleted')
+
+
 class EntryManager(models.Manager):
     def from_slug(self, slug):
         qs = self.get_queryset()
@@ -30,6 +44,8 @@ class Notebook(models.Model):
     status = models.CharField(max_length=20,
                               default=STATUS.active,
                               choices=STATUS)
+
+    objects = NotebookManager()
 
     def __unicode__(self):
         return "{0.name} ({0.slug})".format(self)

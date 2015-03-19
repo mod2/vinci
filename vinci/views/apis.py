@@ -39,6 +39,24 @@ class NotebookListAPIView(ListCreateAPIView):
     """
     # Notebooks
     List of all the notebooks.
+
+    ## Optional Parameters
+
+    * `status` - active (default), archived, deleted
+
+    ## Examples
+
+    * `GET /api/?status=archived` Return list of all the archived notebooks.
     """
     serializer_class = NotebookSerializer
-    queryset = Notebook.objects.all()
+
+    def get_queryset(self):
+        qs = Notebook.objects
+        status = self.request.GET.get('status', Notebook.STATUS.active)
+        if status == Notebook.STATUS.archived:
+            qs = qs.archived()
+        elif status == Notebook.STATUS.deleted:
+            qs = qs.deleted()
+        else:  # show active
+            qs = qs.active()
+        return qs

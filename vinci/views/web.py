@@ -45,7 +45,7 @@ def entry_detail(request, notebook_slug, entry_slug):
 
 
 def notebooks_list(request):
-    notebooks = Notebook.objects.all()
+    notebooks = Notebook.objects.active()
     context = {
         'title': 'All Notebooks',
         'notebooks': notebooks,

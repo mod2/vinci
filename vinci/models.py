@@ -3,6 +3,7 @@ from django.conf import settings
 from django.shortcuts import resolve_url
 from django_extensions.db.fields import AutoSlugField
 from django.utils.text import slugify
+from model_utils import Choices
 
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
@@ -16,9 +17,19 @@ class EntryManager(models.Manager):
             slug_id = 0
         return qs.filter(models.Q(slug=slug) | models.Q(pk=slug_id))
 
+
 class Notebook(models.Model):
+    STATUS = Choices(
+        ('active', 'Active'),
+        ('archived', 'Archived'),
+        ('deleted', 'Deleted'),
+    )
+
     name = models.CharField(max_length=100)
     slug = AutoSlugField(populate_from='name', unique=True, editable=True)
+    status = models.CharField(max_length=20,
+                              default=STATUS.active,
+                              choices=STATUS)
 
     def __unicode__(self):
         return "{0.name} ({0.slug})".format(self)

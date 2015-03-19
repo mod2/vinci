@@ -12,4 +12,4 @@ class EntrySerializer(serializers.ModelSerializer):
 class NotebookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notebook
-        fields = ('name', 'slug')
+        fields = ('name', 'slug', 'status')

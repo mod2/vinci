@@ -31,6 +31,23 @@ class EntryManager(models.Manager):
             slug_id = 0
         return qs.filter(models.Q(slug=slug) | models.Q(pk=slug_id))
 
+    def create(self, **kwargs):
+        try:
+            content = kwargs.pop('content')
+        except KeyError:
+            content = ''
+        try:
+            user = kwargs.pop('author')
+        except KeyError:
+            user = ''
+        rtn = super(EntryManager, self).create(**kwargs)
+        r = Revision()
+        r.content = content
+        r.author = user
+        r.entry = rtn
+        r.save()
+        return rtn
+
 
 class Notebook(models.Model):
     STATUS = Choices(
@@ -89,7 +106,7 @@ class Entry(models.Model):
     def __unicode__(self):
         return "entry: {}".format(self.current_revision)
 
-    def save(self):
+    def save(self, **kwargs):
         if self.title:
             self.slug = slugify(self.title)
         super(Entry, self).save()

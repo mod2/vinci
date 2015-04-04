@@ -26,13 +26,34 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
     """
     serializer_class = EntrySerializer
 
-    def get(self, notebook_slug, slug):
+    def _get_args(self, args, kwargs):
+        notebook_slug = kwargs.get('notebook_slug')
+        slug = kwargs.get('slug')
+
+        if notebook_slug is None and len(args) > 0:
+            notebook_slug = args[0]
+        elif notebook_slug is None:
+            notebook_slug = ''
+
+        if slug is None and len(args) > 1:
+            slug = args[1]
+        elif slug is None:
+            slug = ''
+
+        return (notebook_slug, slug)
+
+    def get(self, request, *args, **kwargs):
+        notebook_slug, slug = self._get_args(args, kwargs)
+        print("{} - {}".format(notebook_slug, slug))
         entry = (Entry.objects
                  .from_slug(slug)
                  .filter(notebook__slug=notebook_slug)
                  .first()
                  )
-        return APIResponse(self.serializer_class(entry))
+        return APIResponse(self.serializer_class(entry).data)
+
+    def put(self, request):
+        pass
 
 
 class NotebookListAPIView(ListCreateAPIView):

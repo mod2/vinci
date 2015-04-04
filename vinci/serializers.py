@@ -57,15 +57,11 @@ class EntrySerializer(serializers.ModelSerializer):
                                             queryset=Notebook.objects.active())
     content = ContentField()
     author = AuthorField(required=False)
-    # url = serializers.HyperlinkedIdentityField(view_name='api_entry_detail',
-    #                                            lookup_field='slug')
 
     def create(self, kwargs):
         return Entry.objects.create(**kwargs)
 
     class Meta:
         model = Entry
-        # fields = ('url', 'title', 'slug', 'date', 'content', 'author',
-        #           'html', 'notebook')
-        fields = ('title', 'slug', 'date', 'content', 'author',
+        fields = ('id', 'title', 'slug', 'date', 'content', 'author',
                   'html', 'notebook')

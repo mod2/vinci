@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response as APIResponse
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView
@@ -17,6 +18,29 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
     List of entries for the current notebook.
     """
     serializer_class = EntrySerializer
+
+    def put(self, request, notebook_slug):
+        notebook = get_object_or_404(Notebook, slug=notebook_slug)
+        name = request.data.get('name')
+        status = request.data.get('status')
+        changed = False
+        if name is not None:
+            notebook.name = name
+            changed = True
+        if status is not None and status in Notebook.STATUS:
+            notebook.status = status
+            changed = True
+        if changed:
+            notebook.save()
+        nb = NotebookSerializer(notebook, context={'request': request})
+        return APIResponse(nb.data)
+
+    def delete(self, request, notebook_slug):
+        notebook = get_object_or_404(Notebook, slug=notebook_slug)
+        notebook.status = notebook.STATUS.deleted
+        nb = NotebookSerializer(notebook, context={'request': request})
+        notebook.save()
+        return APIResponse(nb.data)
 
 
 class EntryDetailAPIView(NotebookLimitMixin, APIView):

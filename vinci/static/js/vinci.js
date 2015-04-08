@@ -543,37 +543,33 @@ $(document).ready(function() {
 
 	$(".addbox").on("submit", function() {
 		var name = encodeURIComponent($(this).find(".name").val().trim());
-		var url = config.url + "add/notebook?name=" + name;
+		var url = config.url + "api/";
 
 		// Add the notebook
-		$.get(url, function(data) {
-			if (data.status == 'success') {
-				var nbHTML = '<article class="notebook" data-slug="' + data.slug + '">';
-				nbHTML += '<div class="controls"><a href="" class="delete">delete</a> <a href="" class="edit">edit</a></div>';
-				nbHTML += '<a href="' + config.url + data.slug + '">';
-				nbHTML += '<h2>' + data.name + '</h2>';
-				nbHTML += '</a>';
-				nbHTML += '<form class="editbox nb-edit-box">';
-				nbHTML += '<div class="group"><label>Name:</label> <input type="text" class="name" value="' + data.name + '" /></div>';
-				nbHTML += '</textarea>';
-				nbHTML += '<input type="submit" value="Save Notebook" class="submitbutton" />';
-				nbHTML += '</form>';
-				nbHTML += '</article>';
+		$.post(url, {name: name}, function(data) {
+            var nbHTML = '<article class="notebook" data-slug="' + data.slug + '">';
+            nbHTML += '<div class="controls"><a href="" class="delete">delete</a> <a href="" class="edit">edit</a></div>';
+            nbHTML += '<a href="' + config.url + data.slug + '">';
+            nbHTML += '<h2>' + data.name + '</h2>';
+            nbHTML += '</a>';
+            nbHTML += '<form class="editbox nb-edit-box">';
+            nbHTML += '<div class="group"><label>Name:</label> <input type="text" class="name" value="' + data.name + '" /></div>';
+            nbHTML += '</textarea>';
+            nbHTML += '<input type="submit" value="Save Notebook" class="submitbutton" />';
+            nbHTML += '</form>';
+            nbHTML += '</article>';
 
-				var nb = $(nbHTML).appendTo($("#notebooks"));
+            var nb = $(nbHTML).appendTo($("#notebooks"));
 
-				nb.find(".editbox textarea, .editbox input[type=text]").bind('keydown', 'shift+return', function() {
-					$(this).parents(".editbox").submit();
+            nb.find(".editbox textarea, .editbox input[type=text]").bind('keydown', 'shift+return', function() {
+                $(this).parents(".editbox").submit();
 
-					return false;
-				});
+                return false;
+            });
 
-				$(".addbox").fadeOut(75, function() {
-					$(this).find(".name").val('');
-				});
-			} else {
-				alert("Error adding notebook");
-			}
+            $(".addbox").fadeOut(75, function() {
+                $(this).find(".name").val('');
+            });
 		}, 'json');
 
 		return false;
@@ -605,19 +601,23 @@ $(document).ready(function() {
         var name = encodeURIComponent(nb.find(".editbox input[type=text]").val().trim());
 
 		// Call edit notebook web service
-        var url = config.url + "edit/notebook?notebook=" + slug + "&name=" + name;
+        var url = config.url + "api/" + slug + '/';
 
-        $.get(url, function(data) {
-            if (data.status == 'success') {
+        $.ajax({
+            method: 'PUT',
+            url: url,
+            data: {name: name},
+            success: function(data) {
                 // Update content
                 nb.find("> a h2").html(data.name);
 				nb.attr("data-slug", data.slug);
 
                 // Hide edit stuff
                 nb.find(".editbox").fadeOut(75);
-            } else {
+            },
+            error: function(data) {
                 alert("Error editing notebook");
-            }
+            },
         });
 
         return false;
@@ -635,16 +635,19 @@ $(document).ready(function() {
 			var slug = nb.attr("data-slug");
 
 			// Call delete notebook web service
-			var url = config.url + "delete/notebook?notebook=" + slug;
+			var url = config.url + "api/" + slug + '/';
 
-			$.get(url, function(data) {
-				if (data.status == 'success') {
+			$.ajax({
+				method: "DELETE",
+				url: url,
+				success: function(data) {
 					// Fade out and then delete the DOM element
 					nb.fadeOut(75, function() {
 						nb.remove();
 					});
-				} else {
-					alert("Error deleting notebook");
+				},
+				error: function(data) {
+					alert("Error deleting notbook");
 				}
 			});
 		}
@@ -655,7 +658,7 @@ $(document).ready(function() {
 
 function addEntry(text) {
 	// Add the entry
-	$.post(config.url + "add/entry/?notebook=" + config.notebook, { content: text }, function(data) {
+	$.post(config.url + "api/", {name: text}, function(data) {
 	 	if (data.status == 'success') {
 			// Reload notebook page
 			window.location.href = config.url + config.notebook + "/";

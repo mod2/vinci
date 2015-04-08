@@ -15,9 +15,25 @@ class NotebookLimitMixin(object):
 class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
     """
     # Entries
-    List of entries for the current notebook.
+    - **GET** List the entries for the current notebook.
+    - **POST** Create a new entry attached to the current notebook.
+    - **PUT** Edit the current notebooks name or status.
+    - **DELETE** Delete the current notebook (sets the status to deleted).
     """
     serializer_class = EntrySerializer
+
+    def post(self, request, notebook_slug):
+        notebook = get_object_or_404(Notebook, slug=notebook_slug)
+        content = request.data.get('content')
+        if content:
+            kwargs = {'content': content,
+                      'author': request.user,
+                      'notebook': notebook,
+                      }
+            entry = Entry.objects.create(**kwargs)
+            e = EntrySerializer(entry)
+            return APIResponse(e.data)
+        return APIResponse({'detail': 'No content to save.'}, status=400)
 
     def put(self, request, notebook_slug):
         notebook = get_object_or_404(Notebook, slug=notebook_slug)

@@ -73,7 +73,13 @@
 	</header>
 	{% endblock header %}
 
-	{% block input %}{% endblock input %}
+	{% block input %}
+		<form id="input">
+			<div class="container">
+				<div class="content"><textarea id="add" name="add"></textarea><input type="submit" value="Add Entry" class="submitbutton" /></div>
+			</div>
+		</form>
+	{% endblock input %}
 	{% block nav %}{% endblock nav %}
 	{% block page_header %}{% endblock page_header %}
 

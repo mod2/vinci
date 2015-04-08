@@ -87,6 +87,7 @@ VINCI_PLUGINS = [
     'md',
     'sp',
 ]
+VINCI_ENABLE_NON_REST_APIS = False
 
 
 from django.conf import global_settings

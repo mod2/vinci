@@ -658,7 +658,8 @@ $(document).ready(function() {
 
 function addEntry(text) {
 	// Add the entry
-	$.post(config.url + "api/", {name: text}, function(data) {
+	// TODO: doesn't work, might need to send the csrf token or something
+	$.post(config.url + "api/" + config.notebook + "/", {content: text}, function(data) {
 	 	if (data.status == 'success') {
 			// Reload notebook page
 			window.location.href = config.url + config.notebook + "/";

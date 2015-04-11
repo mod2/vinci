@@ -72,8 +72,8 @@ class Notebook(models.Model):
 
 
 class Entry(models.Model):
-    title = models.CharField(max_length=100, blank=True, null=True, default='')
-    slug = models.SlugField(null=True, blank=True)
+    title = models.CharField(max_length=100, blank=True, default='')
+    slug = models.SlugField(blank=True, default='')
     notebook = models.ForeignKey(Notebook, related_name='entries')
     date = models.DateTimeField(auto_now_add=True)
 
@@ -85,7 +85,8 @@ class Entry(models.Model):
 
     @property
     def content(self):
-        return self.current_revision.content
+        revision = self.current_revision
+        return '' if not revision else revision.content
 
     def html(self):
         content = self.content

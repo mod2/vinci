@@ -1,0 +1,15 @@
+{% extends 'vinci/_base.html' %}
+
+{% block header_title %}Login{% endblock header_title %}
+
+{% block page_content %}
+{% if form.errors %}
+	<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+<form method='post' action="{% url 'django.contrib.auth.views.login' %}">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" value="login" />
+	<input type="hidden" name="next" value="{{ next }}" />
+</form>
+{% endblock page_content %}

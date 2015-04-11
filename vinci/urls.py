@@ -1,13 +1,8 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-# from rest_framework import routers
-# from .views.apis import NotebookViewSet, EntryViewSet, EntryListAPIView
+from django.contrib.auth import views as auth_views
 from .views.apis import EntryListAPIView, EntryDetailAPIView
 from .views.apis import NotebookListAPIView
-
-# router = routers.SimpleRouter()
-# router.register(r'notebook', NotebookViewSet)
-# router.register(r'entry', EntryViewSet)
 
 vinciapipatterns = patterns(
     '',
@@ -26,7 +21,6 @@ vincipatterns = patterns(
     'vinci.views.web',
 
     url(r'^$', 'notebooks_list', name='notebooks_list'),
-    # url(r'^api/', include(router.urls)),
     url(r'^api/', include(vinciapipatterns)),
     url(r'^(?P<notebook_slug>[^\/]+)/$', 'entries_list', name='notebook'),
     url(r'^(?P<notebook_slug>[^\/]+)/(?P<entry_slug>[^\/]+)/$', 'entry_detail',
@@ -36,6 +30,7 @@ vincipatterns = patterns(
 urlpatterns = patterns(
     '',
     url(r'^admin/', include(admin.site.urls)),
-
+    url(r'^accounts/login/$', auth_views.login),
+    url(r'^accounts/logout/$', auth_views.logout),
     url(r'^', include(vincipatterns)),
 )

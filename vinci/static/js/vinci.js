@@ -1,3 +1,32 @@
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
 $(document).ready(function() {
 	// Infinite scroll
 	if ($("nav[role=navigation] a.next")) {
@@ -496,20 +525,22 @@ $(document).ready(function() {
 			var id = entry.attr("data-id");
 
 			// Call delete entry web service
-			var url = config.url + "delete/entry?id=" + id + "&notebook=" + config.notebook;
+			var url = config.url + config.notebook + "/" + id + "/";
 
-			$.get(url, function(data) {
-				if (data.status == 'success') {
+			$.ajax({
+				method: "DELETE",
+				url: url,
+				success: function(data) {
 					// Fade out and then delete the DOM element
 					entry.fadeOut(75, function() {
 						entry.remove();
 					});
-
 					// Redirect to notebook page
 					window.location.href = config.url + config.notebook;
-				} else {
+				},
+				error: function(data) {
 					alert("Error deleting entry");
-				}
+				},
 			});
 		}
 

@@ -6,10 +6,19 @@ from vinci.serializers import EntrySerializer, NotebookSerializer
 from vinci.models import Entry, Notebook
 
 
+class APIResponseNotFound(APIResponse):
+    def __init__(self, message='Not Found', **kwargs):
+        detail = {'detail': message}
+        super().__init__(data=detail, status=404, **kwargs)
+
+
 class NotebookLimitMixin(object):
     def get_queryset(self):
+        qs = Entry.objects.all()
         notebook_slug = self.kwargs.get('notebook_slug', '')
-        return Entry.objects.filter(notebook__slug=notebook_slug)
+        if notebook_slug:
+            qs = qs.filter(notebook__slug=notebook_slug)
+        return qs
 
 
 class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
@@ -66,34 +75,44 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
     """
     serializer_class = EntrySerializer
 
-    def _get_args(self, args, kwargs):
-        notebook_slug = kwargs.get('notebook_slug')
-        slug = kwargs.get('slug')
+    def get_queryset(self):
+        slug = self.kwargs.get('slug')
+        qs = self.get_queryset()
 
-        if notebook_slug is None and len(args) > 0:
-            notebook_slug = args[0]
-        elif notebook_slug is None:
-            notebook_slug = ''
-
-        if slug is None and len(args) > 1:
-            slug = args[1]
+        if slug is None and len(self.args) > 1:
+            slug = self.args[1]
         elif slug is None:
             slug = ''
+        slug = slug.strip()
+        if slug:
+            try:
+                qs.from_slug(slug)
+            except Entry.DoesNotExist:
+                qs = None
 
-        return (notebook_slug, slug)
+        return qs
+
+    def get_entry_for_request(self):
+        return self.get_queryset()
 
     def get(self, request, *args, **kwargs):
-        notebook_slug, slug = self._get_args(args, kwargs)
-        print("{} - {}".format(notebook_slug, slug))
-        entry = (Entry.objects
-                 .from_slug(slug)
-                 .filter(notebook__slug=notebook_slug)
-                 .first()
-                 )
-        return APIResponse(self.serializer_class(entry).data)
+        entry = self.get_entry_for_request()
+        if entry:
+            return APIResponse(self.serializer_class(entry).data)
+        else:
+            return APIResponseNotFound('No entry found.')
 
     def put(self, request):
         pass
+
+    def delete(self, request, *args, **kwargs):
+        entry = self.get_entry_for_request()
+        if entry:
+            e = self.serializer_class(entry).data
+            entry.delete()
+            return APIResponse(e)
+        else:
+            return APIResponseNotFound('No entry found.')
 
 
 class NotebookListAPIView(ListCreateAPIView):

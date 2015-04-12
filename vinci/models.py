@@ -22,16 +22,20 @@ class NotebookManager(models.Manager):
         return qs.filter(status='deleted')
 
 
-class EntryManager(models.Manager):
+class EntryQuerySet(models.QuerySet):
     def from_slug(self, slug):
-        qs = self.get_queryset()
         try:
             slug_id = int(slug)
         except:
             slug_id = 0
-        return qs.filter(models.Q(slug=slug) | models.Q(pk=slug_id))
+        res = self.filter(models.Q(slug=slug) | models.Q(pk=slug_id)).first()
+        if not res:
+            raise Entry.DoesNotExist('No entry with slug ({}) or id ({}).'
+                                     .format(slug, slug_id))
+        return res
 
-    def create(self, **kwargs):
+    @classmethod
+    def create(cls, **kwargs):
         try:
             content = kwargs.pop('content')
         except KeyError:
@@ -40,7 +44,7 @@ class EntryManager(models.Manager):
             user = kwargs.pop('author')
         except KeyError:
             user = ''
-        rtn = super(EntryManager, self).create(**kwargs)
+        rtn = super().create(**kwargs)
         r = Revision()
         r.content = content
         r.author = user
@@ -77,7 +81,7 @@ class Entry(models.Model):
     notebook = models.ForeignKey(Notebook, related_name='entries')
     date = models.DateTimeField(auto_now_add=True)
 
-    objects = EntryManager()
+    objects = EntryQuerySet.as_manager()
 
     @property
     def current_revision(self):

@@ -300,6 +300,50 @@ a.addnotebook:hover			{ background: #333; color: #fff; }
 .diary > h2						{ padding: .65em 40px .4em; font-weight: normal; font-size: 1.1em;  margin-bottom: 0; background: #8c6c59; color: #fff; }
 
 
+/* Login */
+/* -------------------------------------------------- */
+
+form.login {
+	padding: 25px 40px 65px;
+}
+
+form.login p {
+	margin-bottom: 1em;
+	margin-top: 0;
+}
+
+form.login p label {
+	color: #888;
+	display: block;
+	margin-bottom: .2em;
+}
+
+form.login p input[type=text] {
+	font-size: 1.3em;
+	padding: 3px 5px;
+}
+
+form.login p input[type=password] {
+	font-size: 1.3em;
+	padding: 3px 5px;
+}
+
+form.login input.button {
+	background: #638ec8;
+	border: none;
+	border-radius: 5px;
+	color: #fff;
+	cursor: pointer;
+	font-size: 1em;
+	padding: 4px 10px 6px;
+}
+
+form.login input.button:hover {
+	background: #444;
+}
+
+
+
 /* Infinite scroll */
 /* -------------------------------------------------- */
 
@@ -359,6 +403,10 @@ a.addnotebook:hover			{ background: #333; color: #fff; }
 	#infscr-loading			{ padding-left: 20px; padding-right: 20px; }
 	.datelist				{ padding-left: 20px; padding-right: 20px; }
 	.diary > h2				{ padding-left: 20px; padding-right: 20px; }
+
+	form.login {
+		padding: 10px 20px 25px;
+	}
 }
 
 @media screen and (max-width: 500px) {

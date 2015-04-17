@@ -690,13 +690,17 @@ $(document).ready(function() {
 function addEntry(text) {
 	// Add the entry
 	// TODO: doesn't work, might need to send the csrf token or something
-	$.post(config.url + "api/" + config.notebook + "/", {content: text}, function(data) {
-	 	if (data.status == 'success') {
+	$.ajax({
+		method: "POST",
+		url: config.url + "api/" + config.notebook + "/",
+		data: {content: text},
+		success: function(data) {
 			// Reload notebook page
 			window.location.href = config.url + config.notebook + "/";
-		} else {
+		},
+		error: function(data) {
 			alert("Error adding entry");
-		}
+		},
 	});
 
 	// Clear out the entry box

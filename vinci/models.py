@@ -34,8 +34,7 @@ class EntryQuerySet(models.QuerySet):
                                      .format(slug, slug_id))
         return res
 
-    @classmethod
-    def create(cls, **kwargs):
+    def create(self, **kwargs):
         try:
             content = kwargs.pop('content')
         except KeyError:

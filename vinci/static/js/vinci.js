@@ -431,6 +431,9 @@ $(document).ready(function() {
 		var entry = $(this).parents(".entry:first");
         var id = entry.attr("data-id");
 		var text = entry.find(".editbox textarea").val().trim();
+		var title = entry.find(".editbox input[name=title]").val().trim();
+		var tags = entry.find(".editbox input[name=tags]").val().trim();
+
 		var date = '';
 		if (entry.find(".editbox input[type=text]").length > 0) {
 			date = encodeURIComponent(entry.find(".editbox input[type=text]").val().trim());
@@ -438,9 +441,21 @@ $(document).ready(function() {
 
 		// Call edit entry web service
         var url = config.url + "api/" + config.notebook + "/" + id + "/";
-        data = {content: text}
+
+        data = {
+			content: text,
+		};
+
 		if (date) {
-            data['date'] = date
+            data['date'] = date;
+		}
+
+		if (title) {
+			data['title'] = title;
+		}
+
+		if (tags) {
+			data['tags'] = tags;
 		}
 
         $.ajax({

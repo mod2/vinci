@@ -537,8 +537,16 @@ form.login input.button:hover {
 
 @media screen and (min-width: 600px) {
     .detail .entry .editbox { position: absolute; top: 0; bottom: 0; left: 0; right: 0; background: rgba(0, 0, 0, 0.8); margin-left: 0; text-align: center; }
-    .detail .entry .editbox textarea    { margin: 15px auto 0px; max-width: 700px; height: calc(100% - 3.5em); padding: 65px; border-radius: 3px; box-shadow: 0 0 55px 3px rgba(0, 0, 0, 0.8); }
-    .detail .entry .editbox .group	{ text-align: left; max-width: 700px; margin: 0px auto; z-index: 60000; }
+    .detail .entry .editbox textarea    { margin: 15px auto 0px; max-width: 700px; height: calc(100% - 6em); padding: 65px; border-radius: 3px; box-shadow: 0 0 55px 3px rgba(0, 0, 0, 0.8); }
+
+    .detail .entry .editbox .group {
+		display: block;
+		margin: 0px auto;
+		max-width: 700px;
+		text-align: left;
+		z-index: 60000;
+	}
+
     .detail .entry .editbox .group label	    { color: #666; }
     .detail .entry .editbox .group input[type=text] { color: #999; background: none; border: none; }
 

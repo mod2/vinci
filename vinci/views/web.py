@@ -41,6 +41,7 @@ def entry_detail(request, notebook_slug, entry_slug):
         return HttpResponseNotFound('Entry does not exist.')
     context = {
         'title': entry.notebook.name,
+        'notebook': entry.notebook,
         'entry': entry,
     }
     return render_to_response('vinci/entry.html',

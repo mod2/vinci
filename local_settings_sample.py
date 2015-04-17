@@ -31,3 +31,4 @@ DATABASES = {
 # Turns on the non REST apis for simpler integration in other
 # applications/programs. Basically adds GET endpoints with query params.
 # VINCI_ENABLE_NON_REST_APIS = False
+# VINCI_NON_REST_KEY = 'your non-REST API key'

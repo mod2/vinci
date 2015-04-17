@@ -1,10 +1,14 @@
-from django.shortcuts import get_object_or_404
+from django.conf import settings
+from django.shortcuts import get_object_or_404, render_to_response, redirect
 from rest_framework.response import Response as APIResponse
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView
 from vinci.serializers import EntrySerializer, NotebookSerializer
-from vinci.models import Entry, Notebook
+from vinci.models import Entry, Notebook, Revision
+from django.http import JsonResponse
 
+import datetime
+import json
 
 class APIResponseNotFound(APIResponse):
     def __init__(self, message='Not Found', **kwargs):
@@ -147,3 +151,76 @@ class NotebookListAPIView(ListCreateAPIView):
         else:  # show active
             qs = qs.active()
         return qs
+
+
+if settings.VINCI_ENABLE_NON_REST_APIS:
+    def append_today(request, notebook_slug):
+        callback = request.GET.get('callback', '')
+        key = request.GET.get('key', '')
+
+        if key != settings.VINCI_NON_REST_KEY:
+            return JsonResponse({})
+
+        if request.method == 'GET':
+            content = request.GET.get('content')
+        elif request.method == 'POST':
+            content = request.POST.get('content')
+
+        # Append/create the entry
+        try:
+            now = datetime.datetime.now()
+            today = datetime.datetime(now.year, now.month, now.day)
+            tomorrow = today + datetime.timedelta(days=1)
+
+            # Notebook
+            notebook = Notebook.objects.get(slug=notebook_slug)
+
+            # Get first entry for today
+            results = Entry.objects.filter(notebook=notebook,
+                date__range=[today, tomorrow],
+            ).order_by('date')[:1]
+
+            if len(results) > 0:
+                entry = results[0]
+            else:
+                # We don't have an entry today, so create it (strip it first
+                # so there's no initial newline)
+
+                kwargs = {'content': content.strip(),
+                          'author': request.user,
+                          'notebook': notebook,
+                        }
+                entry = Entry.objects.create(**kwargs)
+
+            # Get the text
+            cur_rev = entry.current_revision
+
+            # Add new revision with appended content
+            new_revision = Revision()
+            new_revision.entry = entry
+            new_revision.content = cur_rev.content + '\n\n' + content
+            new_revision.author = notebook.author
+            new_revision.parent = cur_rev
+            new_revision.save()
+
+            # Save the entry
+            entry.save()
+
+            response = {
+                'status': 'success',
+                'id': entry.id,
+                'url': '{:%Y-%m-%d}.{}'.format(entry.date, entry.id),
+            }
+
+        except Exception as e:
+            response = {
+                'status': 'error',
+                'message': '{}'.format(e),
+            }
+
+        if callback:
+            # Redirect to callback
+            return redirect(callback)
+        else:
+            # Return JSON response
+            return JsonResponse(response)

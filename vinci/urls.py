@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
@@ -16,6 +17,14 @@ vinciapipatterns = patterns(
         EntryDetailAPIView.as_view(),
         name='api_entry_detail'),
 )
+
+if settings.VINCI_ENABLE_NON_REST_APIS:
+    # Prepend the non-REST APIs so they don't get slurped up
+    vinciapipatterns = patterns('',
+            url(r'^(?P<notebook_slug>[^\/]+)/append-today/$',
+            'vinci.views.apis.append_today',
+            name='api_entry_append_today')
+        ) + vinciapipatterns
 
 vincipatterns = patterns(
     'vinci.views.web',

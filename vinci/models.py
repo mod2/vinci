@@ -64,11 +64,13 @@ class Notebook(models.Model):
     status = models.CharField(max_length=20,
                               default=STATUS.active,
                               choices=STATUS)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL,
+                               related_name='notebooks')
 
     objects = NotebookManager()
 
-    def __unicode__(self):
-        return "{0.name} ({0.slug})".format(self)
+    def __str__(self):
+        return "{0.name}".format(self)
 
     def get_absolute_url(self):
         return resolve_url('notebook', self.slug)
@@ -113,8 +115,8 @@ class Entry(models.Model):
             slug = self.slug
         return resolve_url('entry', self.notebook.slug, slug)
 
-    def __unicode__(self):
-        return "entry: {}".format(self.current_revision)
+    def __str__(self):
+        return "{}".format(self.current_revision)
 
     def save(self, **kwargs):
         if self.title:
@@ -141,11 +143,11 @@ class Revision(models.Model):
         self.parent = parent
         super(Revision, self).save()
 
-    def __unicode__(self):
-        return "revision: {author} wrote '{content}'".format(
-            author=self.author,
-            content=self.content[:50],
-        )
+    def content_excerpt(self):
+        return self.content[:60]
+
+    def __str__(self):
+        return "{content}".format(content=self.content_excerpt())
 
     class Meta:
         ordering = ['-last_modified']

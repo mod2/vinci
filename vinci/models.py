@@ -91,6 +91,12 @@ class Entry(models.Model):
         revision = self.current_revision
         return '' if not revision else revision.content
 
+    @content.setter
+    def content(self, value):
+        cr = self.current_revision
+        r = Revision(content=value, entry=self, parent=cr, author=cr.author)
+        r.save()
+
     def html(self):
         content = self.content
         for plugin_name in settings.VINCI_PLUGINS:

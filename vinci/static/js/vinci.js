@@ -437,18 +437,23 @@ $(document).ready(function() {
 		}
 
 		// Call edit entry web service
-        var url = config.url + "edit/entry/?id=" + id + "&notebook=" + config.notebook;
+        var url = config.url + "api/" + config.notebook + "/" + id + "/";
+        data = {content: text}
 		if (date) {
-			url += "&date=" + date;
+            data['date'] = date
 		}
 
-        $.post(url, { content: text }, function(data) {
-            if (data.status == 'success') {
-				// Reload the page
-				location.reload(false);
-            } else {
+        $.ajax({
+            method: "PUT",
+            url: url,
+            data: data,
+            success: function(data) {
+                // Reload the page
+                location.reload(false);
+            },
+            error: function(data) {
                 alert("Error editing entry");
-            }
+            },
         });
 
         return false;
@@ -525,7 +530,7 @@ $(document).ready(function() {
 			var id = entry.attr("data-id");
 
 			// Call delete entry web service
-			var url = config.url + config.notebook + "/" + id + "/";
+			var url = config.url + "api/" + config.notebook + "/" + id + "/";
 
 			$.ajax({
 				method: "DELETE",

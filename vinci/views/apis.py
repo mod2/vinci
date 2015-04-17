@@ -77,7 +77,7 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
 
     def get_queryset(self):
         slug = self.kwargs.get('slug')
-        qs = self.get_queryset()
+        qs = super().get_queryset()
 
         if slug is None and len(self.args) > 1:
             slug = self.args[1]
@@ -90,10 +90,9 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
             except Entry.DoesNotExist:
                 qs = None
 
-        return qs
+        return qs.first()
 
-    def get_entry_for_request(self):
-        return self.get_queryset()
+    get_entry_for_request = get_queryset
 
     def get(self, request, *args, **kwargs):
         entry = self.get_entry_for_request()
@@ -102,8 +101,16 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
         else:
             return APIResponseNotFound('No entry found.')
 
-    def put(self, request):
-        pass
+    def put(self, request, *args, **kwargs):
+        entry = self.get_entry_for_request()
+        content = request.data.get('content')
+        if entry:
+            entry.content = content
+            entry.save()
+            e = self.serializer_class(entry).data
+            return APIResponse(e)
+        else:
+            return APIResponseNotFound('No entry found.')
 
     def delete(self, request, *args, **kwargs):
         entry = self.get_entry_for_request()

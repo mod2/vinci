@@ -5,7 +5,6 @@
 #   [[link text | notebook/page-slug]]
 
 import re
-import string
 
 
 def parse_match(m):
@@ -28,6 +27,6 @@ def process(content, entry, notebook_url):
 
     # Replace the placeholder with the current notebook's slug
     # (Since we can't pass the slug in to parse_match)
-    content = string.replace(content, 'PLEASEREPLACEME', entry.notebook.slug)
+    content = content.replace('PLEASEREPLACEME', entry.notebook.slug)
 
     return content

@@ -15,12 +15,14 @@ def entries_list(request, notebook_slug):
     page = int(request.GET.get('page', 1))
 
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
+
     entries = notebook.entries.all().order_by(sortby)
+    entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE).page(page)
+
     context = {
         'title': notebook.name,
         'notebook': notebook,
-        'entries': (Paginator(entries, settings.VINCI_RESULTS_PER_PAGE)
-                    .page(page)),
+        'entries': entries,
     }
 
     return render_to_response('vinci/list.html',

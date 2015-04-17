@@ -13,3 +13,10 @@
 	{% endblock entries %}
 </div>
 {% endblock page_content %}
+
+{% block nav %}
+<nav role="pagination">
+	{% if entries.has_prev %}<a class="prev" href="?page={{ entries.previous_page_number }}">Prev</a>{% endif %}
+	{% if entries.has_next %}<a class="next" href="?page={{ entries.next_page_number }}">Next</a>{% endif %}
+</nav>
+{% endblock nav %}

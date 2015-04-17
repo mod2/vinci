@@ -31,8 +31,8 @@ $(document).ready(function() {
 	// Infinite scroll
 	if ($("nav[role=navigation] a.next")) {
 		$("#entries").infinitescroll({
-			navSelector: "nav[role=pagination] .links",
-			nextSelector: "nav[role=pagination] .links a.next",
+			navSelector: "nav[role=pagination]",
+			nextSelector: "nav[role=pagination] a.next",
 			itemSelector: "article.entry",
 			loading: {
 				finishedMsg: '<i>The very end.</i>',

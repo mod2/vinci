@@ -71,14 +71,19 @@ def search_notebook(request, notebook_slug):
     query = request.GET.get('q')
 
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
-    entries, num_results, num_pages = si.search(query, page, sort_order=sortby,
-                                                notebook=notebook)
+
+    if query is None:
+        entries = Paginator([], settings.VINCI_RESULTS_PER_PAGE).page(1)
+    else:
+        entries, __, __ = si.search(query, page, sort_order=sortby,
+                                    notebook=notebook)
+        entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE).page(page)
+
     context = {
         'title': notebook.name,
         'query': query,
         'notebook': notebook,
-        'entries': (Paginator(entries, settings.VINCI_RESULTS_PER_PAGE)
-                    .page(page)),
+        'entries': entries,
     }
 
     return render_to_response('vinci/list.html',

@@ -167,7 +167,7 @@ $(document).ready(function() {
 				// Search
 				var q = query.replace(/#(\w+)/g, 'tag:$1');
 
-				url += 'search/' + q;
+				url += 'search/?q=' + q;
 			}
 		} else {
 			// Empty search, clear results (don't need to change URL)

@@ -109,13 +109,15 @@ class Command(BaseCommand):
 
                 if import_entries:
                     entry = Entry.objects.create(**kwargs)
+                    entry.save()
 
                     if tags != '':
                         tag_list = [x.strip() for x in tags.split(',')]
                         entry.tags.add(*tag_list)
-                        entry.save()
 
                 print("Imported entry {} as {} into notebook {} {}".format(entry_id, entry.id, notebook.name, "- {}".format(tags) if tags else ''))
+
+            conn.close()
 
         except Exception as e:
             print(e)

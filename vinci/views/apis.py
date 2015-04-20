@@ -211,7 +211,6 @@ if settings.VINCI_ENABLE_NON_REST_APIS:
             response = {
                 'status': 'success',
                 'id': entry.id,
-                'url': '{:%Y-%m-%d}.{}'.format(entry.date, entry.id),
             }
 
         except Exception as e:
@@ -259,7 +258,6 @@ if settings.VINCI_ENABLE_NON_REST_APIS:
             response = {
                 'status': 'success',
                 'id': entry.id,
-                'url': '{:%Y-%m-%d}.{}'.format(entry.date, entry.id),
             }
 
         except Exception as e:

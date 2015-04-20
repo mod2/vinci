@@ -23,16 +23,23 @@ class NotebookManager(models.Manager):
 
 
 class EntryQuerySet(models.QuerySet):
-    def from_slug(self, slug):
+    def from_slug(self, slug, notebook_slug):
+        # See if it's a post ID or a page slug
         try:
             slug_id = int(slug)
         except:
             slug_id = 0
-        res = self.filter(models.Q(slug=slug) | models.Q(pk=slug_id)).first()
-        if not res:
+
+        # Filter by entries with this id/slug for this notebook
+        entry = self.filter(models.Q(notebook__slug=notebook_slug)
+                            & models.Q(slug=slug)
+                            | models.Q(pk=slug_id)).first()
+
+        if not entry:
             raise Entry.DoesNotExist('No entry with slug ({}) or id ({}).'
                                      .format(slug, slug_id))
-        return res
+
+        return entry
 
     def create(self, **kwargs):
         try:

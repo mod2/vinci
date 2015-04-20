@@ -14,14 +14,34 @@
 
         {% if entry.title == '' and entry.slug == '' %}<div class="date action"><a href="{{ entry.get_absolute_url }}">{% if mode != 'diary' %}<date>{{ entry.date|date:'d M Y' }}</date>{% endif %}<time>{{ entry.date|date:'g:i A'|lower }}</time></a>{% if entry.tags|length > 0 %}<ul class="tags">{% for tag in entry.tags %}<li><a href=" url_for('index') ~ entry.notebook.slug ~ '/tag/' ~ tag ">#{{ tag }}</a></li>{% endfor %}</ul>{% endif %}</div>{% endif %}
 
-		{% if entry.title != '' or entry.slug != '' and entry.excerpt %}<div class="date action"><a href="{{ entry.get_absolute_url }}"><h3>{% if entry.title != '' %}{{ entry.title }}{% elif entry.slug != '' %}{{ entry.slug }}{% else %}no title!{% endif %}</h3></a></div>{% endif %}
+		{% if entry.title != '' or entry.slug != '' %}
+			{% if entry.excerpt %}
+			<div class="date action"><a href="{{ entry.get_absolute_url }}"><h3>{% if entry.title != '' %}{{ entry.title }}{% elif entry.slug != '' %}{{ entry.slug }}{% else %}no title!{% endif %}</h3></a></div>
+			{% endif %}
+		{% endif %}
 
-		{% if entry.slug != '' and page_type == 'detail' %}<h2 class="page-title">{% if entry.title != '' %}{{ entry.title }}{% elif entry.slug != '' %}{{ entry.slug }}{% else %}no title!{% endif %}</h2>{% endif %}
+		{% if entry.title != '' and page_type == 'detail' %}
+			<h2 class="page-title">
+				{% if entry.title != '' %}
+					{{ entry.title }}
+				{% elif entry.slug != '' %}
+					{{ entry.slug }}
+				{% else %}
+					no title!
+				{% endif %}
+			</h2>
+		{% endif %}
 	</div>
 
 	{% if entry.excerpt %}<div class='content excerpt'>&hellip; {{ entry.excerpt }} &hellip;</div>
     {% else %}
-	<div class="content">{% if entry.slug != '' %}<h3><a href="{{ entry.get_absolute_url }}">{% if entry.title != '' %}{{ entry.title }}{% elif entry.slug != '' %}{{ entry.slug }}{% else %}no title!{% endif %}</a></h3>{% else %}{{ entry.html|safe }}{% endif %}</div>
+	<div class="content">
+		{% if entry.slug != '' and page_type != 'detail' %}
+			<h3><a href="{{ entry.get_absolute_url }}">{% if entry.title != '' %}{{ entry.title }}{% elif entry.slug != '' %}{{ entry.slug }}{% else %}no title!{% endif %}</a></h3>
+		{% else %}
+			{{ entry.html|safe }}
+		{% endif %}
+	</div>
 	<form class="editbox">
 		<textarea>{{ entry.current_revision.content }}</textarea>
 		{% if entry.slug == '' %}

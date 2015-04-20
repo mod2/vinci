@@ -34,15 +34,14 @@ def entries_list(request, notebook_slug):
 @login_required
 def entry_detail(request, notebook_slug, entry_slug):
     try:
-        entry = Entry.objects.get(Q(notebook__slug=notebook_slug)
-                                  & (Q(id=int(entry_slug))
-                                     | Q(slug=entry_slug)))
+        entry = Entry.objects.from_slug(entry_slug, notebook_slug)
     except Entry.DoesNotExist:
         return HttpResponseNotFound('Entry does not exist.')
     context = {
         'title': entry.notebook.name,
         'notebook': entry.notebook,
         'entry': entry,
+        'page_type': 'detail',
     }
     return render_to_response('vinci/entry.html',
                               context,

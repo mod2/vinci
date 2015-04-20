@@ -23,7 +23,10 @@ if settings.VINCI_ENABLE_NON_REST_APIS:
     vinciapipatterns = patterns('',
             url(r'^(?P<notebook_slug>[^\/]+)/append-today/$',
             'vinci.views.apis.append_today',
-            name='api_entry_append_today')
+            name='api_entry_append_today'),
+            url(r'^(?P<notebook_slug>[^\/]+)/add-entry/$',
+            'vinci.views.apis.add_entry',
+            name='api_entry_add_entry'),
         ) + vinciapipatterns
 
 vincipatterns = patterns(

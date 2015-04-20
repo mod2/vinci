@@ -59,6 +59,11 @@ class EntryQuerySet(models.QuerySet):
         except KeyError:
             user = ''
 
+        try:
+            tags = kwargs.pop('tags')
+        except KeyError:
+            tags = ''
+
         entry = super().create(**kwargs)
 
         revision = Revision()
@@ -67,8 +72,8 @@ class EntryQuerySet(models.QuerySet):
         revision.entry = entry
         revision.save()
 
-        if 'tags' in kwargs:
-            tags = [t.strip() for t in kwargs['tags'].split(',')]
+        if tags:
+            tags = [t.strip() for t in tags.split(',')]
             entry.tags.add(tags)
 
         # Update dates

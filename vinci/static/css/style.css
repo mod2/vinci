@@ -373,10 +373,6 @@ form.login input.button:hover {
 }
 
 @media screen and (min-width: 1050px) {
-	body {
-		font-size: 115%;
-	}
-
 	.container				{ max-width: 860px; }
 }
 

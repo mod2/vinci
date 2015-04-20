@@ -56,6 +56,7 @@ def notebooks_list(request):
     context = {
         'title': 'All Notebooks',
         'notebooks': notebooks,
+        'page_type': 'all',
     }
 
     return render_to_response('vinci/index.html',

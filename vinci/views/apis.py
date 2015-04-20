@@ -209,7 +209,7 @@ if settings.VINCI_ENABLE_NON_REST_APIS:
             # Add new revision with appended content
             new_revision = Revision()
             new_revision.entry = entry
-            new_revision.content = cur_rev.content + '\n\n' + content
+            new_revision.content = cur_rev.content + content
             new_revision.author = notebook.author
             new_revision.parent = cur_rev
             new_revision.save()

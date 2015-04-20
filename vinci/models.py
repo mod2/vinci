@@ -33,7 +33,7 @@ class EntryQuerySet(models.QuerySet):
 
         # Filter by entries with this id/slug for this notebook
         entries = self.filter(models.Q(slug=slug)
-                            | models.Q(pk=slug_id))
+                              | models.Q(pk=slug_id))
 
         # If there's a notebook slug, filter by it
         if notebook_slug:
@@ -66,6 +66,10 @@ class EntryQuerySet(models.QuerySet):
         revision.author = user
         revision.entry = entry
         revision.save()
+
+        if 'tags' in kwargs:
+            tags = [t.strip() for t in kwargs['tags'].split(',')]
+            entry.tags.add(tags)
 
         # Update dates
         if 'date' in kwargs:

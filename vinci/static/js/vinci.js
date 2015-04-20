@@ -436,7 +436,7 @@ $(document).ready(function() {
 
 		var date = '';
 		if (entry.find(".editbox input[type=text]").length > 0) {
-			date = encodeURIComponent(entry.find(".editbox input[type=text]").val().trim());
+			date = entry.find(".editbox input[type=text]").val().trim();
 		}
 
 		// Call edit entry web service

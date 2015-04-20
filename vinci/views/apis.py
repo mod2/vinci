@@ -1,14 +1,14 @@
 from django.conf import settings
-from django.shortcuts import get_object_or_404, render_to_response, redirect
+from django.shortcuts import get_object_or_404, redirect
 from rest_framework.response import Response as APIResponse
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView
 from vinci.serializers import EntrySerializer, NotebookSerializer
-from vinci.models import Entry, Notebook, Revision
+from vinci.models import Entry, Notebook, Revision, DATETIME_FORMAT
 from django.http import JsonResponse
 
 import datetime
-import json
+
 
 class APIResponseNotFound(APIResponse):
     def __init__(self, message='Not Found', **kwargs):
@@ -38,10 +38,14 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
     def post(self, request, notebook_slug):
         notebook = get_object_or_404(Notebook, slug=notebook_slug)
         content = request.data.get('content')
+        title = request.data.get('title', '')
+        tags = request.data.get('tags')
         if content:
             kwargs = {'content': content,
                       'author': request.user,
                       'notebook': notebook,
+                      'title': title,
+                      'tags': tags,
                       }
             entry = Entry.objects.create(**kwargs)
             e = EntrySerializer(entry)
@@ -108,9 +112,14 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
     def put(self, request, *args, **kwargs):
         entry = self.get_entry_for_request()
         content = request.data.get('content')
+        tags = [t.strip() for t in request.data.get('tags', '').split(',')]
+        date = request.data.get('date', '')
         if entry:
             entry.content = content
+            entry.title = request.data.get('title', '')
+            entry.date = datetime.datetime.strptime(date, DATETIME_FORMAT)
             entry.save()
+            entry.tags.set(*tags)
             e = self.serializer_class(entry).data
             return APIResponse(e)
         else:
@@ -179,8 +188,8 @@ if settings.VINCI_ENABLE_NON_REST_APIS:
 
             # Get first entry for today
             results = Entry.objects.filter(notebook=notebook,
-                date__range=[today, tomorrow],
-            ).order_by('date')[:1]
+                                           date__range=[today, tomorrow],
+                                           ).order_by('date')[:1]
 
             if len(results) > 0:
                 entry = results[0]
@@ -191,7 +200,7 @@ if settings.VINCI_ENABLE_NON_REST_APIS:
                 kwargs = {'content': content.strip(),
                           'author': request.user,
                           'notebook': notebook,
-                        }
+                          }
                 entry = Entry.objects.create(**kwargs)
 
             # Get the text
@@ -226,7 +235,6 @@ if settings.VINCI_ENABLE_NON_REST_APIS:
             # Return JSON response
             return JsonResponse(response)
 
-
     def add_entry(request, notebook_slug):
         """ Adds an entry to a notebook. """
 
@@ -249,7 +257,7 @@ if settings.VINCI_ENABLE_NON_REST_APIS:
             kwargs = {'content': content.strip(),
                       'author': notebook.author,
                       'notebook': notebook,
-                    }
+                      }
             entry = Entry.objects.create(**kwargs)
 
             # Save the entry

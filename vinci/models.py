@@ -39,17 +39,28 @@ class EntryQuerySet(models.QuerySet):
             content = kwargs.pop('content')
         except KeyError:
             content = ''
+
         try:
             user = kwargs.pop('author')
         except KeyError:
             user = ''
-        rtn = super().create(**kwargs)
-        r = Revision()
-        r.content = content
-        r.author = user
-        r.entry = rtn
-        r.save()
-        return rtn
+
+        entry = super().create(**kwargs)
+
+        revision = Revision()
+        revision.content = content
+        revision.author = user
+        revision.entry = entry
+        revision.save()
+
+        # Update dates
+        if 'date' in kwargs:
+            revision.last_modified = kwargs['date']
+            revision.save()
+            entry.date = kwargs['date']
+            entry.save()
+
+        return entry
 
 
 class Notebook(models.Model):

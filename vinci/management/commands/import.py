@@ -4,13 +4,14 @@ from vinci.models import Notebook, Entry, Revision
 from django.contrib.auth.models import User
 
 import sqlite3
+import datetime
 
 class Command(BaseCommand):
     args = '<json file>'
     help = 'Imports an old Vinci SQLite database file'
 
     def handle(self, *args, **options):
-        import_notebooks = False
+        import_notebooks = True
         import_entries = True
 
         try:
@@ -57,6 +58,9 @@ class Command(BaseCommand):
                 notebook_id = row[2]
                 date = row[3]
 
+                # Get an actual datetime object
+                date = datetime.datetime.strptime(date[:19], "%Y-%m-%d %H:%M:%S")
+
                 # Get the revision
                 revision_cursor.execute("SELECT * FROM revision WHERE id = ?", (current_revision_id,))
                 rev = revision_cursor.fetchone()
@@ -85,7 +89,8 @@ class Command(BaseCommand):
                 if revision_slug:
                     kwargs['slug'] = revision_slug
 
-                entry = Entry.objects.create(**kwargs)
+                if import_entries:
+                    entry = Entry.objects.create(**kwargs)
 
                 print("Imported entry {} into notebook {}".format(entry_id, notebook.name))
 

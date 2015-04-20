@@ -161,6 +161,14 @@ class NotebookListAPIView(ListCreateAPIView):
             qs = qs.active()
         return qs
 
+    def post(self, request):
+        data = {'name': request.data.get('name'),
+                'author': request.user,
+                }
+        notebook = Notebook.objects.create(**data)
+        n = NotebookSerializer(notebook, context={'request': request})
+        return APIResponse(n.data)
+
 
 if settings.VINCI_ENABLE_NON_REST_APIS:
     def append_today(request, notebook_slug):

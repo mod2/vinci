@@ -12,7 +12,7 @@
 			<a href="" class="delete">Delete</a>
 		</div>
 
-        {% if entry.title == '' and entry.slug == '' %}<div class="date action"><a href="{{ entry.get_absolute_url }}">{% if mode != 'diary' %}<date>{{ entry.date|date:'d M Y' }}</date>{% endif %}<time>{{ entry.date|date:'g:i A'|lower }}</time></a>{% if entry.tags|length > 0 %}<ul class="tags">{% for tag in entry.tags %}<li><a href=" url_for('index') ~ entry.notebook.slug ~ '/tag/' ~ tag ">#{{ tag }}</a></li>{% endfor %}</ul>{% endif %}</div>{% endif %}
+		{% if entry.title == '' and entry.slug == '' %}<div class="date action"><a href="{{ entry.get_absolute_url }}">{% if mode != 'diary' %}<date>{{ entry.date|date:'j M Y' }}</date>{% endif %}<time>{{ entry.date|date:'g:i A'|lower }}</time></a>{% if entry.tags.all|length > 0 %}<ul class="tags">{% for tag in entry.tags.all %}<li><a href="url_for('index') ~ entry.notebook.slug ~ '/tag/' ~ tag">#{{ tag }}</a></li>{% endfor %}</ul>{% endif %}</div>{% endif %}
 
 		{% if entry.title != '' or entry.slug != '' %}
 			{% if entry.excerpt %}
@@ -56,7 +56,7 @@
 			</div>
 			<div class="group">
 				<label>Tags:</label>
-				<input name="tags" type="text" value="{{ entry.tags|join:',' }}" />
+				<input name="tags" type="text" value="{{ entry.tags.all|join:',' }}" />
 			</div>
 		
 		<input type="submit" value="Save {% if entry.slug == '' %}Entry{% else %}Page{% endif %}" class="submitbutton" />

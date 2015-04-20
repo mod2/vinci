@@ -73,11 +73,29 @@ class Command(BaseCommand):
                 revision_author_id = rev[5]
                 revision_date = rev[6]
 
+                # Prep the content
+                tags = ''
+                if '----' in revision_content:
+                    data = revision_content.split('----')
+                    metadata = data[0].strip()
+                    content = '----'.join(data[1:]).strip()
+
+                    for line in metadata.split('\n'):
+                        linedata = line.split(':')
+                        key = linedata[0].strip()
+                        value = ':'.join(linedata[1:]).strip()
+
+                        if key == 'tags':
+                            # Import tags
+                            tags = value
+                else:
+                    content = revision_content.strip()
+
                 # Get the right notebook
                 notebook = Notebook.objects.get(slug=notebooks[notebook_id]['slug'])
 
                 # Now create the entry and revision
-                kwargs = {'content': revision_content.strip(),
+                kwargs = {'content': content,
                           'author': user,
                           'notebook': notebook,
                           'date': date,
@@ -92,7 +110,12 @@ class Command(BaseCommand):
                 if import_entries:
                     entry = Entry.objects.create(**kwargs)
 
-                print("Imported entry {} into notebook {}".format(entry_id, notebook.name))
+                    if tags != '':
+                        tag_list = [x.strip() for x in tags.split(',')]
+                        entry.tags.add(*tag_list)
+                        entry.save()
+
+                print("Imported entry {} as {} into notebook {} {}".format(entry_id, entry.id, notebook.name, "- {}".format(tags) if tags else ''))
 
         except Exception as e:
             print(e)

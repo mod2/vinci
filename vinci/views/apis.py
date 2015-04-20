@@ -162,121 +162,125 @@ class NotebookListAPIView(ListCreateAPIView):
         return qs
 
 
-if settings.VINCI_ENABLE_NON_REST_APIS:
-    def append_today(request, notebook_slug):
-        """ Appends to today's entry, creating it if it's not there. """
 
-        callback = request.GET.get('callback', '')
-        key = request.GET.get('key', '')
+def append_today(request, notebook_slug):
+    """ Appends to today's entry, creating it if it's not there. """
 
-        if key != settings.VINCI_NON_REST_KEY:
-            return JsonResponse({})
+    callback = request.GET.get('callback', '')
+    key = request.GET.get('key', '')
 
-        if request.method == 'GET':
-            content = request.GET.get('content')
-        elif request.method == 'POST':
-            content = request.POST.get('content')
+    if key != settings.VINCI_NON_REST_KEY:
+        return JsonResponse({})
 
-        # Append/create the entry
-        try:
-            now = datetime.datetime.now()
-            today = datetime.datetime(now.year, now.month, now.day)
-            tomorrow = today + datetime.timedelta(days=1)
+    if request.method == 'GET':
+        content = request.GET.get('content')
+    elif request.method == 'POST':
+        content = request.POST.get('content')
 
-            # Notebook
-            notebook = Notebook.objects.get(slug=notebook_slug)
+    # Append/create the entry
+    try:
+        now = datetime.datetime.now()
+        today = datetime.datetime(now.year, now.month, now.day)
+        tomorrow = today + datetime.timedelta(days=1)
 
-            # Get first entry for today
-            results = Entry.objects.filter(notebook=notebook,
-                                           date__range=[today, tomorrow],
-                                           ).order_by('date')[:1]
+        # Notebook
+        notebook = Notebook.objects.get(slug=notebook_slug)
 
-            if len(results) > 0:
-                entry = results[0]
-            else:
-                # We don't have an entry today, so create it (strip it first
-                # so there's no initial newline)
+        # Get first entry for today
+        results = Entry.objects.filter(notebook=notebook,
+                                        date__range=[today, tomorrow],
+                                        ).order_by('date')[:1]
 
-                kwargs = {'content': content.strip(),
-                          'author': request.user,
-                          'notebook': notebook,
-                          }
-                entry = Entry.objects.create(**kwargs)
-
-            # Get the text
-            cur_rev = entry.current_revision
-
-            # Add new revision with appended content
-            new_revision = Revision()
-            new_revision.entry = entry
-            new_revision.content = cur_rev.content + content
-            new_revision.author = notebook.author
-            new_revision.parent = cur_rev
-            new_revision.save()
-
-            # Save the entry
-            entry.save()
-
-            response = {
-                'status': 'success',
-                'id': entry.id,
-            }
-
-        except Exception as e:
-            response = {
-                'status': 'error',
-                'message': '{}'.format(e),
-            }
-
-        if callback:
-            # Redirect to callback
-            return redirect(callback)
+        if len(results) > 0:
+            entry = results[0]
         else:
-            # Return JSON response
-            return JsonResponse(response)
-
-    def add_entry(request, notebook_slug):
-        """ Adds an entry to a notebook. """
-
-        callback = request.GET.get('callback', '')
-        key = request.GET.get('key', '')
-
-        if key != settings.VINCI_NON_REST_KEY:
-            return JsonResponse({})
-
-        if request.method == 'GET':
-            content = request.GET.get('content')
-        elif request.method == 'POST':
-            content = request.POST.get('content')
-
-        # Create the entry
-        try:
-            # Notebook
-            notebook = Notebook.objects.get(slug=notebook_slug)
+            # We don't have an entry today, so create it (strip it first
+            # so there's no initial newline)
 
             kwargs = {'content': content.strip(),
-                      'author': notebook.author,
-                      'notebook': notebook,
-                      }
+                        'author': request.user,
+                        'notebook': notebook,
+                        }
             entry = Entry.objects.create(**kwargs)
 
-            # Save the entry
-            entry.save()
+        # Get the text
+        cur_rev = entry.current_revision
 
-            response = {
-                'status': 'success',
-                'id': entry.id,
-            }
+        # Add new revision with appended content
+        new_revision = Revision()
+        new_revision.entry = entry
+        new_revision.content = cur_rev.content + content
+        new_revision.author = notebook.author
+        new_revision.parent = cur_rev
+        new_revision.save()
 
-        except Exception as e:
-            response = {
-                'status': 'error',
-                'message': '{}'.format(e),
-            }
+        # Save the entry
+        entry.save()
 
-        if callback:
-            # Redirect to callback
-            return redirect(callback)
-        else:
-            # Return JSON response
-            return JsonResponse(response)
+        response = {
+            'status': 'success',
+            'id': entry.id,
+        }
+
+    except Exception as e:
+        response = {
+            'status': 'error',
+            'message': '{}'.format(e),
+        }
+
+    if callback:
+        # Redirect to callback
+        response = HttpResponse("", status=302)
+        response['Location'] = callback
+        return response
+    else:
+        # Return JSON response
+        return JsonResponse(response)
+
+def add_entry(request, notebook_slug):
+    """ Adds an entry to a notebook. """
+
+    callback = request.GET.get('callback', '')
+    key = request.GET.get('key', '')
+
+    if key != settings.VINCI_NON_REST_KEY:
+        return JsonResponse({})
+
+    if request.method == 'GET':
+        content = request.GET.get('content')
+    elif request.method == 'POST':
+        content = request.POST.get('content')
+
+    # Create the entry
+    try:
+        # Notebook
+        notebook = Notebook.objects.get(slug=notebook_slug)
+
+        kwargs = {'content': content.strip(),
+                    'author': notebook.author,
+                    'notebook': notebook,
+                    }
+        entry = Entry.objects.create(**kwargs)
+
+        # Save the entry
+        entry.save()
+
+        response = {
+            'status': 'success',
+            'id': entry.id,
+        }
+
+    except Exception as e:
+        response = {
+            'status': 'error',
+            'message': '{}'.format(e),
+        }
+
+    if callback:
+        # Redirect to callback
+        response = HttpResponse("", status=302)
+        response['Location'] = callback
+        return response
+    else:
+        # Return JSON response
+        return JsonResponse(response)

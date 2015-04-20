@@ -90,11 +90,11 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
         slug = slug.strip()
         if slug:
             try:
-                qs.from_slug(slug)
+                qs = qs.from_slug(slug)
             except Entry.DoesNotExist:
                 qs = None
 
-        return qs.first()
+        return qs
 
     get_entry_for_request = get_queryset
 

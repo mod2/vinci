@@ -230,7 +230,7 @@ def append_today(request, notebook_slug):
 
     if callback:
         # Redirect to callback
-        response = HttpResponse(callback, status=302)
+        response = HttpResponse("", status=302)
         response['Location'] = callback
         return response
     else:
@@ -278,7 +278,7 @@ def add_entry(request, notebook_slug):
 
     if callback:
         # Redirect to callback
-        response = HttpResponse(callback, status=302)
+        response = HttpResponse("", status=302)
         response['Location'] = callback
         return response
     else:

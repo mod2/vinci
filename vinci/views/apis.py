@@ -1,10 +1,11 @@
 from django.conf import settings
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response as APIResponse
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView
 from vinci.serializers import EntrySerializer, NotebookSerializer
 from vinci.models import Entry, Notebook, Revision, DATETIME_FORMAT
+import vinci.search_indexer as si
 from django.http import JsonResponse, HttpResponse
 
 import datetime
@@ -36,6 +37,7 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
     serializer_class = EntrySerializer
 
     def post(self, request, notebook_slug):
+        """Create a new Entry."""
         notebook = get_object_or_404(Notebook, slug=notebook_slug)
         content = request.data.get('content')
         title = request.data.get('title', '')
@@ -48,11 +50,13 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
                       'tags': tags,
                       }
             entry = Entry.objects.create(**kwargs)
+            si.add_index(entry)
             e = EntrySerializer(entry)
             return APIResponse(e.data)
         return APIResponse({'detail': 'No content to save.'}, status=400)
 
     def put(self, request, notebook_slug):
+        """Update an existing Notebook."""
         notebook = get_object_or_404(Notebook, slug=notebook_slug)
         name = request.data.get('name')
         status = request.data.get('status')
@@ -69,6 +73,7 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
         return APIResponse(nb.data)
 
     def delete(self, request, notebook_slug):
+        """Delete a Notebook. Sets the status to 'deleted'."""
         notebook = get_object_or_404(Notebook, slug=notebook_slug)
         notebook.status = notebook.STATUS.deleted
         nb = NotebookSerializer(notebook, context={'request': request})
@@ -110,6 +115,7 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
             return APIResponseNotFound('No entry found.')
 
     def put(self, request, *args, **kwargs):
+        """Update an existing Entry."""
         entry = self.get_entry_for_request()
         content = request.data.get('content')
         tags = [t.strip() for t in request.data.get('tags', '').split(',')]
@@ -120,6 +126,7 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
             entry.date = datetime.datetime.strptime(date, DATETIME_FORMAT)
             entry.save()
             entry.tags.set(*tags)
+            si.update_index(entry)
             e = self.serializer_class(entry).data
             return APIResponse(e)
         else:
@@ -162,6 +169,7 @@ class NotebookListAPIView(ListCreateAPIView):
         return qs
 
     def post(self, request):
+        """Create a new Notebook."""
         data = {'name': request.data.get('name'),
                 'author': request.user,
                 }

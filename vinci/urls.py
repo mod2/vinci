@@ -20,14 +20,15 @@ vinciapipatterns = patterns(
 
 if settings.VINCI_ENABLE_NON_REST_APIS:
     # Prepend the non-REST APIs so they don't get slurped up
-    vinciapipatterns = patterns('',
-            url(r'^(?P<notebook_slug>[^\/]+)/append-today/$',
+    vinciapipatterns = patterns(
+        '',
+        url(r'^(?P<notebook_slug>[^\/]+)/append-today/$',
             'vinci.views.apis.append_today',
             name='api_entry_append_today'),
-            url(r'^(?P<notebook_slug>[^\/]+)/add-entry/$',
+        url(r'^(?P<notebook_slug>[^\/]+)/add-entry/$',
             'vinci.views.apis.add_entry',
             name='api_entry_add_entry'),
-        ) + vinciapipatterns
+    ) + vinciapipatterns
 
 vincipatterns = patterns(
     'vinci.views.web',
@@ -35,6 +36,8 @@ vincipatterns = patterns(
     url(r'^$', 'notebooks_list', name='notebooks_list'),
     url(r'^api/', include(vinciapipatterns)),
     url(r'^(?P<notebook_slug>[^\/]+)/$', 'entries_list', name='notebook'),
+    url(r'^(?P<notebook_slug>[^\/]+)/search/$', 'search_notebook',
+        name='search_notebook'),
     url(r'^(?P<notebook_slug>[^\/]+)/(?P<entry_slug>[^\/]+)/$', 'entry_detail',
         name='entry'),
 )

@@ -4,6 +4,7 @@ from django.shortcuts import resolve_url
 from django_extensions.db.fields import AutoSlugField
 from django.utils.text import slugify
 from model_utils import Choices
+from taggit.managers import TaggableManager
 
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
@@ -107,6 +108,7 @@ class Entry(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     objects = EntryQuerySet.as_manager()
+    tags = TaggableManager()
 
     @property
     def current_revision(self):

@@ -3,11 +3,14 @@ import os.path
 # import re
 import math
 
+from functools import partial
+
 from django.conf import settings
 from whoosh import highlight
 from whoosh.analysis import StemmingAnalyzer
 from whoosh.fields import Schema, TEXT, KEYWORD, ID, DATETIME
 from whoosh.qparser import QueryParser
+from whoosh.query import Term
 from whoosh.qparser.dateparse import DateParserPlugin
 import whoosh.index as index
 
@@ -54,7 +57,7 @@ def _get_tags(entry):
 def _generate_entry_document(entry):
     type_ = u'page' if entry.slug != '' else u'entry'
     doc = {}
-    doc = {'id': unicode(entry.id),
+    doc = {'id': str(entry.id),
            'notebook': entry.notebook.slug,
            'content': entry.content,
            # 'tag': u" ".join(_get_tags(entry)),
@@ -95,23 +98,27 @@ def add_or_update_index(document, new=False):
     writer.commit()
 
 
+add_index = partial(add_or_update_index, new=True)
+update_index = partial(add_or_update_index, new=False)
+
+
 def delete_from_index(document):
     """Remove a document from the index."""
     ix = get_or_create_index()
     writer = ix.writer()
-    writer.delete_by_term(id, unicode(document.id))
+    writer.delete_by_term(id, str(document.id))
     writer.commit()
 
 
-def search(query_string, page=1, results_per_page=10, sort_order='relevance'):
-    if isinstance(query_string, str):
-        query_string = unicode(query_string)
-
+def search(query_string, page=1, results_per_page=10, sort_order='relevance',
+           notebook=None):
     ix = get_or_create_index()
 
     qp = QueryParser('content', ix.schema)
     qp.add_plugin(DateParserPlugin(free=True))
     query = qp.parse(query_string)
+    if notebook:
+        query = query & Term('notebook', notebook.slug)
 
     entry_ids = {}
     results = None
@@ -133,6 +140,16 @@ def search(query_string, page=1, results_per_page=10, sort_order='relevance'):
                                                                      'content'))
                      for entry in results}
 
-    return (entry_ids,
-            len(results),
-            math.ceil(len(results) / float(results_per_page)))
+    num_results = len(results)
+    num_pages = math.ceil(len(results) / float(results_per_page))
+
+    ids = [id_ for id_ in entry_ids.keys()]
+    entries = Entry.objects.filter(pk__in=ids)
+    results = []
+    for entry in entries:
+        rank, hilight = entry_ids[entry.id]
+        entry.highlight = hilight
+        results.append((rank, entry))
+    results.sort()
+
+    return [entry for __, entry in results], num_results, num_pages

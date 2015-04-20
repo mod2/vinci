@@ -75,6 +75,9 @@ class EntryQuerySet(models.QuerySet):
         if tags:
             tags = [t.strip() for t in tags.split(',')]
             entry.tags.add(tags)
+        else:
+            # No tags, so clear it
+            entry.tags.clear()
 
         # Update dates
         if 'date' in kwargs:

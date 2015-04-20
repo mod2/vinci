@@ -112,14 +112,23 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
     def put(self, request, *args, **kwargs):
         entry = self.get_entry_for_request()
         content = request.data.get('content')
-        tags = [t.strip() for t in request.data.get('tags', '').split(',')]
         date = request.data.get('date', '')
+
+        tag_list = request.data.get('tags', '')
+        if tag_list:
+            tags = [t.strip() for t in tag_list.split(',')]
+        else:
+            tags = None
+
         if entry:
             entry.content = content
             entry.title = request.data.get('title', '')
             entry.date = datetime.datetime.strptime(date, DATETIME_FORMAT)
             entry.save()
-            entry.tags.set(*tags)
+            if tags:
+                entry.tags.set(*tags)
+            else:
+                entry.tags.clear()
             e = self.serializer_class(entry).data
             return APIResponse(e)
         else:

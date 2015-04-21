@@ -47,7 +47,7 @@
 		{% if entry.slug == '' %}
 			<div class="group">
 				<label>Date:</label>
-				<input type="text" value="{{ entry.date|date:'Y-m-d H:i:s' }}" />
+				<input name="date" type="text" value="{{ entry.date|date:'Y-m-d H:i:s' }}" />
 			</div>
 		{% endif %}
 			<div class="group">

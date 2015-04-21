@@ -129,7 +129,8 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
         if entry:
             entry.content = content
             entry.title = request.data.get('title', '')
-            entry.date = datetime.datetime.strptime(date, DATETIME_FORMAT)
+            if date:
+                entry.date = datetime.datetime.strptime(date, DATETIME_FORMAT)
             entry.save()
             if tags:
                 entry.tags.set(*tags)

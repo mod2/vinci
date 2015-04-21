@@ -435,8 +435,8 @@ $(document).ready(function() {
 		var tags = entry.find(".editbox input[name=tags]").val().trim();
 
 		var date = '';
-		if (entry.find(".editbox input[type=text]").length > 0) {
-			date = entry.find(".editbox input[type=text]").val().trim();
+		if (entry.find(".editbox input[name=date]").length > 0) {
+			date = entry.find(".editbox input[name=date]").val().trim();
 		}
 
 		// Call edit entry web service
@@ -446,7 +446,7 @@ $(document).ready(function() {
 			content: text,
 		};
 
-		if (date) {
+		if (date != '') {
             data['date'] = date;
 		}
 

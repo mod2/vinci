@@ -127,10 +127,10 @@ def search(query_string, page=1, results_per_page=10, sort_order='relevance',
 
     with ix.searcher() as searcher:
         other_args = {}
-        if sort_order == 'date_desc':
+        if sort_order == '-date':
             other_args['sortedby'] = 'date'
             other_args['reverse'] = True
-        elif sort_order == 'date_asc':
+        elif sort_order == 'date':
             other_args['sortedby'] = 'date'
         results = searcher.search_page(query,
                                        page,

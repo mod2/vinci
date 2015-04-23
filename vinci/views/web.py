@@ -77,13 +77,16 @@ def search_notebook(request, notebook_slug):
     else:
         entries, __, __ = si.search(query, page, sort_order=sortby,
                                     notebook=notebook)
-        entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE).page(page)
+        entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE)
+        total = entries.count
+        entries = entries.page(page)
 
     context = {
         'title': notebook.name,
         'query': query,
         'notebook': notebook,
         'entries': entries,
+        'total': total,
     }
 
     return render_to_response('vinci/list.html',

@@ -136,6 +136,10 @@ nav[role=pagination] .links a + a	{ margin-left: 15px; }
 .entry .content code:not([class*='language-'])		{ font-family: Monaco, Courier; color: #345678; padding: 2px 5px; -moz-border-radius: 3px; border-radius: 3px; background: #eee; font-size: .8em; }
 .entry .content pre:not([class*='language-']) code:not([class*='language-'])	{ padding: 0; background: none; font-size: 1em; }
 
+.entry .content pre[class*='language'] {
+	font-size: .75em;
+}
+
 .entry .content blockquote	{ border-left: solid 5px #ddd; padding-left: 15px; margin-left: 25px; margin-right: 0; }
 
 

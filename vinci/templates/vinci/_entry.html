@@ -1,4 +1,4 @@
-<article class="entry{% if entry.slug != '' %} page{% endif %}" data-id="{{ entry.id }}" data-plugins="entry.plugins|join(',')">
+<article class="entry{% if entry.slug != '' %} page{% endif %}" data-id="{{ entry.id }}">
 	<div class="metadata">
 		{% if not notebook %}<a href="{{ entry.notebook.get_absolute_url }}">{{ entry.notebook.name }}</a> — {% endif %}
 

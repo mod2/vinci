@@ -734,28 +734,9 @@ function addEntry(text) {
 	$("#input").slideUp(50);
 }
 
-function loadPlugins(content, plugins) {
-	for (var i=0; i<plugins.length; i++) {
-		var plugin = plugins[i];
-
-		var plugin_function = plugin + "_init";
-
-		if (plugin_function in window) {
-			window[plugin_function](content);
-		}
-	}
-}
-
 function processEntries(entries) {
-	for (i in entries) {
-		var entry = $(entries[i]);
-
-		if ($(entry).attr("data-plugins")) {
-			var plugins = entry.attr("data-plugins").split(',');
-
-			entry.find(".content").each(function() {
-				loadPlugins($(this), plugins);
-			});
-		}
-	}
+	// Re-run Prism on all entries (old and new)
+	// TODO: someday Prism.highlightElement might work, and then we can switch
+	// to run it on only new entries, but for now it doesn't work
+	Prism.highlightAll();
 }

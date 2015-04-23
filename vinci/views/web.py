@@ -66,28 +66,45 @@ def notebooks_list(request):
 
 @login_required
 def search_notebook(request, notebook_slug):
+    notebook = get_object_or_404(Notebook, slug=notebook_slug)
+    return _search(request, notebook)
+
+
+@login_required
+def search_all(request):
+    return _search(request)
+
+
+def _search(request, notebook=None):
     sortby = request.GET.get('sort', settings.VINCI_DEFAULT_SEARCH_ORDER)
     page = int(request.GET.get('page', 1))
     query = request.GET.get('q')
 
-    notebook = get_object_or_404(Notebook, slug=notebook_slug)
-
     if query is None:
         entries = Paginator([], settings.VINCI_RESULTS_PER_PAGE).page(1)
     else:
-        entries, __, __ = si.search(query, page, sort_order=sortby,
-                                    notebook=notebook)
+        search_params = {
+            'query_string': query,
+            'page': page,
+            'sort_order': sortby,
+        }
+        if notebook:
+            search_params['notebook'] = notebook
+        entries, __, __ = si.search(**search_params)
         entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE)
         total = entries.count
         entries = entries.page(page)
 
     context = {
-        'title': notebook.name,
+        'title': 'Search results',
         'query': query,
-        'notebook': notebook,
         'entries': entries,
         'total': total,
     }
+
+    if notebook:
+        context['title'] += ' in {}'.format(notebook.name)
+        context['notebook'] = notebook
 
     return render_to_response('vinci/list.html',
                               context,

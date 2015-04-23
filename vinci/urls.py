@@ -35,6 +35,7 @@ vincipatterns = patterns(
 
     url(r'^$', 'notebooks_list', name='notebooks_list'),
     url(r'^api/', include(vinciapipatterns)),
+    url(r'^search/$', 'search_all', name='search_all'),
     url(r'^(?P<notebook_slug>[^\/]+)/$', 'entries_list', name='notebook'),
     url(r'^(?P<notebook_slug>[^\/]+)/search/$', 'search_notebook',
         name='search_notebook'),

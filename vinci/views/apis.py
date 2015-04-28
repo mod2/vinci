@@ -218,6 +218,20 @@ def append_today(request, notebook_slug):
 
         if len(results) > 0:
             entry = results[0]
+
+            # Get the text
+            cur_rev = entry.current_revision
+
+            # Add new revision with appended content
+            new_revision = Revision()
+            new_revision.entry = entry
+            new_revision.content = cur_rev.content + content
+            new_revision.author = notebook.author
+            new_revision.parent = cur_rev
+            new_revision.save()
+
+            # Save the entry
+            entry.save()
         else:
             # We don't have an entry today, so create it (strip it first
             # so there's no initial newline)
@@ -227,20 +241,6 @@ def append_today(request, notebook_slug):
                       'notebook': notebook,
                       }
             entry = Entry.objects.create(**kwargs)
-
-        # Get the text
-        cur_rev = entry.current_revision
-
-        # Add new revision with appended content
-        new_revision = Revision()
-        new_revision.entry = entry
-        new_revision.content = cur_rev.content + content
-        new_revision.author = notebook.author
-        new_revision.parent = cur_rev
-        new_revision.save()
-
-        # Save the entry
-        entry.save()
 
         response = {
             'status': 'success',

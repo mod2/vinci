@@ -448,7 +448,7 @@ nav[role=menu] .group.search input[type=submit] {
 }
 
 #page #content .entry .metadata a.date {
-	color: #bbb;
+	color: #ccc;
 	text-decoration: none;
 }
 
@@ -555,13 +555,13 @@ nav[role=menu] .group.search input[type=submit] {
 
 #page #content .entry .edit-mode {
 	display: none;
-	margin-top: 20px;
 	padding-top: 0;
 }
 
 #page #content .entry .edit-mode textarea {
 	border: none;
 	font-size: 1em;
+	margin-top: 20px;
 	resize: none;
 	width: 100%;
 }
@@ -749,5 +749,45 @@ nav[role=pagination] {
 		flex: 0.5;
 		min-width: 200px;
 		padding: 25px;
+	}
+
+	#page #content .entry {
+		display: flex;
+	}
+
+	#page #content .entry .controls-toggle {
+		order: 3;
+	}
+
+	#page #content .entry .metadata {
+		order: 1;
+		padding: 15px 10px 15px 45px;
+		width: 175px;
+	}
+
+	#page #content .entry .content.container {
+		flex: 3;
+		order: 2;
+		padding-top: 15px;
+		padding-left: 10px;
+		padding-right: 15px;
+	}
+
+	#page #content .entry .metadata a.date {
+		line-height: 1.3em;
+	}
+
+	#page #content .entry .metadata a.date date {
+		display: block;
+		font-size: 1.1em;
+	}
+
+	#page #content .entry .metadata a.date time {
+		display: block;
+		margin-left: 0;
+	}
+
+	#page #content .entry .metadata ul.tags {
+		margin-left: 0;
 	}
 }

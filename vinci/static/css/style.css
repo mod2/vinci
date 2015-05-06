@@ -71,7 +71,6 @@ a:hover img {
 }
 
 ::-moz-selection, ::selection {
-	background: hsl(211, 56%, 50%);
 	background: hsl(211, 56%, 44%);
 	color: #fff;
 }
@@ -213,7 +212,7 @@ nav[role=menu] {
 	-webkit-transform: translate3d(-200px, 0, 0);
 	transform: translate3d(-200px, 0, 0);
 
-	background: hsl(218, 26%, 16%);
+	background: hsl(0, 0%, 11%);
 
 	float: left;
 	overflow: hidden;
@@ -237,14 +236,12 @@ nav[role=menu] a {
 }
 
 nav[role=menu] a:hover {
-	background: hsl(216, 30%, 32%);
+	background: hsl(0, 0%, 21%);
 	color: #fff;
 }
 
 nav[role=menu] .group + .group {
-	border-top: solid 1px hsl(218, 23%, 22%);
-	margin-top: .65em;
-	padding-top: .65em;
+	margin-top: 1.45em;
 }
 
 nav[role=menu] .group.system a {
@@ -294,7 +291,7 @@ nav[role=menu] .group.search {
 }
 
 nav[role=menu] .group.search input[type=text] {
-	background: hsl(218, 28%, 22%);
+	background: hsl(0, 0%, 18%);
 	border: none;
 	border-radius: 3px 0 0 3px;
 	color: #fff;
@@ -305,17 +302,22 @@ nav[role=menu] .group.search input[type=text] {
 }
 
 nav[role=menu] .group.search input[type=text]:focus {
-	background: hsl(218, 30%, 12%);
+	background: hsl(0, 0%, 8%);
 	outline: none;
 }
 
 nav[role=menu] .group.search input[type=submit] {
-	background: hsl(218, 35%, 28%);
+	background: hsl(0, 0%, 32%);
 	border: none;
 	border-radius: 0 3px 3px 0;
 	color: #fff;
+	cursor: pointer;
 	flex: 0.1;
 	min-width: 3em;
+}
+
+nav[role=menu] .group.search input[type=submit]:hover {
+	background: hsl(0, 0%, 38%);
 }
 
 
@@ -355,7 +357,7 @@ nav[role=menu] .group.search input[type=submit] {
 /* -------------------------------------------------- */
 
 #page #sidebar {
-	background: hsl(218, 26%, 16%);
+	background: hsl(0, 0%, 11%);
 	color: #fff;
 }
 

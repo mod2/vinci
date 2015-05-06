@@ -154,7 +154,7 @@ header[role=banner] a.add {
 
 header[role=site] {
 	align-items: flex-end;
-	background: hsl(212, 32%, 34%);
+	background: hsl(212, 34%, 20%);
 	display: none;
 	overflow: hidden;
 	padding: 10px 25px;
@@ -677,6 +677,39 @@ nav[role=pagination] {
 
 	header[role=site] {
 		display: flex;
+		flex-direction: row;
+		padding: 0;
+	}
+
+	header[role=site] > .spacer {
+		background: #000;
+		flex: .5;
+		min-width: 200px;
+	}
+
+	header[role=site] .middle {
+		align-items: flex-end;
+		display: flex;
+		flex: 2;
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	header[role=site] .middle .header {
+		background: hsl(212, 32%, 34%);
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		flex: 2;
+		max-width: 750px;
+		padding-bottom: 10px;
+		padding-top: 10px;
+	}
+
+	header[role=site] .middle h1 {
+		padding-left: 45px;
+	}
+
+	header[role=site] .middle .system {
+		padding-right: 45px;
 	}
 
 	.wrapper {
@@ -791,5 +824,12 @@ nav[role=pagination] {
 
 	#page #content .entry .metadata ul.tags {
 		margin-left: 0;
+	}
+
+	header[role=site] .middle .spacer {
+		flex: 0.5;
+		min-width: 200px;
+		padding-left: 25px;
+		padding-right: 25px;
 	}
 }

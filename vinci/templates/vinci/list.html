@@ -6,10 +6,9 @@
 {% endif %}
 {% endblock page_header %}
 
-{% block page_content %}
-<div class="container">
+{% block content %}
 	{% block entries %}
-	<section id="entries" class="list">
+	<section class="entries">
 		{% for entry in entries %}
             {% include 'vinci/_entry.html' %}
 		{% empty %}
@@ -17,11 +16,10 @@
 		{% endfor %}
 	</section>
 	{% endblock entries %}
-</div>
-{% endblock page_content %}
+{% endblock content %}
 
 {% block nav %}
-<nav role="pagination">
+<nav role="pagination" class="container">
 	{% if entries.has_prev %}<a class="prev" href="?page={{ entries.previous_page_number }}">Prev</a>{% endif %}
 	{% if entries.has_next %}<a class="next" href="?page={{ entries.next_page_number }}">Next</a>{% endif %}
 </nav>

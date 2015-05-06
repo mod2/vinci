@@ -3,37 +3,22 @@
 <html>
 <head>
 	{% block head %}
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-
 	<title>{% block title %}{{ title }}{% endblock title %}{{ SITE_TITLE_SEP }}{{ SITE_TITLE }}</title>
 
-	<link href="{% static 'css/font-awesome-vinci/css/vincifont.css' %}" rel="stylesheet" type="text/css" charset="utf-8" />
-	<link href="{% static 'css/style.css' %}?v9" rel="stylesheet" type="text/css" charset="utf-8" />
-	<link href="{% static 'css/prism.css' %}" rel="stylesheet" type="text/css" charset="utf-8" />
-    {% if custom and custom.css %}
-		<link href="{% static '' %}custom/css/{{ notebook.slug }}.css" rel="stylesheet" type="text/css" charset="utf-8" />
-    {% endif %}
-	{% comment %}
-    {% for plugin in config.plugins %}{% for file in config.plugins[plugin].css %}
-		<link href="{% static '' %}plugins/{{ plugin }}/{{ file }}" rel="stylesheet" type="text/css" charset="utf-8" />
-	{% endfor %}{% endfor %}
-	{% endcomment %}
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 
-	<script src="{% static 'js/jquery-2.0.3.min.js' %}" type="text/javascript" charset="utf-8"></script>
+	<link href="{% static 'css/font-awesome-vinci/css/vincifont.css' %}" rel="stylesheet" type="text/css" charset="utf-8" />
+	<link href="{% static 'css/style.css' %}?v10" rel="stylesheet" type="text/css" charset="utf-8" />
+
+	<link href="{% static 'css/prism.css' %}" rel="stylesheet" type="text/css" charset="utf-8" />
+
+	<script src="{% static 'js/jquery-2.1.4.min.js' %}" type="text/javascript" charset="utf-8"></script>
 	<script src="{% static 'js/jquery.hotkeys.js' %}" type="text/javascript" charset="utf-8"></script>
 	<script src="{% static 'js/jquery.infinitescroll.min.js' %}" type="text/javascript" charset="utf-8"></script>
 	<script src="{% static 'js/prism.js' %}" type="text/javascript" charset="utf-8"></script>
 
-	<script src="{% static 'js/vinci.js' %}?v10" type="text/javascript" charset="utf-8"></script>
-    {% if custom and custom.js %}
-		<script src="{% static '' %}custom/js/{{ notebook.slug }}.js" type="text/javascript" charset="utf-8"></script>
-    {% endif %}
-	{% comment %}
-    {% for plugin in config.plugins %}{% for file in config.plugins[plugin].js %}
-		<script src="{% static '' %}plugins/{{ plugin }}/{{ file }}" type="text/javascript" charset="utf-8"></script>
-	{% endfor %}{% endfor %}
-	{% endcomment %}
+	<script src="{% static 'js/vinci.js' %}?v11" type="text/javascript" charset="utf-8"></script>
 
 	<script type="text/javascript" charset="utf-8">
 		var config = {};
@@ -48,43 +33,76 @@
 	{% endblock head %}
 </head>
 
-<body{% if page_type %} class="{{ page_type }}"{% endif %}>
-	{% block cmdline %}
-	<form id="cmdline">
-		<div class="container">
-			<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" />
-		</div>
-	</form>
-	{% endblock cmdline %}
+<body>
+	{% block site_header %}
+	<header role="site">
+		<h1>{% block site_header_title %}{% if notebook %}<a class="home" href="{{ notebook.get_absolute_url }}">{% endif %}{{ title }}{% if notebook %}</a>{% endif %}{% endblock site_header_title %}</h1>
 
-	{% block header %}
-	<header>
-		<div class="container">
-			<nav>
-				<ul>
-					<li><a class="icon-plus addentry" href=""></a></li>
-					<li><a class="icon-th-list notebooks" href="{% url 'notebooks_list' %}"></a></li>
-					<li><a class="icon-terminal search" href=""></a></li>
-				</ul>
-			</nav>
-
-			<h1>{% block header_title %}{% if notebook %}<a href="{{ notebook.get_absolute_url }}">{% endif %}{{ title }}{% if notebook %}</a>{% endif %}{% endblock header_title %}</h1>
+		<div class="system">
+			<a href="{% url 'notebooks_list' %}">Home</a></li>
+			<a href="">Preferences</a>
+			<a href="">Logout</a>
 		</div>
 	</header>
-	{% endblock header %}
+	{% endblock site_header %}
+
+	<div class="wrapper">
+		{% block menu %}
+		<nav role="menu">
+			<form id="search" class="group search">
+				<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
+				<input type="submit" value="O\" />
+			</form>
+
+			<div class="group">
+				<a href="">Logs</a>
+				<a href="">Notes</a>
+			</div>
+
+			<div class="group">
+				<a href="">Notebook Settings</a>
+			</div>
+
+			<div class="group system">
+				<a href="{% url 'notebooks_list' %}">Home</a></li>
+				<a href="">Preferences</a>
+				<a href="">Logout</a>
+			</div>
+		</nav>
+		{% endblock menu %}
+
+		<section id="page">
+			<div class="mask"></div>
+			{% block header %}
+			<header role="banner">
+				<a class="menu">&hellip;</a>
+				<h1>{% block header_title %}{% if notebook %}<a class="home" href="{{ notebook.get_absolute_url }}">{% endif %}{{ title }}{% if notebook %}</a>{% endif %}{% endblock header_title %}</h1>
+				<a class="add">+</a>
+			</header>
+			{% endblock header %}
+
+			<main id="content"{% if page_type %} class="{{ page_type }}"{% endif %}>
+				{% block content %}{% endblock content %}
+				{% block nav %}{% endblock nav %}
+			</main>
+
+			<aside id="sidebar">
+				{% block sidebar %}
+				Tags<br>
+				Revisions
+				{% endblock sidebar %}
+			</aside>
+		</section>
+	</div>
 
 	{% block input %}
+	<!--
 		<form id="input">
 			<div class="container">
 				<div class="content"><textarea id="add" name="add"></textarea><input type="submit" value="Add Entry" class="submitbutton" /></div>
 			</div>
 		</form>
+	-->
 	{% endblock input %}
-	{% block nav %}{% endblock nav %}
-	{% block page_header %}{% endblock page_header %}
-
-	<section id="page">
-		{% block page_content %}{% endblock page_content %}
-	</section>
 </body>
 </html>

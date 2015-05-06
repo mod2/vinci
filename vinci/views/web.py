@@ -19,9 +19,12 @@ def entries_list(request, notebook_slug):
     entries = notebook.entries.all().order_by(sortby)
     entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE).page(page)
 
+    notebooks = Notebook.objects.filter(status='active').order_by('name')
+
     context = {
         'title': notebook.name,
         'notebook': notebook,
+        'notebooks': notebooks,
         'entries': entries,
     }
 

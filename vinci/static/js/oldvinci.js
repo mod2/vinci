@@ -398,7 +398,7 @@ $(document).ready(function() {
 	// Editing entries
 	// --------------------------------------------------
 
-	$("#entries").on("click touchstart", ".entry .metadata a.edit", function() {
+	$("#entries").on("click touchstart", ".entry a.controls", function() {
 		var entry = $(this).parents(".entry:first");
 
 		if (entry.find(".content:visible").length > 0) {

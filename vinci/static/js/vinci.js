@@ -82,4 +82,58 @@ $(document).ready(function() {
 
 		return false;
 	});
+
+
+	// Infinite scroll
+	if ($("nav[role=pagination] a.next")) {
+		$(".entries").infinitescroll({
+			navSelector: "nav[role=pagination]",
+			nextSelector: "nav[role=pagination] a.next",
+			itemSelector: "article.entry",
+			loading: {
+				finishedMsg: '<i>The very end.</i>',
+			},
+		}, processEntries);
+	}
+
+
+	// Add viewport to the window object
+	// http://geekswithblogs.net/khillinger/archive/2009/06/04/jquery-and-the-viewport-dimensions.aspx
+	// --------------------------------------------------
+
+	window.viewport = {
+		height: function() { return $(window).height(); },
+		width: function() { return $(window).width(); },
+		scrollTop: function() { return $(window).scrollTop(); },
+		scrollLeft: function() { return $(window).scrollLeft(); }
+	};
+
+
+	// Entry edit controls
+	// --------------------------------------------------
+
+	$(".entries").on("click touchstart", ".entry .controls-toggle", function() {
+		if ($(this).siblings(".controls:visible").length) {
+			$(this).siblings(".controls").slideUp(150);
+			$(this).removeClass("active");
+		} else {
+			$(this).siblings(".controls").slideDown(150);
+			$(this).addClass("active");
+		}
+
+		return false;
+	});
+
+	$("body").on("click", function() {
+		if ($(".more").length > 0) {
+			$(".more").hide();
+		}
+	});
 });
+
+function processEntries(entries) {
+	// Re-run Prism on all entries (old and new)
+	// TODO: someday Prism.highlightElement might work, and then we can switch
+	// to run it on only new entries, but for now it doesn't work
+	Prism.highlightAll();
+}

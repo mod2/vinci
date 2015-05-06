@@ -1,5 +1,36 @@
-<article class="entry container {{ entry.type }}" data-id="{{ entry.id }}">
-	<div class="metadata">
+<article class="entry {{ entry.type }}" data-id="{{ entry.id }}">
+	{% if not total %}
+		<a class="controls-toggle" href="">&nbsp;</a>
+
+		<div class="controls container">
+			<div class="group">
+				<a href="" class="delete">Delete</a>
+				<a href="" class="edit">Edit</a>
+			</div>
+			<!--
+			<div class="group move">
+				<a href="" class="move">Move to </a>
+				<a href="" class="copy">Copy to </a>
+				<select>
+					{% for n in notebooks %}<option value="{{ n.slug }}">{{ n.name }}</option>{% endfor %}
+				</select>
+			</div>
+			-->
+		</div>
+	{% endif %}
+
+	<div class="metadata container">
+		{% if 1 %}{# page_type == 'list' and entry.type == 'log' #}
+			<a class="date" href="{{ entry.get_absolute_url }}">
+				<date>{{ entry.date|date:'j M Y' }}</date>
+				<time>{{ entry.date|date:'g:i A'|lower }}, {{ entry.date|date:'D' }}</time>
+			</a>
+			{% if entry.tags.all|length > 0 %}
+			<ul class="tags">{% for tag in entry.tags.all %}<li><a href="url_for('index') ~ entry.notebook.slug ~ '/tag/' ~ tag">#{{ tag }}</a></li>{% endfor %}</ul>
+			{% endif %}
+		{% endif %}
+	</div>
+		<!--
 		{% if not notebook %}<a href="{{ entry.notebook.get_absolute_url }}">{{ entry.notebook.name }}</a> — {% endif %}
 
 		{% if not total %}
@@ -7,10 +38,6 @@
 
 		<div class="more">
 			<nav>
-				<a href="" class="edit">Edit</a>
-			</nav>
-
-			<a href="" class="delete">Delete</a>
 		</div>
 		{% endif %}
 
@@ -33,18 +60,19 @@
 				{% endif %}
 			</h2>
 		{% endif %}
-	</div>
+		-->
 
-	{% if entry.highlight %}<div class='content excerpt'>&hellip; {{ entry.highlight|safe }} &hellip;</div>
+	{% if entry.highlight %}<div class="content excerpt container">&hellip; {{ entry.highlight|safe }} &hellip;</div>
     {% else %}
-	<div class="content">
+	<div class="content container">
 		{% if entry.slug != '' and page_type != 'detail' %}
 			<h3><a href="{{ entry.get_absolute_url }}">{% if entry.title != '' %}{{ entry.title }}{% elif entry.slug != '' %}{{ entry.slug }}{% else %}no title!{% endif %}</a></h3>
 		{% else %}
 			{{ entry.html|safe }}
 		{% endif %}
 	</div>
-	<form class="editbox">
+
+	<form class="edit-mode">
 		<textarea>{{ entry.current_revision.content }}</textarea>
 		{% if entry.slug == '' %}
 			<div class="group">

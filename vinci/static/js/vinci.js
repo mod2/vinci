@@ -124,11 +124,142 @@ $(document).ready(function() {
 		return false;
 	});
 
-	$("body").on("click", function() {
-		if ($(".more").length > 0) {
-			$(".more").hide();
+	$("body").on("click touchstart", function() {
+		if ($(".controls:visible").length > 0) {
+			$(".controls").slideUp(150);
+			$(".controls-toggle.active").removeClass("active");
 		}
 	});
+
+
+	// Editing entries
+	// --------------------------------------------------
+
+	$(".entries").on("click touchstart", ".entry .controls a.edit", function() {
+		var entry = $(this).parents(".entry");
+
+		if (entry.find(".content:visible").length > 0) {
+			// Show the edit area
+			entry.find(".edit-mode").slideDown(150, function() {
+				entry.find(".content, .metadata").slideUp(150, function() {
+					$(this).find("textarea").focus();
+				});
+			});
+
+			// Change text
+			entry.find(".controls a.edit").html("Cancel");
+
+			// Hide the menu
+			$(".controls").slideUp(150);
+			$(".controls-toggle.active").removeClass("active");
+		} else {
+			// Hide the edit area
+			entry.find(".content, .metadata").slideDown(150, function() {
+				entry.find(".edit-mode").slideUp(150);
+			});
+
+			// Change text
+			entry.find(".controls a.edit").html("Edit");
+
+			// Hide the menu
+			$(".controls").slideUp(150);
+			$(".controls-toggle.active").removeClass("active");
+		}
+
+		return false;
+	});
+
+
+	// Autosize
+	// --------------------------------------------------
+
+	$("#page #content .entry .edit-mode textarea").autosize();
+
+
+	// Shortcuts
+	// --------------------------------------------------
+
+	$(document).bind('keydown', 'j', function() {
+		// If nothing selected, select the first
+		if ($(".entries .entry.selected").length == 0) {
+			$(".entries .entry:first-child").addClass("selected");
+		} else {
+			var selected = $(".entries .entry.selected");
+			var nextEntry = selected.next();
+
+			if (nextEntry.length > 0) {
+				nextEntry.addClass("selected");
+				selected.removeClass("selected");
+
+				if (nextEntry.offset().top + nextEntry.height() > $(window).scrollTop() + viewport.height() - 100) {
+					$(window).scrollTop($(window).scrollTop() + nextEntry.height() + 100);
+				}
+			}
+		}
+
+		return false;
+	});
+
+	$(document).bind('keydown', 'k', function() {
+		// If nothing selected, select the first
+		if ($(".entries .entry.selected").length == 0) {
+			$(".entries .entry:first-child").addClass("selected");
+		} else {
+			var selected = $(".entries .entry.selected");
+			var prevEntry = selected.prev();
+
+			if (prevEntry.length > 0) {
+				prevEntry.addClass("selected");
+				selected.removeClass("selected");
+
+				if (prevEntry.offset().top < $(window).scrollTop()) {
+					$(window).scrollTop($(window).scrollTop() - prevEntry.height() - 80);
+				}
+			}
+		}
+
+		return false;
+	});
+
+	$(document).bind('keydown', 'return', function() {
+		if ($(".entries .entry.selected").length > 0) {
+			var entry = $(".entries .entry.selected");
+
+			window.location.href = entry.attr("data-uri");
+
+			return false;
+		}
+	});
+
+
+	// Shortcuts
+	// --------------------------------------------------
+
+	// Notebook page
+	$(document).bind('keydown', 'n', function() {
+		if (config.notebook) {
+			window.location.href = config.url + config.notebook;
+		}
+
+		return false;
+	});
+
+	// Notebook/entry/home
+	$(document).bind('keydown', 'h', function() {
+		if (config.notebook) {
+			window.location.href = config.url + config.notebook + '/entry/home';
+		}
+
+		return false;
+	});
+
+	// All notebooks
+	$(document).bind('keydown', 'a', function() {
+		window.location.href = config.url;
+
+		return false;
+	});
+
 });
 
 function processEntries(entries) {

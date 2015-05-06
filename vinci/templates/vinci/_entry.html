@@ -1,4 +1,4 @@
-<article class="entry {{ entry.type }}" data-id="{{ entry.id }}">
+<article class="entry {{ entry.type }}" data-id="{{ entry.id }}" data-uri="{{ entry.get_absolute_url }}">
 	{% if not total %}
 		<a class="controls-toggle" href="">&nbsp;</a>
 
@@ -20,7 +20,7 @@
 	{% endif %}
 
 	<div class="metadata container">
-		{% if 1 %}{# page_type == 'list' and entry.type == 'log' #}
+		{% if page_type == 'list' %}{#and entry.type == 'log' %} #}
 			<a class="date" href="{{ entry.get_absolute_url }}">
 				<date>{{ entry.date|date:'j M Y' }}</date>
 				<time>{{ entry.date|date:'g:i A'|lower }}, {{ entry.date|date:'D' }}</time>
@@ -28,6 +28,11 @@
 			{% if entry.tags.all|length > 0 %}
 			<ul class="tags">{% for tag in entry.tags.all %}<li><a href="url_for('index') ~ entry.notebook.slug ~ '/tag/' ~ tag">#{{ tag }}</a></li>{% endfor %}</ul>
 			{% endif %}
+		{% else %}
+			<a class="date" href="{{ entry.get_absolute_url }}">
+				<date>{{ entry.date|date:'j M Y' }}</date>
+				<time>{{ entry.date|date:'g:i A'|lower }}, {{ entry.date|date:'D' }}</time>
+			</a>
 		{% endif %}
 	</div>
 		<!--
@@ -62,18 +67,29 @@
 		{% endif %}
 		-->
 
-	{% if entry.highlight %}<div class="content excerpt container">&hellip; {{ entry.highlight|safe }} &hellip;</div>
-    {% else %}
-	<div class="content container">
-		{% if entry.slug != '' and page_type != 'detail' %}
-			<h3><a href="{{ entry.get_absolute_url }}">{% if entry.title != '' %}{{ entry.title }}{% elif entry.slug != '' %}{{ entry.slug }}{% else %}no title!{% endif %}</a></h3>
+	{% if page_type == 'list' %}
+		{# Entry list #}
+		{% if entry.highlight %}
+			<div class="content excerpt container">&hellip; {{ entry.highlight|safe }} &hellip;</div>
 		{% else %}
-			{{ entry.html|safe }}
+			<div class="content container">
+				{% if entry.title %}
+				<h3><a href="{{ entry.get_absolute_url }}">{% if entry.title != '' %}{{ entry.title }}{% elif entry.slug != '' %}{{ entry.slug }}{% else %}no title!{% endif %}</a></h3>
+				{% else %}
+				{{ entry.html|safe }}
+				{% endif %}
+			</div>
 		{% endif %}
-	</div>
+    {% else %}
+		{# Detail page #}
+		<div class="content container">
+			{{ entry.html|safe }}
+		</div>
+	{% endif %}
 
-	<form class="edit-mode">
-		<textarea>{{ entry.current_revision.content }}</textarea>
+	<form class="edit-mode container">
+		<textarea name="content">{{ entry.current_revision.content }}</textarea>
+
 		{% if entry.slug == '' %}
 			<div class="group">
 				<label>Date:</label>
@@ -89,7 +105,6 @@
 				<input name="tags" type="text" value="{{ entry.tags.all|join:',' }}" />
 			</div>
 		
-		<input type="submit" value="Save {% if entry.slug == '' %}Entry{% else %}Page{% endif %}" class="submitbutton" />
+		<input type="submit" value="Save {% if entry.slug == '' %}Entry{% else %}Page{% endif %}" class="button" />
 	</form>
-    {% endif %}
 </article>

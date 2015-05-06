@@ -26,6 +26,7 @@ def entries_list(request, notebook_slug):
         'notebook': notebook,
         'notebooks': notebooks,
         'entries': entries,
+        'page_type': 'list',
     }
 
     return render_to_response('vinci/list.html',
@@ -103,10 +104,11 @@ def _search(request, notebook=None):
         'query': query,
         'entries': entries,
         'total': total,
+        'page_type': 'list',
     }
 
     if notebook:
-        context['title'] += ' in {}'.format(notebook.name)
+        context['title'] = '{}: {}'.format(notebook.name, context['title'])
         context['notebook'] = notebook
 
     return render_to_response('vinci/list.html',

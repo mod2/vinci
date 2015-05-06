@@ -3,21 +3,41 @@
 {% block title %}{% if entry.title != '' %}{{ entry.title }}{% elif entry.slug != '' %}{{ entry.slug }}{% else %}{{ entry.date|date:'Y-m-d' }}{% endif %} | {{ entry.notebook.name }} | Vinci{% endblock title %}
 
 {% block input %}
+<!--
 <form id="input">
 	<div class="container">
 		<div class="content"><textarea id="add" name="add"></textarea><input type="submit" value="Add Entry" class="submitbutton" /></div>
 	</div>
 </form>
+-->
 {% endblock input %}
 
-{% block page_content %}
-
-{% block entry %}
-<div class="container">
-	<section id="entries" class="detail">
+{% block content %}
+	{% block entry %}
+	<section class="entries">
 		{% include 'vinci/_entry.html' %}
 	</section>
-</div>
-{% endblock entry %}
+	{% endblock entry %}
+{% endblock content %}
 
-{% endblock page_content %}
+{% block sidebar %}
+<div class="group">
+	{% if entry.tags.all %}
+	<h2>Tags</h2>
+	<ul>
+		{% for tag in entry.tags.all %}
+		<li><a href="">{{ tag.name }}</a></li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+
+	{% if entry.revisions.all %}
+	<h2>Revisions</h2>
+	<ul>
+		{% for rev in entry.revisions.all %}
+		<li><a href="">{{ rev.last_modified }}</a></li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+</div>
+{% endblock sidebar %}

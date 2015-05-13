@@ -35,26 +35,6 @@
 </head>
 
 <body>
-	{% block site_header %}
-	<header role="site">
-		<div class="spacer"></div>
-
-		<div class="middle">
-			<div class="header">
-				<h1>{% block site_header_title %}{% if notebook %}<a class="home" href="{{ notebook.get_absolute_url }}">{% endif %}{{ title }}{% if notebook %}</a>{% endif %}{% endblock site_header_title %}</h1>
-
-				<div class="system">
-					<a href="{% url 'notebooks_list' %}">Home</a></li>
-					<a href="">Preferences</a>
-					<a href="">Logout</a>
-				</div>
-			</div>
-
-			<div class="spacer"></div>
-		</div>
-	</header>
-	{% endblock site_header %}
-
 	<div class="wrapper">
 		{% block menu %}
 		<nav role="menu">
@@ -84,9 +64,17 @@
 			<div class="mask"></div>
 			{% block header %}
 			<header role="banner">
-				<a class="menu">&hellip;</a>
-				<h1>{% block header_title %}{% if notebook %}<a class="home" href="{{ notebook.get_absolute_url }}">{% endif %}{{ title }}{% if notebook %}</a>{% endif %}{% endblock header_title %}</h1>
-				<a class="add">+</a>
+				<div class="container">
+					<a class="menu">&hellip;</a>
+					<h1>{% block header_title %}{% if notebook %}<a class="home" href="{{ notebook.get_absolute_url }}">{% endif %}{{ title }}{% if notebook %}</a>{% endif %}{% endblock header_title %}</h1>
+					<a class="add">+</a>
+
+					<div class="system">
+						<a href="{% url 'notebooks_list' %}">Home</a></li>
+						<a href="">Preferences</a>
+						<a href="">Logout</a>
+					</div>
+				</div>
 			</header>
 			{% endblock header %}
 

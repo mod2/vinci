@@ -52,6 +52,15 @@ article, aside, figure, figcaption, footer, header, hgroup, menu, nav, section, 
 	width: 100%;
 }
 
+#page {
+	background: #f1f1f1;
+}
+
+.container {
+	margin: 0px auto;
+	max-width: 750px;
+}
+
 
 /* General */
 /* -------------------------------------------------- */
@@ -97,7 +106,13 @@ p {
 /* -------------------------------------------------- */
 
 header[role=banner] {
+	background: hsl(212, 28%, 24%);
+	overflow: hidden;
+}
+
+header[role=banner] .container {
 	background: hsl(212, 32%, 34%);
+	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
 	overflow: hidden;
 }
 
@@ -121,7 +136,7 @@ header[role=banner] h1 {
 header[role=banner] h1 a.home {
 	color: #fff;
 	display: block;
-	font-size: 1em;
+	font-size: 1.1em;
 	text-decoration: none;
 }
 
@@ -136,16 +151,24 @@ header[role=banner] a {
 	font-size: 1.3em;
 	height: 100%;
 	line-height: 100%;
-	padding: .1em .5em .7em;
+	padding: 1em .5em .7em;
 	z-index: 100000;
 }
 
 header[role=banner] a.menu {
 	float: left;
+	font-size: 1.4em;
+	padding-left: 25px;
+	padding-top: 0.7em;
 }
 
 header[role=banner] a.add {
 	float: right;
+	padding-right: 25px;
+}
+
+header[role=banner] .system {
+	display: none;
 }
 
 
@@ -356,45 +379,14 @@ nav[role=menu] .group.search input[type=submit]:hover {
 }
 
 
-/* Sidebar */
-/* -------------------------------------------------- */
-
-#page #sidebar {
-	background: hsl(0, 0%, 11%);
-	color: #fff;
-}
-
-#page #sidebar .group {
-}
-
-#page #sidebar .group h2 {
-	color: hsl(207, 11%, 53%);
-	font-size: .9em;
-	font-weight: 400;
-	margin: 0;
-}
-
-#page #sidebar .group a {
-	color: #fff;
-	font-size: .9em;
-	text-decoration: none;
-}
-
-#page #sidebar .group a:hover {
-	color: hsl(50, 77%, 67%);
-}
-
-#page #sidebar .group ul {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-
 /* Content */
 /* -------------------------------------------------- */
 
 #page #content {
+	background: #fff;
+	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+	margin: 0px auto;
+	max-width: 750px;
 	padding-bottom: 50px;
 }
 
@@ -466,15 +458,15 @@ nav[role=menu] .group.search input[type=submit]:hover {
 }
 
 #page #content .entry .metadata ul.tags {
-	display: inline;
+	display: block;
 	margin: 0;
-	margin-left: 10px;
 	padding: 0;
 }
 
 #page #content .entry .metadata ul.tags li {
 	display: inline;
 	list-style: none;
+	margin-right: 10px;
 }
 
 #page #content .entry .metadata ul.tags li a {
@@ -659,7 +651,115 @@ nav[role=pagination] {
 }
 
 
+@media screen and (min-width: 450px) {
+	#page #content .entry .content.container {
+		font-size: 1.1em;
+		line-height: 1.4em;
+	}
+}
+
+@media screen and (min-width: 600px) {
+	header[role=banner] a.menu {
+		padding-left: 45px;
+	}
+
+	header[role=banner] a.add {
+		padding-right: 45px;
+	}
+
+	#page #content .container {
+		padding-left: 45px;
+		padding-right: 45px;
+	}
+
+	#page #content .entry {
+		overflow: hidden;
+	}
+
+	#page #content .entry .metadata {
+		float: left;
+		font-size: 1em;
+		margin-right: 25px;
+		padding-bottom: 25px;
+		padding-right: 0;
+		padding-top: 25px;
+		width: 150px;
+	}
+
+	#page #content .entry .metadata a.date date {
+		display: block;
+		line-height: 1.2em;
+	}
+
+	#page #content .entry .metadata a.date time {
+		display: block;
+		font-size: .8em;
+		line-height: 1.2em;
+		margin-left: 0;
+	}
+
+	#page #content .entry .content.container {
+		margin-left: 175px;
+		padding-bottom: 25px;
+		padding-left: 0;
+		padding-top: 25px;
+	}
+
+	#page #content .entry .metadata ul.tags {
+		font-size: .8em;
+		margin-top: 5px;
+	}
+
+	#page #content .entry .metadata ul.tags li {
+		display: block;
+		line-height: 1.15em;
+		margin-top: 2px;
+	}
+}
+
 @media screen and (min-width: 700px) {
+	header[role=banner] a.menu {
+		display: none;
+	}
+
+	header[role=banner] a.add {
+		display: none;
+	}
+
+	header[role=banner] h1 {
+		position: initial;
+	}
+
+	header[role=banner] h1 a.home {
+		display: inline-block;
+		font-size: 1.4em;
+		letter-spacing: 0.05em;
+		padding-bottom: .4em;
+		padding-top: .9em;
+	}
+
+	nav[role=menu] {
+		-moz-transition: none;
+		-o-transition: none;
+		-webkit-transition: none;
+		transition: none;
+		-moz-transform: none;
+		-ms-transform: none;
+		-o-transform: none;
+		-webkit-transform: none;
+		transform: none;
+		display: none;
+	}
+
+	#page {
+		-moz-transition: none;
+		-o-transition: none;
+		-webkit-transition: none;
+		transition: none;
+	}
+}
+
+/*
 	html, body {
 		height: 100%;
 		min-height: 100%;
@@ -840,3 +940,4 @@ nav[role=pagination] {
 		padding-right: 25px;
 	}
 }
+*/

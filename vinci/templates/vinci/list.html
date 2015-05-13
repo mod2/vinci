@@ -1,12 +1,6 @@
 {% extends 'vinci/_base.html' %}
 
 {% block content %}
-	{% if query %}
-		<section id="results" class="container">
-			<h2>{{ total }} results for <span>{{ query }}</span></h2>
-		</section>
-	{% endif %}
-
 	{% block entries %}
 	<section class="entries">
 		{% for entry in entries %}

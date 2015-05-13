@@ -51,7 +51,7 @@ $(document).ready(function() {
 		// Display and focus on the search
 		$("#search input[type=text]").val('');
 
-		$("#search").slideDown(150, function() {
+		$("#search").slideDown(75, function() {
 			$("#search input[type=text]").focus();
 		});
 
@@ -60,7 +60,7 @@ $(document).ready(function() {
 
 	$("#search input[type=text]").bind('keydown', 'esc', function() {
 		// Unfocus the search box
-		$("#search").slideUp(150, function() {
+		$("#search").slideUp(75, function() {
 			$("#search input").val('').blur();
 		});
 
@@ -256,7 +256,7 @@ $(document).ready(function() {
 	// Notebook/entry/home
 	$(document).bind('keydown', 'h', function() {
 		if (config.notebook) {
-			window.location.href = config.url + config.notebook + '/entry/home';
+			window.location.href = config.url + config.notebook + '/home/';
 		}
 
 		return false;

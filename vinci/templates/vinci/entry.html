@@ -20,8 +20,7 @@
 	{% endblock entry %}
 {% endblock content %}
 
-{% block sidebar %}
-<div class="group">
+{% block footer %}
 	{% if entry.tags.all %}
 	<h2>Tags</h2>
 	<ul>
@@ -40,4 +39,4 @@
 	</ul>
 	{% endif %}
 </div>
-{% endblock sidebar %}
+{% endblock footer %}

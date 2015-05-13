@@ -38,11 +38,6 @@
 	<div class="wrapper">
 		{% block menu %}
 		<nav role="menu">
-			<form id="search" class="group search">
-				<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
-				<input type="submit" value="Q" />
-			</form>
-
 			<div class="group">
 				<a href="">Logs</a>
 				<a href="">Notes</a>
@@ -78,14 +73,6 @@
 			</header>
 			{% endblock header %}
 
-			{% block search %}
-			<form id="search">
-				<div class="container">
-					<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
-				</div>
-			</form>
-			{% endblock search %}
-
 			{% block sections %}
 			<div id="sections" class="log">
 				<div class="container">
@@ -95,28 +82,31 @@
 			</div>
 			{% endblock sections %}
 
+			{% block search %}
+			<form id="search">
+				<div class="container">
+					<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
+				</div>
+			</form>
+			{% endblock search %}
+
+			{% if query %}
+			<section id="results">
+				<div class="container">
+					<h2>{{ total }} results for <span>{{ query }}</span></h2>
+				</div>
+			</section>
+			{% endif %}
+
 			<main id="content"{% if page_type %} class="{{ page_type }}"{% endif %}>
 				{% block content %}{% endblock content %}
 				{% block nav %}{% endblock nav %}
-			</main>
 
-			<aside id="sidebar">
-				{% block sidebar %}
-				Tags<br>
-				Revisions
-				{% endblock sidebar %}
-			</aside>
+				<footer>
+					<div class="container">{% block footer %}{% endblock footer %}</div>
+				</footer>
+			</main>
 		</section>
 	</div>
-
-	{% block input %}
-	<!--
-		<form id="input">
-			<div class="container">
-				<div class="content"><textarea id="add" name="add"></textarea><input type="submit" value="Add Entry" class="submitbutton" /></div>
-			</div>
-		</form>
-	-->
-	{% endblock input %}
 </body>
 </html>

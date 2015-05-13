@@ -258,6 +258,10 @@ body.active-nav nav[role=menu] {
 }
 
 body.active-nav #page {
+	-moz-transition: -moz-transform .15s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+	-o-transition: -o-transform .15s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+	-webkit-transition: -webkit-transform .15s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+	transition: transform .15s cubic-bezier(0.2, 0.3, 0.25, 0.9);
 	-moz-transform: translate3d(200px, 0, 0);
 	-ms-transform: translate3d(200px, 0, 0);
 	-o-transform: translate3d(200px, 0, 0);
@@ -270,7 +274,6 @@ body.active-nav #page {
 }
 
 body.active-nav #page .mask {
-	background: rgba(255, 255, 255, 0.7);
 	bottom: 0;
 	cursor: pointer;
 	left: 0;
@@ -744,6 +747,10 @@ nav[role=pagination] {
 	}
 
 	#page {
+		-moz-transition: none;
+		-o-transition: none;
+		-webkit-transition: none;
+		transition: none;
 		flex: 2;
 	}
 

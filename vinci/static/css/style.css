@@ -59,6 +59,7 @@ article, aside, figure, figcaption, footer, header, hgroup, menu, nav, section, 
 .container {
 	margin: 0px auto;
 	max-width: 750px;
+	padding: 0 25px;
 }
 
 
@@ -114,6 +115,8 @@ header[role=banner] .container {
 	background: hsl(212, 32%, 34%);
 	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
 	overflow: hidden;
+	padding-bottom: 0;
+	padding-top: 0;
 }
 
 header[role=banner] h1 {
@@ -125,7 +128,7 @@ header[role=banner] h1 {
 	margin: 0;
 	overflow: hidden;
 	padding-top: .4em;
-	padding-bottom: .5em;
+	padding-bottom: 0;
 	position: absolute;
 	right: 60px;
 	text-align: center;
@@ -158,13 +161,13 @@ header[role=banner] a {
 header[role=banner] a.menu {
 	float: left;
 	font-size: 1.4em;
-	padding-left: 25px;
+	padding-left: 0px;
 	padding-top: 0.7em;
 }
 
 header[role=banner] a.add {
 	float: right;
-	padding-right: 25px;
+	padding-right: 0px;
 }
 
 header[role=banner] .system {
@@ -310,40 +313,96 @@ body.active-nav #page .mask {
 /* Search */
 /* -------------------------------------------------- */
 
-nav[role=menu] .group.search {
-	display: flex;
-	padding: .3em 25px;
-	text-align: right;
+#search {
+	background: hsl(0, 0%, 7%);
+	display: none;
 }
 
-nav[role=menu] .group.search input[type=text] {
-	background: hsl(0, 0%, 18%);
-	border: none;
-	border-radius: 3px 0 0 3px;
-	color: #fff;
-	flex: 2;
+#search .container {
+	background: hsl(0, 0%, 15%);
+	padding-bottom: 0;
+	padding-top: 0;
+}
+
+#search input[type=text] {
+	background: none;
 	font-size: 1em;
-	padding: 3px 5px;
+	padding: 14px 0;
+	color: #fff;
 	width: 100%;
+	border: none;
+	font-family: Monaco, Courier, monospace;
 }
 
-nav[role=menu] .group.search input[type=text]:focus {
-	background: hsl(0, 0%, 8%);
+#search input[type=text]:focus {
 	outline: none;
 }
 
-nav[role=menu] .group.search input[type=submit] {
-	background: hsl(0, 0%, 32%);
-	border: none;
-	border-radius: 0 3px 3px 0;
-	color: #fff;
-	cursor: pointer;
-	flex: 0.1;
-	min-width: 3em;
+
+/* Sections */
+/* -------------------------------------------------- */
+
+#sections {
+	-moz-transition: max-height 5s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+	-moz-user-select: none;
+	-o-transition: max-height 5s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+	-webkit-transition: max-height 5s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+	-webkit-user-select: none;
+	background: hsl(0, 0%, 7%);
+	max-height: 7px;
+	min-height: 7px;
+	transition: max-height 5s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+	user-select: none;
 }
 
-nav[role=menu] .group.search input[type=submit]:hover {
-	background: hsl(0, 0%, 38%);
+#sections .container {
+	padding-bottom: 0;
+	padding-top: 0;
+	max-height: 7px;
+	min-height: 7px;
+	-moz-transition: max-height 5s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+	-o-transition: max-height 5s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+	-webkit-transition: max-height 5s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+	transition: max-height 5s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+}
+
+#sections.log {
+	background: hsl(30, 87%, 63%);
+}
+
+#sections.log .container {
+	background: hsl(30, 93%, 73%);
+}
+
+#sections.note {
+	background: hsl(342, 87%, 63%);
+}
+
+#sections.note .container {
+	background: hsl(342, 93%, 73%);
+}
+
+#sections a {
+	display: none;
+}
+
+#sections.expanded {
+	max-height: 300px;
+}
+
+#sections.expanded .container {
+	max-height: 300px;
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+
+#sections.expanded a {
+	background: rgba(0, 0, 0, 0.2);
+	border-radius: 2px;
+	color: #fff;
+	display: inline-block;
+	padding: 4px 8px;
+	text-decoration: none;
 }
 
 
@@ -390,13 +449,10 @@ nav[role=menu] .group.search input[type=submit]:hover {
 	padding-bottom: 50px;
 }
 
-#page #content .container {
-	padding: 25px;
-}
-
 #page #content .entry {
 	font-size: 1.1em;
 	line-height: 1.4em;
+	padding-bottom: 25px;
 }
 
 #page #content .entry + .entry,
@@ -652,6 +708,11 @@ nav[role=pagination] {
 
 
 @media screen and (min-width: 450px) {
+	.container {
+		padding-left: 45px;
+		padding-right: 45px;
+	}
+
 	#page #content .entry .content.container {
 		font-size: 1.1em;
 		line-height: 1.4em;
@@ -660,16 +721,11 @@ nav[role=pagination] {
 
 @media screen and (min-width: 600px) {
 	header[role=banner] a.menu {
-		padding-left: 45px;
+		padding-left: 0px;
 	}
 
 	header[role=banner] a.add {
-		padding-right: 45px;
-	}
-
-	#page #content .container {
-		padding-left: 45px;
-		padding-right: 45px;
+		padding-right: 0px;
 	}
 
 	#page #content .entry {
@@ -718,6 +774,15 @@ nav[role=pagination] {
 }
 
 @media screen and (min-width: 700px) {
+	.container {
+		padding-left: 65px;
+		padding-right: 65px;
+	}
+
+	header[role=banner] .container {
+		position: relative;
+	}
+
 	header[role=banner] a.menu {
 		display: none;
 	}
@@ -732,10 +797,16 @@ nav[role=pagination] {
 
 	header[role=banner] h1 a.home {
 		display: inline-block;
-		font-size: 1.4em;
-		letter-spacing: 0.05em;
-		padding-bottom: .4em;
-		padding-top: .9em;
+		font-size: 1.6em;
+		letter-spacing: -0.02em;
+		padding-bottom: 0.3em;
+		padding-top: 0.6em;
+		text-transform: none;
+	}
+
+	header[role=banner] .system {
+		display: block;
+		position: absolute;
 	}
 
 	nav[role=menu] {
@@ -756,6 +827,34 @@ nav[role=pagination] {
 		-o-transition: none;
 		-webkit-transition: none;
 		transition: none;
+	}
+
+	#page #content .entry .metadata {
+		width: 200px;
+	}
+
+	#page #content .entry .content.container {
+		margin-left: 225px;
+	}
+}
+
+@media screen and (min-width: 1000px) {
+	.container {
+		max-width: 900px;
+		padding-left: 85px;
+		padding-right: 85px;
+	}
+
+	#page #content {
+		max-width: 900px;
+	}
+
+	#page #content .entry .metadata {
+		width: 220px;
+	}
+
+	#page #content .entry .content.container {
+		margin-left: 245px;
 	}
 }
 
@@ -855,7 +954,6 @@ nav[role=pagination] {
 	}
 
 	#page #content {
-		flex: 2;
 		max-width: 750px;
 	}
 

@@ -45,17 +45,24 @@ $(document).ready(function() {
 
 
 	// Search
+	// --------------------------------------------------
 
 	$(document).bind('keydown', '/', function() {
-		// Focus on the search
-		$("#search input[type=text]").val('').focus();
+		// Display and focus on the search
+		$("#search input[type=text]").val('');
+
+		$("#search").slideDown(150, function() {
+			$("#search input[type=text]").focus();
+		});
 
 		return false;
 	});
 
 	$("#search input[type=text]").bind('keydown', 'esc', function() {
 		// Unfocus the search box
-		$("#search input").val('').blur();
+		$("#search").slideUp(150, function() {
+			$("#search input").val('').blur();
+		});
 
 		return false;
 	});
@@ -85,6 +92,8 @@ $(document).ready(function() {
 
 
 	// Infinite scroll
+	// --------------------------------------------------
+
 	if ($("nav[role=pagination] a.next")) {
 		$(".entries").infinitescroll({
 			navSelector: "nav[role=pagination]",
@@ -260,6 +269,13 @@ $(document).ready(function() {
 		return false;
 	});
 
+
+	// Sections area
+	// --------------------------------------------------
+
+	$("#sections").on("click", function() {
+		$(this).toggleClass("expanded");
+	});
 });
 
 function processEntries(entries) {

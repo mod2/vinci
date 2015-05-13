@@ -78,6 +78,23 @@
 			</header>
 			{% endblock header %}
 
+			{% block search %}
+			<form id="search">
+				<div class="container">
+					<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
+				</div>
+			</form>
+			{% endblock search %}
+
+			{% block sections %}
+			<div id="sections" class="log">
+				<div class="container">
+					<a href="">Logs</a>
+					<a href="">Notes</a>
+				</div>
+			</div>
+			{% endblock sections %}
+
 			<main id="content"{% if page_type %} class="{{ page_type }}"{% endif %}>
 				{% block content %}{% endblock content %}
 				{% block nav %}{% endblock nav %}

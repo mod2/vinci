@@ -38,7 +38,7 @@
 
 body {
 	-webkit-font-feature-settings: 'liga';
-	background: #f1f1f1;
+	background: hsl(0, 0%, 92%);
 	margin: 0;
 	line-height: 1.4em;
 	padding: 0;
@@ -676,15 +676,53 @@ body.active-nav #page .mask {
 /* -------------------------------------------------- */
 
 #page #content > footer {
-	background: #f5f5f5;
+	background: hsl(0, 0%, 96%);
 	border-radius: 0 0 3px 3px;
-	padding-bottom: 5px;
-	padding-top: 5px;
+	padding-bottom: 15px;
+	padding-top: 15px;
 }
 
 #page #content > footer h2 {
-	font-size: .8em;
+	color: hsl(0, 0%, 73%);
+	font-size: .9em;
 	margin: 0;
+}
+
+#page #content > footer ul {
+	font-size: .9em;
+	margin: 0;
+	padding: 0;
+}
+
+#page #content > footer ul li {
+	list-style: none;
+	padding: 0;
+}
+
+#page #content > footer ul li a {
+	color: hsl(0, 0%, 60%);
+	text-decoration: none;
+}
+
+#page #content > footer ul li a:hover {
+	color: hsl(0, 0%, 13%);
+}
+
+#page #content > footer ul.tags li {
+	display: inline;
+	margin-right: 5px;
+}
+
+#page #content > footer ul.tags li a {
+	color: hsl(205, 26%, 63%);
+}
+
+#page #content > footer ul.tags li a:hover {
+	color: hsl(0, 0%, 13%);
+}
+
+#page #content > footer .group + .group {
+	margin-top: 1em;
 }
 
 
@@ -745,6 +783,10 @@ nav[role=pagination] {
 		padding-right: 0px;
 	}
 
+	#page #content {
+		margin-bottom: 100px;
+	}
+
 	#page #content .entry {
 		overflow: hidden;
 		padding-bottom: 0;
@@ -758,6 +800,11 @@ nav[role=pagination] {
 		padding-right: 0;
 		padding-top: 25px;
 		width: 150px;
+	}
+
+	#page #content.detail .entry .metadata {
+		padding-bottom: 45px;
+		padding-top: 45px;
 	}
 
 	#page #content .entry .metadata a.date date {
@@ -779,6 +826,11 @@ nav[role=pagination] {
 		padding-top: 25px;
 	}
 
+	#page #content.detail .entry .content.container {
+		padding-bottom: 45px;
+		padding-top: 45px;
+	}
+
 	#page #content .entry .metadata ul.tags {
 		font-size: .8em;
 		margin-top: 5px;
@@ -788,6 +840,16 @@ nav[role=pagination] {
 		display: block;
 		line-height: 1.15em;
 		margin-top: 2px;
+	}
+
+	#page #content > footer h2 {
+		float: left;
+		margin-right: 25px;
+		width: 105px;
+	}
+
+	#page #content > footer ul {
+		margin-left: 130px;
 	}
 }
 
@@ -853,6 +915,14 @@ nav[role=pagination] {
 
 	#page #content .entry .content.container {
 		margin-left: 225px;
+	}
+
+	#page #content > footer h2 {
+		width: 135px;
+	}
+
+	#page #content > footer ul {
+		margin-left: 160px;
 	}
 }
 

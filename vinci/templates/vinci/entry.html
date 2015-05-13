@@ -22,21 +22,25 @@
 
 {% block footer %}
 	{% if entry.tags.all %}
-	<h2>Tags</h2>
-	<ul>
-		{% for tag in entry.tags.all %}
-		<li><a href="">{{ tag.name }}</a></li>
-		{% endfor %}
-	</ul>
+	<div class="group">
+		<h2>Tags</h2>
+		<ul class="tags">
+			{% for tag in entry.tags.all %}
+			<li><a href="">#{{ tag.name }}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
 	{% endif %}
 
 	{% if entry.revisions.all %}
-	<h2>Revisions</h2>
-	<ul>
-		{% for rev in entry.revisions.all %}
-		<li><a href="">{{ rev.last_modified }}</a></li>
-		{% endfor %}
-	</ul>
+	<div class="group">
+		<h2>Revisions</h2>
+		<ul>
+			{% for rev in entry.revisions.all %}
+			<li><a href="">{{ rev.last_modified }}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
 	{% endif %}
 </div>
 {% endblock footer %}

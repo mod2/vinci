@@ -615,13 +615,20 @@ body.active-nav #page .mask {
 #page #content .entry .edit-mode textarea {
 	border: none;
 	font-size: 1em;
-	margin-top: 20px;
+	padding-top: 10px;
+	padding-bottom: 20px;
 	resize: none;
 	width: 100%;
 }
 
 #page #content .entry .edit-mode textarea:focus {
 	outline: none;
+}
+
+#page #content .entry .edit-mode .edit-panel {
+	background: hsl(0, 0%, 96%);
+	padding-bottom: 1em;
+	padding-top: 1em;
 }
 
 #page #content .entry .edit-mode .group {
@@ -632,26 +639,23 @@ body.active-nav #page .mask {
 	margin-top: 5px;
 }
 
-#page #content .entry .edit-mode textarea + .group {
-	border-top: solid 1px #eee;
-	padding-top: 10px;
-}
-
 #page #content .entry .edit-mode .group + input[type=submit] {
 	margin-top: 15px;
 }
 
 #page #content .entry .edit-mode .group label {
-	color: #888;
+	color: hsl(0, 0%, 73%);
+	display: inline-block;
 	margin-right: 10px;
-	width: 75px;
+	width: 30px;
 }
 
 #page #content .entry .edit-mode .group input[type=text] {
-	border: solid 1px #bbb;
+	background: #fff;
+	border: none;
 	border-radius: 2px;
-	font-size: 1em;
-	padding: 2px 5px;
+	font-size: 1.2em;
+	padding: 2px 7px;
 }
 
 .button {

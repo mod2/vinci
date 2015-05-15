@@ -182,7 +182,7 @@ $(document).ready(function() {
 	// Autosize
 	// --------------------------------------------------
 
-	$("#page #content .entry .edit-mode textarea").autosize();
+	autosize($("#page #content .entry .edit-mode textarea"));
 
 
 	// Shortcuts

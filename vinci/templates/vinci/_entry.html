@@ -56,9 +56,10 @@
 		</div>
 	{% endif %}
 
-	<form class="edit-mode container">
-		<textarea name="content">{{ entry.current_revision.content }}</textarea>
+	<form class="edit-mode">
+		<textarea name="content" class="container">{{ entry.current_revision.content }}</textarea>
 
+		<div class="edit-panel container">
 		{% if entry.slug == '' %}
 			<div class="group">
 				<label>Date:</label>
@@ -73,7 +74,8 @@
 				<label>Tags:</label>
 				<input name="tags" type="text" value="{{ entry.tags.all|join:',' }}" />
 			</div>
-		
-		<input type="submit" value="Save {% if entry.slug == '' %}Entry{% else %}Page{% endif %}" class="button" />
+
+			<input type="submit" value="Save {% if entry.slug == '' %}Entry{% else %}Page{% endif %}" class="button" />
+		</div>
 	</form>
 </article>

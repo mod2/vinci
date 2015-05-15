@@ -108,7 +108,7 @@ def _search(request, notebook=None):
     }
 
     if notebook:
-        context['title'] = '{}: {}'.format(notebook.name, context['title'])
+        context['title'] = notebook.name
         context['notebook'] = notebook
 
     return render_to_response('vinci/list.html',

@@ -61,7 +61,15 @@
 			<header role="banner">
 				<div class="container">
 					<a class="menu">&hellip;</a>
-					<h1>{% block header_title %}{% if notebook %}<a class="home" href="{{ notebook.get_absolute_url }}">{% endif %}{{ title }}{% if notebook %}</a>{% endif %}{% endblock header_title %}</h1>
+					<h1>
+						{% block header_title %}
+							{% if notebook %}
+								<a class="home" href="{{ notebook.get_absolute_url }}">{{ notebook.name }}</a>
+							{% else %}
+								{{ title }}
+							{% endif %}
+						{% endblock header_title %}
+					</h1>
 					<a class="add">+</a>
 
 					<div class="system">

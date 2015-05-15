@@ -100,7 +100,7 @@ def _search(request, notebook=None):
         entries = entries.page(page)
 
     context = {
-        'title': 'Search results',
+        'title': '{}{}Search'.format(query, settings.VINCI_SITE_TITLE_SEP),
         'query': query,
         'entries': entries,
         'total': total,
@@ -108,7 +108,7 @@ def _search(request, notebook=None):
     }
 
     if notebook:
-        context['title'] = notebook.name
+        context['title'] = '{}{}{}'.format(context['title'], settings.VINCI_SITE_TITLE_SEP, notebook.name)
         context['notebook'] = notebook
 
     return render_to_response('vinci/list.html',

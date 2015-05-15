@@ -453,7 +453,6 @@ body.active-nav #page .mask {
 #page #content .entry {
 	font-size: 1.1em;
 	line-height: 1.4em;
-	padding-bottom: 15px;
 }
 
 #page #content .entry + .entry,
@@ -462,15 +461,15 @@ body.active-nav #page .mask {
 }
 
 #page #content .entry.selected {
-	border-left: solid 15px #00b8ff;
+	border-left: solid 10px #00b8ff;
 }
 
 #page #content .entry.selected .metadata {
-	padding-left: 10px;
+	padding-left: 15px;
 }
 
 #page #content .entry.selected .content {
-	padding-left: 10px;
+	padding-left: 15px;
 }
 
 #page #content .entry.selected .edit-mode {
@@ -605,6 +604,7 @@ body.active-nav #page .mask {
 
 #page #content .entry .content.container {
 	padding-top: 0;
+	padding-bottom: 15px;
 }
 
 #page #content .entry .edit-mode {
@@ -626,7 +626,7 @@ body.active-nav #page .mask {
 }
 
 #page #content .entry .edit-mode .edit-panel {
-	background: hsl(0, 0%, 96%);
+	background: hsl(204, 26%, 85%);
 	padding-bottom: 1em;
 	padding-top: 1em;
 }
@@ -644,18 +644,31 @@ body.active-nav #page .mask {
 }
 
 #page #content .entry .edit-mode .group label {
-	color: hsl(0, 0%, 73%);
+	background: hsl(201, 45%, 91%);
+	border-radius: 2px 0 0 2px;
+	color: hsl(201, 21%, 70%);
 	display: inline-block;
-	margin-right: 10px;
-	width: 30px;
+	padding: 2px 10px;
+	width: 50px;
 }
 
 #page #content .entry .edit-mode .group input[type=text] {
 	background: #fff;
 	border: none;
-	border-radius: 2px;
+	border-radius: 0 2px 2px 0;
+	color: hsl(209, 24%, 56%);
 	font-size: 1.2em;
-	padding: 2px 7px;
+	padding: 2px 10px 4px;
+	width: calc(100% - 50px);
+}
+
+#page #content .entry .edit-mode .group input[type=text]:focus {
+	color: #333;
+	outline: none;
+}
+
+#page #content .entry .edit-mode .group.small {
+	font-size: .8em;
 }
 
 .button {
@@ -665,8 +678,8 @@ body.active-nav #page .mask {
 	color: #fff;
 	cursor: pointer;
 	display: block;
-	font-size: 1em;
-	padding: 3px 10px;
+	font-size: .9em;
+	padding: 6px 10px 8px;
 	text-decoration: none;
 	width: 100%;
 }
@@ -776,6 +789,19 @@ nav[role=pagination] {
 		font-size: 1.1em;
 		line-height: 1.4em;
 	}
+
+	#page #content .entry .edit-mode textarea {
+		font-size: 1.1em;
+		line-height: 1.4em;
+	}
+
+	#page #content .entry.selected .metadata {
+		padding-left: 35px;
+	}
+
+	#page #content .entry.selected .content {
+		padding-left: 35px;
+	}
 }
 
 @media screen and (min-width: 600px) {
@@ -793,7 +819,6 @@ nav[role=pagination] {
 
 	#page #content .entry {
 		overflow: hidden;
-		padding-bottom: 0;
 	}
 
 	#page #content .entry .metadata {
@@ -854,6 +879,24 @@ nav[role=pagination] {
 
 	#page #content > footer ul {
 		margin-left: 130px;
+	}
+
+	#page #content .entry .edit-mode .group {
+		width: 30%;
+		display: inline-block;
+	}
+
+	#page #content .entry .edit-mode .group + .group {
+		margin-left: 20px;
+	}
+
+	#page #content .entry .edit-mode input[type=submit] {
+		max-width: 120px;
+	}
+
+	#page #content .entry .edit-mode textarea {
+		padding-bottom: 30px;
+		padding-top: 30px;
 	}
 }
 
@@ -928,6 +971,24 @@ nav[role=pagination] {
 	#page #content > footer ul {
 		margin-left: 160px;
 	}
+
+	#page #content .entry.selected .metadata {
+		padding-left: 75px;
+		width: 210px;
+	}
+
+	#page #content .entry.selected .content {
+		padding-left: 0px;
+	}
+
+	#page #content .entry.selected .content.container {
+		margin-left: 235px;
+	}
+
+	#page #content .entry .edit-mode textarea {
+		padding-left: 90px;
+		padding-right: 90px;
+	}
 }
 
 @media screen and (min-width: 1000px) {
@@ -947,5 +1008,10 @@ nav[role=pagination] {
 
 	#page #content .entry .content.container {
 		margin-left: 245px;
+	}
+
+	#page #content .entry .edit-mode textarea {
+		padding-left: 150px;
+		padding-right: 150px;
 	}
 }

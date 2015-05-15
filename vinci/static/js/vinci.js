@@ -144,36 +144,77 @@ $(document).ready(function() {
 	// Editing entries
 	// --------------------------------------------------
 
+	function showEditPanel(entry) {
+		// Show the edit area
+		entry.find(".content, .metadata").fadeOut(100, function() {
+			autosize.update(entry.find(".edit-mode textarea"));
+
+			entry.find(".edit-mode").fadeIn(150, function() {
+				entry.find(".edit-mode textarea").focus();
+			});
+		});
+
+		// Change text
+		entry.find(".controls a.edit").html("Cancel");
+
+		// Hide the menu
+		$(".controls").slideUp(150);
+		$(".controls-toggle.active").removeClass("active");
+	}
+
+	function hideEditPanel(entry) {
+		// Blur the textarea
+		entry.find(".edit-mode textarea").blur();
+
+		// Hide the edit area
+		entry.find(".edit-mode").fadeOut(150, function() {
+			entry.find(".content, .metadata").fadeIn(150);
+		});
+
+		// Change text
+		entry.find(".controls a.edit").html("Edit");
+
+		// Hide the menu
+		$(".controls").slideUp(150);
+		$(".controls-toggle.active").removeClass("active");
+	}
+
 	$(".entries").on("click touchstart", ".entry .controls a.edit", function() {
 		var entry = $(this).parents(".entry");
 
 		if (entry.find(".content:visible").length > 0) {
-			// Show the edit area
-			entry.find(".edit-mode").slideDown(150, function() {
-				entry.find(".content, .metadata").slideUp(150, function() {
-					$(this).find("textarea").focus();
-				});
-			});
-
-			// Change text
-			entry.find(".controls a.edit").html("Cancel");
-
-			// Hide the menu
-			$(".controls").slideUp(150);
-			$(".controls-toggle.active").removeClass("active");
+			showEditPanel(entry);
 		} else {
-			// Hide the edit area
-			entry.find(".content, .metadata").slideDown(150, function() {
-				entry.find(".edit-mode").slideUp(150);
-			});
-
-			// Change text
-			entry.find(".controls a.edit").html("Edit");
-
-			// Hide the menu
-			$(".controls").slideUp(150);
-			$(".controls-toggle.active").removeClass("active");
+			hideEditPanel(entry);
 		}
+
+		return false;
+	});
+
+	// Shortcut to edit an entry
+
+	$(document).bind("keydown", "e", function() {
+		if ($(".entry.selected").length > 0) {
+			// List page with selected entry
+			var entry = $(".list .entry.selected");
+			entry.removeClass("selected");
+		} else if ($(".entry").length == 1) {
+			// Detail
+			var entry = $(".entries .entry");
+		}
+
+		if (entry) {
+			showEditPanel(entry);
+		}
+
+		return false;
+	});
+
+	// Shortcut to escape out of editing an entry
+
+	$(".edit-mode textarea, .edit-mode input[type=text]").bind('keydown', 'esc', function() {
+		var entry = $(this).parents(".entry");
+		hideEditPanel(entry);
 
 		return false;
 	});

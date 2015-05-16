@@ -486,6 +486,65 @@ body.active-nav #page .mask {
 	margin-bottom: 0;
 }
 
+#page #content .entry figure {
+	margin: 1em 0;
+}
+
+#page #content .entry figure img {
+	max-width: 100%;
+	border: solid 1px #ccc;
+}
+
+#page #content .entry strong {
+	font-weight: 600;
+}
+
+#page #content .entry pre {
+	font-size: .9em;
+}
+
+#page #content .entry pre * {
+	font-family: Monaco, Courier;
+}
+
+#page #content .entry pre:not([class*='language-']) {
+	background: #f3f3f3;
+	border-bottom: solid 2px #ddd;
+	border-top: solid 2px #ddd;
+	font-family: Monaco, Courier;
+	font-size: .8em;
+	line-height: 1.35em;
+	margin: 1.5em 0;
+	overflow-x: auto;
+	padding: 10px;
+}
+
+#page #content .entry code:not([class*='language-']) {
+	background: #eee;
+	border-radius: 3px;
+	color: #345678;
+	font-family: Monaco, Courier;
+	font-size: .8em;
+	padding: 2px 5px;
+}
+
+#page #content .entry pre:not([class*='language-']) code:not([class*='language-']) {
+	background: none;
+	font-size: 1em;
+	padding: 0;
+}
+
+#page #content .entry pre[class*='language'] {
+	font-size: .75em;
+}
+
+#page #content .entry blockquote {
+	border-left: solid 5px #ddd;
+	margin-left: 25px;
+	margin-right: 0;
+	padding-left: 15px;
+}
+
 #page #content .entry .metadata {
 	color: #888;
 	font-size: .8em;

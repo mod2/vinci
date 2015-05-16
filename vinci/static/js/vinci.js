@@ -148,8 +148,8 @@ $(document).ready(function() {
 	}
 
 	// Click outside to close the panel
-
-	$("body").on("click touchstart", function() {
+	/*
+	$(".entry).on("click touchstart", function() {
 		if ($(".edit-panel:visible").length > 0) {
 			$(".edit-panel:visible").each(function() {
 				var entry = $(this).parents(".entry");
@@ -157,6 +157,7 @@ $(document).ready(function() {
 			});
 		}
 	});
+	*/
 
 	// Edit entry toggle
 

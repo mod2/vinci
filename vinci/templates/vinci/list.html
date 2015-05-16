@@ -6,7 +6,7 @@
 		{% for entry in entries %}
             {% include 'vinci/_entry.html' %}
 		{% empty %}
-            <article class="entry">No entries.</article>
+            <article class="entry container empty">No entries.</article>
 		{% endfor %}
 	</section>
 	{% endblock entries %}

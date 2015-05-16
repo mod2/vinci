@@ -55,13 +55,12 @@ def _get_tags(entry):
 
 
 def _generate_entry_document(entry):
-    type_ = u'page' if entry.slug != '' else u'entry'
     doc = {}
     doc = {'id': str(entry.id),
            'notebook': entry.notebook.slug,
            'content': entry.content,
            # 'tag': u" ".join(_get_tags(entry)),
-           'type': type_,
+           'type': entry.entry_type,
            'date': entry.date,
            }
     return doc
@@ -111,14 +110,18 @@ def delete_from_index(document):
 
 
 def search(query_string, page=1, results_per_page=10, sort_order='relevance',
-           notebook=None):
+           notebook=None, entry_type=None):
     ix = get_or_create_index()
 
     qp = QueryParser('content', ix.schema)
     qp.add_plugin(DateParserPlugin(free=True))
     query = qp.parse(query_string)
+
     if notebook:
         query = query & Term('notebook', notebook.slug)
+
+    if entry_type:
+        query = query & Term('type', entry_type)
 
     entry_ids = {}
     results = None

@@ -68,10 +68,7 @@ $(document).ready(function() {
 	});
 
 	$("#search").on('submit', function() {
-		var url = config.url;
-		if (config.notebook) {
-			url += config.notebook + '/';
-		}
+		var searchSectionURI = $("#search").attr("data-search-section-uri");
 
 		// Get whatever was entered
 		var query = $(this).find("input").val().trim();
@@ -80,7 +77,7 @@ $(document).ready(function() {
 			// Search
 			var q = query.replace(/#(\w+)/g, 'tag:$1');
 
-			url += 'search/?q=' + q;
+			url = searchSectionURI + '?q=' + q;
 		} else {
 			// Empty search, clear results (don't need to change URL)
 		}

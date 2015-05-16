@@ -476,6 +476,11 @@ body.active-nav #page .mask {
 	padding-left: 10px;
 }
 
+#page #content .entry.empty {
+	padding-bottom: 25px;
+	padding-top: 25px;
+}
+
 #page #content .entry p:first-child,
 #page #content .entry h1:first-child,
 #page #content .entry h2:first-child,

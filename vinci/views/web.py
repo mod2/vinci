@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.http.response import HttpResponseNotFound
 from django.core.paginator import Paginator
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 
@@ -10,13 +10,21 @@ import vinci.search_indexer as si
 
 
 @login_required
-def entries_list(request, notebook_slug):
+def notebook_home(request, notebook_slug):
+    notebook = get_object_or_404(Notebook, slug=notebook_slug)
+
+    # Redirect to the default section for this notebook
+    return redirect('notebook_section', notebook_slug=notebook_slug, section=notebook.default_section)
+
+
+@login_required
+def notebook_section(request, notebook_slug, section):
     sortby = request.GET.get('sort', settings.VINCI_DEFAULT_SEARCH_ORDER)
     page = int(request.GET.get('page', 1))
 
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
 
-    entries = notebook.entries.all().order_by(sortby)
+    entries = notebook.entries.filter(entry_type=section).order_by(sortby)
     entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE).page(page)
 
     notebooks = Notebook.objects.filter(status='active').order_by('name')
@@ -25,6 +33,7 @@ def entries_list(request, notebook_slug):
         'title': notebook.name,
         'notebook': notebook,
         'notebooks': notebooks,
+        'section': section,
         'entries': entries,
         'page_type': 'list',
     }
@@ -36,17 +45,20 @@ def entries_list(request, notebook_slug):
 
 
 @login_required
-def entry_detail(request, notebook_slug, entry_slug):
+def entry_detail(request, notebook_slug, section, entry_slug):
     try:
         entry = Entry.objects.from_slug(entry_slug, notebook_slug)
     except Entry.DoesNotExist:
         return HttpResponseNotFound('Entry does not exist.')
+
     context = {
         'title': entry.notebook.name,
         'notebook': entry.notebook,
         'entry': entry,
+        'section': section,
         'page_type': 'detail',
     }
+
     return render_to_response('vinci/entry.html',
                               context,
                               RequestContext(request),
@@ -75,11 +87,17 @@ def search_notebook(request, notebook_slug):
 
 
 @login_required
+def search_notebook_section(request, notebook_slug, section):
+    notebook = get_object_or_404(Notebook, slug=notebook_slug)
+    return _search(request, notebook, section)
+
+
+@login_required
 def search_all(request):
     return _search(request)
 
 
-def _search(request, notebook=None):
+def _search(request, notebook=None, section=None):
     sortby = request.GET.get('sort', settings.VINCI_DEFAULT_SEARCH_ORDER)
     page = int(request.GET.get('page', 1))
     query = request.GET.get('q')
@@ -92,8 +110,13 @@ def _search(request, notebook=None):
             'page': page,
             'sort_order': sortby,
         }
+
+        if section:
+            search_params['entry_type'] = section
+
         if notebook:
             search_params['notebook'] = notebook
+
         entries, __, __ = si.search(**search_params)
         entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE)
         total = entries.count
@@ -104,6 +127,7 @@ def _search(request, notebook=None):
         'query': query,
         'entries': entries,
         'total': total,
+        'section': section,
         'page_type': 'list',
     }
 

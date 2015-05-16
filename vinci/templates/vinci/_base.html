@@ -82,16 +82,17 @@
 			{% endblock header %}
 
 			{% block sections %}
-			<div id="sections" class="log">
+			<div id="sections" class="{{ section }}">
 				<div class="container">
-					<a href="">Logs</a>
-					<a href="">Notes</a>
+					{% if notebook.display_logs %}<a href="{% url 'notebook_section' notebook.slug 'log' %}" {% if section == 'log' %}class="current"{% endif %}>Logs</a>{% endif %}
+					{% if notebook.display_notes %}<a href="{% url 'notebook_section' notebook.slug 'note' %}" {% if section == 'note' %}class="current"{% endif %}>Notes</a>{% endif %}
+					{% if notebook.display_pages %}<a href="{% url 'notebook_section' notebook.slug 'page' %}" {% if section == 'page' %}class="current"{% endif %}>Pages</a>{% endif %}
 				</div>
 			</div>
 			{% endblock sections %}
 
 			{% block search %}
-			<form id="search">
+			<form id="search" data-search-section-uri="{% url 'search_notebook_section' notebook.slug section %}" data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}">
 				<div class="container">
 					<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
 				</div>
@@ -110,9 +111,8 @@
 				{% block content %}{% endblock content %}
 				{% block nav %}{% endblock nav %}
 
-				<footer>
-					<div class="container">{% block footer %}{% endblock footer %}</div>
-				</footer>
+				{% block footer %}
+				{% endblock footer %}
 			</main>
 		</section>
 	</div>

@@ -36,11 +36,13 @@ vincipatterns = patterns(
     url(r'^$', 'notebooks_list', name='notebooks_list'),
     url(r'^api/', include(vinciapipatterns)),
     url(r'^search/$', 'search_all', name='search_all'),
-    url(r'^(?P<notebook_slug>[^\/]+)/$', 'entries_list', name='notebook'),
+
+    url(r'^(?P<notebook_slug>[^\/]+)/$', 'notebook_home', name='notebook'),
+    url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page)/$', 'notebook_section', name='notebook_section'),
+    url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page)/search/$', 'search_notebook_section', name='search_notebook_section'),
+    url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page)/(?P<entry_slug>[^\/]+)/$', 'entry_detail', name='entry'),
     url(r'^(?P<notebook_slug>[^\/]+)/search/$', 'search_notebook',
         name='search_notebook'),
-    url(r'^(?P<notebook_slug>[^\/]+)/(?P<entry_slug>[^\/]+)/$', 'entry_detail',
-        name='entry'),
 )
 
 urlpatterns = patterns(

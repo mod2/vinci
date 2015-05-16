@@ -96,6 +96,12 @@ class Notebook(models.Model):
         ('deleted', 'Deleted'),
     )
 
+    ENTRY_TYPE = Choices(
+        ('log', 'Log'),
+        ('note', 'Note'),
+        ('page', 'Page'),
+    )
+
     name = models.CharField(max_length=100)
     slug = AutoSlugField(populate_from='name', unique=True, editable=True)
     status = models.CharField(max_length=20,
@@ -103,6 +109,13 @@ class Notebook(models.Model):
                               choices=STATUS)
     author = models.ForeignKey(settings.AUTH_USER_MODEL,
                                related_name='notebooks')
+
+    default_section = models.CharField(max_length=20,
+                                       default=ENTRY_TYPE.log,
+                                       choices=ENTRY_TYPE)
+    display_logs = models.BooleanField(default=True)
+    display_notes = models.BooleanField(default=True)
+    display_pages = models.BooleanField(default=True)
 
     objects = NotebookManager()
 
@@ -114,10 +127,19 @@ class Notebook(models.Model):
 
 
 class Entry(models.Model):
+    ENTRY_TYPE = Choices(
+        ('log', 'Log'),
+        ('note', 'Note'),
+        ('page', 'Page'),
+    )
+
     title = models.CharField(max_length=100, blank=True, default='')
     slug = models.SlugField(blank=True, default='')
     notebook = models.ForeignKey(Notebook, related_name='entries')
     date = models.DateTimeField(auto_now_add=True)
+    entry_type = models.CharField(max_length=20,
+                                  default=ENTRY_TYPE.log,
+                                  choices=ENTRY_TYPE)
 
     objects = EntryQuerySet.as_manager()
     tags = TaggableManager()
@@ -151,7 +173,7 @@ class Entry(models.Model):
         slug = self.id
         if self.slug:
             slug = self.slug
-        return resolve_url('entry', self.notebook.slug, slug)
+        return resolve_url('entry', self.notebook.slug, self.entry_type, slug)
 
     def __str__(self):
         return "{}".format(self.current_revision)

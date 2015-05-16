@@ -118,29 +118,6 @@ $(document).ready(function() {
 	};
 
 
-	// Entry edit controls
-	// --------------------------------------------------
-
-	$(".entries").on("click touchstart", ".entry .controls-toggle", function() {
-		if ($(this).siblings(".controls:visible").length) {
-			$(this).siblings(".controls").slideUp(150);
-			$(this).removeClass("active");
-		} else {
-			$(this).siblings(".controls").slideDown(150);
-			$(this).addClass("active");
-		}
-
-		return false;
-	});
-
-	$("body").on("click touchstart", function() {
-		if ($(".controls:visible").length > 0) {
-			$(".controls").slideUp(150);
-			$(".controls-toggle.active").removeClass("active");
-		}
-	});
-
-
 	// Editing entries
 	// --------------------------------------------------
 
@@ -154,12 +131,7 @@ $(document).ready(function() {
 			});
 		});
 
-		// Change text
-		entry.find(".controls a.edit").html("Cancel");
-
-		// Hide the menu
-		$(".controls").slideUp(150);
-		$(".controls-toggle.active").removeClass("active");
+		entry.find(".controls-toggle.active").removeClass("active");
 	}
 
 	function hideEditPanel(entry) {
@@ -174,18 +146,30 @@ $(document).ready(function() {
 		// Change text
 		entry.find(".controls a.edit").html("Edit");
 
-		// Hide the menu
-		$(".controls").slideUp(150);
-		$(".controls-toggle.active").removeClass("active");
+		// Activate the toggle
+		entry.find(".controls-toggle.active").removeClass("active");
 	}
 
-	$(".entries").on("click touchstart", ".entry .controls a.edit", function() {
+	// Click outside to close the panel
+
+	$("body").on("click touchstart", function() {
+		if ($(".edit-panel:visible").length > 0) {
+			$(".edit-panel:visible").each(function() {
+				var entry = $(this).parents(".entry");
+				hideEditPanel(entry);
+			});
+		}
+	});
+
+	// Edit entry toggle
+
+	$(".entries").on("click touchstart", ".entry .controls-toggle", function() {
 		var entry = $(this).parents(".entry");
 
-		if (entry.find(".content:visible").length > 0) {
-			showEditPanel(entry);
-		} else {
+		if (entry.find(".edit-panel:visible").length > 0) {
 			hideEditPanel(entry);
+		} else {
+			showEditPanel(entry);
 		}
 
 		return false;

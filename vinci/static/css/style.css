@@ -626,7 +626,7 @@ body.active-nav #page .mask {
 }
 
 #page #content .entry .edit-mode .edit-panel {
-	background: hsl(204, 26%, 85%);
+	background: hsl(0, 0%, 92%);
 	padding-bottom: 1em;
 	padding-top: 1em;
 }

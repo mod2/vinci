@@ -15,7 +15,7 @@ def parse_match(m):
         notebook = 'PLEASEREPLACEME'    # placeholder
     page_slug = m.group(3)
 
-    link_html = '[%s](/%s/%s/)' % (link_text, notebook, page_slug)
+    link_html = '[%s](/%s/page/%s/)' % (link_text, notebook, page_slug)
 
     return link_html
 

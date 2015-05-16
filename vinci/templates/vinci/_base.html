@@ -57,6 +57,7 @@
 
 		<section id="page">
 			<div class="mask"></div>
+
 			{% block header %}
 			<header role="banner">
 				<div class="container">
@@ -82,17 +83,13 @@
 			{% endblock header %}
 
 			{% block sections %}
-			<div id="sections" class="{{ section }}">
-				<div class="container">
-					{% if notebook.display_logs %}<a href="{% url 'notebook_section' notebook.slug 'log' %}" {% if section == 'log' %}class="current"{% endif %}>Logs</a>{% endif %}
-					{% if notebook.display_notes %}<a href="{% url 'notebook_section' notebook.slug 'note' %}" {% if section == 'note' %}class="current"{% endif %}>Notes</a>{% endif %}
-					{% if notebook.display_pages %}<a href="{% url 'notebook_section' notebook.slug 'page' %}" {% if section == 'page' %}class="current"{% endif %}>Pages</a>{% endif %}
-				</div>
+			<div id="sections" class="{{ section }}" {% if notebook.display_logs %}data-log-uri="{% url 'notebook_section' notebook.slug 'log' %}"{% endif %} {% if notebook.display_notes %}data-note-uri="{% url 'notebook_section' notebook.slug 'note' %}"{% endif %} {% if notebook.display_pages %}data-page-uri="{% url 'notebook_section' notebook.slug 'page' %}"{% endif %}>
+				<div class="container"></div>
 			</div>
 			{% endblock sections %}
 
 			{% block search %}
-			<form id="search" data-search-section-uri="{% url 'search_notebook_section' notebook.slug section %}" data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}">
+			<form id="search" data-search-all-uri="{% url 'search_all' %}"{% if section %} data-search-section-uri="{% url 'search_notebook_section' notebook.slug section %}"{% endif %}{% if notebook %}data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}"{% endif %}>
 				<div class="container">
 					<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
 				</div>

@@ -365,42 +365,31 @@ body.active-nav #page .mask {
 }
 
 #sections.log {
-	background: hsl(30, 83%, 63%);
+	background: hsl(210, 37%, 37%);
 }
 
 #sections.log .container {
-	background: hsl(30, 93%, 73%);
+	background: hsl(210, 39%, 43%);
 }
 
 #sections.note {
-	background: hsl(342, 83%, 63%);
+	background: hsl(178, 37%, 37%);
 }
 
 #sections.note .container {
-	background: hsl(342, 93%, 73%);
+	background: hsl(178, 39%, 43%);
+}
+
+#sections.page {
+	background: hsl(75, 37%, 37%);
+}
+
+#sections.page .container {
+	background: hsl(75, 39%, 43%);
 }
 
 #sections a {
 	display: none;
-}
-
-#sections.expanded {
-	max-height: 300px;
-}
-
-#sections.expanded .container {
-	max-height: 300px;
-	padding-bottom: 10px;
-	padding-top: 10px;
-}
-
-#sections.expanded a {
-	background: rgba(0, 0, 0, 0.2);
-	border-radius: 2px;
-	color: #fff;
-	display: inline-block;
-	padding: 4px 8px;
-	text-decoration: none;
 }
 
 
@@ -978,8 +967,8 @@ nav[role=pagination] {
 	}
 
 	#page #content .entry.selected .metadata {
-		padding-left: 75px;
-		width: 210px;
+		padding-left: 55px;
+		width: 190px;
 	}
 
 	#page #content .entry.selected .content {
@@ -987,7 +976,7 @@ nav[role=pagination] {
 	}
 
 	#page #content .entry.selected .content.container {
-		margin-left: 235px;
+		margin-left: 215px;
 	}
 
 	#page #content .entry .edit-mode textarea {
@@ -1018,5 +1007,14 @@ nav[role=pagination] {
 	#page #content .entry .edit-mode textarea {
 		padding-left: 150px;
 		padding-right: 150px;
+	}
+
+	#page #content .entry.selected .metadata {
+		padding-left: 75px;
+		width: 210px;
+	}
+
+	#page #content .entry.selected .content.container {
+		margin-left: 235px;
 	}
 }

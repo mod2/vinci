@@ -266,37 +266,44 @@ $(document).ready(function() {
 	// Shortcuts
 	// --------------------------------------------------
 
-	// Notebook page
-	$(document).bind('keydown', 'n', function() {
-		if (config.notebook) {
-			window.location.href = config.url + config.notebook;
+	// Go to logs section
+	$(document).bind('keydown', 'l', function() {
+		var uri = $("#sections").attr("data-log-uri");
+
+		if (uri) {
+			window.location.href = uri;
 		}
 
 		return false;
 	});
 
-	// Notebook/entry/home
-	$(document).bind('keydown', 'h', function() {
-		if (config.notebook) {
-			window.location.href = config.url + config.notebook + '/home/';
+	// Go to notes section
+	$(document).bind('keydown', 'n', function() {
+		var uri = $("#sections").attr("data-note-uri");
+
+		if (uri) {
+			window.location.href = uri;
+		}
+
+		return false;
+	});
+
+	// Go to pages section
+	$(document).bind('keydown', 'p', function() {
+		var uri = $("#sections").attr("data-page-uri");
+
+		if (uri) {
+			window.location.href = uri;
 		}
 
 		return false;
 	});
 
 	// All notebooks
-	$(document).bind('keydown', 'a', function() {
+	$(document).bind('keydown', 'h', function() {
 		window.location.href = config.url;
 
 		return false;
-	});
-
-
-	// Sections area
-	// --------------------------------------------------
-
-	$("#sections").on("click", function() {
-		$(this).toggleClass("expanded");
 	});
 });
 

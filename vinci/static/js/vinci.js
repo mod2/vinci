@@ -47,7 +47,7 @@ $(document).ready(function() {
 	// Search
 	// --------------------------------------------------
 
-	$(document).bind('keydown', '/', function() {
+	function _focusSearch() {
 		// Display and focus on the search
 		$("#search input[type=text]").val('');
 
@@ -56,16 +56,25 @@ $(document).ready(function() {
 		});
 
 		return false;
-	});
+	}
 
-	$("#search input[type=text]").bind('keydown', 'esc', function() {
+	function _unfocusSearch() {
 		// Unfocus the search box
 		$("#search").slideUp(75, function() {
 			$("#search input").val('').blur();
 		});
 
 		return false;
-	});
+	}
+
+
+	// Keyboard shortcuts
+	// --------------------------------------------------
+
+	Mousetrap.bind('/', _focusSearch);
+	var searchField = document.querySelector('#search input[type=text]');
+	Mousetrap(searchField).bind('esc', _unfocusSearch);
+
 
 	$("#search").on('submit', function() {
 		var searchSectionURI = $("#search").attr("data-search-section-uri");
@@ -175,7 +184,7 @@ $(document).ready(function() {
 
 	// Shortcut to edit an entry
 
-	$(document).bind("keydown", "e", function() {
+	Mousetrap.bind("e", function() {
 		if ($(".entry.selected").length > 0) {
 			// List page with selected entry
 			var entry = $(".list .entry.selected");
@@ -194,12 +203,13 @@ $(document).ready(function() {
 
 	// Shortcut to escape out of editing an entry
 
-	$(".edit-mode textarea, .edit-mode input[type=text]").bind('keydown', 'esc', function() {
-		var entry = $(this).parents(".entry");
-		hideEditPanel(entry);
+	var fields = document.querySelectorAll(".edit-mode textarea, .edit-mode input[type=text]");
 
-		return false;
-	});
+	for (var i=0; i<fields.length; i++) {
+		Mousetrap(fields[i]).bind('esc', function(e) {
+			hideEditPanel($(e.target).parents(".entry"));
+		});
+	}
 
 	// Shortcuts
 
@@ -221,24 +231,25 @@ $(document).ready(function() {
 		return false;
 	});
 
-	function toggleOthers() {
-		var theOthers = $(this).parents(".edit-mode").find(".other");
+	function toggleOthers(selector) {
+		var theOthers = selector.parents(".edit-mode").find(".other");
 
 		if ($(".edit-mode .other:visible").length > 0) {
 			theOthers.slideUp(200);
 		} else {
 			theOthers.slideDown(200);
 		}
-		
+
 		return false;
 	}
 
-	$(".edit-mode .group.more a").on("click", toggleOthers);
-	$(document).bind('keydown', 'ctrl+t', function() {
-		if ($(".edit-mode:visible").length > 0) {
-			toggleOthers();
-			return false;
-		}
+	$(".edit-mode .group.more a").on("click", function() {
+		toggleOthers($(this));
+	});
+
+	var textareaField = document.querySelector(".edit-mode textarea");
+	Mousetrap(textareaField).bind('ctrl+t', function(e) {
+		toggleOthers($(e.target));
 	});
 
 
@@ -251,7 +262,7 @@ $(document).ready(function() {
 	// Shortcuts
 	// --------------------------------------------------
 
-	$(document).bind('keydown', 'j', function() {
+	Mousetrap.bind('j', function() {
 		// If nothing selected, select the first
 		if ($(".entries .entry.selected").length == 0) {
 			$(".entries .entry:first-child").addClass("selected");
@@ -272,7 +283,7 @@ $(document).ready(function() {
 		return false;
 	});
 
-	$(document).bind('keydown', 'k', function() {
+	Mousetrap.bind('k', function() {
 		// If nothing selected, select the first
 		if ($(".entries .entry.selected").length == 0) {
 			$(".entries .entry:first-child").addClass("selected");
@@ -293,7 +304,11 @@ $(document).ready(function() {
 		return false;
 	});
 
-	$(document).bind('keydown', 'return', function() {
+	Mousetrap.bind('esc', function() {
+		$(".entries .entry.selected").removeClass("selected");
+	});
+
+	Mousetrap.bind('return', function() {
 		if ($(".entries .entry.selected").length > 0) {
 			var entry = $(".entries .entry.selected");
 
@@ -308,7 +323,7 @@ $(document).ready(function() {
 	// --------------------------------------------------
 
 	// Go to logs section
-	$(document).bind('keydown', 'l', function() {
+	Mousetrap.bind('g l', function() {
 		var uri = $("#sections").attr("data-log-uri");
 
 		if (uri) {
@@ -319,7 +334,7 @@ $(document).ready(function() {
 	});
 
 	// Go to notes section
-	$(document).bind('keydown', 'n', function() {
+	Mousetrap.bind('g n', function() {
 		var uri = $("#sections").attr("data-note-uri");
 
 		if (uri) {
@@ -330,7 +345,7 @@ $(document).ready(function() {
 	});
 
 	// Go to pages section
-	$(document).bind('keydown', 'p', function() {
+	Mousetrap.bind('g p', function() {
 		var uri = $("#sections").attr("data-page-uri");
 
 		if (uri) {
@@ -340,8 +355,19 @@ $(document).ready(function() {
 		return false;
 	});
 
+	// Go to journals section
+	Mousetrap.bind('g j', function() {
+		var uri = $("#sections").attr("data-journal-uri");
+
+		if (uri) {
+			window.location.href = uri;
+		}
+
+		return false;
+	});
+
 	// All notebooks
-	$(document).bind('keydown', 'h', function() {
+	Mousetrap.bind('g h', function() {
 		window.location.href = config.url;
 
 		return false;

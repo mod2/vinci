@@ -73,12 +73,17 @@ def search_notebook(request, notebook_slug):
 @login_required
 def search_notebook_tags(request, notebook_slug, tag):
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
-    return _search_tag(request, tag, notebook)
+    return _search(request, 'tag:{}'.format(tag), notebook)
 
 
 @login_required
 def search_all(request):
-    return _search(request)
+    return _search(request, request.GET.get('q'))
+
+
+@login_required
+def search_all_tags(request, tag):
+    return _search(request, 'tag:{}'.format(tag))
 
 
 def _search(request, query, notebook=None):
@@ -115,7 +120,3 @@ def _search(request, query, notebook=None):
                               context,
                               RequestContext(request),
                               )
-
-
-def _search_tag(request, tag, notebook=None):
-    return _search(request, 'tag:{}'.format(tag), notebook)

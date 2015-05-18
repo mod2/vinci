@@ -238,6 +238,7 @@ $(document).ready(function() {
 	var textareaField = document.querySelector(".edit-mode textarea");
 	Mousetrap(textareaField).bind('ctrl+t', function(e) {
 		toggleOthers($(e.target));
+		return false;
 	});
 
 
@@ -387,6 +388,10 @@ $(document).ready(function() {
 	$("#mask").on("click", function() {
 		_hideHelp();
 	});
+
+
+	// Tags
+	$("input[name=tags]").tagit();
 });
 
 function processEntries(entries) {

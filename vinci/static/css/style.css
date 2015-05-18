@@ -708,6 +708,7 @@ body.active-nav #page .mask {
 #page #content .entry .edit-mode .group label {
 	color: hsl(201, 42%, 60%);
 	display: inline-block;
+	float: left;
 	width: 70px;
 }
 
@@ -724,6 +725,48 @@ body.active-nav #page .mask {
 #page #content .entry .edit-mode .group input[type=text]:focus {
 	color: #333;
 	outline: none;
+}
+
+#page #content .entry .edit-mode .group ul.tagit {
+	background: #fff;
+	border: none;
+	border-radius: 3px;
+	display: inline-block;
+	margin: 0;
+	width: calc(100% - 70px);
+}
+
+#page #content .entry .edit-mode .group ul.tagit li.tagit-choice .tagit-label:not(a) {
+	color: #222;
+}
+
+#page #content .entry .edit-mode .group ul.tagit li.tagit-choice {
+	background-color: #d4efbc;
+	border-color: #d4efbc;
+	border-radius: 3px;
+}
+
+#page #content .entry .edit-mode .group ul.tagit li.tagit-choice-editable {
+	font-size: .9em;
+	padding: 2px 20px 3px 6px;
+}
+
+#page #content .entry .edit-mode .group ul.tagit li.tagit-choice .tagit-close {
+	margin-top: -9px;
+}
+
+#page #content .entry .edit-mode .group ul.tagit li.tagit-choice .tagit-close .text-icon {
+	font-family: Source Sans Pro, Helvetica, Arial, sans-serif;
+	color: #9ec78b;
+}
+
+#page #content .entry .edit-mode .group ul.tagit input[type=text] {
+	font-size: .9em;
+	width: 100px;
+}
+
+#page #content .entry .edit-mode .group ul.tagit li.tagit-new {
+	margin-top: 0;
 }
 
 #page #content .entry .edit-mode .group select {

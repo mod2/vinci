@@ -100,6 +100,7 @@ class Notebook(models.Model):
         ('log', 'Log'),
         ('note', 'Note'),
         ('page', 'Page'),
+        ('journal', 'Journal'),
     )
 
     name = models.CharField(max_length=100)
@@ -116,6 +117,7 @@ class Notebook(models.Model):
     display_logs = models.BooleanField(default=True)
     display_notes = models.BooleanField(default=True)
     display_pages = models.BooleanField(default=True)
+    display_journals = models.BooleanField(default=False)
 
     objects = NotebookManager()
 
@@ -174,6 +176,24 @@ class Entry(models.Model):
         if self.slug:
             slug = self.slug
         return resolve_url('entry', self.notebook.slug, self.entry_type, slug)
+
+    def get_possible_types(self):
+        """ Returns list of possible types for this notebook. """
+
+        # TODO: make this more elegant
+
+        possible_types = []
+
+        if self.notebook.display_logs:
+            possible_types.append({ 'value': 'log', 'label': 'Log' })
+        if self.notebook.display_notes:
+            possible_types.append({ 'value': 'note', 'label': 'Note' })
+        if self.notebook.display_pages:
+            possible_types.append({ 'value': 'page', 'label': 'Page' })
+        if self.notebook.display_journals:
+            possible_types.append({ 'value': 'journal', 'label': 'Journal' })
+
+        return possible_types
 
     def __str__(self):
         return "{}".format(self.current_revision)

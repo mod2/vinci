@@ -461,10 +461,6 @@ body.active-nav #page .mask {
 	padding-left: 15px;
 }
 
-#page #content .entry.selected .edit-mode {
-	padding-left: 10px;
-}
-
 #page #content .entry.empty {
 	padding-bottom: 25px;
 	padding-top: 25px;
@@ -665,6 +661,22 @@ body.active-nav #page .mask {
 	padding-top: 0;
 }
 
+#page #content .entry .edit-mode input.title {
+	border: none;
+	display: none;
+	font-size: 1.3em;
+	width: 100%;
+}
+
+
+#page #content .entry .edit-mode input.title:focus {
+	outline: none;
+}
+
+#page #content .entry.page .edit-mode input.title {
+	display: block;
+}
+
 #page #content .entry .edit-mode textarea {
 	border: none;
 	font-size: 1em;
@@ -678,41 +690,35 @@ body.active-nav #page .mask {
 	outline: none;
 }
 
-#page #content .entry .edit-mode .edit-panel {
-	background: hsl(0, 0%, 92%);
-	padding-bottom: 1em;
-	padding-top: 1em;
-}
-
 #page #content .entry .edit-mode .group {
+	background: hsl(209, 48%, 88%);
 	font-size: .8em;
+	padding-bottom: 5px;
+	padding-top: 5px;
 }
 
-#page #content .entry .edit-mode .group + .group {
-	margin-top: 5px;
+#page #content .entry .edit-mode .group:first-child {
+	padding-top: 15px;
 }
 
-#page #content .entry .edit-mode .group + input[type=submit] {
-	margin-top: 15px;
+#page #content .entry .edit-mode .group.notebook {
+	padding-bottom: 15px;
 }
 
 #page #content .entry .edit-mode .group label {
-	background: hsl(201, 45%, 91%);
-	border-radius: 2px 0 0 2px;
-	color: hsl(201, 21%, 70%);
+	color: hsl(201, 42%, 60%);
 	display: inline-block;
-	padding: 2px 10px;
-	width: 50px;
+	width: 70px;
 }
 
 #page #content .entry .edit-mode .group input[type=text] {
 	background: #fff;
 	border: none;
-	border-radius: 0 2px 2px 0;
+	border-radius: 2px;
 	color: hsl(209, 24%, 56%);
 	font-size: 1.2em;
-	padding: 2px 10px 4px;
-	width: calc(100% - 50px);
+	padding: 2px 5px 3px;
+	width: calc(100% - 70px);
 }
 
 #page #content .entry .edit-mode .group input[type=text]:focus {
@@ -720,8 +726,54 @@ body.active-nav #page .mask {
 	outline: none;
 }
 
-#page #content .entry .edit-mode .group.small {
-	font-size: .8em;
+#page #content .entry .edit-mode .group select {
+	width: calc(100% - 75px);
+}
+
+#page #content .entry .edit-mode .group.other {
+	display: none;
+}
+
+#page #content .entry .edit-mode .group.more {
+	background: hsl(0, 0%, 100%);
+	padding-bottom: 25px;
+}
+
+#page #content .entry .edit-mode .group.more a {
+	color: hsl(0, 0%, 70%);	
+	padding-bottom: 1px;
+	padding-top: 1px;
+	text-decoration: none;
+}
+
+#page #content .entry .edit-mode .group.more a:hover {
+	color: hsl(0, 0%, 30%);	
+}
+
+#page #content .entry .edit-mode .group span.type {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	background: hsl(210, 47%, 75%);
+	border-radius: 2px;
+	color: hsl(210, 41%, 39%);
+	cursor: pointer;
+	display: inline-block;
+	padding: 0px 8px;
+	user-select: none;
+}
+
+#page #content .entry .edit-mode .group span.type:hover {
+	background: hsl(210, 13%, 46%);
+	color: #fff;
+}
+
+#page #content .entry .edit-mode .group span.type + span.type {
+	margin-left: 2px;
+}
+
+#page #content .entry .edit-mode .group span.type.selected {
+	background: hsl(210, 13%, 46%);
+	color: #fff;
 }
 
 .button {
@@ -934,15 +986,6 @@ nav[role=pagination] {
 		margin-left: 130px;
 	}
 
-	#page #content .entry .edit-mode .group {
-		width: 30%;
-		display: inline-block;
-	}
-
-	#page #content .entry .edit-mode .group + .group {
-		margin-left: 20px;
-	}
-
 	#page #content .entry .edit-mode input[type=submit] {
 		max-width: 120px;
 	}
@@ -1042,6 +1085,11 @@ nav[role=pagination] {
 		padding-left: 90px;
 		padding-right: 90px;
 	}
+
+	#page #content .entry .edit-mode .group.container {
+		padding-left: 90px;
+		padding-right: 90px;
+	}
 }
 
 @media screen and (min-width: 1000px) {
@@ -1064,6 +1112,11 @@ nav[role=pagination] {
 	}
 
 	#page #content .entry .edit-mode textarea {
+		padding-left: 150px;
+		padding-right: 150px;
+	}
+
+	#page #content .entry .edit-mode .group.container {
 		padding-left: 150px;
 		padding-right: 150px;
 	}

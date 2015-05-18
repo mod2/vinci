@@ -201,6 +201,46 @@ $(document).ready(function() {
 		return false;
 	});
 
+	// Shortcuts
+
+	$(".edit-mode .group span.type").on("click", function() {
+		var entryType = $(this).attr("data-value");
+		var parentEntry = $(this).parents(".entry");
+
+		// Select this one
+		$(this).siblings(".selected").removeClass("selected");
+		$(this).addClass("selected");
+
+		// Update the hidden field
+		parentEntry.find("input[name=type]").val(entryType);
+
+		// Update the parent entry class
+		parentEntry.removeClass("log").removeClass("note").removeClass("page").removeClass("journal");
+		parentEntry.addClass(entryType);
+
+		return false;
+	});
+
+	function toggleOthers() {
+		var theOthers = $(this).parents(".edit-mode").find(".other");
+
+		if ($(".edit-mode .other:visible").length > 0) {
+			theOthers.slideUp(200);
+		} else {
+			theOthers.slideDown(200);
+		}
+		
+		return false;
+	}
+
+	$(".edit-mode .group.more a").on("click", toggleOthers);
+	$(document).bind('keydown', 'ctrl+t', function() {
+		if ($(".edit-mode:visible").length > 0) {
+			toggleOthers();
+			return false;
+		}
+	});
+
 
 	// Autosize
 	// --------------------------------------------------

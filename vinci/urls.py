@@ -38,9 +38,9 @@ vincipatterns = patterns(
     url(r'^search/$', 'search_all', name='search_all'),
 
     url(r'^(?P<notebook_slug>[^\/]+)/$', 'notebook_home', name='notebook'),
-    url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page)/$', 'notebook_section', name='notebook_section'),
-    url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page)/search/$', 'search_notebook_section', name='search_notebook_section'),
-    url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page)/(?P<entry_slug>[^\/]+)/$', 'entry_detail', name='entry'),
+    url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page|journal)/$', 'notebook_section', name='notebook_section'),
+    url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page|journal)/search/$', 'search_notebook_section', name='search_notebook_section'),
+    url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page|journal)/(?P<entry_slug>[^\/]+)/$', 'entry_detail', name='entry'),
     url(r'^(?P<notebook_slug>[^\/]+)/search/$', 'search_notebook',
         name='search_notebook'),
 )

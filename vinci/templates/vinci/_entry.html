@@ -1,4 +1,4 @@
-<article class="entry {{ entry.type }}" data-id="{{ entry.id }}" data-uri="{{ entry.get_absolute_url }}">
+<article class="entry {{ entry.entry_type }}" data-id="{{ entry.id }}" data-uri="{{ entry.get_absolute_url }}">
 	{% if not total %}
 		<a class="controls-toggle" href="">&nbsp;</a>
 
@@ -57,22 +57,33 @@
 	{% endif %}
 
 	<form class="edit-mode">
+		<input class="title container" name="title" type="text" value="{{ entry.title }}" placeholder="Title" />
 		<textarea name="content" class="container">{{ entry.current_revision.content }}</textarea>
 
-		<div class="edit-panel container">
-			<div class="group">
+		<div class="edit-panel">
+			<div class="group tags other container">
 				<label>Tags:</label><input name="tags" type="text" value="{{ entry.tags.all|join:',' }}" />
 			</div>
-		{% if entry.slug == '' %}
-			<div class="group">
+			<div class="group other container">
 				<label>Date:</label><input name="date" type="text" value="{{ entry.date|date:'Y-m-d H:i:s' }}" />
 			</div>
-		{% endif %}
-			<div class="group">
-				<label>Title:</label><input name="title" type="text" value="{{ entry.title }}" />
+			<div class="group other container">
+				<label>Type:</label>
+				{% for t in entry.get_possible_types %}<span data-value="{{ t.value }}" class="type {{ t.value }}{% if entry.entry_type == t.value %} selected{% endif %}">{{ t.label }}</span>{% endfor %}
+				<input type="hidden" name="type" value="{{ entry.entry_type }}" />
 			</div>
-
+			<div class="group other notebook container">
+				<label>Notebook:</label>
+				<select name="type">
+					{% for n in notebooks %}<option value="{{ n.slug }}"{% if entry.notebook.slug == n.slug %} selected{% endif %}>{{ n.name }}</option>{% endfor %}
+				</select>
+			</div>
+			<div class="group more container">
+				<a href="">Toggle advanced</a>
+			</div>
+		<!-- TODO: delete when autosave is done
 			<input type="submit" value="Save {% if entry.slug == '' %}Entry{% else %}Page{% endif %}" class="button" />
+		-->
 		</div>
 	</form>
 </article>

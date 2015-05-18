@@ -25,7 +25,7 @@ else:
     SCHEMA = Schema(id=ID(unique=True, stored=True),
                     notebook=ID,
                     content=TEXT(analyzer=StemmingAnalyzer(), stored=True),
-                    # tag=KEYWORD(field_boost=2.0),
+                    tag=KEYWORD(field_boost=2.0),
                     type=ID,
                     date=DATETIME,
                     )
@@ -41,26 +41,13 @@ def get_or_create_index():
         return index.open_dir(SEARCH_INDEX_DIR)
 
 
-def _get_tags(entry):
-    """Parses the entry content and returns a list of tags found in it."""
-    # tag_re = re.compile(r"\s#(\w+)")
-    # other_tags_re = re.compile(r"^tags:(.*)")
-    # tags = tag_re.findall(entry.current_revision.content)
-    # header = entry.current_revision.content.split('----')[0]
-    # if header != '':
-    #     other_tags = other_tags_re.findall(header)
-    #     if len(other_tags) > 0:
-    #         tags.extend(other_tags[0].split(','))
-    # return tags
-
-
 def _generate_entry_document(entry):
     type_ = u'page' if entry.slug != '' else u'entry'
     doc = {}
     doc = {'id': str(entry.id),
            'notebook': entry.notebook.slug,
            'content': entry.content,
-           # 'tag': u" ".join(_get_tags(entry)),
+           'tag': ' '.join([t.name for t in entry.tags.all()]),
            'type': type_,
            'date': entry.date,
            }

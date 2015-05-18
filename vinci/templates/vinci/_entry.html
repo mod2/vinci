@@ -14,7 +14,7 @@
 		</div>
 		{% endif %}
 
-		{% if entry.title == '' and entry.slug == '' %}<div class="date action"><a href="{{ entry.get_absolute_url }}">{% if mode != 'diary' %}<date>{{ entry.date|date:'j M Y' }}</date>{% endif %}<time>{{ entry.date|date:'g:i A'|lower }}, {{ entry.date|date:'D' }}</time></a>{% if entry.tags.all|length > 0 %}<ul class="tags">{% for tag in entry.tags.all %}<li><a href="url_for('index') ~ entry.notebook.slug ~ '/tag/' ~ tag">#{{ tag }}</a></li>{% endfor %}</ul>{% endif %}</div>{% endif %}
+        {% if entry.title == '' and entry.slug == '' %}<div class="date action"><a href="{{ entry.get_absolute_url }}">{% if mode != 'diary' %}<date>{{ entry.date|date:'j M Y' }}</date>{% endif %}<time>{{ entry.date|date:'g:i A'|lower }}, {{ entry.date|date:'D' }}</time></a>{% if entry.tags.all|length > 0 %}<ul class="tags">{% for tag in entry.tags.all %}<li><a href="{% url 'search_notebook_tags' entry.notebook.slug tag.name %}">#{{ tag }}</a></li>{% endfor %}</ul>{% endif %}</div>{% endif %}
 
 		{% if entry.title != '' or entry.slug != '' %}
 			{% if entry.highlight %}

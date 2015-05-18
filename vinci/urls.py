@@ -39,6 +39,8 @@ vincipatterns = patterns(
     url(r'^(?P<notebook_slug>[^\/]+)/$', 'entries_list', name='notebook'),
     url(r'^(?P<notebook_slug>[^\/]+)/search/$', 'search_notebook',
         name='search_notebook'),
+    url(r'^(?P<notebook_slug>[^\/]+)/tag/(?P<tag>[^\/]+)/$',
+        'search_notebook_tags', name='search_notebook_tags'),
     url(r'^(?P<notebook_slug>[^\/]+)/(?P<entry_slug>[^\/]+)/$', 'entry_detail',
         name='entry'),
 )

@@ -78,6 +78,11 @@
 					{% for n in notebooks %}<option value="{{ n.slug }}"{% if entry.notebook.slug == n.slug %} selected{% endif %}>{{ n.name }}</option>{% endfor %}
 				</select>
 			</div>
+			<div class="group other container">
+				<div class="buttons">
+					<span class="button delete">Delete Entry</span>
+				</div>
+			</div>
 			<div class="group more container">
 				<a href="">Toggle advanced</a>
 			</div>

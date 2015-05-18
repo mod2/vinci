@@ -197,9 +197,12 @@ $(document).ready(function() {
 		Mousetrap(fields[i]).bind('esc', function(e) {
 			hideEditPanel($(e.target).parents(".entry"));
 		});
-	}
 
-	// Shortcuts
+		Mousetrap(fields[i]).bind('ctrl+t', function(e) {
+			toggleOthers($(e.target));
+			return false;
+		});
+	}
 
 	$(".edit-mode .group span.type").on("click", function() {
 		var entryType = $(this).attr("data-value");
@@ -233,12 +236,6 @@ $(document).ready(function() {
 
 	$(".edit-mode .group.more a").on("click", function() {
 		toggleOthers($(this));
-	});
-
-	var textareaField = document.querySelector(".edit-mode textarea");
-	Mousetrap(textareaField).bind('ctrl+t', function(e) {
-		toggleOthers($(e.target));
-		return false;
 	});
 
 

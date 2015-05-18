@@ -701,10 +701,6 @@ body.active-nav #page .mask {
 	padding-top: 15px;
 }
 
-#page #content .entry .edit-mode .group.notebook {
-	padding-bottom: 15px;
-}
-
 #page #content .entry .edit-mode .group label {
 	color: hsl(201, 42%, 60%);
 	display: inline-block;
@@ -801,7 +797,7 @@ body.active-nav #page .mask {
 	color: hsl(210, 41%, 39%);
 	cursor: pointer;
 	display: inline-block;
-	padding: 0px 8px;
+	padding: 0px 8px 2px;
 	user-select: none;
 }
 
@@ -819,6 +815,20 @@ body.active-nav #page .mask {
 	color: #fff;
 }
 
+#page #content .entry .edit-mode .group .buttons {
+	margin-left: 70px;
+	padding-bottom: 15px;
+	padding-top: 5px;
+	width: calc(100% - 70px);
+}
+
+#page #content .entry .edit-mode .group .buttons .button {
+	display: inline-block;
+	font-size: 1em;
+	padding: 2px 8px 3px;
+	width: auto;
+}
+
 .button {
 	background: hsl(210, 40%, 50%);
 	border: none;
@@ -833,7 +843,11 @@ body.active-nav #page .mask {
 }
 
 .button:hover {
-	background: hsl(0, 0%, 30%);
+	background: hsl(0, 0%, 30%) !important;
+}
+
+.button.delete {
+	background: hsl(0, 40%, 50%);
 }
 
 

@@ -149,24 +149,12 @@ $(document).ready(function() {
 			entry.find(".content, .metadata").fadeIn(150);
 		});
 
-		// Change text
-		entry.find(".controls a.edit").html("Edit");
+		// Close the advanced panel
+		entry.find(".edit-panel .other").hide();
 
 		// Activate the toggle
 		entry.find(".controls-toggle.active").removeClass("active");
 	}
-
-	// Click outside to close the panel
-	/*
-	$(".entry).on("click touchstart", function() {
-		if ($(".edit-panel:visible").length > 0) {
-			$(".edit-panel:visible").each(function() {
-				var entry = $(this).parents(".entry");
-				hideEditPanel(entry);
-			});
-		}
-	});
-	*/
 
 	// Edit entry toggle
 
@@ -304,9 +292,18 @@ $(document).ready(function() {
 		return false;
 	});
 
+	// General escape
 	Mousetrap.bind('esc', function() {
+		// Remove selection
 		$(".entries .entry.selected").removeClass("selected");
+
+		// Hide modal if it's there
+		if ($("#modal:visible").length) {
+			_hideHelp();
+		}
 	});
+
+	// Go to entry
 
 	Mousetrap.bind('return', function() {
 		if ($(".entries .entry.selected").length > 0) {
@@ -317,10 +314,6 @@ $(document).ready(function() {
 			return false;
 		}
 	});
-
-
-	// Shortcuts
-	// --------------------------------------------------
 
 	// Go to logs section
 	Mousetrap.bind('g l', function() {
@@ -371,6 +364,28 @@ $(document).ready(function() {
 		window.location.href = config.url;
 
 		return false;
+	});
+
+	// Help dialog
+	function _showHelp() {
+		$("#mask").fadeIn(200);
+		$("#modal").fadeIn(200);
+		$("#modal-help").fadeIn(200);
+	}
+
+	function _hideHelp() {
+		$("#modal-help").fadeOut(200);
+		$("#modal").fadeOut(200);
+		$("#mask").fadeOut(200);
+	}
+
+	Mousetrap.bind('?', _showHelp);
+	var modalForm = document.querySelector("#modal");
+	Mousetrap(modalForm).bind('esc', _hideHelp);
+
+	// Hide modal on click mask
+	$("#mask").on("click", function() {
+		_hideHelp();
 	});
 });
 

@@ -114,5 +114,60 @@
 			</main>
 		</section>
 	</div>
+
+	<div id="mask"></div>
+	<section id="modal">
+		<div id="modal-help" class="modal">
+			<h2>Help</h2>
+
+			<div class="columns">
+				<div class="column">
+					<div class="group">
+						<label>/</label>
+						<span>Search</span>
+					</div>
+
+					<div class="group">
+						<label>h</label>
+						<span>Home (All Notebooks)</span>
+					</div>
+
+					<div class="group">
+						<label>j</label>
+						<span>Move down in entry list</span>
+					</div>
+
+					<div class="group">
+						<label>k</label>
+						<span>Move up in entry list</span>
+					</div>
+				</div>
+
+				<div class="column">
+					<div class="group">
+						<label>g l</label>
+						<span>Logs</span>
+					</div>
+
+					<div class="group">
+						<label>g n</label>
+						<span>Notes</span>
+					</div>
+
+					<div class="group">
+						<label>g p</label>
+						<span>Pages</span>
+					</div>
+
+					<div class="group">
+						<label>g j</label>
+						<span>Journals</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% block modal %}
+		{% endblock modal %}
+	</section>
 </body>
 </html>

@@ -884,6 +884,74 @@ nav[role=pagination] {
 }
 
 
+/* Modal */
+/* -------------------------------------------------- */
+
+#mask {
+	background: rgba(11, 18, 26, 0.85);
+	bottom: 0;
+	display: none;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 80000;
+}
+
+#modal {
+	display: none;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 100000;
+}
+
+#modal .modal {
+	background: hsl(213, 30%, 27%);
+	border-radius: 5px;
+	box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+	color: #fff;
+	margin: 50px auto;
+	max-width: 600px;
+}
+
+#modal .modal h2 {
+	font-weight: 400;
+	padding: 25px 25px 0;
+}
+
+#modal .modal .columns {
+	display: flex;
+}
+
+#modal .modal .columns .column {
+	flex: 1;
+	padding: 15px 25px;
+}
+
+#modal .modal .columns .column .group {
+	font-size: 1.2em;
+	margin-bottom: 15px;
+	overflow: hidden;
+}
+
+#modal .modal .columns .column .group label {
+	background: hsl(210, 29%, 40%);
+	border-radius: 3px;
+	display: inline-block;
+	float: left;
+	padding: 6px 10px 8px;
+	width: 50px;
+}
+
+#modal .modal .columns .column .group span {
+	display: block;
+	font-size: .9em;
+	line-height: 1.1em;
+	margin-left: 75px;
+}
+
 @media screen and (min-width: 450px) {
 	.container {
 		padding-left: 45px;

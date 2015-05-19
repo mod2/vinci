@@ -390,6 +390,7 @@ def update_revision(request, notebook_slug, slug, revision_id):
         type = data.get('type', '')
         tags = data.get('tags', '')
         date = data.get('date', '')
+        new_notebook = data.get('notebook', '')
 
         notebook = Notebook.objects.get(slug=notebook_slug)
         entry = Entry.objects.get(id=slug, notebook=notebook)

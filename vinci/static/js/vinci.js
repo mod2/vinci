@@ -210,6 +210,16 @@ $(document).ready(function() {
 		});
 	}
 
+	// Cmd+Enter (or Ctrl+Enter) to save and close an entry
+	var fields = document.querySelectorAll(".edit-mode textarea");
+	for (var i=0; i<fields.length; i++) {
+		Mousetrap(fields[i]).bind('mod+enter', function(e) {
+			autoSave(function() {
+				hideEditPanel($(e.target).parents(".entry"));
+			});
+		});
+	}
+
 	$(".edit-mode .group span.type").on("click", function() {
 		var entryType = $(this).attr("data-value");
 		var parentEntry = $(this).parents(".entry");
@@ -404,7 +414,7 @@ $(document).ready(function() {
 	// Autosave
 	// --------------------------------------------------
 
-	function autoSave() {
+	function autoSave(callback) {
 		var currentBox = $("textarea[name=content]:visible");
 
 		if (currentBox && currentBox.val()) {
@@ -522,6 +532,10 @@ $(document).ready(function() {
 						// Update the returned HTML
 						if (data.html) {
 							entry.find(".content.container").html(data.html);
+						}
+
+						if (callback) {
+							callback();
 						}
 					},
 					error: function(data) {

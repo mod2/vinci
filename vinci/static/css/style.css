@@ -1019,14 +1019,14 @@ nav[role=pagination] {
 	display: inline-block;
 	float: left;
 	padding: 6px 10px 8px;
-	width: 50px;
+	width: 70px;
 }
 
 #modal .modal .columns .column .group span {
 	display: block;
 	font-size: .9em;
 	line-height: 1.1em;
-	margin-left: 75px;
+	margin-left: 95px;
 }
 
 

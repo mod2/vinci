@@ -268,10 +268,10 @@ $(document).ready(function() {
 
 	Mousetrap.bind('j', function() {
 		// If nothing selected, select the first
-		if ($(".entries .entry.selected").length == 0) {
-			$(".entries .entry:first-child").addClass("selected");
+		if ($(".list .entries .entry.selected").length == 0) {
+			$(".list .entries .entry:first-child").addClass("selected");
 		} else {
-			var selected = $(".entries .entry.selected");
+			var selected = $(".list .entries .entry.selected");
 			var nextEntry = selected.next();
 
 			if (nextEntry.length > 0) {
@@ -289,10 +289,10 @@ $(document).ready(function() {
 
 	Mousetrap.bind('k', function() {
 		// If nothing selected, select the first
-		if ($(".entries .entry.selected").length == 0) {
-			$(".entries .entry:first-child").addClass("selected");
+		if ($(".list .entries .entry.selected").length == 0) {
+			$(".list .entries .entry:first-child").addClass("selected");
 		} else {
-			var selected = $(".entries .entry.selected");
+			var selected = $(".list .entries .entry.selected");
 			var prevEntry = selected.prev();
 
 			if (prevEntry.length > 0) {

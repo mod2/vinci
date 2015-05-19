@@ -1076,43 +1076,6 @@ form.login input.button:hover {
 }
 
 
-/* Notes */
-/* -------------------------------------------------- */
-
-#page #content.note {
-	background: none;
-	border-radius: 0;
-	box-shadow: none;
-	max-width: 550px;
-	margin-top: 15px;
-}
-
-#page #content .entry.note {
-	background: #fff;
-	border-radius: 3px;
-	box-shadow: 0 0 15px hsl(0, 0%, 85%);
-}
-
-#page #content .entry.note + .entry.note {
-	margin-top: 10px;
-}
-
-#page #content .entry.note .metadata.container {
-	display: none !important;
-}
-
-#page #content .entry.note .content.container {
-	margin-left: 0;
-	padding: 25px;
-}
-
-#page #content .entry.note.selected .content.container {
-	margin-left: 0;
-	padding: 25px;
-	padding-left: 15px;
-}
-
-
 @media screen and (min-width: 450px) {
 	.container {
 		padding-left: 45px;

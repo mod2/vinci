@@ -320,6 +320,10 @@ def add_revision(request, notebook_slug, slug):
 
         content = data.get('content', '')
         title = data.get('title', '')
+        type = data.get('type', '')
+        tags = data.get('tags', '')
+        date = data.get('date', '')
+        new_notebook = data.get('notebook', '')
 
         # Notebook
         notebook = Notebook.objects.get(slug=notebook_slug)
@@ -333,15 +337,38 @@ def add_revision(request, notebook_slug, slug):
             revision.entry = entry
             revision.save()
 
-        # Update title if it's there
         if title:
             entry.title = title
-            entry.save()
+
+        if type:
+            entry.entry_type = type
+
+        if date:
+            entry.date = datetime.datetime.strptime(date, DATETIME_FORMAT)
+
+        if tags:
+            entry.tags.clear()
+            if tags != '[CLEAR]':
+                tags = [t.strip() for t in tags.split(',')]
+                entry.tags.add(*tags)
+                entry.save()
+
+        if new_notebook:
+            nb = Notebook.objects.get(slug=new_notebook)
+            entry.notebook = nb
+
+        entry.save()
 
         response = {
             'status': 'success',
-            'revision_id': revision.id,
         }
+
+        if content:
+            response['revision_id'] = revision.id
+            response['html'] = revision.html()
+
+        if date:
+            response['date'] = date
 
     except Exception as e:
         response = {
@@ -360,6 +387,9 @@ def update_revision(request, notebook_slug, slug, revision_id):
 
         content = data.get('content', '')
         title = data.get('title', '')
+        type = data.get('type', '')
+        tags = data.get('tags', '')
+        date = data.get('date', '')
 
         notebook = Notebook.objects.get(slug=notebook_slug)
         entry = Entry.objects.get(id=slug, notebook=notebook)
@@ -370,15 +400,37 @@ def update_revision(request, notebook_slug, slug, revision_id):
             revision.content = content.strip()
             revision.save()
 
-        # Update title if it's there
         if title:
             entry.title = title
+
+        if type:
+            entry.entry_type = type
+
+        if date:
+            entry.date = datetime.datetime.strptime(date, DATETIME_FORMAT)
+
+        if tags:
+            entry.tags.clear()
+            tags = [t.strip() for t in tags.split(',')]
+            entry.tags.add(*tags)
             entry.save()
+
+        if new_notebook:
+            nb = Notebook.objects.get(slug=new_notebook)
+            entry.notebook = nb
+
+        entry.save()
 
         response = {
             'status': 'success',
-            'revision_id': revision.id,
         }
+
+        if content:
+            response['revision_id'] = revision.id
+            response['html'] = revision.html()
+
+        if date:
+            response['date'] = date
 
     except Exception as e:
         response = {

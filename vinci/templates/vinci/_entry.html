@@ -52,7 +52,7 @@
 			</div>
 			<div class="group other notebook container">
 				<label>Notebook:</label>
-				<select name="type">
+				<select name="notebook">
 					{% for n in notebooks %}<option value="{{ n.slug }}"{% if entry.notebook.slug == n.slug %} selected{% endif %}>{{ n.name }}</option>{% endfor %}
 				</select>
 			</div>
@@ -68,7 +68,11 @@
 		</div>
 	</form>
 	<div class="original hidden">
-		<input name="title" type="text" class="title">{{ entry.title }}</input>
+		<input name="original_title" type="text" class="title">{{ entry.title }}</input>
 		<textarea>{{ entry.current_revision.content }}</textarea>
+		<input name="original_tags" type="hidden" value="{{ entry.tags.all|join:',' }}" />
+		<input name="original_date" type="hidden" value="{{ entry.date|date:'Y-m-d H:i:s' }}" />
+		<input name="original_type" type="hidden" value="{{ entry.entry_type }}" />
+		<input name="original_notebook" type="hidden" value="{{ entry.notebook.slug }}" />
 	</div>
 </article>

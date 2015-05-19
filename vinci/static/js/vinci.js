@@ -408,18 +408,31 @@ $(document).ready(function() {
 		var currentBox = $("textarea[name=content]:visible");
 
 		if (currentBox && currentBox.val()) {
+			// Get updated stuff
 			var currentText = currentBox.val().trim();
 			var currentTitle = currentBox.siblings("input[name=title]");
 			if (currentTitle) {
 				currentTitle = currentTitle.val().trim();
 			}
+			var currentTags = currentBox.siblings(".edit-panel").find("input[name=tags]").val().trim();
+			var currentDate = currentBox.siblings(".edit-panel").find("input[name=date]").val();
+			var currentType = currentBox.siblings(".edit-panel").find("span.type.selected").attr("data-value");
+			var currentNotebook = currentBox.siblings(".edit-panel").find("select[name=notebook]").val();
 
+			// Originals
 			var originalBox = currentBox.parents(".edit-mode").siblings(".original").find("textarea");
 			var originalText = originalBox.val().trim();
-			var originalTitle = originalBox.siblings("input[name=title]");
+			var originalTitle = originalBox.siblings("input[name=original_title]");
 			if (originalTitle) {
 				originalTitle = originalTitle.val().trim();
 			}
+			var originalTags = originalBox.siblings("input[name=original_tags]").val();
+			if (typeof originalTags == 'undefined') {
+				originalTags = '';
+			}
+			var originalDate = originalBox.siblings("input[name=original_date]").val();
+			var originalType = originalBox.siblings("input[name=original_type]").val();
+			var originalNotebook = originalBox.siblings("input[name=original_notebook]").val();
 
 			var entry = currentBox.parents(".entry");
 			var entryId = entry.attr("data-id");
@@ -438,7 +451,29 @@ $(document).ready(function() {
 				submit = true;
 			}
 
-			console.log(data);
+			if (currentTags != originalTags) {
+				if (currentTags == '' && originalTags != '') {
+					data['tags'] = '[CLEAR]';
+				} else {
+					data['tags'] = currentTags;
+				}
+				submit = true;
+			}
+
+			if (currentDate != originalDate) {
+				data['date'] = currentDate;
+				submit = true;
+			}
+
+			if (currentType != originalType) {
+				data['type'] = currentType;
+				submit = true;
+			}
+
+			if (currentNotebook != originalNotebook) {
+				data['notebook'] = currentNotebook;
+				submit = true;
+			}
 
 			if (submit) {
 				// Get an initial revision if it's not there
@@ -463,7 +498,31 @@ $(document).ready(function() {
 
 						// Update current cache
 						originalBox.html(currentText);
-						originalBox.siblings("input[name=title]").val(currentTitle);
+
+						if (currentTitle != originalTitle) {
+							originalBox.siblings("input[name=original_title]").val(currentTitle);
+						}
+
+						if (currentTags != originalTags) {
+							originalBox.siblings("input[name=original_tags]").val(currentTags);
+						}
+
+						if (currentDate != originalDate) {
+							originalBox.siblings("input[name=original_date]").val(currentDate);
+						}
+
+						if (currentType != originalType) {
+							originalBox.siblings("input[name=original_type]").val(currentType);
+						}
+
+						if (currentNotebook != originalNotebook) {
+							originalBox.siblings("input[name=original_notebook]").val(currentNotebook);
+						}
+
+						// Update the returned HTML
+						if (data.html) {
+							entry.find(".content.container").html(data.html);
+						}
 					},
 					error: function(data) {
 						currentBox.addClass("error");
@@ -477,13 +536,18 @@ $(document).ready(function() {
 		}
 	}
 
-	// Autosave any open add/edit boxes every 5 seconds
-	var intervalId = window.setInterval(autoSave, 5000);
+	// Autosave any open add/edit boxes every 3 seconds
+	var intervalId = window.setInterval(autoSave, 3000);
 
 	// When the user types into the fields, make them slightly green
 	// so it's clear that they're not saved
-	$("textarea[name=content], input[name=title]").on("input", function() {
+	$("textarea[name=content], input[name=title], input[name=tags], input[name=date]").on("input", function() {
 		$(this).addClass("dirty");
+	});
+
+	$("li.tagit-new input[type=text]").on("input", function() {
+		console.log("here");
+		$("ul.tagit").addClass("dirty");
 	});
 
 

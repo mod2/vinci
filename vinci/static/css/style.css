@@ -701,7 +701,11 @@ body.active-nav #page .mask {
 }
 
 #page #content .entry .edit-mode .dirty {
-	background: hsl(85, 71%, 93%);
+	background: hsl(85, 71%, 93%) !important;
+}
+
+#page #content .entry .edit-mode ul.tagit.dirty li.tagit-new input[type=text] {
+	background: hsl(85, 71%, 93%) !important;
 }
 
 #page #content .entry .edit-mode .group {

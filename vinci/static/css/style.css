@@ -1025,6 +1025,53 @@ nav[role=pagination] {
 	margin-left: 75px;
 }
 
+
+/* Login */
+/* -------------------------------------------------- */
+
+form.login {
+	padding: 25px 40px 65px;
+}
+
+form.login p {
+	margin-bottom: 1em;
+	margin-top: 0;
+}
+
+form.login p label {
+	color: #888;
+	display: block;
+	margin-bottom: .2em;
+}
+
+form.login p input[type=text] {
+	font-size: 1.3em;
+	padding: 3px 5px;
+}
+
+form.login p input[type=password] {
+	font-size: 1.3em;
+	padding: 3px 5px;
+}
+
+form.login input.button {
+	-webkit-appearance: none;
+	background: #638ec8;
+	border: none;
+	border-radius: 5px;
+	color: #fff;
+	cursor: pointer;
+	font-size: 1em;
+	padding: 4px 10px 6px;
+	width: auto;
+}
+
+form.login input.button:hover {
+	background: #444;
+}
+
+
+
 @media screen and (min-width: 450px) {
 	.container {
 		padding-left: 45px;

@@ -108,7 +108,7 @@
 			</section>
 			{% endif %}
 
-			<main id="content"{% if page_type %} class="{{ page_type }}"{% endif %}>
+			<main id="content" class="{{ page_type }} {{ section }}">
 				{% block content %}{% endblock content %}
 				{% block nav %}{% endblock nav %}
 

@@ -482,6 +482,12 @@ body.active-nav #page .mask {
 	margin-bottom: 0;
 }
 
+#page #content .entry h1.page-title {
+	font-size: 1.4em;
+	font-weight: 400;
+	margin: 10px 0 0;
+}
+
 #page #content .entry figure {
 	margin: 1em 0;
 }
@@ -656,6 +662,10 @@ body.active-nav #page .mask {
 	padding-bottom: 15px;
 }
 
+#page #content .entry .original.hidden {
+	display: none;
+}
+
 #page #content .entry .edit-mode {
 	display: none;
 	padding-top: 0;
@@ -690,6 +700,10 @@ body.active-nav #page .mask {
 	outline: none;
 }
 
+#page #content .entry .edit-mode .dirty {
+	background: hsl(85, 71%, 93%);
+}
+
 #page #content .entry .edit-mode .group {
 	background: hsl(209, 48%, 88%);
 	font-size: .8em;
@@ -705,7 +719,7 @@ body.active-nav #page .mask {
 	color: hsl(201, 42%, 60%);
 	display: inline-block;
 	float: left;
-	width: 70px;
+	width: 80px;
 }
 
 #page #content .entry .edit-mode .group input[type=text] {
@@ -715,7 +729,7 @@ body.active-nav #page .mask {
 	color: hsl(209, 24%, 56%);
 	font-size: 1.2em;
 	padding: 2px 5px 3px;
-	width: calc(100% - 70px);
+	width: calc(100% - 80px);
 }
 
 #page #content .entry .edit-mode .group input[type=text]:focus {
@@ -729,7 +743,7 @@ body.active-nav #page .mask {
 	border-radius: 3px;
 	display: inline-block;
 	margin: 0;
-	width: calc(100% - 70px);
+	width: calc(100% - 80px);
 }
 
 #page #content .entry .edit-mode .group ul.tagit li.tagit-choice .tagit-label:not(a) {
@@ -740,15 +754,16 @@ body.active-nav #page .mask {
 	background-color: #d4efbc;
 	border-color: #d4efbc;
 	border-radius: 3px;
+	margin-bottom: 0;
 }
 
 #page #content .entry .edit-mode .group ul.tagit li.tagit-choice-editable {
-	font-size: .9em;
-	padding: 2px 20px 3px 6px;
+	font-size: 1em;
+	padding: 0px 20px 1px 6px;
 }
 
 #page #content .entry .edit-mode .group ul.tagit li.tagit-choice .tagit-close {
-	margin-top: -9px;
+	margin-top: -8px;
 }
 
 #page #content .entry .edit-mode .group ul.tagit li.tagit-choice .tagit-close .text-icon {
@@ -757,7 +772,7 @@ body.active-nav #page .mask {
 }
 
 #page #content .entry .edit-mode .group ul.tagit input[type=text] {
-	font-size: .9em;
+	font-size: 1em;
 	width: 100px;
 }
 
@@ -766,7 +781,7 @@ body.active-nav #page .mask {
 }
 
 #page #content .entry .edit-mode .group select {
-	width: calc(100% - 75px);
+	width: calc(100% - 85px);
 }
 
 #page #content .entry .edit-mode .group.other {
@@ -816,15 +831,16 @@ body.active-nav #page .mask {
 }
 
 #page #content .entry .edit-mode .group .buttons {
-	margin-left: 70px;
+	margin-left: 80px;
 	padding-bottom: 15px;
 	padding-top: 5px;
-	width: calc(100% - 70px);
+	width: calc(100% - 80px);
 }
 
 #page #content .entry .edit-mode .group .buttons .button {
 	display: inline-block;
 	font-size: 1em;
+	margin-right: 5px;
 	padding: 2px 8px 3px;
 	width: auto;
 }
@@ -847,7 +863,7 @@ body.active-nav #page .mask {
 }
 
 .button.delete {
-	background: hsl(0, 40%, 50%);
+	background: hsl(0, 71%, 63%);
 }
 
 

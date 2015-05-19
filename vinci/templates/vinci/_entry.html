@@ -1,64 +1,42 @@
-<article class="entry {{ entry.entry_type }}" data-id="{{ entry.id }}" data-uri="{{ entry.get_absolute_url }}">
+<article class="entry {{ entry.entry_type }}" data-id="{{ entry.id }}" data-uri="{{ entry.get_absolute_url }}" data-notebook-slug="{{ entry.notebook.slug }}">
 	{% if not total %}
 		<a class="controls-toggle" href="">&nbsp;</a>
-
-		<div class="controls container">
-			<div class="group">
-				<a href="" class="delete">Delete</a>
-				<a href="" class="edit">Edit</a>
-			</div>
-			<!--
-			<div class="group move">
-				<a href="" class="move">Move to </a>
-				<a href="" class="copy">Copy to </a>
-				<select>
-					{% for n in notebooks %}<option value="{{ n.slug }}">{{ n.name }}</option>{% endfor %}
-				</select>
-			</div>
-			-->
-		</div>
 	{% endif %}
 
 	<div class="metadata container">
-		{% if page_type == 'list' %}{#and entry.type == 'log' %} #}
-			<a class="date" href="{{ entry.get_absolute_url }}">
-				<date>{{ entry.date|date:'j M Y' }}</date>
-				<time>{{ entry.date|date:'g:i A'|lower }}, {{ entry.date|date:'D' }}</time>
-			</a>
-			{% if entry.tags.all|length > 0 %}
-			<ul class="tags">{% for tag in entry.tags.all %}<li><a href="url_for('index') ~ entry.notebook.slug ~ '/tag/' ~ tag">#{{ tag }}</a></li>{% endfor %}</ul>
-			{% endif %}
-		{% else %}
-			<a class="date" href="{{ entry.get_absolute_url }}">
-				<date>{{ entry.date|date:'j M Y' }}</date>
-				<time>{{ entry.date|date:'g:i A'|lower }}, {{ entry.date|date:'D' }}</time>
-			</a>
+		{% block entry_metadata %}
+
+		{% block entry_metadata_date %}
+		<a class="date" href="{{ entry.get_absolute_url }}">
+			<date>{{ entry.date|date:'j M Y' }}</date>
+			<time>{{ entry.date|date:'g:i A'|lower }}, {{ entry.date|date:'D' }}</time>
+		</a>
+		{% endblock entry_metadata_date %}
+
+		{% block entry_metadata_tags %}
+		{% if entry.tags.all|length > 0 %}
+		<ul class="tags">{% for tag in entry.tags.all %}<li><a href="url_for('index') ~ entry.notebook.slug ~ '/tag/' ~ tag">#{{ tag }}</a></li>{% endfor %}</ul>
 		{% endif %}
+		{% endblock entry_metadata_tags %}
+
+		{% endblock entry_metadata %}
 	</div>
 
+	<div class="content container {% block entry_class %}{% endblock entry_class %}">
 	{% if page_type == 'list' %}
-		{# Entry list #}
-		{% if entry.highlight %}
-			<div class="content excerpt container">&hellip; {{ entry.highlight|safe }} &hellip;</div>
-		{% else %}
-			<div class="content container">
-				{% if entry.title %}
-				<h3><a href="{{ entry.get_absolute_url }}">{% if entry.title != '' %}{{ entry.title }}{% elif entry.slug != '' %}{{ entry.slug }}{% else %}no title!{% endif %}</a></h3>
-				{% else %}
-				{{ entry.html|safe }}
-				{% endif %}
-			</div>
-		{% endif %}
-    {% else %}
-		{# Detail page #}
-		<div class="content container">
-			{{ entry.html|safe }}
-		</div>
+		{% block entry_list %}
+		{{ entry.html|safe }}
+		{% endblock %}
+	{% else %}
+		{% block entry_detail %}
+		{{ entry.html|safe }}
+		{% endblock %}
 	{% endif %}
+	</div>
 
 	<form class="edit-mode">
 		<input class="title container" name="title" type="text" value="{{ entry.title }}" placeholder="Title" />
-		<textarea name="content" class="container">{{ entry.current_revision.content }}</textarea>
+		<textarea name="content" class="container">{% if revision %}{{ revision.content }}{% else %}{{ entry.current_revision.content }}{% endif %}</textarea>
 
 		<div class="edit-panel">
 			<div class="group tags other container">
@@ -81,14 +59,16 @@
 			<div class="group other container">
 				<div class="buttons">
 					<span class="button delete">Delete Entry</span>
+					<span class="button">Revert</span>
 				</div>
 			</div>
 			<div class="group more container">
 				<a href="">Toggle advanced</a>
 			</div>
-		<!-- TODO: delete when autosave is done
-			<input type="submit" value="Save {% if entry.slug == '' %}Entry{% else %}Page{% endif %}" class="button" />
-		-->
 		</div>
 	</form>
+	<div class="original hidden">
+		<input name="title" type="text" class="title">{{ entry.title }}</input>
+		<textarea>{{ entry.current_revision.content }}</textarea>
+	</div>
 </article>

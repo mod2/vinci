@@ -1,0 +1,7 @@
+{% extends '_entry.html' %}
+
+{% block entry_class %}excerpt{% endblock entry_class %}
+
+{% block entry_list %}
+&hellip; {{ entry.highlight|safe }} &hellip;
+{% endblock entry_list %}

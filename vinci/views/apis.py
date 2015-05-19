@@ -9,6 +9,7 @@ import vinci.search_indexer as si
 from django.http import JsonResponse, HttpResponse
 
 import datetime
+import json
 
 
 class APIResponseNotFound(APIResponse):
@@ -310,3 +311,80 @@ def add_entry(request, notebook_slug):
     else:
         # Return JSON response
         return JsonResponse(response)
+
+def add_revision(request, notebook_slug, slug):
+    """ Adds a new revision to an entry. """
+
+    try:
+        data = json.loads(request.body.decode(encoding='UTF-8'))
+
+        content = data.get('content', '')
+        title = data.get('title', '')
+
+        # Notebook
+        notebook = Notebook.objects.get(slug=notebook_slug)
+        entry = Entry.objects.get(id=slug, notebook=notebook)
+
+        # Create the revision
+        if content:
+            revision = Revision()
+            revision.content = content.strip()
+            revision.author = request.user
+            revision.entry = entry
+            revision.save()
+
+        # Update title if it's there
+        if title:
+            entry.title = title
+            entry.save()
+
+        response = {
+            'status': 'success',
+            'revision_id': revision.id,
+        }
+
+    except Exception as e:
+        response = {
+            'status': 'error',
+            'message': '{}'.format(e),
+        }
+
+    # Return JSON response
+    return JsonResponse(response)
+
+def update_revision(request, notebook_slug, slug, revision_id):
+    """ Update revision for an entry. """
+
+    try:
+        data = json.loads(request.body.decode(encoding='UTF-8'))
+
+        content = data.get('content', '')
+        title = data.get('title', '')
+
+        notebook = Notebook.objects.get(slug=notebook_slug)
+        entry = Entry.objects.get(id=slug, notebook=notebook)
+
+        # Update it
+        if content:
+            revision = Revision.objects.get(id=revision_id)
+            revision.content = content.strip()
+            revision.save()
+
+        # Update title if it's there
+        if title:
+            entry.title = title
+            entry.save()
+
+        response = {
+            'status': 'success',
+            'revision_id': revision.id,
+        }
+
+    except Exception as e:
+        response = {
+            'status': 'error',
+            'message': '{}'.format(e),
+        }
+
+    # Return JSON response
+    return JsonResponse(response)

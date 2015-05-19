@@ -28,6 +28,14 @@ if settings.VINCI_ENABLE_NON_REST_APIS:
         url(r'^(?P<notebook_slug>[^\/]+)/add-entry/$',
             'vinci.views.apis.add_entry',
             name='api_entry_add_entry'),
+
+        # TODO: convert these
+        url(r'^(?P<notebook_slug>[^\/]+)/(?P<slug>[^\/]+)/add-revision/$',
+            'vinci.views.apis.add_revision',
+            name='api_entry_add_revision'),
+        url(r'^(?P<notebook_slug>[^\/]+)/(?P<slug>[^\/]+)/update-revision/(?P<revision_id>[^\/]+)/$',
+            'vinci.views.apis.update_revision',
+            name='api_entry_update_revision'),
     ) + vinciapipatterns
 
 vincipatterns = patterns(
@@ -41,6 +49,7 @@ vincipatterns = patterns(
     url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page|journal)/$', 'notebook_section', name='notebook_section'),
     url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page|journal)/search/$', 'search_notebook_section', name='search_notebook_section'),
     url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page|journal)/(?P<entry_slug>[^\/]+)/$', 'entry_detail', name='entry'),
+    url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page|journal)/(?P<entry_slug>[^\/]+)/(?P<revision_id>[^\/]+)/$', 'revision_detail', name='revision'),
     url(r'^(?P<notebook_slug>[^\/]+)/search/$', 'search_notebook',
         name='search_notebook'),
 )

@@ -128,6 +128,12 @@ $(document).ready(function() {
 	// --------------------------------------------------
 
 	function showEditPanel(entry) {
+		// Hide any other edit panels
+		$(".entries .edit-mode:visible").fadeOut(150, function() {
+			$(this).find(".edit-panel .other").hide();
+			$(this).siblings(".content, .metadata").fadeIn(150);
+		});
+
 		// Show the edit area
 		entry.find(".content, .metadata").fadeOut(100, function() {
 			autosize.update(entry.find(".edit-mode textarea"));
@@ -191,7 +197,7 @@ $(document).ready(function() {
 
 	// Shortcut to escape out of editing an entry
 
-	var fields = document.querySelectorAll(".edit-mode textarea, .edit-mode input[type=text]");
+	var fields = document.querySelectorAll(".edit-mode");
 
 	for (var i=0; i<fields.length; i++) {
 		Mousetrap(fields[i]).bind('esc', function(e) {
@@ -236,6 +242,8 @@ $(document).ready(function() {
 
 	$(".edit-mode .group.more a").on("click", function() {
 		toggleOthers($(this));
+
+		return false;
 	});
 
 
@@ -388,7 +396,112 @@ $(document).ready(function() {
 
 
 	// Tags
+	// --------------------------------------------------
+
 	$("input[name=tags]").tagit();
+
+
+	// Autosave
+	// --------------------------------------------------
+
+	function autoSave() {
+		var currentBox = $("textarea[name=content]:visible");
+
+		if (currentBox && currentBox.val()) {
+			var currentText = currentBox.val().trim();
+			var currentTitle = currentBox.siblings("input[name=title]");
+			if (currentTitle) {
+				currentTitle = currentTitle.val().trim();
+			}
+
+			var originalBox = currentBox.parents(".edit-mode").siblings(".original").find("textarea");
+			var originalText = originalBox.val().trim();
+			var originalTitle = originalBox.siblings("input[name=title]");
+			if (originalTitle) {
+				originalTitle = originalTitle.val().trim();
+			}
+
+			var entry = currentBox.parents(".entry");
+			var entryId = entry.attr("data-id");
+			var notebookSlug = entry.attr("data-notebook-slug");
+
+			var submit = false;
+			var data = {};
+
+			if (currentText != originalText) {
+				data['content'] = currentText;
+				submit = true;
+			}
+
+			if (currentTitle != originalTitle) {
+				data['title'] = currentTitle;
+				submit = true;
+			}
+
+			console.log(data);
+
+			if (submit) {
+				// Get an initial revision if it's not there
+				var url = "/api/" + notebookSlug + "/" + entryId;
+				if (!$("textarea[name=content]").attr("data-revision-id")) {
+					// New revision for this session
+					url += "/add-revision/";
+				} else {
+					// Update revision for this session
+					var revisionId = $("textarea[name=content]").attr("data-revision-id");
+					url += "/update-revision/" + revisionId + "/";
+				}
+
+				$.ajax({
+					url: url,
+					method: 'POST',
+					contentType: 'application/json',
+					data: JSON.stringify(data),
+					success: function(data) {
+						$(".dirty").removeClass("dirty");
+						currentBox.attr("data-revision-id", data.revision_id);
+
+						// Update current cache
+						originalBox.html(currentText);
+						originalBox.siblings("input[name=title]").val(currentTitle);
+					},
+					error: function(data) {
+						currentBox.addClass("error");
+
+						console.log("error", data);
+					},
+				});
+			} else {
+				currentBox.removeClass("dirty");
+			}
+		}
+	}
+
+	// Autosave any open add/edit boxes every 5 seconds
+	var intervalId = window.setInterval(autoSave, 5000);
+
+	// When the user types into the fields, make them slightly green
+	// so it's clear that they're not saved
+	$("textarea[name=content], input[name=title]").on("input", function() {
+		$(this).addClass("dirty");
+	});
+
+
+	/*
+	// Save before closing tab
+	$(window).bind('beforeunload', function() {
+		// See if there's unsaved text and autosave if there is
+		var currentText = $("textarea#text").val().trim();
+
+		if (currentText != sceneText) {
+			autoSave();
+
+			confirm("Not done yet");
+			// Delay a bit to let the autosave do its thing
+			delay(500);
+		}
+	});
+	*/
 });
 
 function processEntries(entries) {

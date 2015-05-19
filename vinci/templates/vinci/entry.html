@@ -15,7 +15,15 @@
 {% block content %}
 	{% block entry %}
 	<section class="entries">
-		{% include 'vinci/_entry.html' %}
+		{% if entry.entry_type == 'log' %}
+			{% include 'vinci/_log.html' %}
+		{% elif entry.entry_type == 'note' %}
+			{% include 'vinci/_note.html' %}
+		{% elif entry.entry_type == 'page' %}
+			{% include 'vinci/_page.html' %}
+		{% elif entry.entry_type == 'journal' %}
+			{% include 'vinci/_journal.html' %}
+		{% endif %}
 	</section>
 	{% endblock entry %}
 {% endblock content %}
@@ -36,12 +44,20 @@
 
 		{% if entry.revisions.all %}
 		<div class="group">
+			{% if revision %}
+			<h2>Revision</h2>
+			<ul>
+				<li>{{ revision.last_modified }}</li>
+				<li><a href="{% url 'entry' entry.notebook.slug entry.entry_type entry.id %}">Back to entry</a></li>
+			</ul>
+			{% else %}
 			<h2>Revisions</h2>
 			<ul>
 				{% for rev in entry.revisions.all %}
-				<li><a href="">{{ rev.last_modified }}</a></li>
+				<li><a href="{% url 'revision' entry.notebook.slug entry.entry_type entry.id rev.id %}">{{ rev.last_modified }}</a></li>
 				{% endfor %}
 			</ul>
+			{% endif %}
 		</div>
 		{% endif %}
 	</div>

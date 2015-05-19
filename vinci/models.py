@@ -226,6 +226,16 @@ class Revision(models.Model):
     def content_excerpt(self):
         return self.content[:60]
 
+    def html(self):
+        content = self.content
+        for plugin_name in settings.VINCI_PLUGINS:
+            plugins = __import__("plugins", fromlist=[plugin_name])
+            plugin = getattr(plugins, plugin_name)
+            content = plugin.process(content,
+                                     self.entry,
+                                     self.entry.notebook.get_absolute_url())
+        return content
+
     def __str__(self):
         return "{content}".format(content=self.content_excerpt())
 

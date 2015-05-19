@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 
-from vinci.models import Notebook, Entry
+from vinci.models import Notebook, Entry, Revision
 import vinci.search_indexer as si
 
 
@@ -55,6 +55,32 @@ def entry_detail(request, notebook_slug, section, entry_slug):
         'title': entry.notebook.name,
         'notebook': entry.notebook,
         'entry': entry,
+        'section': section,
+        'page_type': 'detail',
+    }
+
+    return render_to_response('vinci/entry.html',
+                              context,
+                              RequestContext(request),
+                              )
+
+@login_required
+def revision_detail(request, notebook_slug, section, entry_slug, revision_id):
+    try:
+        entry = Entry.objects.from_slug(entry_slug, notebook_slug)
+    except Entry.DoesNotExist:
+        return HttpResponseNotFound('Entry does not exist.')
+
+    try:
+        revision = Revision.objects.get(id=revision_id)
+    except Revision.DoesNotExist:
+        return HttpResponseNotFound('Revision does not exist.')
+
+    context = {
+        'title': entry.notebook.name,
+        'notebook': entry.notebook,
+        'entry': entry,
+        'revision': revision,
         'section': section,
         'page_type': 'detail',
     }

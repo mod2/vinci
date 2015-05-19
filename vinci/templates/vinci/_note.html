@@ -1,0 +1,11 @@
+{% extends 'vinci/_entry.html' %}
+
+{% block entry_metadata_date %}{% endblock entry_metadata_date %}
+
+{% block entry_list %}
+{{ entry.html|safe }}
+{% endblock entry_list %}
+
+{% block entry_detail %}
+{{ entry.html|safe }}
+{% endblock entry_detail %}

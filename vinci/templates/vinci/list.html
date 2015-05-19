@@ -4,7 +4,15 @@
 	{% block entries %}
 	<section class="entries">
 		{% for entry in entries %}
-            {% include 'vinci/_entry.html' %}
+			{% if entry.entry_type == 'log' %}
+				{% include 'vinci/_log.html' %}
+			{% elif entry.entry_type == 'note' %}
+				{% include 'vinci/_note.html' %}
+			{% elif entry.entry_type == 'page' %}
+				{% include 'vinci/_page.html' %}
+			{% elif entry.entry_type == 'journal' %}
+				{% include 'vinci/_journal.html' %}
+			{% endif %}
 		{% empty %}
             <article class="entry container empty">No entries.</article>
 		{% endfor %}

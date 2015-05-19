@@ -1,0 +1,5 @@
+{% block entry_metadata_date %}
+	<a class="date" href="{{ entry.get_absolute_url }}">
+		<date>{{ entry.date|date:'j M Y' }}</date>
+	</a>
+{% endblock entry_metadata_date %}

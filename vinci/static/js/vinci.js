@@ -77,23 +77,48 @@ $(document).ready(function() {
 
 
 	$("#search").on('submit', function() {
-		var searchSectionURI = $("#search").attr("data-search-section-uri");
+		// If we're on the all notebooks page and there's only one notebook selected, choose it
+		if ($("#search").hasClass("all") && $(".notebooks .notebook:visible").length == 1) {
+			var notebook = $(".notebooks .notebook:visible");
 
-		// Get whatever was entered
-		var query = $(this).find("input").val().trim();
+			window.location.href = notebook.attr("data-uri");
 
-		if (query.length > 0) {
-			// Search
-			var q = query.replace(/#(\w+)/g, 'tag:$1');
-
-			url = searchSectionURI + '?q=' + q;
+			return false;
 		} else {
-			// Empty search, clear results (don't need to change URL)
+			var searchSectionURI = $("#search").attr("data-search-section-uri");
+
+			// Get whatever was entered
+			var query = $(this).find("input").val().trim();
+
+			if (query.length > 0) {
+				// Search
+				var q = query.replace(/#(\w+)/g, 'tag:$1');
+
+				url = searchSectionURI + '?q=' + q;
+			} else {
+				// Empty search, clear results (don't need to change URL)
+			}
+
+			window.location.href = url;
+
+			return false;
 		}
+	});
 
-		window.location.href = url;
+	$("#search.all").on('input', function() {
+		// On All Notebooks, filter notebook list automatically
+		var query = $("#search input[type=text]").val().trim();
 
-		return false;
+		console.log(".notebooks .notebook[data-name*=" + query + "]");
+		if (query) {
+			$(".notebooks .notebook").hide();
+			$("#all-notebooks > h2").hide();
+			$(".notebooks .notebook[data-name*=" + query + "]").show();
+		} else {
+			// Show everything
+			$("#all-notebooks > h2").show();
+			$(".notebooks .notebook").show();
+		}
 	});
 
 
@@ -724,6 +749,10 @@ $(document).ready(function() {
 
 		return false;
 	}
+
+
+	// Filtering notebooks
+	// --------------------------------------------------
 
 
 

@@ -108,7 +108,7 @@
 			{% endblock add_notebook %}
 
 			{% block search %}
-			<form id="search" data-search-all-uri="{% url 'search_all' %}"{% if section %} data-search-section-uri="{% url 'search_notebook_section' notebook.slug section %}"{% endif %}{% if notebook %}data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}"{% endif %}>
+			<form id="search" data-search-all-uri="{% url 'search_all' %}"{% if section %} data-search-section-uri="{% url 'search_notebook_section' notebook.slug section %}"{% endif %}{% if notebook %}data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}"{% endif %} class="{{ page_type }}">
 				<div class="container">
 					<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
 				</div>

@@ -1,5 +1,5 @@
 {% load humanize %}
-<article class="notebook" data-slug="{{ notebook.slug }}" data-uri="{{ notebook.get_absolute_url }}">
+<article class="notebook" data-slug="{{ notebook.slug }}" data-uri="{{ notebook.get_absolute_url }}" data-name="{{ notebook.name|lower }}">
     <a class="controls-toggle" href="">&nbsp;</a>
 
 	<div class="content container">

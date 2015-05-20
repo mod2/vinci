@@ -1,5 +1,7 @@
 {% extends 'vinci/_base.html' %}
 
+{% block sections %}{% endblock sections %}
+
 {% block content %}
 <div id="all-notebooks" data-post-uri="{% url 'api_notebook_list' %}" data-author-id="{{ request.user.id }}">
 	<section class="notebooks">

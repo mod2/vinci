@@ -107,6 +107,41 @@
 			</form>
 			{% endblock add_notebook %}
 
+			{% block add_entry %}
+			<form id="add-entry">
+				<input class="title container" name="title" type="text" value="" placeholder="Title" />
+				<textarea name="entry-content" class="container"></textarea>
+
+				<div class="edit-panel">
+					<div class="group tags other container">
+						<label>Tags:</label><input name="tags" type="text" value="" />
+					</div>
+					<div class="group other container">
+						<label>Date:</label><input name="date" type="text" value="" />
+					</div>
+					<div class="group other container">
+						<label>Type:</label>
+						{% for t in entry.get_possible_types %}<span data-value="{{ t.value }}" class="type {{ t.value }}{% if section == t.value %} selected{% endif %}">{{ t.label }}</span>{% endfor %}
+						<input type="hidden" name="type" value="" />
+					</div>
+					<div class="group other notebook container">
+						<label>Notebook:</label>
+						<select name="notebook">
+							{% for n in notebooks %}<option value="{{ n.slug }}"{% if entry.notebook.slug == n.slug %} selected{% endif %}>{{ n.name }}</option>{% endfor %}
+						</select>
+					</div>
+					<div class="group other container">
+						<div class="buttons">
+							<span class="button save">Add</span>
+						</div>
+					</div>
+					<div class="group more container">
+						<a href="">Toggle advanced</a>
+					</div>
+				</div>
+			</form>
+			{% endblock add_entry %}
+
 			{% block search %}
 			<form id="search" data-search-all-uri="{% url 'search_all' %}"{% if section %} data-search-section-uri="{% url 'search_notebook_section' notebook.slug section %}"{% endif %}{% if notebook %}data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}"{% endif %} class="{{ page_type }}">
 				<div class="container">

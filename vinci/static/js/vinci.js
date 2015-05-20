@@ -750,9 +750,33 @@ $(document).ready(function() {
 	}
 
 
-	// Filtering notebooks
+	// Add entry
 	// --------------------------------------------------
 
+	function _focusAddEntry() {
+		// Display and focus on the add entry box
+		$("#add-entry textarea").val('');
+
+		$("#add-entry").slideDown(75, function() {
+			autosize($("#add-entry textarea"));
+			$("#add-entry textarea").focus();
+		});
+
+		return false;
+	}
+
+	function _unfocusAddEntry() {
+		// Unfocus the add entry box
+		$("#add-entry").slideUp(75, function() {
+			$("#add-entry textarea").val('').blur();
+		});
+
+		return false;
+	}
+
+	Mousetrap.bind('a', _focusAddEntry);
+	var field = document.querySelector('#add-entry textarea');
+	Mousetrap(field).bind('esc', _unfocusAddEntry);
 
 
 	/*

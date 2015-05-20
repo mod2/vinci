@@ -89,6 +89,16 @@ class EntryQuerySet(models.QuerySet):
         return entry
 
 
+class Group(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
+
 class Notebook(models.Model):
     STATUS = Choices(
         ('active', 'Active'),
@@ -110,6 +120,8 @@ class Notebook(models.Model):
                               choices=STATUS)
     author = models.ForeignKey(settings.AUTH_USER_MODEL,
                                related_name='notebooks')
+    group = models.ForeignKey(Group, related_name="notebooks", default=None,
+                              null=True)
 
     default_section = models.CharField(max_length=20,
                                        default=ENTRY_TYPE.log,

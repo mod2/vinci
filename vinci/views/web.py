@@ -109,7 +109,13 @@ def notebooks_list(request):
 @login_required
 def search_notebook(request, notebook_slug):
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
-    return _search(request, notebook)
+    return _search(request, request.GET.get('q'), notebook)
+
+
+@login_required
+def search_notebook_tags(request, notebook_slug, tag):
+    notebook = get_object_or_404(Notebook, slug=notebook_slug)
+    return _search(request, 'tag:{}'.format(tag), notebook)
 
 
 @login_required
@@ -120,13 +126,17 @@ def search_notebook_section(request, notebook_slug, section):
 
 @login_required
 def search_all(request):
-    return _search(request)
+    return _search(request, request.GET.get('q'))
 
 
-def _search(request, notebook=None, section=None):
+@login_required
+def search_all_tags(request, tag):
+    return _search(request, 'tag:{}'.format(tag))
+
+
+def _search(request, query, notebook=None, section=None):
     sortby = request.GET.get('sort', settings.VINCI_DEFAULT_SEARCH_ORDER)
     page = int(request.GET.get('page', 1))
-    query = request.GET.get('q')
 
     if query is None:
         entries = Paginator([], settings.VINCI_RESULTS_PER_PAGE).page(1)

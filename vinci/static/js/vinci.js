@@ -180,7 +180,7 @@ $(document).ready(function() {
 		return false;
 	});
 
-	// Shortcut to edit an entry
+	// Shortcut to edit an entry or a notebook
 
 	Mousetrap.bind("e", function() {
 		if ($(".entry.selected").length > 0) {
@@ -206,6 +206,7 @@ $(document).ready(function() {
 	for (var i=0; i<fields.length; i++) {
 		Mousetrap(fields[i]).bind('esc', function(e) {
 			hideEditPanel($(e.target).parents(".entry"));
+			hideNotebookEditPanel($(e.target).parents(".notebook"));
 		});
 
 		Mousetrap(fields[i]).bind('ctrl+t', function(e) {
@@ -271,19 +272,33 @@ $(document).ready(function() {
 	// --------------------------------------------------
 
 	Mousetrap.bind('j', function() {
-		// If nothing selected, select the first
-		if ($(".list .entries .entry.selected").length == 0) {
-			$(".list .entries .entry:first-child").addClass("selected");
+		if ($(".list .entries").length) {
+			var selector = ".list .entries .entry";
+			var type = "entry";
+		} else if ($(".all .notebooks").length) {
+			var selector = ".all .notebooks .notebook";
+			var type = "notebook";
 		} else {
-			var selected = $(".list .entries .entry.selected");
-			var nextEntry = selected.next();
+			return;
+		}
 
-			if (nextEntry.length > 0) {
-				nextEntry.addClass("selected");
+		// If nothing selected, select the first
+		if ($(selector + ".selected").length == 0) {
+			if (type == "entry") {
+				$(selector + ":first-child").addClass("selected");
+			} else if (type == "notebook") {
+				$(".all .notebooks:first-child .notebook:first-child").addClass("selected");
+			}
+		} else {
+			var selected = $(selector + ".selected");
+			var nextItem = selected.next();
+
+			if (nextItem.length > 0) {
+				nextItem.addClass("selected");
 				selected.removeClass("selected");
 
-				if (nextEntry.offset().top + nextEntry.height() > $(window).scrollTop() + viewport.height() - 100) {
-					$(window).scrollTop($(window).scrollTop() + nextEntry.height() + 100);
+				if (nextItem.offset().top + nextItem.height() > $(window).scrollTop() + viewport.height() - 100) {
+					$(window).scrollTop($(window).scrollTop() + nextItem.height() + 100);
 				}
 			}
 		}
@@ -292,19 +307,33 @@ $(document).ready(function() {
 	});
 
 	Mousetrap.bind('k', function() {
-		// If nothing selected, select the first
-		if ($(".list .entries .entry.selected").length == 0) {
-			$(".list .entries .entry:first-child").addClass("selected");
+		if ($(".list .entries").length) {
+			var selector = ".list .entries .entry";
+			var type = "entry";
+		} else if ($(".all .notebooks").length) {
+			var selector = ".all .notebooks .notebook";
+			var type = "notebook";
 		} else {
-			var selected = $(".list .entries .entry.selected");
-			var prevEntry = selected.prev();
+			return;
+		}
 
-			if (prevEntry.length > 0) {
-				prevEntry.addClass("selected");
+		// If nothing selected, select the first
+		if ($(selector + ".selected").length == 0) {
+			if (type == "entry") {
+				$(selector + ":first-child").addClass("selected");
+			} else if (type == "notebook") {
+				$(".all .notebooks:first-child .notebook:first-child").addClass("selected");
+			}
+		} else {
+			var selected = $(selector + ".selected");
+			var prevItem = selected.prev();
+
+			if (prevItem.length > 0) {
+				prevItem.addClass("selected");
 				selected.removeClass("selected");
 
-				if (prevEntry.offset().top < $(window).scrollTop()) {
-					$(window).scrollTop($(window).scrollTop() - prevEntry.height() - 80);
+				if (prevItem.offset().top < $(window).scrollTop()) {
+					$(window).scrollTop($(window).scrollTop() - prevItem.height() - 80);
 				}
 			}
 		}
@@ -330,6 +359,15 @@ $(document).ready(function() {
 			var entry = $(".entries .entry.selected");
 
 			window.location.href = entry.attr("data-uri");
+
+			return false;
+		}
+
+		// Go to notebook
+		if ($(".notebooks .notebook .selected").length > 0) {
+			var notebook = $(".notebooks .notebook.selected");
+
+			window.location.href = notebook.attr("data-uri");
 
 			return false;
 		}
@@ -627,9 +665,21 @@ $(document).ready(function() {
 	Mousetrap.bind('A', _focusAddNotebookTray);
 	var field = document.querySelector('#add-notebook input[type=text]');
 	Mousetrap(field).bind('esc', _unfocusAddNotebookTray);
+	Mousetrap(field).bind('mod+enter', _addNotebook);
 
 	$("#add-notebook").submit(_addNotebook);
 
+	Mousetrap.bind("e", function() {
+		if ($(".notebook.selected").length > 0) {
+			// List page with selected entry
+			var notebook = $(".notebooks .notebook.selected");
+			notebook.removeClass("selected");
+			showNotebookEditPanel(notebook);
+		}
+
+		return false;
+	});
+	
 
 	// Editing notebooks
 	// --------------------------------------------------

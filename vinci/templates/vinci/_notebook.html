@@ -1,5 +1,5 @@
 {% load humanize %}
-<article class="notebook" data-slug="{{ notebook.slug }}">
+<article class="notebook" data-slug="{{ notebook.slug }}" data-uri="{{ notebook.get_absolute_url }}">
     <a class="controls-toggle" href="">&nbsp;</a>
 
 	<div class="content container">
@@ -17,8 +17,8 @@
 
 		<div class="group container">
 			<div class="buttons">
-				<span class="button save-notebook">Save Notebook</span>
-				<span class="button delete">Delete Notebook</span>
+				<span class="button save-notebook">Rename</span>
+				<span class="button delete">Delete</span>
 			</div>
 		</div>
 	</form>

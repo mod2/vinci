@@ -442,6 +442,14 @@ body.active-nav #page .mask {
 	padding-top: 5px;
 }
 
+#all-notebooks .notebook.selected {
+	border-left: solid 10px #00b8ff;
+}
+
+#all-notebooks .notebook.selected .content {
+	padding-left: 15px;
+}
+
 
 
 /* Sections */
@@ -1206,6 +1214,10 @@ form.login input.button:hover {
 	#page #content .entry.selected .content {
 		padding-left: 35px;
 	}
+
+	#all-notebooks .notebook.selected .content {
+		padding-left: 35px;
+	}
 }
 
 @media screen and (min-width: 600px) {
@@ -1424,6 +1436,10 @@ form.login input.button:hover {
 		margin-left: 0;
 		padding-left: 80px;
 	}
+
+	#all-notebooks .notebook.selected .content {
+		padding-left: 55px;
+	}
 }
 
 @media screen and (min-width: 1000px) {
@@ -1472,5 +1488,9 @@ form.login input.button:hover {
 	#page #content .entry.note.selected .content {
 		margin-left: 0;
 		padding-left: 140px;
+	}
+
+	#all-notebooks .notebook.selected .content {
+		padding-left: 75px;
 	}
 }

@@ -377,8 +377,7 @@ $(document).ready(function() {
 		}
 	});
 
-	// Go to entry
-
+	// Go to entry/notebook
 	Mousetrap.bind('return', function() {
 		if ($(".entries .entry.selected").length > 0) {
 			var entry = $(".entries .entry.selected");
@@ -389,7 +388,7 @@ $(document).ready(function() {
 		}
 
 		// Go to notebook
-		if ($(".notebooks .notebook .selected").length > 0) {
+		if ($(".notebooks .notebook.selected").length > 0) {
 			var notebook = $(".notebooks .notebook.selected");
 
 			window.location.href = notebook.attr("data-uri");

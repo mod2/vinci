@@ -144,6 +144,8 @@ $(document).ready(function() {
 		});
 
 		entry.find(".controls-toggle.active").removeClass("active");
+
+		return false;
 	}
 
 	function hideEditPanel(entry) {
@@ -160,6 +162,8 @@ $(document).ready(function() {
 
 		// Activate the toggle
 		entry.find(".controls-toggle.active").removeClass("active");
+
+		return false;
 	}
 
 	// Edit entry toggle
@@ -560,9 +564,117 @@ $(document).ready(function() {
 	});
 
 	$("li.tagit-new input[type=text]").on("input", function() {
-		console.log("here");
 		$("ul.tagit").addClass("dirty");
 	});
+
+
+	// Add notebook tray
+	// --------------------------------------------------
+
+	function _focusAddNotebookTray() {
+		// Display and focus on the add notebook tray
+		$("#add-notebook input[type=text]").val('');
+
+		$("#add-notebook").slideDown(75, function() {
+			$("#add-notebook input[type=text]").focus();
+		});
+
+		return false;
+	}
+
+	function _unfocusAddNotebookTray() {
+		// Unfocus the add notebook tray
+		$("#add-notebook").slideUp(75, function() {
+			$("#add-notebook input[type=text]").val('').blur();
+		});
+
+		return false;
+	}
+
+	function _addNotebook() {
+		var name = $("#add-notebook input[type=text]").val().trim();
+
+		// Make sure there's a notebook name
+		if (name == '') return false;
+
+		var url = $("#all-notebooks").attr("data-post-uri");
+		var authorId = $("#all-notebooks").attr("data-author-id");
+
+		var data = {
+			'name': name,
+			'status': 'active',
+			'author': authorId,
+		};
+
+		$.ajax({
+			url: url,
+			method: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify(data),
+			success: function(data) {
+				// Return to all notebooks page
+				window.location.href = config.url;
+				return true;
+			},
+			error: function(data) {
+				console.log("error", data);
+			},
+		});
+
+		return false;
+	}
+
+	Mousetrap.bind('A', _focusAddNotebookTray);
+	var field = document.querySelector('#add-notebook input[type=text]');
+	Mousetrap(field).bind('esc', _unfocusAddNotebookTray);
+
+	$("#add-notebook").submit(_addNotebook);
+
+
+	// Editing notebooks
+	// --------------------------------------------------
+
+	// Edit notebook toggle
+
+	$(".notebooks").on("click touchstart", ".notebook .controls-toggle", function() {
+		var notebook = $(this).parents(".notebook");
+
+		if (notebook.find(".edit-mode:visible").length > 0) {
+			hideNotebookEditPanel(notebook);
+		} else {
+			showNotebookEditPanel(notebook);
+		}
+
+		return false;
+	});
+
+	function showNotebookEditPanel(notebook) {
+		// Hide any other edit panels
+		$(".notebooks .edit-mode:visible").fadeOut(150);
+
+		// Show the edit area
+		notebook.find(".edit-mode").fadeIn(150, function() {
+			notebook.find(".edit-mode input[type=text]").focus();
+		});
+
+		notebook.find(".controls-toggle.active").removeClass("active");
+
+		return false;
+	}
+
+	function hideNotebookEditPanel(notebook) {
+		// Blur the input
+		//notebook.find(".edit-mode input[type=text]").blur();
+
+		// Hide the edit area
+		notebook.find(".edit-mode").fadeOut(150);
+
+		// Activate the toggle
+		notebook.find(".controls-toggle.active").removeClass("active");
+
+		return false;
+	}
+
 
 
 	/*

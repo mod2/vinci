@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 
-from vinci.models import Notebook, Entry, Revision
+from vinci.models import Notebook, Entry, Revision, Group
 import vinci.search_indexer as si
 
 
@@ -64,6 +64,7 @@ def entry_detail(request, notebook_slug, section, entry_slug):
                               RequestContext(request),
                               )
 
+
 @login_required
 def revision_detail(request, notebook_slug, section, entry_slug, revision_id):
     try:
@@ -94,9 +95,14 @@ def revision_detail(request, notebook_slug, section, entry_slug, revision_id):
 @login_required
 def notebooks_list(request):
     notebooks = Notebook.objects.active()
+    groups = Group.objects.all()
+    ungrouped_notebooks = Notebook.objects.filter(group__isnull=True)
+
     context = {
         'title': 'All Notebooks',
         'notebooks': notebooks,
+        'groups': groups,
+        'ungrouped_notebooks': ungrouped_notebooks,
         'page_type': 'all',
     }
 

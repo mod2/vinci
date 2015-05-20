@@ -1,0 +1,25 @@
+{% load humanize %}
+<article class="notebook" data-slug="{{ notebook.slug }}">
+    <a class="controls-toggle" href="">&nbsp;</a>
+
+	<div class="content container">
+		<a href="{{ notebook.get_absolute_url }}">
+			<h2 class="notebook-name">{{ notebook.name }}</h2>
+			<div>{{ notebook.entries.count|intcomma }} entries</div>
+		</a>
+	</div>
+
+	<form class="edit-mode">
+		<div class="group container">
+			<label>Name:</label>
+			<input type="text" class="name" value="{{ notebook.name }}" />
+		</div>
+
+		<div class="group container">
+			<div class="buttons">
+				<span class="button save-notebook">Save Notebook</span>
+				<span class="button delete">Delete Notebook</span>
+			</div>
+		</div>
+	</form>
+</article>

@@ -140,6 +140,14 @@ header[role=banner] h1 a.home {
 	text-decoration: none;
 }
 
+header[role=banner] h1 span {
+	color: #fff;
+	display: block;
+	font-size: 1.1em;
+	padding: 1em .5em .7em;
+	text-decoration: none;
+}
+
 header[role=banner] a:hover {
 	color: hsl(48, 81%, 74%) !important;
 }
@@ -335,6 +343,105 @@ body.active-nav #page .mask {
 #search input[type=text]:focus {
 	outline: none;
 }
+
+
+/* Add Notebook tray */
+/* -------------------------------------------------- */
+
+#add-notebook {
+	background: hsl(30, 29%, 77%);
+	display: none;
+}
+
+#add-notebook .container {
+	background: hsl(30, 34%, 88%);
+	padding-bottom: 25px;
+	padding-top: 25px;
+}
+
+#add-notebook label {
+	color: hsl(30, 15%, 50%);
+	display: inline-block;
+	width: 50px;
+}
+
+#add-notebook input[type=text] {
+	background: hsl(0, 100%, 100%);
+	border: none;
+	border-radius: 2px;
+	font-size: 1.1em;
+	padding: 2px 5px;
+	width: calc(100% - 55px);
+}
+
+#add-notebook input[type=text]:focus {
+	outline: none;
+}
+
+#add-notebook .button {
+	background: hsl(30, 15%, 50%);
+}
+
+#add-notebook .group {
+	margin-bottom: 15px;
+}
+
+
+/* All Notebooks */
+/* -------------------------------------------------- */
+
+#all-notebooks > h2 {
+	background: hsl(44, 28%, 90%);
+	color: hsl(32, 25%, 65%);
+	font-size: 1em;
+	font-weight: 400;
+	letter-spacing: 0.05em;
+	padding-bottom: .5em;
+	padding-top: 1em;
+	text-transform: uppercase;
+}
+
+#all-notebooks .notebook {
+	border-bottom: solid 1px #ddd;
+	overflow: hidden;
+}
+
+#all-notebooks .notebooks {
+	border-top: solid 1px #ddd;
+}
+
+#all-notebooks .notebook .content.container {
+	padding-bottom: 15px;
+	padding-top: 15px;
+}
+
+#all-notebooks .notebook a {
+	text-decoration: none;
+}
+
+#all-notebooks .notebook a h2.notebook-name {
+	display: inline-block;
+	font-size: 1.2em;
+	margin: 0;
+}
+
+#all-notebooks .notebook a div {
+	color: hsl(0, 0%, 75%);
+	display: block;
+	font-size: .9em;
+}
+
+#all-notebooks .notebook .edit-mode {
+	display: none;
+}
+
+#all-notebooks .notebook .edit-mode .group {
+	background: hsl(209, 48%, 88%);
+	font-size: .8em;
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
+
 
 
 /* Sections */
@@ -589,7 +696,7 @@ body.active-nav #page .mask {
 	color: hsl(0, 0%, 30%);
 }
 
-#page #content .entry .controls-toggle {
+#page #content .controls-toggle {
 	background: hsl(0, 0%, 93%);
 	border-radius: 0 0 0 1em;
 	color: hsl(0, 0%, 90%);
@@ -601,11 +708,11 @@ body.active-nav #page .mask {
 	width: 2em;
 }
 
-#page #content .entry .controls-toggle.active {
+#page #content .controls-toggle.active {
 	background: hsl(0, 0%, 73%);
 }
 
-#page #content .entry .controls-toggle:hover {
+#page #content .controls-toggle:hover {
 	background: hsl(0, 0%, 85%);
 }
 
@@ -687,7 +794,7 @@ body.active-nav #page .mask {
 	display: block;
 }
 
-#page #content .entry .edit-mode textarea {
+#page #content .edit-mode textarea {
 	border: none;
 	font-size: 1em;
 	padding-top: 10px;
@@ -696,37 +803,37 @@ body.active-nav #page .mask {
 	width: 100%;
 }
 
-#page #content .entry .edit-mode textarea:focus {
+#page #content .edit-mode textarea:focus {
 	outline: none;
 }
 
-#page #content .entry .edit-mode .dirty {
+#page #content .edit-mode .dirty {
 	background: hsl(85, 71%, 93%) !important;
 }
 
-#page #content .entry .edit-mode ul.tagit.dirty li.tagit-new input[type=text] {
+#page #content .edit-mode ul.tagit.dirty li.tagit-new input[type=text] {
 	background: hsl(85, 71%, 93%) !important;
 }
 
-#page #content .entry .edit-mode .group {
+#page #content .edit-mode .group {
 	background: hsl(209, 48%, 88%);
 	font-size: .8em;
 	padding-bottom: 5px;
 	padding-top: 5px;
 }
 
-#page #content .entry .edit-mode .group:first-child {
+#page #content .edit-mode .group:first-child {
 	padding-top: 15px;
 }
 
-#page #content .entry .edit-mode .group label {
+#page #content .edit-mode .group label {
 	color: hsl(201, 42%, 60%);
 	display: inline-block;
 	float: left;
 	width: 80px;
 }
 
-#page #content .entry .edit-mode .group input[type=text] {
+#page #content .edit-mode .group input[type=text] {
 	background: #fff;
 	border: none;
 	border-radius: 2px;
@@ -736,12 +843,12 @@ body.active-nav #page .mask {
 	width: calc(100% - 80px);
 }
 
-#page #content .entry .edit-mode .group input[type=text]:focus {
+#page #content .edit-mode .group input[type=text]:focus {
 	color: #333;
 	outline: none;
 }
 
-#page #content .entry .edit-mode .group ul.tagit {
+#page #content .edit-mode .group ul.tagit {
 	background: #fff;
 	border: none;
 	border-radius: 3px;
@@ -750,65 +857,65 @@ body.active-nav #page .mask {
 	width: calc(100% - 80px);
 }
 
-#page #content .entry .edit-mode .group ul.tagit li.tagit-choice .tagit-label:not(a) {
+#page #content .edit-mode .group ul.tagit li.tagit-choice .tagit-label:not(a) {
 	color: #222;
 }
 
-#page #content .entry .edit-mode .group ul.tagit li.tagit-choice {
+#page #content .edit-mode .group ul.tagit li.tagit-choice {
 	background-color: #d4efbc;
 	border-color: #d4efbc;
 	border-radius: 3px;
 	margin-bottom: 0;
 }
 
-#page #content .entry .edit-mode .group ul.tagit li.tagit-choice-editable {
+#page #content .edit-mode .group ul.tagit li.tagit-choice-editable {
 	font-size: 1em;
 	padding: 0px 20px 1px 6px;
 }
 
-#page #content .entry .edit-mode .group ul.tagit li.tagit-choice .tagit-close {
+#page #content .edit-mode .group ul.tagit li.tagit-choice .tagit-close {
 	margin-top: -8px;
 }
 
-#page #content .entry .edit-mode .group ul.tagit li.tagit-choice .tagit-close .text-icon {
+#page #content .edit-mode .group ul.tagit li.tagit-choice .tagit-close .text-icon {
 	font-family: Source Sans Pro, Helvetica, Arial, sans-serif;
 	color: #9ec78b;
 }
 
-#page #content .entry .edit-mode .group ul.tagit input[type=text] {
+#page #content .edit-mode .group ul.tagit input[type=text] {
 	font-size: 1em;
 	width: 100px;
 }
 
-#page #content .entry .edit-mode .group ul.tagit li.tagit-new {
+#page #content .edit-mode .group ul.tagit li.tagit-new {
 	margin-top: 0;
 }
 
-#page #content .entry .edit-mode .group select {
+#page #content .edit-mode .group select {
 	width: calc(100% - 85px);
 }
 
-#page #content .entry .edit-mode .group.other {
+#page #content .edit-mode .group.other {
 	display: none;
 }
 
-#page #content .entry .edit-mode .group.more {
+#page #content .edit-mode .group.more {
 	background: hsl(0, 0%, 100%);
 	padding-bottom: 25px;
 }
 
-#page #content .entry .edit-mode .group.more a {
+#page #content .edit-mode .group.more a {
 	color: hsl(0, 0%, 70%);	
 	padding-bottom: 1px;
 	padding-top: 1px;
 	text-decoration: none;
 }
 
-#page #content .entry .edit-mode .group.more a:hover {
+#page #content .edit-mode .group.more a:hover {
 	color: hsl(0, 0%, 30%);	
 }
 
-#page #content .entry .edit-mode .group span.type {
+#page #content .edit-mode .group span.type {
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	background: hsl(210, 47%, 75%);
@@ -820,28 +927,28 @@ body.active-nav #page .mask {
 	user-select: none;
 }
 
-#page #content .entry .edit-mode .group span.type:hover {
+#page #content .edit-mode .group span.type:hover {
 	background: hsl(210, 13%, 46%);
 	color: #fff;
 }
 
-#page #content .entry .edit-mode .group span.type + span.type {
+#page #content .edit-mode .group span.type + span.type {
 	margin-left: 2px;
 }
 
-#page #content .entry .edit-mode .group span.type.selected {
+#page #content .edit-mode .group span.type.selected {
 	background: hsl(210, 13%, 46%);
 	color: #fff;
 }
 
-#page #content .entry .edit-mode .group .buttons {
+#page #content .edit-mode .group .buttons {
 	margin-left: 80px;
 	padding-bottom: 15px;
 	padding-top: 5px;
 	width: calc(100% - 80px);
 }
 
-#page #content .entry .edit-mode .group .buttons .button {
+#page #content .edit-mode .group .buttons .button {
 	display: inline-block;
 	font-size: 1em;
 	margin-right: 5px;
@@ -1205,6 +1312,11 @@ form.login input.button:hover {
 
 	#page #content .entry.note.selected .content {
 		padding-left: 55px;
+	}
+
+	#all-notebooks .notebook a div {
+		display: inline-block;
+		margin-left: 20px;
 	}
 }
 

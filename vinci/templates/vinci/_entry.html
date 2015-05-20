@@ -1,7 +1,5 @@
 <article class="entry {{ entry.entry_type }}" data-id="{{ entry.id }}" data-uri="{{ entry.get_absolute_url }}" data-notebook-slug="{{ entry.notebook.slug }}">
-	{% if not total %}
-		<a class="controls-toggle" href="">&nbsp;</a>
-	{% endif %}
+    <a class="controls-toggle" href="">&nbsp;</a>
 
 	<div class="metadata container">
 		{% block entry_metadata %}

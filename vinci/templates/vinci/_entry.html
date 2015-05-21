@@ -8,12 +8,13 @@
 		<a class="date" href="{{ entry.get_absolute_url }}">
 			<date>{{ entry.date|date:'j M Y' }}</date>
 			<time>{{ entry.date|date:'g:i A'|lower }}, {{ entry.date|date:'D' }}</time>
+			{% if scope == 'all' %}<span class="notebook">{{ entry.notebook.name }}</span>{% endif %}
 		</a>
 		{% endblock entry_metadata_date %}
 
 		{% block entry_metadata_tags %}
 		{% if entry.tags.all|length > 0 %}
-		<ul class="tags">{% for tag in entry.tags.all %}<li><a href="{% url 'search_notebook_tags' notebook.slug tag %}">#{{ tag }}</a></li>{% endfor %}</ul>
+		<ul class="tags">{% for tag in entry.tags.all %}<li><a href="{% url 'search_notebook_tags' entry.notebook.slug tag %}">#{{ tag }}</a></li>{% endfor %}</ul>
 		{% endif %}
 		{% endblock entry_metadata_tags %}
 

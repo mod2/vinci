@@ -198,7 +198,7 @@ def _search(request, query, notebook=None, section=None):
         scope = 'section'
 
     context = {
-        'title': '{}{}Search'.format(query, settings.VINCI_SITE_TITLE_SEP),
+        'title': 'Search',
         'query': query,
         'entries': entries,
         'total': total,

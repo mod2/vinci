@@ -182,7 +182,7 @@
 				<div class="container"></div>
 			</section>
 
-			<main id="content" class="{{ page_type }} {{ section }}">
+			<main id="content" class="{{ page_type }}{% if section %} {{ section }}{% endif %}">
 				{% block content %}{% endblock content %}
 				{% block nav %}{% endblock nav %}
 

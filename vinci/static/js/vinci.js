@@ -93,6 +93,11 @@ $(document).ready(function() {
 		return false;
 	}
 
+	$("#search .scope span").on("click", function() {
+		$(this).siblings("span").removeClass("selected");
+		$(this).addClass("selected");
+	});
+
 
 	// Quickjump
 	// --------------------------------------------------

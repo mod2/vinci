@@ -371,13 +371,22 @@ body.active-nav #page .mask {
 	background: hsl(0, 0%, 25%);
 	border-radius: 3px;
 	color: hsl(0, 0%, 50%);
+	cursor: pointer;
 	display: inline-block;
 	margin-right: 5px;
 	padding: 1px 6px 2px;
 }
 
+#search .scope span:hover {
+	background: hsl(0, 0%, 15%);
+}
+
 #search .scope span.selected {
 	color: hsl(0, 0%, 70%);
+}
+
+#search .scope span.selected:hover {
+	background: hsl(0, 0%, 5%);
 }
 
 #search input[type=text] {
@@ -642,6 +651,16 @@ body.active-nav #page .mask {
 	color: #ef1b64;
 }
 
+.entry .excerpt h2 {
+	font-size: 1.1em;
+	font-style: normal;
+	font-weight: 400;
+}
+
+.entry .excerpt h2 a {
+	text-decoration: none;
+}
+
 
 /* Content */
 /* -------------------------------------------------- */
@@ -810,7 +829,7 @@ body.active-nav #page .mask {
 }
 
 #page #content .entry .metadata a.date date {
-	color: #aaa;
+	color: hsl(0, 0%, 67%);
 }
 
 #page #content .entry .metadata a.date date span {
@@ -820,6 +839,13 @@ body.active-nav #page .mask {
 
 #page #content .entry .metadata a.date time {
 	margin-left: 10px;
+}
+
+#page #content .entry .metadata a.date span.notebook {
+	color: hsl(21, 27%, 44%);
+	letter-spacing: 0.03em;
+	margin-left: 10px;
+	text-transform: uppercase;
 }
 
 #page #content .entry .metadata ul.tags {
@@ -1754,6 +1780,13 @@ form.login input.button:hover {
 		font-size: .8em;
 		line-height: 1.2em;
 		margin-left: 0;
+	}
+
+	#page #content .entry .metadata a.date span.notebook {
+		display: block;
+		font-size: .8em;
+		margin-left: 0px;
+		margin-top: 5px;
 	}
 
 	#page #content .entry .content.container {

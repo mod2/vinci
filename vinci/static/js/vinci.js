@@ -620,6 +620,7 @@ $(document).ready(function() {
 
 			var entry = currentBox.parents(".entry");
 			var entryId = entry.attr("data-id");
+			var url = entry.attr("data-api-uri");
 			var notebookSlug = entry.attr("data-notebook-slug");
 
 			var submit = false;
@@ -661,14 +662,13 @@ $(document).ready(function() {
 
 			if (submit) {
 				// Get an initial revision if it's not there
-				var url = "/api/" + notebookSlug + "/" + entryId;
 				if (!$("textarea[name=content]").attr("data-revision-id")) {
 					// New revision for this session
-					url += "/add-revision/";
+					url += "add-revision/";
 				} else {
 					// Update revision for this session
 					var revisionId = $("textarea[name=content]").attr("data-revision-id");
-					url += "/update-revision/" + revisionId + "/";
+					url += "update-revision/" + revisionId + "/";
 				}
 
 				$.ajax({

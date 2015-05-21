@@ -162,6 +162,11 @@
 			<form id="search" data-search-all-uri="{% url 'search_all' %}"{% if section %} data-search-section-uri="{% url 'search_notebook_section' notebook.slug section %}"{% endif %}{% if notebook %}data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}"{% endif %} data-quickjump-uri="{% url 'quick_jump' %}" class="{{ page_type }}">
 				<div class="container">
 					<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
+					<section class="scope">
+						{% if section and notebook %}<span data-value="section"{% if scope == 'section' %} class="selected"{% endif %}>This Section</span>{% endif %}
+						{% if notebook %}<span data-value="notebook"{% if scope == 'notebook' %} class="selected"{% endif %}>This Notebook</span>{% endif %}
+						<span data-value="all"{% if scope == 'all' %} class="selected"{% endif %}>All Notebooks</span>
+					</section>
 					<section class="results"></section>
 				</div>
 			</form>

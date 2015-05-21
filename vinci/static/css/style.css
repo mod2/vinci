@@ -357,6 +357,29 @@ body.active-nav #page .mask {
 	background: hsl(194, 20%, 25%);
 }
 
+#search.quickjump .scope {
+	display: none;
+}
+
+#search .scope {
+	font-size: .9em;
+	overflow: hidden;
+	padding-bottom: 15px;
+}
+
+#search .scope span {
+	background: hsl(0, 0%, 25%);
+	border-radius: 3px;
+	color: hsl(0, 0%, 50%);
+	display: inline-block;
+	margin-right: 5px;
+	padding: 1px 6px 2px;
+}
+
+#search .scope span.selected {
+	color: hsl(0, 0%, 70%);
+}
+
 #search input[type=text] {
 	-webkit-font-feature-settings: normal;
 	background: none;
@@ -1482,6 +1505,10 @@ form.login input.button:hover {
 	margin-right: 5px;
 	padding: 2px 8px 3px;
 	width: auto;
+}
+
+#add-entry .group .buttons .button.append-to-today {
+	background: hsl(39, 19%, 52%);
 }
 
 

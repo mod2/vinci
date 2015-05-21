@@ -24,6 +24,7 @@ def notebook_settings(request, notebook_slug):
     context = {
         'title': notebook.name,
         'notebook': notebook,
+        'scope': 'notebook',
         'statuses': [{'value': s[0], 'label': s[1]} for s in Notebook.STATUS],
         'groups': [{'value': g.name, 'label': g.name} for g in Group.objects.all()],
         'page_type': 'settings',
@@ -52,6 +53,7 @@ def notebook_section(request, notebook_slug, section):
         'notebook': notebook,
         'notebooks': notebooks,
         'section': section,
+        'scope': 'section',
         'entries': entries,
         'page_type': 'list',
     }
@@ -74,6 +76,7 @@ def entry_detail(request, notebook_slug, section, entry_slug):
         'notebook': entry.notebook,
         'entry': entry,
         'section': section,
+        'scope': 'section',
         'page_type': 'detail',
     }
 
@@ -101,6 +104,7 @@ def revision_detail(request, notebook_slug, section, entry_slug, revision_id):
         'entry': entry,
         'revision': revision,
         'section': section,
+        'scope': 'section',
         'page_type': 'detail',
     }
 
@@ -119,6 +123,7 @@ def notebooks_list(request):
         'title': 'All Notebooks',
         'groups': groups,
         'ungrouped_notebooks': ungrouped_notebooks,
+        'scope': 'all',
         'page_type': 'all',
     }
 
@@ -176,7 +181,7 @@ def _search(request, query, notebook=None, section=None):
             search_params['notebook'] = notebook
 
         #entries, __, __ = si.search(**search_params)
-        entries = si.search(**search_params)
+        entries= si.search(**search_params)
         entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE)
         total = entries.count
         entries = entries.page(page)
@@ -186,12 +191,19 @@ def _search(request, query, notebook=None, section=None):
         # Convert tags in queries back to hashtag syntax
         query = query.replace('tag:', '#')
 
+    scope = 'all'
+    if notebook is not None:
+        scope = 'notebook'
+    if section is not None:
+        scope = 'section'
+
     context = {
         'title': '{}{}Search'.format(query, settings.VINCI_SITE_TITLE_SEP),
         'query': query,
         'entries': entries,
         'total': total,
         'section': section,
+        'scope': scope,
         'notebooks': notebooks,
         'page_type': 'list',
         'search': True,

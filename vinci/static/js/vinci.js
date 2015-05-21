@@ -402,6 +402,30 @@ $(document).ready(function() {
 		return false;
 	});
 
+	// Delete entry
+
+	$(".entries").on("click touchstart", ".entry .buttons .button.delete", function() {
+		if (confirm("Are you sure you want to delete this entry?")) {
+			var entry = $(this).parents(".entry");
+			var url = entry.attr("data-api-uri");
+
+			$.ajax({
+				url: url,
+				method: 'DELETE',
+				contentType: 'application/json',
+				success: function(data) {
+					hideEditPanel(entry);
+					entry.slideUp(75);
+				},
+				error: function(data) {
+					_showError("Error deleting entry", data);
+				},
+			});
+		}
+
+		return false;
+	});
+
 
 	// Autosize
 	// --------------------------------------------------
@@ -1161,21 +1185,25 @@ $(document).ready(function() {
 	// Delete notebook
 
 	$(".notebooks .notebook span.delete").on("click", function() {
-		var notebook = $(this).parents(".notebook");
-		var url = notebook.attr("data-api-uri");
+		if (confirm("Are you sure you want to delete this notebook?")) {
+			var notebook = $(this).parents(".notebook");
+			var url = notebook.attr("data-api-uri");
 
-		$.ajax({
-			url: url,
-			method: 'DELETE',
-			contentType: 'application/json',
-			success: function(data) {
-				hideNotebookEditPanel(notebook);
-				notebook.slideUp(75);
-			},
-			error: function(data) {
-				_showError("Error deleting notebook", data);
-			},
-		});
+			$.ajax({
+				url: url,
+				method: 'DELETE',
+				contentType: 'application/json',
+				success: function(data) {
+					hideNotebookEditPanel(notebook);
+					notebook.slideUp(75);
+				},
+				error: function(data) {
+					_showError("Error deleting notebook", data);
+				},
+			});
+		}
+
+		return false;
 	});
 
 

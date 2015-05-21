@@ -641,6 +641,7 @@ body.active-nav #page .mask {
 #page #content .entry h1.page-title {
 	font-size: 1.4em;
 	font-weight: 400;
+	letter-spacing: -0.02em;
 	margin: 10px 0 0;
 }
 
@@ -1414,7 +1415,7 @@ form.login input.button:hover {
 }
 
 
-/* Add entry UI */
+/* Journal */
 /* -------------------------------------------------- */
 
 #page #content .entry.journal .metadata a.date date {
@@ -1425,6 +1426,20 @@ form.login input.button:hover {
 	display: inline-block;
 	font-style: italic;
 	margin-left: 15px;
+}
+
+
+/* Page */
+/* -------------------------------------------------- */
+
+#page #content.list .entry.page h3.page-title {
+	font-size: 1em;
+	font-weight: 600;
+	line-height: 1.2em;
+}
+
+#page #content.list .entry.page h3.page-title a {
+	text-decoration: none;
 }
 
 
@@ -1445,6 +1460,10 @@ form.login input.button:hover {
 	#page #content .entry .edit-mode textarea {
 		font-size: 1.1em;
 		line-height: 1.4em;
+	}
+
+	#page #content .entry .edit-mode .title {
+		padding-top: 30px;
 	}
 
 	#page #content .entry.selected .metadata {
@@ -1554,6 +1573,12 @@ form.login input.button:hover {
 		padding-top: 30px;
 	}
 
+	#page #content .entry .edit-mode .title {
+		padding-left: 65px;
+		padding-right: 65px;
+		padding-top: 30px;
+	}
+
 	#page #content .entry .edit-mode .group {
 		padding-left: 65px;
 		padding-right: 65px;
@@ -1569,6 +1594,19 @@ form.login input.button:hover {
 	}
 
 	#page #content .entry.note.selected .content {
+		padding-left: 55px;
+	}
+
+	#page #content .entry.page .metadata.container {
+		display: none !important;
+	}
+
+	#page #content .entry.page .content.container {
+		margin-left: 0;
+		padding-left: 65px;
+	}
+
+	#page #content .entry.page.selected .content {
 		padding-left: 55px;
 	}
 
@@ -1691,6 +1729,11 @@ form.login input.button:hover {
 		padding-right: 90px;
 	}
 
+	#page #content .entry .edit-mode .title {
+		padding-left: 90px;
+		padding-right: 90px;
+	}
+
 	#page #content .entry .edit-mode .group.container {
 		padding-left: 90px;
 		padding-right: 90px;
@@ -1702,6 +1745,16 @@ form.login input.button:hover {
 	}
 
 	#page #content .entry.note.selected .content {
+		margin-left: 0;
+		padding-left: 80px;
+	}
+
+	#page #content .entry.page .content.container {
+		padding-left: 90px;
+		padding-right: 90px;
+	}
+
+	#page #content .entry.page.selected .content {
 		margin-left: 0;
 		padding-left: 80px;
 	}
@@ -1745,6 +1798,11 @@ form.login input.button:hover {
 		padding-right: 150px;
 	}
 
+	#page #content .entry .edit-mode .title {
+		padding-left: 150px;
+		padding-right: 150px;
+	}
+
 	#page #content .entry .edit-mode .group.container {
 		padding-left: 150px;
 		padding-right: 150px;
@@ -1765,6 +1823,16 @@ form.login input.button:hover {
 	}
 
 	#page #content .entry.note.selected .content {
+		margin-left: 0;
+		padding-left: 140px;
+	}
+
+	#page #content .entry.page .content.container {
+		padding-left: 150px;
+		padding-right: 150px;
+	}
+
+	#page #content .entry.page.selected .content {
 		margin-left: 0;
 		padding-left: 140px;
 	}

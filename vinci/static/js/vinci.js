@@ -273,6 +273,13 @@ $(document).ready(function() {
 			showEditPanel(entry);
 		}
 
+		if ($(".notebook.selected").length > 0) {
+			// List page with selected entry
+			var notebook = $(".notebooks .notebook.selected");
+			notebook.removeClass("selected");
+			showNotebookEditPanel(notebook);
+		}
+
 		return false;
 	});
 
@@ -745,17 +752,6 @@ $(document).ready(function() {
 
 	$("#add-notebook").submit(_addNotebook);
 
-	Mousetrap.bind("e", function() {
-		if ($(".notebook.selected").length > 0) {
-			// List page with selected entry
-			var notebook = $(".notebooks .notebook.selected");
-			notebook.removeClass("selected");
-			showNotebookEditPanel(notebook);
-		}
-
-		return false;
-	});
-	
 
 	// Editing notebooks
 	// --------------------------------------------------

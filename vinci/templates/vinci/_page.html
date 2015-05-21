@@ -5,7 +5,7 @@
 {% block entry_metadata_tags %}{% endblock entry_metadata_tags %}
 
 {% block entry_list %}
-<h3><a href="{{ entry.get_absolute_url }}">{% if entry.title != '' %}{{ entry.title }}{% elif entry.slug != '' %}{{ entry.slug }}{% else %}no title!{% endif %}</a></h3>
+<h3 class="page-title"><a href="{{ entry.get_absolute_url }}">{% if entry.title != '' %}{{ entry.title }}{% elif entry.slug != '' %}{{ entry.slug }}{% else %}no title!{% endif %}</a></h3>
 {% endblock entry_list %}
 
 {% block entry_detail %}

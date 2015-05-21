@@ -45,13 +45,18 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
         content = request.data.get('content')
         title = request.data.get('title', '')
         tags = request.data.get('tags')
+        type = request.data.get('type', '')
+        date = request.data.get('date', '')
         if content:
             kwargs = {'content': content,
                       'author': request.user,
                       'notebook': notebook,
                       'title': title,
                       'tags': tags,
+                      'entry_type': type,
                       }
+            if date != '':
+                kwargs['date'] = date
             entry = Entry.objects.create(**kwargs)
             si.add_index(entry)
             e = EntrySerializer(entry)

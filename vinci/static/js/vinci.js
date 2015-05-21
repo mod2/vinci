@@ -871,7 +871,7 @@ $(document).ready(function() {
 	}
 
 	function _addEntry() {
-		var currentBox = $("textarea[name=entry-content]:visible");
+		var currentBox = $("#add-entry textarea[name=entry-content]:visible");
 
 		if (currentBox && currentBox.val()) {
 			var currentText = currentBox.val().trim();
@@ -884,123 +884,49 @@ $(document).ready(function() {
 			var currentType = currentBox.siblings(".edit-panel").find("span.type.selected").attr("data-value");
 			var currentNotebook = currentBox.siblings(".edit-panel").find("select[name=notebook]").val();
 
-			// Originals
-			var originalBox = currentBox.parents(".edit-mode").siblings(".original").find("textarea");
-			var originalText = originalBox.val().trim();
-			var originalTitle = originalBox.siblings("input[name=original_title]");
-			if (originalTitle) {
-				originalTitle = originalTitle.val().trim();
-			}
-			var originalTags = originalBox.siblings("input[name=original_tags]").val();
-			if (typeof originalTags == 'undefined') {
-				originalTags = '';
-			}
-			var originalDate = originalBox.siblings("input[name=original_date]").val();
-			var originalType = originalBox.siblings("input[name=original_type]").val();
-			var originalNotebook = originalBox.siblings("input[name=original_notebook]").val();
-
-			var entry = currentBox.parents(".entry");
-			var entryId = entry.attr("data-id");
-			var notebookSlug = entry.attr("data-notebook-slug");
-
-			var submit = false;
 			var data = {};
 
-			if (currentText != originalText) {
+			if (currentText) {
 				data['content'] = currentText;
-				submit = true;
 			}
 
-			if (currentTitle != originalTitle) {
+			if (currentTitle) {
 				data['title'] = currentTitle;
-				submit = true;
 			}
 
-			if (currentTags != originalTags) {
-				if (currentTags == '' && originalTags != '') {
-					data['tags'] = '[CLEAR]';
-				} else {
-					data['tags'] = currentTags;
-				}
-				submit = true;
+			if (currentTags) {
+				data['tags'] = currentTags;
 			}
 
-			if (currentDate != originalDate) {
+			if (currentDate) {
 				data['date'] = currentDate;
-				submit = true;
 			}
 
-			if (currentType != originalType) {
+			if (currentType) {
 				data['type'] = currentType;
-				submit = true;
 			}
 
-			if (currentNotebook != originalNotebook) {
+			if (currentNotebook) {
 				data['notebook'] = currentNotebook;
-				submit = true;
 			}
 
-			if (submit) {
-				// Get an initial revision if it's not there
-				var url = "/api/" + notebookSlug + "/" + entryId;
-				if (!$("textarea[name=content]").attr("data-revision-id")) {
-					// New revision for this session
-					url += "/add-revision/";
-				} else {
-					// Update revision for this session
-					var revisionId = $("textarea[name=content]").attr("data-revision-id");
-					url += "/update-revision/" + revisionId + "/";
-				}
+			// Construct this manually because the notebook may have changed
+			var url = "/api/" + currentNotebook + "/";
 
-				$.ajax({
-					url: url,
-					method: 'POST',
-					contentType: 'application/json',
-					data: JSON.stringify(data),
-					success: function(data) {
-						$(".dirty").removeClass("dirty");
-						currentBox.attr("data-revision-id", data.revision_id);
-
-						// Update current cache
-						originalBox.html(currentText);
-
-						if (currentTitle != originalTitle) {
-							originalBox.siblings("input[name=original_title]").val(currentTitle);
-						}
-
-						if (currentTags != originalTags) {
-							originalBox.siblings("input[name=original_tags]").val(currentTags);
-						}
-
-						if (currentDate != originalDate) {
-							originalBox.siblings("input[name=original_date]").val(currentDate);
-						}
-
-						if (currentType != originalType) {
-							originalBox.siblings("input[name=original_type]").val(currentType);
-						}
-
-						if (currentNotebook != originalNotebook) {
-							originalBox.siblings("input[name=original_notebook]").val(currentNotebook);
-						}
-
-						// Update the returned HTML
-						if (data.html) {
-							entry.find(".content.container").html(data.html);
-						}
-
-						if (callback) {
-							callback();
-						}
-					},
-					error: function(data) {
-						currentBox.addClass("error");
-						_showError("Error autosaving", data);
-					},
-				});
-			} else {
-				currentBox.removeClass("dirty");
-			}
+			$.ajax({
+				url: url,
+				method: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(data),
+				success: function(data) {
+					// Redirect to that notebook
+					var newUrl = "/" + currentNotebook + "/" + currentType + "/";
+					window.location.href = newUrl;
+				},
+				error: function(data) {
+					_showError("Error adding entry", data);
+				},
+			});
 		}
 	}
 
@@ -1012,6 +938,8 @@ $(document).ready(function() {
 		_hideMenu();
 		_focusAddEntry();
 	});
+
+	$("#add-entry .add.button").on("click", _addEntry);
 
 
 	// Menu items

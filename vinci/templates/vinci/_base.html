@@ -112,7 +112,7 @@
 			{% endblock add_notebook %}
 
 			{% block add_entry %}
-			<form id="add-entry" class="edit-mode">
+			<form id="add-entry" class="edit-mode" {% if notebook %}data-uri="{% url 'api_entry_list' notebook.slug %}"{% endif %}>
 				<input class="title container" name="title" type="text" value="" placeholder="Title" />
 				<textarea name="entry-content" class="container"></textarea>
 
@@ -126,16 +126,16 @@
 					<div class="group other container">
 						<label>Type:</label>
 						{% if notebook.display_logs %}
-							<span data-value="log" class="type log">Log</span>
+							<span data-value="log" class="type log{% if notebook.default_section == 'log' %} selected{% endif %}">Log</span>
 						{% endif %}
 						{% if notebook.display_notes %}
-							<span data-value="note" class="type note">Note</span>
+							<span data-value="note" class="type note{% if notebook.default_section == 'note' %} selected{% endif %}">Note</span>
 						{% endif %}
 						{% if notebook.display_pages %}
-							<span data-value="page" class="type page">Page</span>
+							<span data-value="page" class="type page{% if notebook.default_section == 'page' %} selected{% endif %}">Page</span>
 						{% endif %}
 						{% if notebook.display_journals %}
-							<span data-value="journal" class="type journal">Journal</span>
+							<span data-value="journal" class="type journal{% if notebook.default_section == 'journal' %} selected{% endif %}">Journal</span>
 						{% endif %}
 						<input type="hidden" name="type" value="" />
 					</div>
@@ -147,7 +147,8 @@
 					</div>
 					<div class="group other container">
 						<div class="buttons">
-							<span class="button save">Add</span>
+							<span class="button add">Add</span>
+							<span class="button append-to-today">Append to Today</span>
 						</div>
 					</div>
 					<div class="group more container">

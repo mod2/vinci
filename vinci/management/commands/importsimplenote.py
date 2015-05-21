@@ -46,8 +46,6 @@ class Command(BaseCommand):
                           'date': created,
                          }
 
-                #print("Fake importing entry {} into notebook {}".format(create_date, nb.name))
-
                 entry = Entry.objects.create(**kwargs)
                 entry.save()
 
@@ -56,8 +54,7 @@ class Command(BaseCommand):
                 rev.last_modified = last_modified
                 rev.save()
 
-                #print("Imported entry {} as {} into notebook {} {}".format(create_date, entry.id, nb.name))
-                print("Done! Don't forget to reindex")
+            print("Done! Don't forget to reindex")
 
         except Exception as e:
             print(e)

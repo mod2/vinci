@@ -1322,6 +1322,12 @@ form.login input.button:hover {
 	outline: none;
 }
 
+#add-entry.page input.title {
+	display: block;
+	padding-bottom: 5px;
+	padding-top: 30px;
+}
+
 #add-entry textarea {
 	border: none;
 	display: block;
@@ -1812,6 +1818,11 @@ form.login input.button:hover {
 		padding-top: 30px;
 	}
 
+	#add-entry .title {
+		padding-left: 65px;
+		padding-right: 65px;
+	}
+
 	#add-entry .group {
 		padding-left: 65px;
 		padding-right: 65px;
@@ -1961,6 +1972,11 @@ form.login input.button:hover {
 		padding-right: 90px;
 	}
 
+	#add-entry .title {
+		padding-left: 90px;
+		padding-right: 90px;
+	}
+
 	#add-entry .group {
 		padding-left: 90px;
 		padding-right: 90px;
@@ -2035,6 +2051,11 @@ form.login input.button:hover {
 	}
 
 	#add-entry textarea {
+		padding-left: 150px;
+		padding-right: 150px;
+	}
+
+	#add-entry .title {
 		padding-left: 150px;
 		padding-right: 150px;
 	}

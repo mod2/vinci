@@ -16,7 +16,7 @@
 				{% include 'vinci/_journal.html' %}
 			{% endif %}
 		{% empty %}
-            <article class="entry container empty">No entries.</article>
+		<article class="entry container empty"><div>No {% if section %}{{ section }} {% endif %}entries. Not a single one.</div><span class="add-entry">Add an entry</span></article>
 		{% endfor %}
 	</section>
 	{% endblock entries %}

@@ -43,7 +43,9 @@
 		{% block menu %}
 		<nav role="menu">
 			<div class="group">
-			+, Search, Quickjump
+				<span class="add-entry">Add Entry</span>
+				<span class="show-search">Search</span>
+				<span class="show-quickjump">Quickjump</span>
 			</div>
 
 			<div class="group">
@@ -59,6 +61,7 @@
 
 			<div class="group system">
 				<a href="{% url 'notebooks_list' %}">Home</a></li>
+				<span class="add-notebook">Add Notebook</span>
 				<a href="">Preferences</a>
 				<a href="{% url 'logout' %}">Logout</a>
 			</div>
@@ -181,8 +184,13 @@
 					</div>
 
 					<div class="group">
-						<label>h</label>
-						<span>Home (All Notebooks)</span>
+						<label>g m</label>
+						<span>Toggle menu</span>
+					</div>
+
+					<div class="group">
+						<label>a</label>
+						<span>Add entry</span>
 					</div>
 
 					<div class="group">
@@ -208,6 +216,11 @@
 
 				<div class="column">
 					<div class="group">
+						<label>C-/</label>
+						<span>Quickjump</span>
+					</div>
+
+					<div class="group">
 						<label>g l</label>
 						<span>Logs</span>
 					</div>
@@ -228,8 +241,8 @@
 					</div>
 
 					<div class="group">
-						<label>a</label>
-						<span>Add entry</span>
+						<label>g h</label>
+						<span>Home (All Notebooks)</span>
 					</div>
 
 					<div class="group">

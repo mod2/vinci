@@ -271,11 +271,30 @@ nav[role=menu] a:hover {
 	color: #fff;
 }
 
+nav[role=menu] span {
+	color: #fff;
+	cursor: pointer;
+	display: block;
+	padding: .3em 25px;
+	text-align: right;
+	text-decoration: none;
+}
+
+nav[role=menu] span:hover {
+	background: hsl(0, 0%, 21%);
+	color: #fff;
+}
+
 nav[role=menu] .group + .group {
 	margin-top: 1.45em;
 }
 
 nav[role=menu] .group.system a {
+	color: hsl(205, 41%, 81%);
+	font-size: .9em;
+}
+
+nav[role=menu] .group.system span {
 	color: hsl(205, 41%, 81%);
 	font-size: .9em;
 }
@@ -305,6 +324,7 @@ body.active-nav #page {
 }
 
 body.active-nav #page .mask {
+	background: rgba(0, 0, 0, 0.5);
 	bottom: 0;
 	cursor: pointer;
 	left: 0;
@@ -618,8 +638,24 @@ body.active-nav #page .mask {
 }
 
 #page #content .entry.empty {
+	background: hsl(0, 100%, 100%);
+	color: hsl(0, 0%, 76%);
 	padding-bottom: 25px;
 	padding-top: 25px;
+}
+
+#page #content .entry.empty span.add-entry {
+	background: hsl(109, 35%, 55%);
+	border-radius: 3px;
+	color: #fff;
+	cursor: pointer;
+	display: inline-block;
+	margin-top: 15px;
+	padding: 3px 9px 4px;
+}
+
+#page #content .entry.empty span.add-entry:hover {
+	background: hsl(0, 0%, 30%);
 }
 
 #page #content .entry p:first-child,
@@ -1692,6 +1728,7 @@ form.login input.button:hover {
 		position: absolute;
 	}
 
+	/*
 	nav[role=menu] {
 		-moz-transition: none;
 		-o-transition: none;
@@ -1711,6 +1748,7 @@ form.login input.button:hover {
 		-webkit-transition: none;
 		transition: none;
 	}
+	*/
 
 	#page #content .entry .metadata {
 		width: 200px;

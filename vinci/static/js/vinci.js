@@ -31,15 +31,25 @@ $.ajaxSetup({
 
 $(document).ready(function() {
 	// Menu code
-	$("a.menu").on("click touchstart", function(e) {
+	function _toggleMenu() {
 		$("body").toggleClass("active-nav");
+	}
 
+	function _showMenu() {
+		$("body").addClass("active-nav");
+	}
+
+	function _hideMenu() {
+		$("body").removeClass("active-nav");
+	}
+
+	$("a.menu").on("click touchstart", function() {
+		_toggleMenu();
 		return false;
 	});
 
 	$(".mask").on("click touchstart", function(e) {
-		$("body").removeClass("active-nav");
-
+		_hideMenu();
 		return false;
 	});
 
@@ -88,6 +98,8 @@ $(document).ready(function() {
 
 	// Keyboard shortcuts
 	// --------------------------------------------------
+
+	Mousetrap.bind('g m', _toggleMenu);
 
 	Mousetrap.bind('/', _focusSearch);
 	Mousetrap.bind('mod+/', _focusQuickJump);
@@ -841,6 +853,29 @@ $(document).ready(function() {
 	Mousetrap.bind('a', _focusAddEntry);
 	var field = document.querySelector('#add-entry textarea');
 	Mousetrap(field).bind('esc', _unfocusAddEntry);
+
+	$("span.add-entry").on("click", function() {
+		_hideMenu();
+		_focusAddEntry();
+	});
+
+	// Search (menu)
+
+	$("span.show-search").on("click", function() {
+		_hideMenu();
+		_focusSearch();
+	});
+
+	$("span.show-quickjump").on("click", function() {
+		_hideMenu();
+		_focusQuickJump();
+	});
+
+	$("span.add-notebook").on("click", function() {
+		_hideMenu();
+		_focusAddNotebookTray();
+	});
+
 
 
 	/*

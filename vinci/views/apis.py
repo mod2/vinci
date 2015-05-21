@@ -34,7 +34,7 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
     # Entries
     - **GET** List the entries for the current notebook.
     - **POST** Create a new entry attached to the current notebook.
-    - **PUT** Edit the current notebooks name or status.
+    - **PUT** Edit the current notebook's name, status, group, or sections.
     - **DELETE** Delete the current notebook (sets the status to deleted).
     """
     serializer_class = EntrySerializer
@@ -60,19 +60,48 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
 
     def put(self, request, notebook_slug):
         """Update an existing Notebook."""
+
         notebook = get_object_or_404(Notebook, slug=notebook_slug)
+
         name = request.data.get('name')
         status = request.data.get('status')
-        changed = False
+        group = request.data.get('group')
+        default_section = request.data.get('default_section')
+        display_logs = request.data.get('display_logs')
+        display_notes = request.data.get('display_notes')
+        display_pages = request.data.get('display_pages')
+        display_journals = request.data.get('display_journals')
+
         if name is not None:
             notebook.name = name
-            changed = True
+
         if status is not None and status in Notebook.STATUS:
             notebook.status = status
-            changed = True
-        if changed:
-            notebook.save()
+
+        if group is not None:
+            new_group = Group.objects.get(name=group)
+            if new_group:
+                notebook.group = new_group
+
+        if default_section is not None:
+            notebook.default_section = default_section
+
+        if display_logs is not None:
+            notebook.display_logs = display_logs
+
+        if display_notes is not None:
+            notebook.display_notes = display_notes
+
+        if display_pages is not None:
+            notebook.display_pages = display_pages
+
+        if display_journals is not None:
+            notebook.display_journals = display_journals
+
+        notebook.save()
+
         nb = NotebookSerializer(notebook, context={'request': request})
+
         return APIResponse(nb.data)
 
     def delete(self, request, notebook_slug):
@@ -189,6 +218,90 @@ class NotebookListAPIView(ListCreateAPIView):
         notebook = Notebook.objects.create(**data)
         n = NotebookSerializer(notebook, context={'request': request})
         return APIResponse(n.data)
+
+
+class NotebookDetailAPIView(APIView):
+    """
+    # Notebook
+    A single notebook detail
+    """
+    serializer_class = NotebookSerializer 
+
+    def get_queryset(self):
+        slug = self.kwargs.get('slug')
+        qs = super().get_queryset()
+
+        if slug is None and len(self.args) > 1:
+            slug = self.args[1]
+        elif slug is None:
+            slug = ''
+        slug = slug.strip()
+        if slug:
+            try:
+                qs = qs.from_slug(slug)
+            except Notebook.DoesNotExist:
+                qs = None
+
+        return qs
+
+    get_notebook_for_request = get_queryset
+
+    def get(self, request, *args, **kwargs):
+        notebook = self.get_notebook_for_request()
+        if notebook:
+            return APIResponse(self.serializer_class(notebook).data)
+        else:
+            return APIResponseNotFound('No notebook found.')
+
+    def put(self, request, *args, **kwargs):
+        """Update an existing Notebook."""
+        notebook = self.get_notebook_for_request()
+        name = request.data.get('name', '')
+        status = request.data.get('status', '')
+        group = request.data.get('group', '')
+        default_section = request.data.get('default_section', '')
+        display_logs = request.data.get('display_logs', '')
+        display_notes = request.data.get('display_notes', '')
+        display_pages = request.data.get('display_pages', '')
+        display_journals = request.data.get('display_journals', '')
+
+        if notebook:
+            if name != '':
+                notebook.name = name
+
+            if status != '':
+                notebook.status = status
+
+            if group != '':
+                new_group = Group.objects.get(name=group)
+                if new_group:
+                    notebook.group = new_group
+
+            if default_section != '':
+                notebook.default_section = default_section
+
+            notebook.display_logs = display_logs
+            notebook.display_notes = display_notes
+            notebook.display_pages = display_pages
+            notebook.display_journals = display_journals
+
+            notebook.save()
+
+            si.update_index(notebook)
+
+            n = self.serializer_class(notebook).data
+            return APIResponse(n)
+        else:
+            return APIResponseNotFound('No notebook found.')
+
+    def delete(self, request, *args, **kwargs):
+        notebook = self.get_notebook_for_request()
+        if notebook:
+            n = self.serializer_class(notebook).data
+            notebook.delete()
+            return APIResponse(n)
+        else:
+            return APIResponseNotFound('No notebook found.')
 
 
 def append_today(request, notebook_slug):
@@ -318,6 +431,7 @@ def add_entry(request, notebook_slug):
     else:
         # Return JSON response
         return JsonResponse(response)
+
 
 def add_revision(request, notebook_slug, slug):
     """ Adds a new revision to an entry. """

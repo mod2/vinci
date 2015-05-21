@@ -1562,8 +1562,12 @@ form.login input.button:hover {
 }
 
 #settings span.type.selected {
-	background: hsl(210, 13%, 46%);
+	background: hsl(210, 66%, 39%);
 	color: #fff;
+}
+
+#settings span.type.selected:hover {
+	background: hsl(210, 3%, 26%);
 }
 
 

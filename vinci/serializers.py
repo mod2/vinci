@@ -10,7 +10,7 @@ class NotebookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Notebook
-        fields = ('name', 'slug', 'status', 'author', 'entries')
+        fields = ('name', 'slug', 'status', 'group', 'default_section', 'display_logs', 'display_notes', 'display_pages', 'display_journals', 'author', 'entries')
 
 
 class RevisionField(serializers.CharField):

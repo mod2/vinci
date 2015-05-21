@@ -883,8 +883,55 @@ $(document).ready(function() {
 	// Notebook settings page
 	// --------------------------------------------------
 	
-	$("#settings span.type").on("click", function() {
-		$(this).toggleClass("selected");Class("selected");
+	$("#settings #section-config span.type").on("click", function() {
+		var url = $("#settings").attr("data-uri");
+		var button = $(this);
+
+		var field = $(this).attr("data-field");
+		var status = !$(this).hasClass("selected"); // Inverse
+
+		var data = {};
+		data[field] = status;
+
+		$.ajax({
+			url: url,
+			method: 'PUT',
+			contentType: 'application/json',
+			data: JSON.stringify(data),
+			success: function(data) {
+				// Toggle section
+				button.toggleClass("selected");
+			},
+			error: function(data) {
+				console.log("error", data);
+			},
+		});
+	});
+
+
+	$("#settings #default-section span.type").on("click", function() {
+		var url = $("#settings").attr("data-uri");
+		var button = $(this);
+
+		var value = $(this).attr("data-value");
+		var data = {
+			'default_section': value,
+		};
+
+		$.ajax({
+			url: url,
+			method: 'PUT',
+			contentType: 'application/json',
+			data: JSON.stringify(data),
+			success: function(data) {
+				// Change default section
+				button.siblings(".selected").removeClass("selected");
+				button.addClass("selected");
+			},
+			error: function(data) {
+				console.log("error", data);
+			},
+		});
 	});
 
 

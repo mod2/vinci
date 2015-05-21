@@ -1,23 +1,23 @@
 {% extends 'vinci/_base.html' %}
 
 {% block content %}
-<section id="settings">
+<section id="settings" data-uri="{% url 'api_entry_list' notebook.slug %}">
 	<h2 class="container">Notebook Settings</h2>
 
 	<h3 class="container">Sections</h3>
-	<div id="sections-enabling" class="group container">
-		<span class="type{% if notebook.display_logs %} selected{% endif %}" value="log">Logs</span>
-		<span class="type{% if notebook.display_notes %} selected{% endif %}" value="note">Notes</span>
-		<span class="type{% if notebook.display_notes %} selected{% endif %}" value="page">Pages</span>
-		<span class="type{% if notebook.display_journals %} selected{% endif %}" value="journal">Journals</span>
+	<div id="section-config" class="group container">
+		<span class="type{% if notebook.display_logs %} selected{% endif %}" data-field="display_logs">Logs</span>
+		<span class="type{% if notebook.display_notes %} selected{% endif %}" data-field="display_notes">Notes</span>
+		<span class="type{% if notebook.display_pages %} selected{% endif %}" data-field="display_pages">Pages</span>
+		<span class="type{% if notebook.display_journals %} selected{% endif %}" data-field="display_journals">Journals</span>
 	</div>
 
 	<h3 class="container">Default Section</h3>
 	<div id="default-section" class="group container">
-		<span class="type{% if notebook.default_section == 'log' %} selected{% endif %}" value="log">Logs</span>
-		<span class="type{% if notebook.default_section == 'note' %} selected{% endif %}" value="note">Notes</span>
-		<span class="type{% if notebook.default_section == 'page' %} selected{% endif %}" value="page">Pages</span>
-		<span class="type{% if notebook.default_section == 'journal' %} selected{% endif %}" value="journal">Journals</span>
+		<span class="type{% if notebook.default_section == 'log' %} selected{% endif %}" data-value="log">Logs</span>
+		<span class="type{% if notebook.default_section == 'note' %} selected{% endif %}" data-value="note">Notes</span>
+		<span class="type{% if notebook.default_section == 'page' %} selected{% endif %}" data-value="page">Pages</span>
+		<span class="type{% if notebook.default_section == 'journal' %} selected{% endif %}" data-value="journal">Journals</span>
 	</div>
 </section>
 {% endblock content %}

@@ -96,7 +96,7 @@ class Group(models.Model):
         return self.name
 
     def active_notebooks(self):
-        return self.notebooks.active()
+        return self.notebooks.active().order_by('name')
 
     class Meta:
         ordering = ['name']

@@ -71,9 +71,12 @@ def entry_detail(request, notebook_slug, section, entry_slug):
     except Entry.DoesNotExist:
         return HttpResponseNotFound('Entry does not exist.')
 
+    notebooks = Notebook.objects.filter(status='active').order_by('name')
+
     context = {
         'title': entry.notebook.name,
         'notebook': entry.notebook,
+        'notebooks': notebooks,
         'entry': entry,
         'section': section,
         'scope': 'section',

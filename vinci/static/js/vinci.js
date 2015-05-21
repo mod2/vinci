@@ -716,7 +716,9 @@ $(document).ready(function() {
 						originalBox.html(currentText);
 
 						if (currentTitle != originalTitle) {
-							originalBox.siblings("input[name=original_title]").val(currentTitle);
+							// Redirect to new page
+							var newUrl = "/" + currentNotebook + "/" + currentType + "/" + entryId + "/";
+							window.location.href = newUrl;
 						}
 
 						if (currentTags != originalTags) {

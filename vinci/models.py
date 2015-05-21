@@ -8,22 +8,30 @@ from taggit.managers import TaggableManager
 
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
+ENTRY_TYPE = Choices(
+    ('log', 'Log'),
+    ('note', 'Note'),
+    ('page', 'Page'),
+    ('journal', 'Journal'),
+)
 
-class NotebookManager(models.Manager):
+
+class StatusQueries(models.QuerySet):
     def active(self):
-        qs = self.get_queryset()
-        return qs.filter(status='active')
+        return self.filter(status='active')
 
     def archived(self):
-        qs = self.get_queryset()
-        return qs.filter(status='archived')
+        return self.filter(status='archived')
 
     def deleted(self):
-        qs = self.get_queryset()
-        return qs.filter(status='deleted')
+        return self.filter(status='deleted')
 
 
-class EntryQuerySet(models.QuerySet):
+class NotebookManager(StatusQueries, models.QuerySet):
+    pass
+
+
+class EntryQuerySet(StatusQueries, models.QuerySet):
     def from_slug(self, slug, notebook_slug=None):
         # See if it's a post ID or a page slug
         try:
@@ -109,13 +117,6 @@ class Notebook(models.Model):
         ('deleted', 'Deleted'),
     )
 
-    ENTRY_TYPE = Choices(
-        ('log', 'Log'),
-        ('note', 'Note'),
-        ('page', 'Page'),
-        ('journal', 'Journal'),
-    )
-
     name = models.CharField(max_length=100)
     slug = AutoSlugField(populate_from='name', unique=True, editable=True)
     status = models.CharField(max_length=20,
@@ -124,7 +125,7 @@ class Notebook(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL,
                                related_name='notebooks')
     group = models.ForeignKey(Group, related_name="notebooks", default=None,
-                              null=True)
+                              null=True, blank=True)
 
     default_section = models.CharField(max_length=20,
                                        default=ENTRY_TYPE.log,
@@ -134,7 +135,7 @@ class Notebook(models.Model):
     display_pages = models.BooleanField(default=True)
     display_journals = models.BooleanField(default=False)
 
-    objects = NotebookManager()
+    objects = NotebookManager.as_manager()
 
     def __str__(self):
         return "{0.name}".format(self)
@@ -142,12 +143,15 @@ class Notebook(models.Model):
     def get_absolute_url(self):
         return resolve_url('notebook', self.slug)
 
+    def delete(self):
+        self.status = self.STATUS.deleted
+        self.save()
+
 
 class Entry(models.Model):
-    ENTRY_TYPE = Choices(
-        ('log', 'Log'),
-        ('note', 'Note'),
-        ('page', 'Page'),
+    STATUS = Choices(
+        ('active', 'Active'),
+        ('deleted', 'Deleted'),
     )
 
     title = models.CharField(max_length=100, blank=True, default='')
@@ -157,9 +161,12 @@ class Entry(models.Model):
     entry_type = models.CharField(max_length=20,
                                   default=ENTRY_TYPE.log,
                                   choices=ENTRY_TYPE)
+    status = models.CharField(max_length=20,
+                              default=STATUS.active,
+                              choices=STATUS)
 
     objects = EntryQuerySet.as_manager()
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     @property
     def current_revision(self):
@@ -225,6 +232,10 @@ class Entry(models.Model):
         if self.title:
             self.slug = slugify(self.title)
         super(Entry, self).save()
+
+    def delete(self):
+        self.status = self.STATUS.deleted
+        self.save()
 
     class Meta:
         ordering = ['-date']

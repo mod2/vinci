@@ -114,7 +114,7 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
         notebook = get_object_or_404(Notebook, slug=notebook_slug)
         notebook.status = notebook.STATUS.deleted
         nb = NotebookSerializer(notebook, context={'request': request})
-        notebook.save()
+        notebook.delete()
         return APIResponse(nb.data)
 
 
@@ -184,6 +184,7 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
         if entry:
             e = self.serializer_class(entry).data
             entry.delete()
+            si.delete_from_index(entry)
             return APIResponse(e)
         else:
             return APIResponseNotFound('No entry found.')
@@ -230,7 +231,7 @@ class NotebookDetailAPIView(APIView):
     # Notebook
     A single notebook detail
     """
-    serializer_class = NotebookSerializer 
+    serializer_class = NotebookSerializer
 
     def get_queryset(self):
         slug = self.kwargs.get('slug')

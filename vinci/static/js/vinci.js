@@ -62,7 +62,24 @@ $(document).ready(function() {
 		// Unfocus the search box
 		$("#search").slideUp(75, function() {
 			$("#search input").val('').blur();
-			$("#search .quickjump").html('').hide();
+			$("#search").removeClass("quickjump");
+			$("#search .results").html('').hide();
+		});
+
+		return false;
+	}
+
+
+	// Quickjump
+	// --------------------------------------------------
+
+	function _focusQuickJump() {
+		// Display and focus on the search with quickjump enabled
+		$("#search input[type=text]").val('');
+		$("#search").addClass("quickjump");
+
+		$("#search").slideDown(75, function() {
+			$("#search input[type=text]").focus();
 		});
 
 		return false;
@@ -73,23 +90,22 @@ $(document).ready(function() {
 	// --------------------------------------------------
 
 	Mousetrap.bind('/', _focusSearch);
+	Mousetrap.bind('mod+/', _focusQuickJump);
+
 	var field = document.querySelector('#search input[type=text]');
 	Mousetrap(field).bind('esc', _unfocusSearch);
-	Mousetrap(field).bind('mod+return', function() {
-		_executeSearch(false);
-		return false;
-	});
-	$("#search").on('submit', function() {
-		_executeSearch(true);
-		return false;
-	});
+	// _unfocusSearch also handles clearing out the quickjump
 
-	function _executeSearch(quickJump) {
+	$("#search").on('submit', _executeSearch);
+
+	function _executeSearch() {
 		var url = '';
 
-		if (quickJump && $("#search .quickjump a").length > 0) {
+		var quickJump = $("#search").hasClass("quickjump");
+
+		if (quickJump && $("#search .results a").length > 0) {
 			// Go to the first one
-			var result = $("#search .quickjump a:first-child");
+			var result = $("#search .results a:first-child");
 			var url = result.attr("href");
 		} else if ($("#search").hasClass("all") && $(".notebooks .notebook:visible").length == 1) {
 			// If we're on the all notebooks page and there's only one notebook selected, choose it
@@ -115,10 +131,10 @@ $(document).ready(function() {
 	}
 
 	// Quickjump
-	$("#search").on('input', function() {
-		// On typing, call the 
-		var url = $("#search").attr("data-quickjump-uri");
-		var query = $("#search input[type=text]").val().trim();
+	$("#page").on("input", "#search.quickjump", function() {
+		// On typing, call the API
+		var url = $("#search.quickjump").attr("data-quickjump-uri");
+		var query = $("#search.quickjump input[type=text]").val().trim();
 
 		if (query) {
 			$.ajax({
@@ -147,9 +163,9 @@ $(document).ready(function() {
 					}
 
 					if (html) {
-						$("#search .quickjump").html(html).show();
+						$("#search .results").html(html).show();
 					} else {
-						$("#search .quickjump").html(html).hide();
+						$("#search .results").html(html).hide();
 					}
 				},
 				error: function(data) {
@@ -157,15 +173,15 @@ $(document).ready(function() {
 				},
 			});
 		} else {
-			// Hide quickjump
-			$("#search .quickjump").html('').hide();
+			// Hide quickjump results
+			$("#search .results").html('').hide();
 		}
 	});
 
 	function _followQuickJump() {
-		if ($("#search .quickjump a").length > 0) {
+		if ($("#search .results a").length > 0) {
 			// Go to the first one
-			var result = $("#search .quickjump a:first-child").attr("href");
+			var result = $("#search .results a:first-child").attr("href");
 
 			window.location.href = result;
 		}

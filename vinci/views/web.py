@@ -175,6 +175,7 @@ def _search(request, query, notebook=None, section=None):
         'section': section,
         'notebooks': notebooks,
         'page_type': 'list',
+        'search': True,
     }
 
     if notebook:

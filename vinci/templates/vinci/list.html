@@ -4,7 +4,7 @@
 	{% block entries %}
 	<section class="entries">
 		{% for entry in entries %}
-			{% if total %}{# a search #}
+			{% if search %}
 				{% include 'vinci/_search.html' %}
 			{% elif entry.entry_type == 'log' %}
 				{% include 'vinci/_log.html' %}

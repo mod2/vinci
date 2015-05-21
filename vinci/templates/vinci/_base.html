@@ -148,7 +148,7 @@
 			<form id="search" data-search-all-uri="{% url 'search_all' %}"{% if section %} data-search-section-uri="{% url 'search_notebook_section' notebook.slug section %}"{% endif %}{% if notebook %}data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}"{% endif %} data-quickjump-uri="{% url 'quick_jump' %}" class="{{ page_type }}">
 				<div class="container">
 					<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
-					<section class="quickjump"></section>
+					<section class="results"></section>
 				</div>
 			</form>
 			{% endblock search %}

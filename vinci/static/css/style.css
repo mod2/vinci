@@ -344,12 +344,12 @@ body.active-nav #page .mask {
 	outline: none;
 }
 
-#search .quickjump {
+#search .results {
 	display: none;
 	padding-bottom: 15px;
 }
 
-#search .quickjump a {
+#search .results a {
 	background: hsl(21, 18%, 35%);
 	border-radius: 3px;
 	color: #fff;
@@ -360,20 +360,20 @@ body.active-nav #page .mask {
 	text-decoration: none;
 }
 
-#search .quickjump a.page {
+#search .results a.page {
 	background: hsl(75, 18%, 32%);
 }
 
-#search .quickjump a.tag {
+#search .results a.tag {
 	background: hsl(315, 18%, 29%);
 }
 
-#search .quickjump a span {
+#search .results a span {
 	color: rgba(255, 255, 255, 0.5);
 	font-size: .8em;
 }
 
-#search .quickjump a:hover {
+#search .results a:hover {
 	background: hsl(0, 0%, 30%);
 }
 

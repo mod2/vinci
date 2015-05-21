@@ -94,13 +94,11 @@ def revision_detail(request, notebook_slug, section, entry_slug, revision_id):
 
 @login_required
 def notebooks_list(request):
-    notebooks = Notebook.objects.active()
     groups = Group.objects.all()
-    ungrouped_notebooks = Notebook.objects.filter(group__isnull=True)
+    ungrouped_notebooks = Notebook.objects.filter(group__isnull=True).order_by('name')
 
     context = {
         'title': 'All Notebooks',
-        'notebooks': notebooks,
         'groups': groups,
         'ungrouped_notebooks': ungrouped_notebooks,
         'page_type': 'all',

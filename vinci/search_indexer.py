@@ -117,21 +117,23 @@ def search(query_string, page=1, results_per_page=10, sort_order='relevance',
 
     with ix.searcher() as searcher:
         other_args = {}
+
         if sort_order == '-date':
             other_args['sortedby'] = 'date'
             other_args['reverse'] = True
         elif sort_order == 'date':
             other_args['sortedby'] = 'date'
+
         results = searcher.search_page(query,
                                        page,
-                                       pagelen=results_per_page,
+                                       pagelen=10000000,
                                        **other_args)
         entry_ids = {int(entry['id']): (entry.rank, hi.highlight_hit(entry,
                                                                      'content'))
                      for entry in results}
-
-    num_results = len(results)
-    num_pages = math.ceil(len(results) / float(results_per_page))
+    
+    #num_results = len(results)
+    #num_pages = math.ceil(len(results) / float(results_per_page))
 
     ids = [id_ for id_ in entry_ids.keys()]
     entries = Entry.objects.filter(pk__in=ids)
@@ -142,4 +144,4 @@ def search(query_string, page=1, results_per_page=10, sort_order='relevance',
         results.append((rank, entry))
     results.sort()
 
-    return [entry for __, entry in results], num_results, num_pages
+    return [entry for __, entry in results]#, num_results, num_pages

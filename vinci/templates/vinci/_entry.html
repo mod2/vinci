@@ -13,7 +13,7 @@
 
 		{% block entry_metadata_tags %}
 		{% if entry.tags.all|length > 0 %}
-		<ul class="tags">{% for tag in entry.tags.all %}<li><a href="url_for('index') ~ entry.notebook.slug ~ '/tag/' ~ tag">#{{ tag }}</a></li>{% endfor %}</ul>
+		<ul class="tags">{% for tag in entry.tags.all %}<li><a href="{% url 'search_notebook_tags' notebook.slug tag %}">#{{ tag }}</a></li>{% endfor %}</ul>
 		{% endif %}
 		{% endblock entry_metadata_tags %}
 

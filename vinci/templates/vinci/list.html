@@ -24,7 +24,7 @@
 
 {% block nav %}
 <nav role="pagination" class="container">
-	{% if entries.has_prev %}<a class="prev" href="?page={{ entries.previous_page_number }}">Prev</a>{% endif %}
-	{% if entries.has_next %}<a class="next" href="?page={{ entries.next_page_number }}">Next</a>{% endif %}
+	{% if entries.has_prev %}<a class="prev" href="?{% if query %}q={{ query }}&{% endif %}page={{ entries.previous_page_number }}">Prev</a>{% endif %}
+	{% if entries.has_next %}<a class="next" href="?{% if query %}q={{ query }}&{% endif %}page={{ entries.next_page_number }}">Next</a>{% endif %}
 </nav>
 {% endblock nav %}

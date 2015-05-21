@@ -175,7 +175,8 @@ def _search(request, query, notebook=None, section=None):
         if notebook:
             search_params['notebook'] = notebook
 
-        entries, __, __ = si.search(**search_params)
+        #entries, __, __ = si.search(**search_params)
+        entries = si.search(**search_params)
         entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE)
         total = entries.count
         entries = entries.page(page)

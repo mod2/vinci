@@ -178,12 +178,20 @@ class Entry(models.Model):
 
     def html(self):
         content = self.content
-        for plugin_name in settings.VINCI_PLUGINS:
-            plugins = __import__("plugins", fromlist=[plugin_name])
-            plugin = getattr(plugins, plugin_name)
-            content = plugin.process(content,
-                                     self,
-                                     self.notebook.get_absolute_url())
+
+        # Don't run notes through the plugins
+        if self.entry_type == Entry.ENTRY_TYPE.note:
+            content = content.replace('\n', '<br>')
+            content = content.replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
+            content = content.replace('    ', '&nbsp;&nbsp;&nbsp;&nbsp;')
+        else:
+            for plugin_name in settings.VINCI_PLUGINS:
+                plugins = __import__("plugins", fromlist=[plugin_name])
+                plugin = getattr(plugins, plugin_name)
+                content = plugin.process(content,
+                                        self,
+                                        self.notebook.get_absolute_url())
+
         return content
 
     def get_absolute_url(self):
@@ -243,12 +251,20 @@ class Revision(models.Model):
 
     def html(self):
         content = self.content
-        for plugin_name in settings.VINCI_PLUGINS:
-            plugins = __import__("plugins", fromlist=[plugin_name])
-            plugin = getattr(plugins, plugin_name)
-            content = plugin.process(content,
-                                     self.entry,
-                                     self.entry.notebook.get_absolute_url())
+
+        # Don't run notes through the plugins
+        if self.entry_type == Entry.ENTRY_TYPE.note:
+            content = content.replace('\n', '<br>')
+            content = content.replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
+            content = content.replace('    ', '&nbsp;&nbsp;&nbsp;&nbsp;')
+        else:
+            for plugin_name in settings.VINCI_PLUGINS:
+                plugins = __import__("plugins", fromlist=[plugin_name])
+                plugin = getattr(plugins, plugin_name)
+                content = plugin.process(content,
+                                        self.entry,
+                                        self.entry.notebook.get_absolute_url())
+
         return content
 
     def __str__(self):

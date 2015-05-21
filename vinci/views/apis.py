@@ -333,6 +333,9 @@ def append_today(request, notebook_slug):
         # Notebook
         notebook = Notebook.objects.get(slug=notebook_slug)
 
+        if section == '':
+            section = notebook.default_section
+
         # Get first entry for today
         results = Entry.objects.filter(notebook=notebook,
                                        entry_type=section,
@@ -406,6 +409,9 @@ def add_entry(request, notebook_slug):
     try:
         # Notebook
         notebook = Notebook.objects.get(slug=notebook_slug)
+
+        if section == '':
+            section = notebook.default_section
 
         kwargs = {'content': content.strip(),
                   'author': notebook.author,

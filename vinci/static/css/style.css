@@ -536,6 +536,14 @@ body.active-nav #page .mask {
 	background: hsl(75, 39%, 43%);
 }
 
+#sections.journal {
+	background: hsl(342, 37%, 37%);
+}
+
+#sections.journal .container {
+	background: hsl(342, 39%, 43%);
+}
+
 #sections a {
 	display: none;
 }
@@ -705,11 +713,17 @@ body.active-nav #page .mask {
 
 #page #content .entry .metadata a.date {
 	color: #ccc;
+	display: block;
 	text-decoration: none;
 }
 
 #page #content .entry .metadata a.date date {
 	color: #aaa;
+}
+
+#page #content .entry .metadata a.date date span {
+	display: block;
+	font-size: .9em;
 }
 
 #page #content .entry .metadata a.date time {
@@ -1400,6 +1414,20 @@ form.login input.button:hover {
 }
 
 
+/* Add entry UI */
+/* -------------------------------------------------- */
+
+#page #content .entry.journal .metadata a.date date {
+	font-size: 1.2em;
+}
+
+#page #content .entry.journal .metadata a.date date span {
+	display: inline-block;
+	font-style: italic;
+	margin-left: 15px;
+}
+
+
 /* Media queries */
 /* -------------------------------------------------- */
 
@@ -1472,6 +1500,7 @@ form.login input.button:hover {
 	#page #content .entry .metadata a.date date {
 		display: block;
 		line-height: 1.2em;
+		margin-top: 2px;
 	}
 
 	#page #content .entry .metadata a.date time {
@@ -1558,6 +1587,17 @@ form.login input.button:hover {
 	#add-entry .group {
 		padding-left: 65px;
 		padding-right: 65px;
+	}
+
+	#page #content .entry.journal .metadata a.date date {
+		font-size: 1.1em;
+	}
+
+	#page #content .entry.journal .metadata a.date date span {
+		display: block;
+		font-size: .8em;
+		margin-left: 0;
+		margin-top: 2px;
 	}
 }
 

@@ -162,6 +162,8 @@ def _search(request, query, notebook=None, section=None):
         total = entries.count
         entries = entries.page(page)
 
+        notebooks = Notebook.objects.filter(status='active').order_by('name')
+
         # Convert tags in queries back to hashtag syntax
         query = query.replace('tag:', '#')
 
@@ -171,6 +173,7 @@ def _search(request, query, notebook=None, section=None):
         'entries': entries,
         'total': total,
         'section': section,
+        'notebooks': notebooks,
         'page_type': 'list',
     }
 

@@ -567,6 +567,10 @@ body.active-nav #page .mask {
 	transition: max-height 5s cubic-bezier(0.2, 0.3, 0.25, 0.9);
 }
 
+#sections.nosection {
+	display: none;
+}
+
 #sections.log {
 	background: hsl(210, 37%, 37%);
 }

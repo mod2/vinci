@@ -134,19 +134,22 @@ $(document).ready(function() {
 			// Go to the first one
 			var result = $("#search .results a:first-child");
 			var url = result.attr("href");
-		} else if ($("#search").hasClass("all") && $(".notebooks .notebook:visible").length == 1) {
-			// If we're on the all notebooks page and there's only one notebook selected, choose it
-			var notebook = $(".notebooks .notebook:visible");
-			var url = notebook.attr("data-uri");
 		} else {
-			var searchSectionURI = $("#search").attr("data-search-section-uri");
+			var scope = $("#search .scope span.selected").attr("data-value");
+			var scopes = {
+				'all': $("#search").attr("data-search-all-uri"),
+				'notebook': $("#search").attr("data-search-notebook-uri"),
+				'section': $("#search").attr("data-search-section-uri"),
+			};
+
+			var url = scopes[scope];
 			var query = $("#search input[type=text]").val().trim();
 
 			if (query.length > 0) {
 				// Search
 				var q = query.replace(/#(\w+)/g, 'tag:$1');
 
-				var url = searchSectionURI + '?q=' + q;
+				url = url + '?q=' + q;
 			}
 		}
 

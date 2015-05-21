@@ -91,11 +91,9 @@
 			{% endblock header %}
 
 			{% block sections %}
-			{% if section %}
-			<div id="sections" class="{{ section }}" {% if notebook.display_logs %}data-log-uri="{% url 'notebook_section' notebook.slug 'log' %}"{% endif %} {% if notebook.display_notes %}data-note-uri="{% url 'notebook_section' notebook.slug 'note' %}"{% endif %} {% if notebook.display_pages %}data-page-uri="{% url 'notebook_section' notebook.slug 'page' %}"{% endif %}>
+			<div id="sections" class="{% if section %}{{ section }}{% else %}nosection{% endif %}" {% if notebook.display_logs %}data-log-uri="{% url 'notebook_section' notebook.slug 'log' %}"{% endif %} {% if notebook.display_notes %}data-note-uri="{% url 'notebook_section' notebook.slug 'note' %}"{% endif %} {% if notebook.display_pages %}data-page-uri="{% url 'notebook_section' notebook.slug 'page' %}"{% endif %}>
 				<div class="container"></div>
 			</div>
-			{% endif %}
 			{% endblock sections %}
 
 			{% block add_notebook %}
@@ -159,7 +157,7 @@
 			{% endblock add_entry %}
 
 			{% block search %}
-			<form id="search" data-search-all-uri="{% url 'search_all' %}"{% if section %} data-search-section-uri="{% url 'search_notebook_section' notebook.slug section %}"{% endif %}{% if notebook %}data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}"{% endif %} data-quickjump-uri="{% url 'quick_jump' %}" class="{{ page_type }}">
+			<form id="search" data-search-all-uri="{% url 'search_all' %}"{% if notebook and section %} data-search-section-uri="{% url 'search_notebook_section' notebook.slug section %}"{% endif %}{% if notebook %}data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}"{% endif %} data-quickjump-uri="{% url 'quick_jump' %}" class="{{ page_type }}">
 				<div class="container">
 					<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
 					<section class="scope">

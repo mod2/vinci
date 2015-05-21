@@ -905,6 +905,7 @@ $(document).ready(function() {
 			data: JSON.stringify(data),
 			success: function(data) {
 				field.removeClass("dirty");
+				$("#settings input.rename-notebook").blur();
 			},
 			error: function(data) {
 				console.log("error", data);
@@ -1012,6 +1013,81 @@ $(document).ready(function() {
 		});
 	});
 
+
+	// All Notebooks page
+	// --------------------------------------------------
+
+	// Rename notebook
+
+	$(".notebooks .notebook span.rename-notebook").on("click", function() {
+		var notebook = $(this).parents(".notebook");
+		var url = notebook.attr("data-api-uri");
+		var field = notebook.find("input[name=notebook-name]");
+		var value = field.val().trim();
+
+		var data = {
+			'name': value,
+		};
+
+		$.ajax({
+			url: url,
+			method: 'PUT',
+			contentType: 'application/json',
+			data: JSON.stringify(data),
+			success: function(data) {
+				notebook.find("h2.notebook-name").html(value);
+				hideNotebookEditPanel(notebook);
+			},
+			error: function(data) {
+				console.log("error", data);
+			},
+		});
+	});
+
+	// Archive notebook
+
+	$(".notebooks .notebook span.archive-notebook").on("click", function() {
+		var notebook = $(this).parents(".notebook");
+		var url = notebook.attr("data-api-uri");
+
+		var data = {
+			'status': 'archived',
+		};
+
+		$.ajax({
+			url: url,
+			method: 'PUT',
+			contentType: 'application/json',
+			data: JSON.stringify(data),
+			success: function(data) {
+				hideNotebookEditPanel(notebook);
+				notebook.slideUp(75);
+			},
+			error: function(data) {
+				console.log("error", data);
+			},
+		});
+	});
+
+	// Delete notebook
+
+	$(".notebooks .notebook span.delete").on("click", function() {
+		var notebook = $(this).parents(".notebook");
+		var url = notebook.attr("data-api-uri");
+
+		$.ajax({
+			url: url,
+			method: 'DELETE',
+			contentType: 'application/json',
+			success: function(data) {
+				hideNotebookEditPanel(notebook);
+				notebook.slideUp(75);
+			},
+			error: function(data) {
+				console.log("error", data);
+			},
+		});
+	});
 
 
 	/*

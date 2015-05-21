@@ -1,5 +1,5 @@
 {% load humanize %}
-<article class="notebook" data-slug="{{ notebook.slug }}" data-uri="{{ notebook.get_absolute_url }}" data-name="{{ notebook.name|lower }}">
+<article class="notebook" data-slug="{{ notebook.slug }}" data-uri="{{ notebook.get_absolute_url }}" data-name="{{ notebook.name|lower }}" data-api-uri="{% url 'api_entry_list' notebook.slug %}">
     <a class="controls-toggle" href="">&nbsp;</a>
 
 	<div class="content container">
@@ -12,12 +12,13 @@
 	<form class="edit-mode">
 		<div class="group container">
 			<label>Name:</label>
-			<input type="text" class="name" value="{{ notebook.name }}" />
+			<input type="text" name="notebook-name" class="name" value="{{ notebook.name }}" />
 		</div>
 
 		<div class="group container">
 			<div class="buttons">
-				<span class="button save-notebook">Rename</span>
+				<span class="button rename-notebook">Rename</span>
+				<span class="button archive-notebook">Archive</span>
 				<span class="button delete">Delete</span>
 			</div>
 		</div>

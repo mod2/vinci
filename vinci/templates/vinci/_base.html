@@ -112,7 +112,7 @@
 			{% endblock add_notebook %}
 
 			{% block add_entry %}
-			<form id="add-entry">
+			<form id="add-entry" class="edit-mode">
 				<input class="title container" name="title" type="text" value="" placeholder="Title" />
 				<textarea name="entry-content" class="container"></textarea>
 
@@ -125,13 +125,24 @@
 					</div>
 					<div class="group other container">
 						<label>Type:</label>
-						{% for t in entry.get_possible_types %}<span data-value="{{ t.value }}" class="type {{ t.value }}{% if section == t.value %} selected{% endif %}">{{ t.label }}</span>{% endfor %}
+						{% if notebook.display_logs %}
+							<span data-value="log" class="type log">Log</span>
+						{% endif %}
+						{% if notebook.display_notes %}
+							<span data-value="note" class="type note">Note</span>
+						{% endif %}
+						{% if notebook.display_pages %}
+							<span data-value="page" class="type page">Page</span>
+						{% endif %}
+						{% if notebook.display_journals %}
+							<span data-value="journal" class="type journal">Journal</span>
+						{% endif %}
 						<input type="hidden" name="type" value="" />
 					</div>
 					<div class="group other notebook container">
 						<label>Notebook:</label>
 						<select name="notebook">
-							{% for n in notebooks %}<option value="{{ n.slug }}"{% if entry.notebook.slug == n.slug %} selected{% endif %}>{{ n.name }}</option>{% endfor %}
+							{% for n in notebooks %}<option value="{{ n.slug }}"{% if notebook.slug == n.slug %} selected{% endif %}>{{ n.name }}</option>{% endfor %}
 						</select>
 					</div>
 					<div class="group other container">
@@ -164,7 +175,7 @@
 			{% endif %}
 
 			<section id="error">
-				<div class="container"><h2>ERror: test</h2><span class="sub">Message</span></div>
+				<div class="container"></div>
 			</section>
 
 			<main id="content" class="{{ page_type }} {{ section }}">

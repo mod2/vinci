@@ -465,15 +465,18 @@ def quick_jump(request):
             query, _, notebook_specifier = query.partition('.')
 
             notebooks = Notebook.objects.filter(name__icontains=query)[:5]
+            tags = Tag.objects.filter(name__icontains=query)[:5]
 
             entries = Entry.objects.filter(title__icontains=query)
             if notebook_specifier:
                 # Filter further by a specific notebook (allows user to resolve pages
                 # with same name in different notebooks)
                 entries = entries.filter(notebook__slug__icontains=notebook_specifier)
-            entries = entries[:5]
 
-            tags = Tag.objects.filter(name__icontains=query)[:5]
+                # Zero out notebooks/tags because we only want pages
+                notebooks = []
+                tags = []
+            entries = entries[:5]
 
             status = 'success'
             status_code = 200

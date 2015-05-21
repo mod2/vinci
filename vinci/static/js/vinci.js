@@ -933,13 +933,13 @@ $(document).ready(function() {
 	Mousetrap.bind('a', _focusAddEntry);
 	var field = document.querySelector('#add-entry textarea');
 	Mousetrap(field).bind('esc', _unfocusAddEntry);
+	Mousetrap(field).bind('mod+enter', _addEntry);
+	$("#add-entry .add.button").on("click", _addEntry);
 
 	$("span.add-entry").on("click", function() {
 		_hideMenu();
 		_focusAddEntry();
 	});
-
-	$("#add-entry .add.button").on("click", _addEntry);
 
 
 	// Menu items

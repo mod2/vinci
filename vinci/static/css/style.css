@@ -1151,6 +1151,7 @@ body.active-nav #page .mask {
 }
 
 .button {
+	-webkit-appearance: none;
 	background: hsl(210, 40%, 50%);
 	border: none;
 	border-radius: 3px;
@@ -1683,6 +1684,10 @@ form.login input.button:hover {
 
 #settings .group.delete {
 	margin-top: 3em;
+}
+
+#settings select {
+	min-width: 150px;
 }
 
 

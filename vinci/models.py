@@ -8,22 +8,30 @@ from taggit.managers import TaggableManager
 
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
+ENTRY_TYPE = Choices(
+    ('log', 'Log'),
+    ('note', 'Note'),
+    ('page', 'Page'),
+    ('journal', 'Journal'),
+)
 
-class NotebookManager(models.Manager):
+
+class StatusQueries(models.QuerySet):
     def active(self):
-        qs = self.get_queryset()
-        return qs.filter(status='active')
+        return self.filter(status='active')
 
     def archived(self):
-        qs = self.get_queryset()
-        return qs.filter(status='archived')
+        return self.filter(status='archived')
 
     def deleted(self):
-        qs = self.get_queryset()
-        return qs.filter(status='deleted')
+        return self.filter(status='deleted')
 
 
-class EntryQuerySet(models.QuerySet):
+class NotebookManager(StatusQueries, models.QuerySet):
+    pass
+
+
+class EntryQuerySet(StatusQueries, models.QuerySet):
     def from_slug(self, slug, notebook_slug=None):
         # See if it's a post ID or a page slug
         try:
@@ -127,7 +135,7 @@ class Notebook(models.Model):
     display_pages = models.BooleanField(default=True)
     display_journals = models.BooleanField(default=False)
 
-    objects = NotebookManager()
+    objects = NotebookManager.as_manager()
 
     def __str__(self):
         return "{0.name}".format(self)

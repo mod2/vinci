@@ -230,7 +230,7 @@ class NotebookDetailAPIView(APIView):
     # Notebook
     A single notebook detail
     """
-    serializer_class = NotebookSerializer 
+    serializer_class = NotebookSerializer
 
     def get_queryset(self):
         slug = self.kwargs.get('slug')

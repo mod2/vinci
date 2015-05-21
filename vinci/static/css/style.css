@@ -349,6 +349,14 @@ body.active-nav #page .mask {
 	padding-top: 0;
 }
 
+#search.quickjump {
+	background: hsl(194, 20%, 17%);
+}
+
+#search.quickjump .container {
+	background: hsl(194, 20%, 25%);
+}
+
 #search input[type=text] {
 	-webkit-font-feature-settings: normal;
 	background: none;
@@ -370,7 +378,7 @@ body.active-nav #page .mask {
 }
 
 #search .results a {
-	background: hsl(21, 18%, 35%);
+	background: hsl(0, 0%, 44%);
 	border-radius: 3px;
 	color: #fff;
 	display: inline-block;
@@ -380,12 +388,16 @@ body.active-nav #page .mask {
 	text-decoration: none;
 }
 
+#search .results a.notebook {
+	background: hsl(21, 27%, 44%);
+}
+
 #search .results a.page {
-	background: hsl(75, 18%, 32%);
+	background: hsl(75, 29%, 39%);
 }
 
 #search .results a.tag {
-	background: hsl(315, 18%, 29%);
+	background: hsl(180, 23%, 45%);
 }
 
 #search .results a span {
@@ -1492,6 +1504,66 @@ form.login input.button:hover {
 
 #page #content.list .entry.page h3.page-title a {
 	text-decoration: none;
+}
+
+
+/* Notebook settings */
+/* -------------------------------------------------- */
+
+#settings {
+	padding-bottom: 50px;
+}
+
+#settings h2 {
+	color: hsl(0, 0%, 60%);
+	font-size: 1.2em;
+	font-weight: 400;
+	padding-top: 25px;
+	margin-bottom: .25em;
+}
+
+#settings h3 {
+	color: hsl(0, 0%, 40%);
+	font-size: 1.1em;
+	font-weight: 400;
+	margin-bottom: 0;
+	margin-top: 1.5em;
+}
+
+#settings .group {
+	padding-bottom: 7px;
+	padding-top: 7px;
+}
+
+#settings label {
+	margin-right: 10px;
+}
+
+#settings span.type {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	background: hsl(210, 47%, 75%);
+	border-radius: 2px;
+	color: hsl(210, 41%, 39%);
+	cursor: pointer;
+	display: inline-block;
+	margin-bottom: 5px;
+	padding: 2px 8px 4px;
+	user-select: none;
+}
+
+#settings span.type:hover {
+	background: hsl(210, 13%, 46%);
+	color: #fff;
+}
+
+#settings span.type + span.type {
+	margin-left: 2px;
+}
+
+#settings span.type.selected {
+	background: hsl(210, 13%, 46%);
+	color: #fff;
 }
 
 

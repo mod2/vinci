@@ -86,6 +86,7 @@ $(document).ready(function() {
 	function _focusQuickJump() {
 		// Display and focus on the search with quickjump enabled
 		$("#search input[type=text]").val('');
+		$("#search .results").html('').hide();
 		$("#search").addClass("quickjump");
 
 		$("#search").slideDown(75, function() {
@@ -102,7 +103,7 @@ $(document).ready(function() {
 	Mousetrap.bind('g m', _toggleMenu);
 
 	Mousetrap.bind('/', _focusSearch);
-	Mousetrap.bind('mod+/', _focusQuickJump);
+	Mousetrap.bind('g /', _focusQuickJump);
 
 	var field = document.querySelector('#search input[type=text]');
 	Mousetrap(field).bind('esc', _unfocusSearch);
@@ -859,7 +860,9 @@ $(document).ready(function() {
 		_focusAddEntry();
 	});
 
-	// Search (menu)
+
+	// Menu items
+	// --------------------------------------------------
 
 	$("span.show-search").on("click", function() {
 		_hideMenu();
@@ -874,6 +877,14 @@ $(document).ready(function() {
 	$("span.add-notebook").on("click", function() {
 		_hideMenu();
 		_focusAddNotebookTray();
+	});
+
+
+	// Notebook settings page
+	// --------------------------------------------------
+	
+	$("#settings span.type").on("click", function() {
+		$(this).toggleClass("selected");Class("selected");
 	});
 
 

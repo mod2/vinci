@@ -18,6 +18,22 @@ def notebook_home(request, notebook_slug):
 
 
 @login_required
+def notebook_settings(request, notebook_slug):
+    notebook = get_object_or_404(Notebook, slug=notebook_slug)
+
+    context = {
+        'title': notebook.name,
+        'notebook': notebook,
+        'page_type': 'settings',
+    }
+
+    return render_to_response('vinci/notebook_settings.html',
+                              context,
+                              RequestContext(request),
+                              )
+
+
+@login_required
 def notebook_section(request, notebook_slug, section):
     sortby = request.GET.get('sort', settings.VINCI_DEFAULT_SEARCH_ORDER)
     page = int(request.GET.get('page', 1))

@@ -61,6 +61,8 @@ vincipatterns = patterns(
         'revision_detail', name='revision'),
     url(r'^(?P<notebook_slug>[^\/]+)/search/$',
         'search_notebook', name='search_notebook'),
+    url(r'^(?P<notebook_slug>[^\/]+)/settings/$',
+        'notebook_settings', name='notebook_settings'),
 )
 
 urlpatterns = patterns(

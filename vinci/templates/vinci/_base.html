@@ -48,6 +48,7 @@
 				<span class="show-quickjump">Quickjump</span>
 			</div>
 
+			{% if notebook %}
 			<div class="group">
 				{% if notebook.display_logs %}<a href="{% url 'notebook_section' notebook.slug 'log' %}">Logs</a>{% endif %}
 				{% if notebook.display_notes %}<a href="{% url 'notebook_section' notebook.slug 'note' %}">Notes</a>{% endif %}
@@ -56,8 +57,9 @@
 			</div>
 
 			<div class="group">
-				<a href="">Settings</a>
+				<a href="{% url 'notebook_settings' notebook.slug %}">Settings</a>
 			</div>
+			{% endif %}
 
 			<div class="group system">
 				<a href="{% url 'notebooks_list' %}">Home</a></li>
@@ -216,7 +218,7 @@
 
 				<div class="column">
 					<div class="group">
-						<label>C-/</label>
+						<label>g /</label>
 						<span>Quickjump</span>
 					</div>
 

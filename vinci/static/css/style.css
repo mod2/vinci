@@ -1570,6 +1570,37 @@ form.login input.button:hover {
 	background: hsl(210, 3%, 26%);
 }
 
+#settings input[type=text] {
+	border: none;
+	border-bottom: dotted 1px #ccc;
+	font-size: 1.4em;
+	margin-right: 20px;
+	padding: 0px 1px 3px;
+	width: calc(100% - 125px);
+}
+
+#settings input[type=text]:focus {
+	outline: none;
+}
+
+#settings input[type=text].dirty {
+	background: hsl(85, 71%, 93%) !important;
+}
+
+#settings input[type=submit].button {
+	display: inline-block;
+	width: 100px;
+}
+
+#settings .button {
+	display: inline-block;
+	width: auto;
+}
+
+#settings .group.delete {
+	margin-top: 3em;
+}
+
 
 /* Media queries */
 /* -------------------------------------------------- */

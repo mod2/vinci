@@ -882,7 +882,38 @@ $(document).ready(function() {
 
 	// Notebook settings page
 	// --------------------------------------------------
+
+	// Rename notebook
+
+	$("#settings input[name=notebook-name]").on("input", function() {
+		$(this).addClass("dirty");
+	});
+
+	$("#settings input.rename-notebook").on("click", function() {
+		var field = $("#settings input[name=notebook-name]");
+		var url = $("#settings").attr("data-uri");
+		var value = field.val().trim();
+
+		var data = {
+			'name': value,
+		};
+
+		$.ajax({
+			url: url,
+			method: 'PUT',
+			contentType: 'application/json',
+			data: JSON.stringify(data),
+			success: function(data) {
+				field.removeClass("dirty");
+			},
+			error: function(data) {
+				console.log("error", data);
+			},
+		});
+	});
 	
+	// Toggle sections
+
 	$("#settings #section-config span.type").on("click", function() {
 		var url = $("#settings").attr("data-uri");
 		var button = $(this);
@@ -908,6 +939,7 @@ $(document).ready(function() {
 		});
 	});
 
+	// Change default section
 
 	$("#settings #default-section span.type").on("click", function() {
 		var url = $("#settings").attr("data-uri");
@@ -927,6 +959,31 @@ $(document).ready(function() {
 				// Change default section
 				button.siblings(".selected").removeClass("selected");
 				button.addClass("selected");
+			},
+			error: function(data) {
+				console.log("error", data);
+			},
+		});
+	});
+
+	// Notebook status changes
+
+	$("#settings select#status").on("change", function() {
+		var url = $("#settings").attr("data-uri");
+		var value = $(this).val();
+
+		var data = {
+			'status': value,
+		};
+		console.log("here", value, data);
+
+		$.ajax({
+			url: url,
+			method: 'PUT',
+			contentType: 'application/json',
+			data: JSON.stringify(data),
+			success: function(data) {
+				console.log("success", data);
 			},
 			error: function(data) {
 				console.log("error", data);

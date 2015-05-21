@@ -24,6 +24,7 @@ def notebook_settings(request, notebook_slug):
     context = {
         'title': notebook.name,
         'notebook': notebook,
+        'statuses': [{'value': s[0], 'label': s[1]} for s in Notebook.STATUS],
         'page_type': 'settings',
     }
 

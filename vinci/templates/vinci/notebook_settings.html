@@ -4,6 +4,11 @@
 <section id="settings" data-uri="{% url 'api_entry_list' notebook.slug %}">
 	<h2 class="container">Notebook Settings</h2>
 
+	<div class="group container">
+		<input type="text" name="notebook-name" value="{{ notebook.name }}" />
+		<input type="submit" class="rename-notebook button" value="Rename" />
+	</div>
+
 	<h3 class="container">Sections</h3>
 	<div id="section-config" class="group container">
 		<span class="type{% if notebook.display_logs %} selected{% endif %}" data-field="display_logs">Logs</span>
@@ -18,6 +23,15 @@
 		<span class="type{% if notebook.default_section == 'note' %} selected{% endif %}" data-value="note">Notes</span>
 		<span class="type{% if notebook.default_section == 'page' %} selected{% endif %}" data-value="page">Pages</span>
 		<span class="type{% if notebook.default_section == 'journal' %} selected{% endif %}" data-value="journal">Journals</span>
+	</div>
+
+	<h3 class="container">Status</h3>
+	<div class="group container">
+		<select id="status">
+			{% for status in statuses %}
+			<option {% if status.value == notebook.status %}selected {% endif %}value="{{ status.value }}">{{ status.label }}</option>
+			{% endfor %}
+		</select>
 	</div>
 </section>
 {% endblock content %}

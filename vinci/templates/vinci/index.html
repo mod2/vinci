@@ -4,11 +4,13 @@
 
 {% block content %}
 <div id="all-notebooks">
+	{% if ungrouped_notebooks|length %}
 	<section class="notebooks">
 		{% for notebook in ungrouped_notebooks %}
 			{% include 'vinci/_notebook.html' %}
 		{% endfor %}
 	</section>
+	{% endif %}
 
 	{% for group in groups %}
 	<h2 class="container">{{ group.name }}</h2>
@@ -18,5 +20,11 @@
 		{% endfor %}
 	</section>
 	{% endfor %}
+
+	{% if blank_slate %}
+	<section class="notebooks container empty">
+		<div>Welcome to Vinci! To get started, add a notebook.</div><span class="add-notebook">Add a notebook</span>
+	</section>
+	{% endif %}
 </div>
 {% endblock content %}

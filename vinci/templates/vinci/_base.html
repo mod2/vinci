@@ -91,7 +91,7 @@
 			{% endblock header %}
 
 			{% block sections %}
-			<div id="sections" class="{% if section %}{{ section }}{% else %}nosection{% endif %}" {% if notebook.display_logs %}data-log-uri="{% url 'notebook_section' notebook.slug 'log' %}"{% endif %} {% if notebook.display_notes %}data-note-uri="{% url 'notebook_section' notebook.slug 'note' %}"{% endif %} {% if notebook.display_pages %}data-page-uri="{% url 'notebook_section' notebook.slug 'page' %}"{% endif %}>
+			<div id="sections" class="{% if section %}{{ section }}{% else %}nosection{% endif %}" {% if notebook.display_logs %}data-log-uri="{% url 'notebook_section' notebook.slug 'log' %}"{% endif %} {% if notebook.display_notes %}data-note-uri="{% url 'notebook_section' notebook.slug 'note' %}"{% endif %} {% if notebook.display_pages %}data-page-uri="{% url 'notebook_section' notebook.slug 'page' %}"{% endif %} {% if notebook.display_journals %}data-journal-uri="{% url 'notebook_section' notebook.slug 'journal' %}"{% endif %}>
 				<div class="container"></div>
 			</div>
 			{% endblock sections %}
@@ -124,16 +124,16 @@
 					<div class="group other container">
 						<label>Type:</label>
 						{% if notebook.display_logs %}
-							<span data-value="log" class="type log{% if notebook.default_section == 'log' %} selected{% endif %}">Log</span>
+							<span data-value="log" class="type log{% if section == 'log' %} selected{% endif %}">Log</span>
 						{% endif %}
 						{% if notebook.display_notes %}
-							<span data-value="note" class="type note{% if notebook.default_section == 'note' %} selected{% endif %}">Note</span>
+							<span data-value="note" class="type note{% if section == 'note' %} selected{% endif %}">Note</span>
 						{% endif %}
 						{% if notebook.display_pages %}
-							<span data-value="page" class="type page{% if notebook.default_section == 'page' %} selected{% endif %}">Page</span>
+							<span data-value="page" class="type page{% if section == 'page' %} selected{% endif %}">Page</span>
 						{% endif %}
 						{% if notebook.display_journals %}
-							<span data-value="journal" class="type journal{% if notebook.default_section == 'journal' %} selected{% endif %}">Journal</span>
+							<span data-value="journal" class="type journal{% if section == 'journal' %} selected{% endif %}">Journal</span>
 						{% endif %}
 						<input type="hidden" name="type" value="" />
 					</div>

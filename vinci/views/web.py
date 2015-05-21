@@ -122,12 +122,18 @@ def notebooks_list(request):
     groups = Group.objects.all()
     ungrouped_notebooks = Notebook.objects.active().filter(group__isnull=True).order_by('name')
 
+    if len(Notebook.objects.active()) == 0:
+        blank_slate = True
+    else:
+        blank_slate = False
+
     context = {
         'title': 'All Notebooks',
         'groups': groups,
         'ungrouped_notebooks': ungrouped_notebooks,
         'scope': 'all',
         'page_type': 'all',
+        'blank_slate': blank_slate,
     }
 
     return render_to_response('vinci/index.html',

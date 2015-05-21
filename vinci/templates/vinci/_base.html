@@ -43,6 +43,10 @@
 		{% block menu %}
 		<nav role="menu">
 			<div class="group">
+			+, Search, Quickjump
+			</div>
+
+			<div class="group">
 				{% if notebook.display_logs %}<a href="{% url 'notebook_section' notebook.slug 'log' %}">Logs</a>{% endif %}
 				{% if notebook.display_notes %}<a href="{% url 'notebook_section' notebook.slug 'note' %}">Notes</a>{% endif %}
 				{% if notebook.display_pages %}<a href="{% url 'notebook_section' notebook.slug 'page' %}">Pages</a>{% endif %}
@@ -77,13 +81,6 @@
 							{% endif %}
 						{% endblock header_title %}
 					</h1>
-					<a class="add">+</a>
-
-					<div class="system">
-						<a href="{% url 'notebooks_list' %}">Home</a></li>
-						<a href="">Preferences</a>
-						<a href="">Logout</a>
-					</div>
 				</div>
 			</header>
 			{% endblock header %}

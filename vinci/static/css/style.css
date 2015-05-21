@@ -126,9 +126,8 @@ header[role=banner] h1 {
 	overflow: hidden;
 	padding-top: .4em;
 	padding-bottom: 0;
-	position: absolute;
 	right: 60px;
-	text-align: center;
+	text-align: left;
 	text-transform: uppercase;
 	z-index: 50000;
 }
@@ -137,6 +136,7 @@ header[role=banner] h1 a.home {
 	color: #fff;
 	display: block;
 	font-size: 1.1em;
+	line-height: 1.1em;
 	text-decoration: none;
 }
 
@@ -1675,6 +1675,7 @@ form.login input.button:hover {
 
 	header[role=banner] h1 {
 		position: initial;
+		text-align: center;
 	}
 
 	header[role=banner] h1 a.home {

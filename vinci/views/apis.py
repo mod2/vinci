@@ -184,6 +184,7 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
         if entry:
             e = self.serializer_class(entry).data
             entry.delete()
+            si.delete_from_index(entry)
             return APIResponse(e)
         else:
             return APIResponseNotFound('No entry found.')

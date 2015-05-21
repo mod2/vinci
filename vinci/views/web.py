@@ -43,7 +43,11 @@ def notebook_section(request, notebook_slug, section):
 
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
 
-    entries = notebook.entries.filter(entry_type=section).order_by(sortby)
+    entries = (notebook.entries
+               .active()
+               .filter(entry_type=section)
+               .order_by(sortby)
+               )
     entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE).page(page)
 
     notebooks = Notebook.objects.filter(status='active').order_by('name')

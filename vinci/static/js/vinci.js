@@ -975,7 +975,6 @@ $(document).ready(function() {
 		var data = {
 			'status': value,
 		};
-		console.log("here", value, data);
 
 		$.ajax({
 			url: url,
@@ -983,7 +982,29 @@ $(document).ready(function() {
 			contentType: 'application/json',
 			data: JSON.stringify(data),
 			success: function(data) {
-				console.log("success", data);
+			},
+			error: function(data) {
+				console.log("error", data);
+			},
+		});
+	});
+
+	// Notebook group changes
+
+	$("#settings select#group").on("change", function() {
+		var url = $("#settings").attr("data-uri");
+		var value = $(this).val();
+
+		var data = {
+			'group': value,
+		};
+
+		$.ajax({
+			url: url,
+			method: 'PUT',
+			contentType: 'application/json',
+			data: JSON.stringify(data),
+			success: function(data) {
 			},
 			error: function(data) {
 				console.log("error", data);

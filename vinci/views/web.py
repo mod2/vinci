@@ -25,6 +25,7 @@ def notebook_settings(request, notebook_slug):
         'title': notebook.name,
         'notebook': notebook,
         'statuses': [{'value': s[0], 'label': s[1]} for s in Notebook.STATUS],
+        'groups': [{'value': g.name, 'label': g.name} for g in Group.objects.all()],
         'page_type': 'settings',
     }
 
@@ -112,7 +113,7 @@ def revision_detail(request, notebook_slug, section, entry_slug, revision_id):
 @login_required
 def notebooks_list(request):
     groups = Group.objects.all()
-    ungrouped_notebooks = Notebook.objects.filter(group__isnull=True).order_by('name')
+    ungrouped_notebooks = Notebook.objects.active().filter(group__isnull=True).order_by('name')
 
     context = {
         'title': 'All Notebooks',

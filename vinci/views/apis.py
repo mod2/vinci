@@ -5,7 +5,7 @@ from rest_framework.response import Response as APIResponse
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView
 from vinci.serializers import EntrySerializer, NotebookSerializer
-from vinci.models import Entry, Notebook, Revision, DATETIME_FORMAT
+from vinci.models import Entry, Notebook, Group, Revision, DATETIME_FORMAT
 from taggit.models import Tag
 import vinci.search_indexer as si
 from django.http import JsonResponse, HttpResponse

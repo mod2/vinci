@@ -95,6 +95,9 @@ class Group(models.Model):
     def __str__(self):
         return self.name
 
+    def active_notebooks(self):
+        return self.notebooks.active()
+
     class Meta:
         ordering = ['name']
 

@@ -33,5 +33,15 @@
 			{% endfor %}
 		</select>
 	</div>
+
+	<h3 class="container">Group</h3>
+	<div class="group container">
+		<select id="group">
+			<option value=""></option>
+			{% for group in groups %}
+			<option {% if group.label == notebook.group.name %}selected {% endif %}value="{{ group.value }}">{{ group.label }}</option>
+			{% endfor %}
+		</select>
+	</div>
 </section>
 {% endblock content %}

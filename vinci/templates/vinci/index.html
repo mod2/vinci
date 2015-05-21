@@ -13,7 +13,7 @@
 	{% for group in groups %}
 	<h2 class="container">{{ group.name }}</h2>
 	<section class="notebooks">
-		{% for notebook in group.notebooks.all %}
+		{% for notebook in group.active_notebooks %}
 			{% include 'vinci/_notebook.html' %}
 		{% endfor %}
 	</section>

@@ -379,6 +379,7 @@ def add_revision(request, notebook_slug, slug):
     # Return JSON response
     return JsonResponse(response)
 
+
 def update_revision(request, notebook_slug, slug, revision_id):
     """ Update revision for an entry. """
 
@@ -441,3 +442,42 @@ def update_revision(request, notebook_slug, slug, revision_id):
 
     # Return JSON response
     return JsonResponse(response)
+
+
+def quick_jump(request):
+    status = 'error'
+    msg_label = 'message'
+    msg = 'Bad Request'
+    status_code = 400
+
+    # if request.is_ajax() and request.method == 'GET':
+    if request.method == 'GET':
+        query = request.GET.get('q', '').strip().lower()
+        if query:
+            notebooks = Notebook.objects.filter(name__icontains=query)
+            entries = Entry.objects.filter(title__icontains=query)
+            status = 'success'
+            status_code = 200
+            msg_label = 'results'
+            nbs = []
+            pages = []
+            for notebook in notebooks:
+                nb = {'name': notebook.name,
+                      'slug': notebook.slug,
+                      'url': notebook.get_absolute_url(),
+                      }
+                nbs.append(nb)
+            for entry in entries:
+                page = {'title': entry.title,
+                        'slug': entry.slug,
+                        'url': entry.get_absolute_url(),
+                        }
+                pages.append(page)
+
+            msg = {
+                'notebooks': nbs,
+                'pages': pages,
+            }
+        else:
+            msg = 'A query is required. Pass the q query param.'
+    return JsonResponse({'status': status, msg_label: msg}, status=status_code)

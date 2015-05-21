@@ -109,13 +109,6 @@ class Notebook(models.Model):
         ('deleted', 'Deleted'),
     )
 
-    ENTRY_TYPE = Choices(
-        ('log', 'Log'),
-        ('note', 'Note'),
-        ('page', 'Page'),
-        ('journal', 'Journal'),
-    )
-
     name = models.CharField(max_length=100)
     slug = AutoSlugField(populate_from='name', unique=True, editable=True)
     status = models.CharField(max_length=20,
@@ -124,7 +117,7 @@ class Notebook(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL,
                                related_name='notebooks')
     group = models.ForeignKey(Group, related_name="notebooks", default=None,
-                              null=True)
+                              null=True, blank=True)
 
     default_section = models.CharField(max_length=20,
                                        default=ENTRY_TYPE.log,
@@ -142,12 +135,15 @@ class Notebook(models.Model):
     def get_absolute_url(self):
         return resolve_url('notebook', self.slug)
 
+    def delete(self):
+        self.status = self.STATUS.deleted
+        self.save()
+
 
 class Entry(models.Model):
-    ENTRY_TYPE = Choices(
-        ('log', 'Log'),
-        ('note', 'Note'),
-        ('page', 'Page'),
+    STATUS = Choices(
+        ('active', 'Active'),
+        ('deleted', 'Deleted'),
     )
 
     title = models.CharField(max_length=100, blank=True, default='')
@@ -157,9 +153,12 @@ class Entry(models.Model):
     entry_type = models.CharField(max_length=20,
                                   default=ENTRY_TYPE.log,
                                   choices=ENTRY_TYPE)
+    status = models.CharField(max_length=20,
+                              default=STATUS.active,
+                              choices=STATUS)
 
     objects = EntryQuerySet.as_manager()
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     @property
     def current_revision(self):
@@ -217,6 +216,10 @@ class Entry(models.Model):
         if self.title:
             self.slug = slugify(self.title)
         super(Entry, self).save()
+
+    def delete(self):
+        self.status = self.STATUS.deleted
+        self.save()
 
     class Meta:
         ordering = ['-date']

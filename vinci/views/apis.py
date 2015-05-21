@@ -114,7 +114,7 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
         notebook = get_object_or_404(Notebook, slug=notebook_slug)
         notebook.status = notebook.STATUS.deleted
         nb = NotebookSerializer(notebook, context={'request': request})
-        notebook.save()
+        notebook.delete()
         return APIResponse(nb.data)
 
 

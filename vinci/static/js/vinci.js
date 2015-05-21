@@ -62,6 +62,7 @@ $(document).ready(function() {
 		// Unfocus the search box
 		$("#search").slideUp(75, function() {
 			$("#search input").val('').blur();
+			$("#search .quickjump").html('').hide();
 		});
 
 		return false;
@@ -72,8 +73,9 @@ $(document).ready(function() {
 	// --------------------------------------------------
 
 	Mousetrap.bind('/', _focusSearch);
-	var searchField = document.querySelector('#search input[type=text]');
-	Mousetrap(searchField).bind('esc', _unfocusSearch);
+	var field = document.querySelector('#search input[type=text]');
+	Mousetrap(field).bind('esc', _unfocusSearch);
+	Mousetrap(field).bind('mod+return', _followQuickJump);
 
 
 	$("#search").on('submit', function() {
@@ -105,21 +107,58 @@ $(document).ready(function() {
 		}
 	});
 
-	$("#search.all").on('input', function() {
-		// On All Notebooks, filter notebook list automatically
+	// Quickjump
+	$("#search").on('input', function() {
+		// On typing, call the 
+		var url = $("#search").attr("data-quickjump-uri");
 		var query = $("#search input[type=text]").val().trim();
 
-		console.log(".notebooks .notebook[data-name*=" + query + "]");
 		if (query) {
-			$(".notebooks .notebook").hide();
-			$("#all-notebooks > h2").hide();
-			$(".notebooks .notebook[data-name*=" + query + "]").show();
+			$.ajax({
+				url: url + "?q=" + query,
+				method: 'GET',
+				contentType: 'application/json',
+				success: function(data) {
+					var html = '';
+
+					for (var i in data.results.notebooks) {
+						var nb = data.results.notebooks[i];
+
+						html += '<a class="notebook" href="' + nb.url + '" data-slug="' + nb.slug + '">' + nb.name + '</a>';
+					}
+
+					for (var i in data.results.pages) {
+						var p = data.results.pages[i];
+
+						html += '<a class="page" href="' + p.url + '" data-slug="' + p.slug + '">' + p.name + ' <span class="sub">(' + p.notebook + ')</span></a>';
+					}
+
+					if (html) {
+						$("#search .quickjump").html(html).show();
+					} else {
+						$("#search .quickjump").html(html).hide();
+					}
+				},
+				error: function(data) {
+					console.log("error", data);
+				},
+			});
 		} else {
-			// Show everything
-			$("#all-notebooks > h2").show();
-			$(".notebooks .notebook").show();
+			// Hide quickjump
+			$("#search .quickjump").html('').hide();
 		}
 	});
+
+	function _followQuickJump() {
+		if ($("#search .quickjump a").length > 0) {
+			// Go to the first one
+			var result = $("#search .quickjump a:first-child").attr("href");
+
+			window.location.href = result;
+		}
+
+		return false;
+	}
 
 
 	// Infinite scroll

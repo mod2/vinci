@@ -344,6 +344,35 @@ body.active-nav #page .mask {
 	outline: none;
 }
 
+#search .quickjump {
+	display: none;
+	padding-bottom: 15px;
+}
+
+#search .quickjump a {
+	background: hsl(21, 29%, 40%);
+	border-radius: 3px;
+	color: #fff;
+	display: inline-block;
+	margin-bottom: 5px;
+	margin-right: 5px;
+	padding: 1px 6px 3px;
+	text-decoration: none;
+}
+
+#search .quickjump a.page {
+	background: hsl(75, 29%, 40%);
+}
+
+#search .quickjump a span {
+	color: rgba(255, 255, 255, 0.5);
+	font-size: .8em;
+}
+
+#search .quickjump a:hover {
+	background: hsl(0, 0%, 30%);
+}
+
 
 /* Add Notebook tray */
 /* -------------------------------------------------- */

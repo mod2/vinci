@@ -143,9 +143,10 @@
 			{% endblock add_entry %}
 
 			{% block search %}
-			<form id="search" data-search-all-uri="{% url 'search_all' %}"{% if section %} data-search-section-uri="{% url 'search_notebook_section' notebook.slug section %}"{% endif %}{% if notebook %}data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}"{% endif %} class="{{ page_type }}">
+			<form id="search" data-search-all-uri="{% url 'search_all' %}"{% if section %} data-search-section-uri="{% url 'search_notebook_section' notebook.slug section %}"{% endif %}{% if notebook %}data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}"{% endif %} data-quickjump-uri="{% url 'quick_jump' %}" class="{{ page_type }}">
 				<div class="container">
 					<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
+					<section class="quickjump"></section>
 				</div>
 			</form>
 			{% endblock search %}
@@ -153,7 +154,7 @@
 			{% if query %}
 			<section id="results">
 				<div class="container">
-					<h2>{{ total }} results for <span>{{ query }}</span></h2>
+					<h2>{{ total }} result{% if total != 1 %}s{% endif %} for <span>{{ query }}</span></h2>
 				</div>
 			</section>
 			{% endif %}

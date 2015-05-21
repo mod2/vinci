@@ -125,7 +125,7 @@ def search_notebook_tags(request, notebook_slug, tag):
 @login_required
 def search_notebook_section(request, notebook_slug, section):
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
-    return _search(request, notebook, section)
+    return _search(request, request.GET.get('q'), notebook, section)
 
 
 @login_required

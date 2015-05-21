@@ -454,8 +454,8 @@ def quick_jump(request):
     if request.method == 'GET':
         query = request.GET.get('q', '').strip().lower()
         if query:
-            notebooks = Notebook.objects.filter(name__icontains=query)
-            entries = Entry.objects.filter(title__icontains=query)
+            notebooks = Notebook.objects.filter(name__icontains=query)[:5]
+            entries = Entry.objects.filter(title__icontains=query)[:5]
             status = 'success'
             status_code = 200
             msg_label = 'results'
@@ -468,8 +468,9 @@ def quick_jump(request):
                       }
                 nbs.append(nb)
             for entry in entries:
-                page = {'title': entry.title,
+                page = {'name': entry.title,
                         'slug': entry.slug,
+                        'notebook': entry.notebook.name,
                         'url': entry.get_absolute_url(),
                         }
                 pages.append(page)

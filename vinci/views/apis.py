@@ -1,10 +1,12 @@
 from django.conf import settings
 from django.shortcuts import get_object_or_404
+from django.core.urlresolvers import reverse
 from rest_framework.response import Response as APIResponse
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView
 from vinci.serializers import EntrySerializer, NotebookSerializer
 from vinci.models import Entry, Notebook, Revision, DATETIME_FORMAT
+from taggit.models import Tag
 import vinci.search_indexer as si
 from django.http import JsonResponse, HttpResponse
 
@@ -454,19 +456,35 @@ def quick_jump(request):
     if request.method == 'GET':
         query = request.GET.get('q', '').strip().lower()
         if query:
+            # See if there's a notebook specifier ("home.projects", for example)
+            query, _, notebook_specifier = query.partition('.')
+
             notebooks = Notebook.objects.filter(name__icontains=query)[:5]
-            entries = Entry.objects.filter(title__icontains=query)[:5]
+
+            entries = Entry.objects.filter(title__icontains=query)
+            if notebook_specifier:
+                # Filter further by a specific notebook (allows user to resolve pages
+                # with same name in different notebooks)
+                entries = entries.filter(notebook__slug__icontains=notebook_specifier)
+            entries = entries[:5]
+
+            tags = Tag.objects.filter(name__icontains=query)[:5]
+
             status = 'success'
             status_code = 200
             msg_label = 'results'
+
             nbs = []
             pages = []
+            tag_list = []
+
             for notebook in notebooks:
                 nb = {'name': notebook.name,
                       'slug': notebook.slug,
                       'url': notebook.get_absolute_url(),
                       }
                 nbs.append(nb)
+
             for entry in entries:
                 page = {'name': entry.title,
                         'slug': entry.slug,
@@ -475,9 +493,17 @@ def quick_jump(request):
                         }
                 pages.append(page)
 
+            for tag in tags:
+                tag_item = {'name': tag.name,
+                            'slug': tag.slug,
+                            'url': reverse('search_all_tags', kwargs={'tag': tag.slug}),
+                            }
+                tag_list.append(tag_item)
+
             msg = {
                 'notebooks': nbs,
                 'pages': pages,
+                'tags': tag_list,
             }
         else:
             msg = 'A query is required. Pass the q query param.'

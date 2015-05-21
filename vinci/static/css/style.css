@@ -350,7 +350,7 @@ body.active-nav #page .mask {
 }
 
 #search .quickjump a {
-	background: hsl(21, 29%, 40%);
+	background: hsl(21, 18%, 35%);
 	border-radius: 3px;
 	color: #fff;
 	display: inline-block;
@@ -361,7 +361,11 @@ body.active-nav #page .mask {
 }
 
 #search .quickjump a.page {
-	background: hsl(75, 29%, 40%);
+	background: hsl(75, 18%, 32%);
+}
+
+#search .quickjump a.tag {
+	background: hsl(315, 18%, 29%);
 }
 
 #search .quickjump a span {

@@ -162,6 +162,9 @@ def _search(request, query, notebook=None, section=None):
         total = entries.count
         entries = entries.page(page)
 
+        # Convert tags in queries back to hashtag syntax
+        query = query.replace('tag:', '#')
+
     context = {
         'title': '{}{}Search'.format(query, settings.VINCI_SITE_TITLE_SEP),
         'query': query,

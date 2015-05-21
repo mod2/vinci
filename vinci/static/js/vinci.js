@@ -75,37 +75,44 @@ $(document).ready(function() {
 	Mousetrap.bind('/', _focusSearch);
 	var field = document.querySelector('#search input[type=text]');
 	Mousetrap(field).bind('esc', _unfocusSearch);
-	Mousetrap(field).bind('mod+return', _followQuickJump);
-
-
+	Mousetrap(field).bind('mod+return', function() {
+		_executeSearch(false);
+		return false;
+	});
 	$("#search").on('submit', function() {
-		// If we're on the all notebooks page and there's only one notebook selected, choose it
-		if ($("#search").hasClass("all") && $(".notebooks .notebook:visible").length == 1) {
+		_executeSearch(true);
+		return false;
+	});
+
+	function _executeSearch(quickJump) {
+		var url = '';
+
+		if (quickJump && $("#search .quickjump a").length > 0) {
+			// Go to the first one
+			var result = $("#search .quickjump a:first-child");
+			var url = result.attr("href");
+		} else if ($("#search").hasClass("all") && $(".notebooks .notebook:visible").length == 1) {
+			// If we're on the all notebooks page and there's only one notebook selected, choose it
 			var notebook = $(".notebooks .notebook:visible");
-
-			window.location.href = notebook.attr("data-uri");
-
-			return false;
+			var url = notebook.attr("data-uri");
 		} else {
 			var searchSectionURI = $("#search").attr("data-search-section-uri");
-
-			// Get whatever was entered
-			var query = $(this).find("input").val().trim();
+			var query = $("#search input[type=text]").val().trim();
 
 			if (query.length > 0) {
 				// Search
 				var q = query.replace(/#(\w+)/g, 'tag:$1');
 
-				url = searchSectionURI + '?q=' + q;
-			} else {
-				// Empty search, clear results (don't need to change URL)
+				var url = searchSectionURI + '?q=' + q;
 			}
-
-			window.location.href = url;
-
-			return false;
 		}
-	});
+
+		if (url) {
+			window.location.href = url;
+		}
+
+		return false;
+	}
 
 	// Quickjump
 	$("#search").on('input', function() {
@@ -131,6 +138,12 @@ $(document).ready(function() {
 						var p = data.results.pages[i];
 
 						html += '<a class="page" href="' + p.url + '" data-slug="' + p.slug + '">' + p.name + ' <span class="sub">(' + p.notebook + ')</span></a>';
+					}
+
+					for (var i in data.results.tags) {
+						var t = data.results.tags[i];
+
+						html += '<a class="tag" href="' + t.url + '" data-slug="' + t.slug + '">#' + t.name + '</a>';
 					}
 
 					if (html) {

@@ -704,6 +704,14 @@ body.active-nav #page .mask {
 	padding-left: 15px;
 }
 
+#page #content .entry ul li {
+	line-height: 1.25em;
+}
+
+#page #content .entry ul li + li {
+	margin-top: .3em;
+}
+
 #page #content .entry .metadata {
 	color: #888;
 	font-size: .8em;

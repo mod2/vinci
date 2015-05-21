@@ -195,6 +195,7 @@ def append_today(request, notebook_slug):
     """ Appends to today's entry, creating it if it's not there. """
 
     callback = request.GET.get('callback', '')
+    section = request.GET.get('section', '')
     key = request.GET.get('key', '')
 
     if key != settings.VINCI_NON_REST_KEY:
@@ -216,6 +217,7 @@ def append_today(request, notebook_slug):
 
         # Get first entry for today
         results = Entry.objects.filter(notebook=notebook,
+                                       entry_type=section,
                                        date__range=[today, tomorrow],
                                        ).order_by('date')[:1]
 
@@ -241,6 +243,7 @@ def append_today(request, notebook_slug):
 
             kwargs = {'content': content.strip(),
                       'author': request.user,
+                      'entry_type': section,
                       'notebook': notebook,
                       }
             entry = Entry.objects.create(**kwargs)
@@ -271,6 +274,7 @@ def add_entry(request, notebook_slug):
 
     callback = request.GET.get('callback', '')
     key = request.GET.get('key', '')
+    section = request.GET.get('section', '')
 
     if key != settings.VINCI_NON_REST_KEY:
         return JsonResponse({})
@@ -287,6 +291,7 @@ def add_entry(request, notebook_slug):
 
         kwargs = {'content': content.strip(),
                   'author': notebook.author,
+                  'entry_type': section,
                   'notebook': notebook,
                   }
         entry = Entry.objects.create(**kwargs)

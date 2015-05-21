@@ -1602,6 +1602,37 @@ form.login input.button:hover {
 }
 
 
+/* Error messages */
+/* -------------------------------------------------- */
+
+#error {
+	background: hsl(0, 40%, 27%);
+	display: none;
+}
+
+#error .container {
+	background: hsl(0, 60%, 37%);
+	color: #fff;
+	padding-bottom: 20px;
+	padding-top: 20px;
+}
+
+#error h2 {
+	font-size: 1.2em;
+	font-weight: 400;
+	margin: 0;
+}
+
+#error .sub {
+	color: hsl(0, 90%, 90%);
+	display: block;
+	font-size: .9em;
+	line-height: 1.2em;
+	margin-top: .5em;
+}
+
+
+
 /* Media queries */
 /* -------------------------------------------------- */
 

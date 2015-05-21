@@ -54,6 +54,20 @@ $(document).ready(function() {
 	});
 
 
+	// Error
+	// --------------------------------------------------
+	
+	function _showError(label, message) {
+		var html = "<h2>" + label + "</h2>";
+		if (message != '') {
+			html += "<span class='sub'>" + message + "</span>";
+		}
+
+		$("#error .container").html(html);
+		$("#error").slideDown(75);
+	}
+
+
 	// Search
 	// --------------------------------------------------
 
@@ -182,7 +196,7 @@ $(document).ready(function() {
 					}
 				},
 				error: function(data) {
-					console.log("error", data);
+					_showError("Error getting quickjump results", data);
 				},
 			});
 		} else {
@@ -694,8 +708,7 @@ $(document).ready(function() {
 					},
 					error: function(data) {
 						currentBox.addClass("error");
-
-						console.log("error", data);
+						_showError("Error autosaving", data);
 					},
 				});
 			} else {
@@ -767,7 +780,7 @@ $(document).ready(function() {
 				return true;
 			},
 			error: function(data) {
-				console.log("error", data);
+				_showError("Error adding notebook", data);
 			},
 		});
 
@@ -908,7 +921,7 @@ $(document).ready(function() {
 				$("#settings input.rename-notebook").blur();
 			},
 			error: function(data) {
-				console.log("error", data);
+				_showError("Error renaming notebook", data);
 			},
 		});
 	});
@@ -935,7 +948,7 @@ $(document).ready(function() {
 				button.toggleClass("selected");
 			},
 			error: function(data) {
-				console.log("error", data);
+				_showError("Error saving settings", data);
 			},
 		});
 	});
@@ -962,7 +975,7 @@ $(document).ready(function() {
 				button.addClass("selected");
 			},
 			error: function(data) {
-				console.log("error", data);
+				_showError("Error saving settings", data);
 			},
 		});
 	});
@@ -985,7 +998,7 @@ $(document).ready(function() {
 			success: function(data) {
 			},
 			error: function(data) {
-				console.log("error", data);
+				_showError("Error saving settings", data);
 			},
 		});
 	});
@@ -1008,7 +1021,7 @@ $(document).ready(function() {
 			success: function(data) {
 			},
 			error: function(data) {
-				console.log("error", data);
+				_showError("Error saving settings", data);
 			},
 		});
 	});
@@ -1039,7 +1052,7 @@ $(document).ready(function() {
 				hideNotebookEditPanel(notebook);
 			},
 			error: function(data) {
-				console.log("error", data);
+				_showError("Error renaming notebook", data);
 			},
 		});
 	});
@@ -1064,7 +1077,7 @@ $(document).ready(function() {
 				notebook.slideUp(75);
 			},
 			error: function(data) {
-				console.log("error", data);
+				_showError("Error archiving notebook", data);
 			},
 		});
 	});
@@ -1084,7 +1097,7 @@ $(document).ready(function() {
 				notebook.slideUp(75);
 			},
 			error: function(data) {
-				console.log("error", data);
+				_showError("Error deleting notebook", data);
 			},
 		});
 	});

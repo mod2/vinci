@@ -415,7 +415,7 @@ $(document).ready(function() {
 				contentType: 'application/json',
 				success: function(data) {
 					hideEditPanel(entry);
-					entry.slideUp(75);
+					entry.slideUp(75).remove();
 				},
 				error: function(data) {
 					_showError("Error deleting entry", data);
@@ -1195,7 +1195,7 @@ $(document).ready(function() {
 				contentType: 'application/json',
 				success: function(data) {
 					hideNotebookEditPanel(notebook);
-					notebook.slideUp(75);
+					notebook.slideUp(75).remove();
 				},
 				error: function(data) {
 					_showError("Error deleting notebook", data);

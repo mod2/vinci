@@ -3,7 +3,7 @@
 {% block sections %}{% endblock sections %}
 
 {% block content %}
-<div id="all-notebooks" data-post-uri="{% url 'api_notebook_list' %}" data-author-id="{{ request.user.id }}">
+<div id="all-notebooks">
 	<section class="notebooks">
 		{% for notebook in ungrouped_notebooks %}
 			{% include 'vinci/_notebook.html' %}

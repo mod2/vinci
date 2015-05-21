@@ -97,7 +97,7 @@
 			{% endblock sections %}
 
 			{% block add_notebook %}
-			<form id="add-notebook">
+			<form id="add-notebook" data-post-uri="{% url 'api_notebook_list' %}" data-author-id="{{ request.user.id }}">
 				<div class="container">
 					<div class="group">
 						<label>Name:</label>

@@ -718,8 +718,8 @@ $(document).ready(function() {
 		// Make sure there's a notebook name
 		if (name == '') return false;
 
-		var url = $("#all-notebooks").attr("data-post-uri");
-		var authorId = $("#all-notebooks").attr("data-author-id");
+		var url = $("#add-notebook").attr("data-post-uri");
+		var authorId = $("#add-notebook").attr("data-author-id");
 
 		var data = {
 			'name': name,
@@ -733,8 +733,8 @@ $(document).ready(function() {
 			contentType: 'application/json',
 			data: JSON.stringify(data),
 			success: function(data) {
-				// Return to all notebooks page
-				window.location.href = config.url;
+				// Go to the notebook page
+				window.location.href = "/" + data.slug + "/";
 				return true;
 			},
 			error: function(data) {

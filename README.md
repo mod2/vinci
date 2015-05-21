@@ -1,10 +1,18 @@
 ## Vinci
 
-Web-based notebook.
+A web-based notebook app written in Django. Tested with Python 3.x.
 
 ### Installation
 
-**needs to be updated**
+These installation instructions assume some basic knowledge of Django.
+
+- Clone the repo
+- Create a virtualenv for the project if you want
+- Copy `local_settings_sample.py` to `local_settings.py` and edit to taste (and make sure you put something in `SECRET_KEY`)
+- `pip install -r requirements.txt`
+- `./manage.py migrate`
+- `./manage.py createsuperuser`
+- `./manage.py runserver 8001`
 
 ### Plugins
 
@@ -16,8 +24,4 @@ To activate a plugin, add it to the `plugins` entry in `config.py`. Make sure yo
 
 ### Keyboard shortcuts
 
-* `j`/`k` in entry list
-	* `Return` on a selected entry to go to that entry page
-* `n` to go to the notebook page
-* `h` to go to notebook/entry/home
-* `a` to go to the all notebooks page
+- `?` to see list of keyboard shortcuts

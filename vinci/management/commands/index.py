@@ -7,4 +7,4 @@ class Command(BaseCommand):
     help = "Create search index of entries in database."
 
     def handle(self, *args, **options):
-        si.get_or_create_index()
+        si.full_index()

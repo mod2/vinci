@@ -67,7 +67,7 @@
 		</div>
 	</form>
 	<div class="original hidden">
-		<input name="original_title" type="text" class="title">{{ entry.title }}</input>
+		<input name="original_title" type="text" class="title" value="{{ entry.title }}" />
 		<textarea>{{ entry.current_revision.content }}</textarea>
 		<input name="original_tags" type="hidden" value="{{ entry.tags.all|join:',' }}" />
 		<input name="original_date" type="hidden" value="{{ entry.date|date:'Y-m-d H:i:s' }}" />

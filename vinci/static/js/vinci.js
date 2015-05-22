@@ -1,5 +1,7 @@
 // CSRF stuff
 
+var autoSaveInProgress = false;
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -354,7 +356,17 @@ $(document).ready(function() {
 	var fields = document.querySelectorAll(".edit-mode textarea");
 	for (var i=0; i<fields.length; i++) {
 		Mousetrap(fields[i]).bind('mod+enter', function(e) {
-			autoSave(function() {
+			console.log("here");
+			autoSave(true, function(e) {
+				console.log("in callback", $(e.target));
+				hideEditPanel($(e.target).parents(".entry"));
+			});
+		});
+	}
+	var fields = document.querySelectorAll(".edit-mode input.title");
+	for (var i=0; i<fields.length; i++) {
+		Mousetrap(fields[i]).bind('mod+enter', function(e) {
+			autoSave(true, function(e) {
 				hideEditPanel($(e.target).parents(".entry"));
 			});
 		});
@@ -620,10 +632,16 @@ $(document).ready(function() {
 	// Autosave
 	// --------------------------------------------------
 
-	function autoSave(callback) {
+	function autoSave(force, callback) {
+		if (autoSaveInProgress) {
+			return;
+		} else {
+			autoSaveInProgress = true;
+		}
+
 		var currentBox = $("textarea[name=content]:visible");
 
-		if (currentBox && currentBox.val()) {
+		if ((currentBox && currentBox.val()) || force) {
 			// Get updated stuff
 			var currentText = currentBox.val().trim();
 			var currentTitle = currentBox.siblings("input[name=title]");
@@ -703,12 +721,14 @@ $(document).ready(function() {
 					url += "update-revision/" + revisionId + "/";
 				}
 
+				console.log("POSTING", url);
 				$.ajax({
 					url: url,
 					method: 'POST',
 					contentType: 'application/json',
 					data: JSON.stringify(data),
 					success: function(data) {
+						console.log("success", data);
 						$(".dirty").removeClass("dirty");
 						currentBox.attr("data-revision-id", data.revision_id);
 
@@ -738,21 +758,27 @@ $(document).ready(function() {
 						}
 
 						// Update the returned HTML
+						console.log("data.html", data.html);
 						if (data.html) {
 							entry.find(".content.container").html(data.html);
 						}
 
+						autoSaveInProgress = false;
+
 						if (callback) {
+							console.log("callback");
 							callback();
 						}
 					},
 					error: function(data) {
 						currentBox.addClass("error");
 						_showError("Error autosaving", data);
+						autoSaveInProgress = false;
 					},
 				});
 			} else {
 				currentBox.removeClass("dirty");
+				autoSaveInProgress = false;
 			}
 		}
 	}

@@ -760,6 +760,47 @@ body.active-nav #page .mask {
 	margin: 10px 0 0;
 }
 
+#page #content .entry h2 {
+	font-size: 1.2em;
+	margin: 1.25em 0 .5em;
+}
+
+#page #content .entry h3 {
+	font-size: 1.1em;
+	margin: 1.25em 0 .5em;
+}
+
+#page #content .entry h4 {
+	font-size: 1em;
+	margin: 1.25em 0 .5em;
+}
+
+#page #content .entry h5 {
+	font-size: .9em;
+	margin: 1.25em 0 .5em;
+}
+
+#page #content .entry h6 {
+	font-size: .8em;
+	margin: 1.25em 0 .5em;
+}
+
+#page #content .entry h2 + p,
+#page #content .entry h3 + p,
+#page #content .entry h4 + p,
+#page #content .entry h5 + p,
+#page #content .entry h6 + p {
+	margin-top: 0;
+}
+
+#page #content .entry h2 + ul,
+#page #content .entry h3 + ul,
+#page #content .entry h4 + ul,
+#page #content .entry h5 + ul,
+#page #content .entry h6 + ul {
+	margin-top: 0;
+}
+
 #page #content .entry figure {
 	margin: 1em 0;
 }

@@ -1004,6 +1004,10 @@ body.active-nav #page .mask {
 	padding-bottom: 15px;
 }
 
+#page #content .entry.page .content.container {
+	padding-bottom: 40px;
+}
+
 #page #content .entry .original.hidden {
 	display: none;
 }
@@ -1930,6 +1934,7 @@ form.login input.button:hover {
 
 	#page #content .entry.page .content.container {
 		margin-left: 0;
+		padding-bottom: 65px;
 		padding-left: 65px;
 	}
 
@@ -2085,6 +2090,7 @@ form.login input.button:hover {
 	}
 
 	#page #content .entry.page .content.container {
+		padding-bottom: 90px;
 		padding-left: 90px;
 		padding-right: 90px;
 	}
@@ -2168,6 +2174,7 @@ form.login input.button:hover {
 	}
 
 	#page #content .entry.page .content.container {
+		padding-bottom: 150px;
 		padding-left: 150px;
 		padding-right: 150px;
 	}

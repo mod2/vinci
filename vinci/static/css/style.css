@@ -683,31 +683,6 @@ body.active-nav #page .mask {
 	text-decoration: none;
 }
 
-#page #content .entry .excerpt h3 {
-	font-size: .95em;
-	font-style: normal;
-}
-
-#page #content .entry .excerpt h3 a {
-	text-decoration: none;
-}
-
-#page #content.list .entry.note .content.container {
-	padding-bottom: 15px;
-	padding-top: 15px;
-}
-
-#page #content.list .entry.note .content.excerpt h3 {
-	margin-bottom: 2px;
-}
-
-#page #content.list .entry.note .content.excerpt .second-line {
-	color: #888;
-	font-size: .8em;
-	line-height: 1.2em;
-	margin-top: 0px;
-}
-
 
 /* Content */
 /* -------------------------------------------------- */
@@ -1665,6 +1640,33 @@ form.login input.button:hover {
 #page #content.list .entry.page h3.page-title a {
 	text-decoration: none;
 }
+
+
+/* Note */
+/* -------------------------------------------------- */
+
+#page #content.list .entry.note h3 {
+	font-size: .95em;
+	font-style: normal;
+	margin-bottom: 2px;
+}
+
+#page #content.list .entry.note h3 a {
+	text-decoration: none;
+}
+
+#page #content.list .entry.note .content.container {
+	padding-bottom: 15px;
+	padding-top: 15px;
+}
+
+#page #content.list .entry.note .content .second-line {
+	color: #888;
+	font-size: .8em;
+	line-height: 1.2em;
+	margin-top: 0px;
+}
+
 
 
 /* Notebook settings */

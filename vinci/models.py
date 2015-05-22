@@ -191,9 +191,9 @@ class Entry(models.Model):
 
         for line in lines:
             if line.strip():
-                return line
+                return line[:100]
 
-        return line
+        return line[:100]
 
     def html(self):
         content = self.content

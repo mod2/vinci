@@ -3,7 +3,8 @@
 {% block entry_metadata_date %}{% endblock entry_metadata_date %}
 
 {% block entry_list %}
-{{ entry.html|safe }}
+<h3><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></h3>
+<div class="second-line">{{ entry.second_line }}</div>
 {% endblock entry_list %}
 
 {% block entry_detail %}

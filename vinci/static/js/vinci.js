@@ -356,17 +356,25 @@ $(document).ready(function() {
 	var fields = document.querySelectorAll(".edit-mode textarea");
 	for (var i=0; i<fields.length; i++) {
 		Mousetrap(fields[i]).bind('mod+enter', function(e) {
-			autoSave(true, function() {
+			if ($(e.target).hasClass("dirty")) {
+				autoSave(true, function() {
+					hideEditPanel($(e.target).parents(".entry"));
+				});
+			} else {
 				hideEditPanel($(e.target).parents(".entry"));
-			});
+			}
 		});
 	}
 	var fields = document.querySelectorAll(".edit-mode input.title");
 	for (var i=0; i<fields.length; i++) {
 		Mousetrap(fields[i]).bind('mod+enter', function(e) {
-			autoSave(true, function() {
+			if ($(e.target).hasClass("dirty")) {
+				autoSave(true, function() {
+					hideEditPanel($(e.target).parents(".entry"));
+				});
+			} else {
 				hideEditPanel($(e.target).parents(".entry"));
-			});
+			}
 		});
 	}
 

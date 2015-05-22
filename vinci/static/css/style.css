@@ -697,7 +697,7 @@ body.active-nav #page .mask {
 
 #page #content .entry {
 	font-size: 1.1em;
-	line-height: 1.4em;
+	line-height: 1.3em;
 }
 
 #page #content .entry + .entry,
@@ -1778,7 +1778,7 @@ form.login input.button:hover {
 
 	#page #content .entry .content.container {
 		font-size: 1.1em;
-		line-height: 1.4em;
+		line-height: 1.3em;
 	}
 
 	#page #content .entry .edit-mode textarea {

@@ -187,19 +187,13 @@ class Entry(models.Model):
         return self.content.split('\n')[0]
 
     def second_line(self):
-        lines = self.content.split('\n')
+        lines = self.content.split('\n')[1:]
 
-        # The second line may be blank, in which case use the third line
-        # If there's only one line, return a blank
-        if len(lines) == 1:
-            return ''
-        elif len(lines) >= 2:
-            if lines[1].strip() == '' and len(lines) >= 3:
-                # Blank second line, so return third line
-                return lines[2]
-            else:
-                # Return second line
-                return lines[1]
+        for line in lines:
+            if line.strip():
+                return line
+
+        return line
 
     def html(self):
         content = self.content
@@ -249,10 +243,6 @@ class Entry(models.Model):
     def save(self, **kwargs):
         if self.title:
             self.slug = slugify(self.title)
-
-        # If it's a note, put the first line in the title field
-        if self.entry_type == ENTRY_TYPE.note:
-            self.title = self.content.split('\n')[0]
 
         super(Entry, self).save()
 

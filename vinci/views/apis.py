@@ -5,7 +5,7 @@ from rest_framework.response import Response as APIResponse
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView
 from vinci.serializers import EntrySerializer, NotebookSerializer
-from vinci.models import Entry, Notebook, Group, Revision, DATETIME_FORMAT
+from vinci.models import Entry, Notebook, Group, Revision, DATETIME_FORMAT, ENTRY_TYPE
 from taggit.models import Tag
 import vinci.search_indexer as si
 from django.http import JsonResponse, HttpResponse
@@ -47,6 +47,7 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
         tags = request.data.get('tags')
         type = request.data.get('type', '')
         date = request.data.get('date', '')
+
         if content:
             kwargs = {'content': content,
                       'author': request.user,
@@ -55,11 +56,20 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
                       'tags': tags,
                       'entry_type': type,
                       }
+
             if date != '':
                 kwargs['date'] = date
+
             entry = Entry.objects.create(**kwargs)
+
+            # If it's a note, put the first line in the title field
+            if entry.entry_type == ENTRY_TYPE.note:
+                entry.title = entry.first_line()
+                entry.save()
+
             si.add_index(entry)
             e = EntrySerializer(entry)
+
             return APIResponse(e.data)
         return APIResponse({'detail': 'No content to save.'}, status=400)
 
@@ -166,15 +176,25 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
         if entry:
             entry.content = content
             entry.title = request.data.get('title', '')
+
             if date:
                 entry.date = datetime.datetime.strptime(date, DATETIME_FORMAT)
+
             entry.save()
+
             if tags:
                 entry.tags.set(*tags)
             else:
                 entry.tags.clear()
+
+            # If it's a note, put the first line in the title field
+            if entry.entry_type == ENTRY_TYPE.note:
+                entry.title = entry.first_line()
+                entry.save()
+
             si.update_index(entry)
             e = self.serializer_class(entry).data
+
             return APIResponse(e)
         else:
             return APIResponseNotFound('No entry found.')

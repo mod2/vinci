@@ -355,7 +355,7 @@ $(document).ready(function() {
 	// Cmd+Enter (or Ctrl+Enter) to save and close an entry
 	var fields = document.querySelectorAll(".edit-mode textarea");
 	for (var i=0; i<fields.length; i++) {
-		Mousetrap(fields[i]).bind('mod+enter', function(e) {
+		Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
 			if ($(e.target).hasClass("dirty")) {
 				autoSave(true, function() {
 					hideEditPanel($(e.target).parents(".entry"));
@@ -367,7 +367,7 @@ $(document).ready(function() {
 	}
 	var fields = document.querySelectorAll(".edit-mode input.title");
 	for (var i=0; i<fields.length; i++) {
-		Mousetrap(fields[i]).bind('mod+enter', function(e) {
+		Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
 			if ($(e.target).hasClass("dirty")) {
 				autoSave(true, function() {
 					hideEditPanel($(e.target).parents(".entry"));
@@ -862,7 +862,7 @@ $(document).ready(function() {
 	Mousetrap.bind('A', _focusAddNotebookTray);
 	var field = document.querySelector('#add-notebook input[type=text]');
 	Mousetrap(field).bind('esc', _unfocusAddNotebookTray);
-	Mousetrap(field).bind('mod+enter', _addNotebook);
+	Mousetrap(field).bind(['mod+enter', 'shift+enter'], _addNotebook);
 
 	$("#add-notebook").submit(_addNotebook);
 
@@ -994,12 +994,14 @@ $(document).ready(function() {
 				},
 			});
 		}
+
+		return false;
 	}
 
 	Mousetrap.bind('a', _focusAddEntry);
 	var field = document.querySelector('#add-entry textarea');
 	Mousetrap(field).bind('esc', _unfocusAddEntry);
-	Mousetrap(field).bind('mod+enter', _addEntry);
+	Mousetrap(field).bind(['mod+enter', 'shift+enter'], _addEntry);
 	$("#add-entry .add.button").on("click", _addEntry);
 
 	$("span.add-entry").on("click", function() {

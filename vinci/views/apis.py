@@ -491,6 +491,7 @@ def add_revision(request, notebook_slug, slug):
             entry.notebook = nb
 
         entry.save()
+        si.update_index(entry)
 
         response = {
             'status': 'success',
@@ -548,13 +549,14 @@ def update_revision(request, notebook_slug, slug, revision_id):
             entry.tags.clear()
             tags = [t.strip() for t in tags.split(',')]
             entry.tags.add(*tags)
-            entry.save()
+            entry.save()  # TODO: Is this needed?
 
         if new_notebook:
             nb = Notebook.objects.get(slug=new_notebook)
             entry.notebook = nb
 
         entry.save()
+        si.update_index(entry)
 
         response = {
             'status': 'success',

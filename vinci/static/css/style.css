@@ -603,35 +603,35 @@ body.active-nav #page .mask {
 }
 
 #sections.log {
-	background: hsl(210, 37%, 37%);
+	background: hsl(210, 37%, 42%);
 }
 
 #sections.log .container {
-	background: hsl(210, 39%, 43%);
+	background: hsl(210, 47%, 57%);
 }
 
 #sections.note {
-	background: hsl(178, 37%, 37%);
+	background: hsl(55, 37%, 42%);
 }
 
 #sections.note .container {
-	background: hsl(178, 39%, 43%);
+	background: hsl(55, 39%, 57%);
 }
 
 #sections.page {
-	background: hsl(75, 37%, 37%);
+	background: hsl(93, 37%, 42%);
 }
 
 #sections.page .container {
-	background: hsl(75, 39%, 43%);
+	background: hsl(93, 39%, 57%);
 }
 
 #sections.journal {
-	background: hsl(342, 37%, 37%);
+	background: hsl(342, 37%, 42%);
 }
 
 #sections.journal .container {
-	background: hsl(342, 39%, 43%);
+	background: hsl(342, 39%, 57%);
 }
 
 #sections a {

@@ -104,12 +104,12 @@ p {
 /* -------------------------------------------------- */
 
 header[role=banner] {
-	background: hsl(212, 28%, 24%);
+	background: hsl(212, 7%, 14%);
 	overflow: hidden;
 }
 
 header[role=banner] .container {
-	background: hsl(212, 32%, 34%);
+	background: hsl(212, 7%, 24%);
 	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
 	overflow: hidden;
 	padding-bottom: 0;
@@ -1005,6 +1005,11 @@ body.active-nav #page .mask {
 }
 
 #page #content .entry.page .content.container {
+	padding-bottom: 15px;
+	padding-top: 15px;
+}
+
+#page #content.detail .entry.page .content.container {
 	padding-bottom: 40px;
 }
 
@@ -1934,8 +1939,11 @@ form.login input.button:hover {
 
 	#page #content .entry.page .content.container {
 		margin-left: 0;
-		padding-bottom: 65px;
 		padding-left: 65px;
+	}
+
+	#page #content.detail .entry.page .content.container {
+		padding-bottom: 65px;
 	}
 
 	#page #content .entry.page.selected .content {
@@ -2090,9 +2098,12 @@ form.login input.button:hover {
 	}
 
 	#page #content .entry.page .content.container {
-		padding-bottom: 90px;
 		padding-left: 90px;
 		padding-right: 90px;
+	}
+
+	#page #content.detail .entry.page .content.container {
+		padding-bottom: 90px;
 	}
 
 	#page #content .entry.page.selected .content {
@@ -2174,9 +2185,12 @@ form.login input.button:hover {
 	}
 
 	#page #content .entry.page .content.container {
-		padding-bottom: 150px;
 		padding-left: 150px;
 		padding-right: 150px;
+	}
+
+	#page #content.detail .entry.page .content.container {
+		padding-bottom: 150px;
 	}
 
 	#page #content .entry.page.selected .content {

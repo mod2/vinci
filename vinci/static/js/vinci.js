@@ -356,9 +356,7 @@ $(document).ready(function() {
 	var fields = document.querySelectorAll(".edit-mode textarea");
 	for (var i=0; i<fields.length; i++) {
 		Mousetrap(fields[i]).bind('mod+enter', function(e) {
-			console.log("here");
-			autoSave(true, function(e) {
-				console.log("in callback", $(e.target));
+			autoSave(true, function() {
 				hideEditPanel($(e.target).parents(".entry"));
 			});
 		});
@@ -366,7 +364,7 @@ $(document).ready(function() {
 	var fields = document.querySelectorAll(".edit-mode input.title");
 	for (var i=0; i<fields.length; i++) {
 		Mousetrap(fields[i]).bind('mod+enter', function(e) {
-			autoSave(true, function(e) {
+			autoSave(true, function() {
 				hideEditPanel($(e.target).parents(".entry"));
 			});
 		});
@@ -375,10 +373,8 @@ $(document).ready(function() {
 	$(".edit-mode .group span.type").on("click", function() {
 		var entryType = $(this).attr("data-value");
 		if ($(this).parents("#add-entry").length > 0) {
-			console.log("add entry");
 			var parentEntry = $("#add-entry");
 		} else {
-			console.log("not entry");
 			var parentEntry = $(this).parents(".entry");
 		}
 
@@ -721,14 +717,12 @@ $(document).ready(function() {
 					url += "update-revision/" + revisionId + "/";
 				}
 
-				console.log("POSTING", url);
 				$.ajax({
 					url: url,
 					method: 'POST',
 					contentType: 'application/json',
 					data: JSON.stringify(data),
 					success: function(data) {
-						console.log("success", data);
 						$(".dirty").removeClass("dirty");
 						currentBox.attr("data-revision-id", data.revision_id);
 
@@ -758,15 +752,17 @@ $(document).ready(function() {
 						}
 
 						// Update the returned HTML
-						console.log("data.html", data.html);
 						if (data.html) {
-							entry.find(".content.container").html(data.html);
+							if (currentType == 'page') {
+								entry.find(".content.container .page-content").html(data.html);
+							} else {
+								entry.find(".content.container").html(data.html);
+							}
 						}
 
 						autoSaveInProgress = false;
 
 						if (callback) {
-							console.log("callback");
 							callback();
 						}
 					},
@@ -780,6 +776,8 @@ $(document).ready(function() {
 				currentBox.removeClass("dirty");
 				autoSaveInProgress = false;
 			}
+		} else {
+			autoSaveInProgress = false;
 		}
 	}
 

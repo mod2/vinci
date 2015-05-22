@@ -187,7 +187,7 @@ class Entry(models.Model):
         content = self.content
 
         # Don't run notes through the plugins
-        if self.entry_type == Entry.ENTRY_TYPE.note:
+        if self.entry_type == ENTRY_TYPE.note:
             content = content.replace('\n', '<br>')
             content = content.replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
             content = content.replace('    ', '&nbsp;&nbsp;&nbsp;&nbsp;')
@@ -264,7 +264,7 @@ class Revision(models.Model):
         content = self.content
 
         # Don't run notes through the plugins
-        if self.entry_type == Entry.ENTRY_TYPE.note:
+        if self.entry.entry_type == ENTRY_TYPE.note:
             content = content.replace('\n', '<br>')
             content = content.replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
             content = content.replace('    ', '&nbsp;&nbsp;&nbsp;&nbsp;')

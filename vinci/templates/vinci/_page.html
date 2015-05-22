@@ -11,5 +11,5 @@
 {% block entry_detail %}
 <h1 class="page-title">{{ entry.title }}</h1>
 
-{{ entry.html|safe }}
+<div class="page-content">{{ entry.html|safe }}</div>
 {% endblock entry_detail %}

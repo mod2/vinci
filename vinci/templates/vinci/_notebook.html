@@ -5,7 +5,7 @@
 	<div class="content container">
 		<a href="{{ notebook.get_absolute_url }}">
 			<h2 class="notebook-name">{{ notebook.name }}</h2>
-			<div>{{ notebook.entries.count|intcomma }} entries</div>
+			<div>{{ notebook.entries.active.count|intcomma }} entries</div>
 		</a>
 	</div>
 

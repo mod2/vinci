@@ -665,22 +665,47 @@ body.active-nav #page .mask {
 	font-weight: 600;
 }
 
-.entry .excerpt {
+#page #content .entry .excerpt {
 	font-style: italic;
 }
 
-.entry .excerpt b.match {
+#page #content .entry .excerpt b.match {
 	color: #ef1b64;
 }
 
-.entry .excerpt h2 {
+#page #content .entry .excerpt h2 {
 	font-size: 1.1em;
 	font-style: normal;
 	font-weight: 400;
 }
 
-.entry .excerpt h2 a {
+#page #content .entry .excerpt h2 a {
 	text-decoration: none;
+}
+
+#page #content .entry .excerpt h3 {
+	font-size: .95em;
+	font-style: normal;
+}
+
+#page #content .entry .excerpt h3 a {
+	text-decoration: none;
+}
+
+#page #content.list .entry.note .content.container {
+	padding-bottom: 15px;
+	padding-top: 15px;
+}
+
+#page #content.list .entry.note .content.excerpt h3 {
+	margin-bottom: 2px;
+}
+
+#page #content.list .entry.note .content.excerpt .second-line {
+	color: #888;
+	font-size: .8em;
+	line-height: 1.2em;
+	margin-top: 0px;
 }
 
 

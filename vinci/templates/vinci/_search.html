@@ -3,10 +3,15 @@
 {% block entry_class %}{% if entry.highlight %}excerpt{% endif %}{% endblock entry_class %}
 
 {% block entry_list %}
-{% if entry.entry_type == 'page' %}<h2><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></h2>{% endif %}
-{% if entry.highlight %}
-&hellip; {{ entry.highlight|safe }} &hellip;
+{% if entry.entry_type == 'note' %}
+<h3><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></h3>
+<div class="second-line">{{ entry.second_line }}</div>
 {% else %}
-{{ entry.html|safe }}
+    {% if entry.entry_type == 'page' %}<h2><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></h2>{% endif %}
+    {% if entry.highlight %}
+    &hellip; {{ entry.highlight|safe }} &hellip;
+    {% else %}
+    {{ entry.html|safe }}
+    {% endif %}
 {% endif %}
 {% endblock entry_list %}

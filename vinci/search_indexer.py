@@ -27,6 +27,7 @@ else:
                     content=TEXT(analyzer=StemmingAnalyzer(), stored=True),
                     tag=KEYWORD(field_boost=2.0),
                     type=ID,
+                    title=TEXT(field_boost=2.0),
                     date=DATETIME,
                     )
 
@@ -45,7 +46,8 @@ def _generate_entry_document(entry):
     doc = {}
     doc = {'id': str(entry.id),
            'notebook': entry.notebook.slug,
-           'content': entry.content,
+           'content': entry.title + ' ' + entry.content,
+           'title': entry.title,
            'tag': ' '.join([t.name for t in entry.tags.all()]),
            'type': entry.entry_type,
            'date': entry.date,
@@ -132,9 +134,6 @@ def search(query_string, page=1, results_per_page=10, sort_order='relevance',
                                                                      'content'))
                      for entry in results}
     
-    #num_results = len(results)
-    #num_pages = math.ceil(len(results) / float(results_per_page))
-
     ids = [id_ for id_ in entry_ids.keys()]
     entries = Entry.objects.filter(pk__in=ids)
     results = []
@@ -144,4 +143,4 @@ def search(query_string, page=1, results_per_page=10, sort_order='relevance',
         results.append((rank, entry))
     results.sort()
 
-    return [entry for __, entry in results]#, num_results, num_pages
+    return [entry for __, entry in results]

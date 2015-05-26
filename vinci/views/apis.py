@@ -517,6 +517,10 @@ def add_revision(request, notebook_slug, slug):
             'status': 'success',
         }
 
+        if entry.entry_type == ENTRY_TYPE.note:
+            response['first_line'] = entry.first_line()
+            response['second_line'] = entry.second_line()
+
         if content:
             response['revision_id'] = revision.id
             response['html'] = revision.html()
@@ -581,6 +585,10 @@ def update_revision(request, notebook_slug, slug, revision_id):
         response = {
             'status': 'success',
         }
+
+        if entry.entry_type == ENTRY_TYPE.note:
+            response['first_line'] = entry.first_line()
+            response['second_line'] = entry.second_line()
 
         if content:
             response['revision_id'] = revision.id

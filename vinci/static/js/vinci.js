@@ -763,6 +763,13 @@ $(document).ready(function() {
 						if (data.html) {
 							if (currentType == 'page') {
 								entry.find(".content.container .page-content").html(data.html);
+							} else if (currentType == 'note') {
+								// Do title differently
+								var html = '<h3><a href="">' + data.first_line + '</a></h3>';
+								if (data.second_line) {
+									html += '<div class="second-line">' + data.second_line + '</div>';
+								}
+								entry.find(".content.container").html(html);
 							} else {
 								entry.find(".content.container").html(data.html);
 							}

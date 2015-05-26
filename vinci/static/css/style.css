@@ -1873,7 +1873,7 @@ form.login input.button:hover {
 		padding-bottom: 25px;
 		padding-right: 0;
 		padding-top: 25px;
-		width: 150px;
+		width: 170px;
 	}
 
 	#page #content.detail .entry .metadata {
@@ -2179,11 +2179,13 @@ form.login input.button:hover {
 	}
 
 	#page #content .entry .metadata {
+		padding-left: 85px;
 		width: 220px;
 	}
 
 	#page #content .entry .content.container {
 		margin-left: 245px;
+		padding-right: 100px;
 	}
 
 	#page #content .entry .edit-mode textarea {

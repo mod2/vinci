@@ -1915,10 +1915,10 @@ form.login input.button:hover {
 	}
 
 	#page #content .entry .content.container {
-		margin-left: 175px;
+		margin-left: 195px;
 		padding-bottom: 25px;
 		padding-left: 0;
-		padding-top: 20px;
+		padding-top: 25px;
 	}
 
 	#page #content.detail .entry .content.container {
@@ -2070,28 +2070,6 @@ form.login input.button:hover {
 		position: absolute;
 	}
 
-	/*
-	nav[role=menu] {
-		-moz-transition: none;
-		-o-transition: none;
-		-webkit-transition: none;
-		transition: none;
-		-moz-transform: none;
-		-ms-transform: none;
-		-o-transform: none;
-		-webkit-transform: none;
-		transform: none;
-		display: none;
-	}
-
-	#page {
-		-moz-transition: none;
-		-o-transition: none;
-		-webkit-transition: none;
-		transition: none;
-	}
-	*/
-
 	#page #content .entry .metadata {
 		width: 200px;
 	}
@@ -2160,6 +2138,34 @@ form.login input.button:hover {
 		padding-left: 80px;
 	}
 
+	#page #content .entry.log.selected .content,
+	#page #content .entry.journal .selected .content {
+		margin-left: 195px;
+	}
+
+	#page #content .entry.log .metadata.container,
+	#page #content .entry.journal .metadata.container {
+		padding-left: 70px;
+		width: 180px;
+	}
+
+	#page #content .entry.log .content.container,
+	#page #content .entry.journal .content.container {
+		padding-right: 70px;
+		margin-left: 205px;
+	}
+
+	#page #content .entry.log.selected .metadata,
+	#page #content .entry.journal.selected .metadata {
+		padding-left: 60px;
+		width: 170px;
+	}
+
+	#page #content .entry.log.selected .content,
+	#page #content .entry.journal.selected .content {
+		margin-left: 195px;
+	}
+
 	#all-notebooks .notebook.selected .content {
 		padding-left: 55px;
 	}
@@ -2185,6 +2191,16 @@ form.login input.button:hover {
 
 	#page #content > footer ul {
 		margin-left: 135px;
+	}
+
+	#page #content.log > footer .container {
+		padding-left: 70px;
+		padding-right: 70px;
+	}
+
+	#page #content.journal > footer .container {
+		padding-left: 70px;
+		padding-right: 70px;
 	}
 }
 
@@ -2257,8 +2273,47 @@ form.login input.button:hover {
 		padding-left: 140px;
 	}
 
+	#page #content .entry.log .metadata.container,
+	#page #content .entry.journal .metadata.container {
+		padding-left: 100px;
+		width: 225px;
+	}
+
+	#page #content .entry.log .content.container,
+	#page #content .entry.journal .content.container {
+		margin-left: 250px;
+		padding-right: 100px;
+	}
+
+	#page #content .entry.log.selected .metadata.container,
+	#page #content .entry.journal.selected .metadata.container {
+		padding-left: 90px;
+		width: 215px;
+	}
+
+	#page #content .entry.log.selected .content.container,
+	#page #content .entry.journal.selected .content.container {
+		margin-left: 240px;
+	}
+
 	#all-notebooks .notebook.selected .content {
 		padding-left: 75px;
+	}
+
+	#page #content.log > footer .container,
+	#page #content.journal > footer .container {
+		padding-left: 100px;
+		padding-right: 100px;
+	}
+
+	#page #content.log > footer h2,
+	#page #content.journal > footer h2 {
+		width: 125px;
+	}
+
+	#page #content.log > footer ul,
+	#page #content.journal > footer ul {
+		margin-left: 150px;
 	}
 
 	#add-entry textarea {

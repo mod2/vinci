@@ -1269,6 +1269,10 @@ $(document).ready(function() {
 		}
 	});
 	*/
+
+    // Login form
+    // ----------------------------------------------------------
+    $('#id_username').focus();
 });
 
 function processEntries(entries) {

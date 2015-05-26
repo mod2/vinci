@@ -1,9 +1,12 @@
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 from rest_framework.response import Response as APIResponse
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView
+from rest_framework import authentication
+from rest_framework import exceptions
 from vinci.serializers import EntrySerializer, NotebookSerializer
 from vinci.models import Entry, Notebook, Group, Revision, DATETIME_FORMAT, ENTRY_TYPE
 from taggit.models import Tag
@@ -12,6 +15,20 @@ from django.http import JsonResponse, HttpResponse
 
 import datetime
 import json
+
+
+class APIKeyAuthentication(authentication.BaseAuthentication):
+    def authenticate(self, request):
+        username = settings.VINCI_DEFAULT_API_KEY_USERNAME
+        api_key = request.META.get('HTTP_X_API_KEY')
+        if not username or not api_key or api_key != settings.VINCI_API_KEY:
+            return None
+
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            raise exceptions.AuthenticationFailed('No such user')
+        return (user, None)
 
 
 class APIResponseNotFound(APIResponse):
@@ -330,6 +347,91 @@ class NotebookDetailAPIView(APIView):
             return APIResponseNotFound('No notebook found.')
 
 
+class QuickJumpAPIView(APIView):
+    """
+    An endpoint that returns matching Notebooks and Pages.
+
+    __Note__: **Set the HTTP_X_API_KEY to the value same as the VINCI_API_KEY
+    setting.**
+
+    ## Parameters:
+
+    * `q` - The query to search for. *REQUIRED*
+
+    ## Examples
+
+    * GET `/api/quick-jump/?q={query}` Returns lists of all the pages and
+    notebooks that match the given query.
+
+    """
+    authentication_classes = (APIKeyAuthentication,)
+
+    def get(self, request, *args, **kwargs):
+        status = 'error'
+        msg_label = 'message'
+        msg = 'Bad Request'
+        status_code = 400
+
+        query = request.GET.get('q', '').strip().lower()
+        if query:
+            # See if there's a notebook specifier ("home.projects", for example)
+            query, _, notebook_specifier = query.partition('.')
+
+            notebooks = Notebook.objects.filter(name__icontains=query)[:5]
+            tags = Tag.objects.filter(name__icontains=query)[:5]
+
+            entries = Entry.objects.filter(title__icontains=query)
+            if notebook_specifier:
+                # Filter further by a specific notebook (allows user to resolve pages
+                # with same name in different notebooks)
+                entries = entries.filter(notebook__slug__icontains=notebook_specifier)
+
+                # Zero out notebooks/tags because we only want pages
+                notebooks = []
+                tags = []
+            entries = entries[:5]
+
+            status = 'success'
+            status_code = 200
+            msg_label = 'results'
+
+            nbs = []
+            pages = []
+            tag_list = []
+
+            for notebook in notebooks:
+                nb = {'name': notebook.name,
+                    'slug': notebook.slug,
+                    'url': notebook.get_absolute_url(),
+                    }
+                nbs.append(nb)
+
+            for entry in entries:
+                page = {'name': entry.title,
+                        'slug': entry.slug,
+                        'notebook': entry.notebook.name,
+                        'url': entry.get_absolute_url(),
+                        }
+                pages.append(page)
+
+            for tag in tags:
+                tag_item = {'name': tag.name,
+                            'slug': tag.slug,
+                            'url': reverse('search_all_tags', kwargs={'tag': tag.slug}),
+                            }
+                tag_list.append(tag_item)
+
+            msg = {
+                'notebooks': nbs,
+                'pages': pages,
+                'tags': tag_list,
+            }
+        else:
+            msg = 'A query is required. Pass the q query param.'
+
+        return APIResponse({'status': status, msg_label: msg}, status=status_code)
+
+
 def append_today(request, notebook_slug):
     """ Appends to today's entry, creating it if it's not there. """
 
@@ -605,70 +707,3 @@ def update_revision(request, notebook_slug, slug, revision_id):
 
     # Return JSON response
     return JsonResponse(response)
-
-
-def quick_jump(request):
-    status = 'error'
-    msg_label = 'message'
-    msg = 'Bad Request'
-    status_code = 400
-
-    # if request.is_ajax() and request.method == 'GET':
-    if request.method == 'GET':
-        query = request.GET.get('q', '').strip().lower()
-        if query:
-            # See if there's a notebook specifier ("home.projects", for example)
-            query, _, notebook_specifier = query.partition('.')
-
-            notebooks = Notebook.objects.filter(name__icontains=query)[:5]
-            tags = Tag.objects.filter(name__icontains=query)[:5]
-
-            entries = Entry.objects.filter(title__icontains=query)
-            if notebook_specifier:
-                # Filter further by a specific notebook (allows user to resolve pages
-                # with same name in different notebooks)
-                entries = entries.filter(notebook__slug__icontains=notebook_specifier)
-
-                # Zero out notebooks/tags because we only want pages
-                notebooks = []
-                tags = []
-            entries = entries[:5]
-
-            status = 'success'
-            status_code = 200
-            msg_label = 'results'
-
-            nbs = []
-            pages = []
-            tag_list = []
-
-            for notebook in notebooks:
-                nb = {'name': notebook.name,
-                      'slug': notebook.slug,
-                      'url': notebook.get_absolute_url(),
-                      }
-                nbs.append(nb)
-
-            for entry in entries:
-                page = {'name': entry.title,
-                        'slug': entry.slug,
-                        'notebook': entry.notebook.name,
-                        'url': entry.get_absolute_url(),
-                        }
-                pages.append(page)
-
-            for tag in tags:
-                tag_item = {'name': tag.name,
-                            'slug': tag.slug,
-                            'url': reverse('search_all_tags', kwargs={'tag': tag.slug}),
-                            }
-                tag_list.append(tag_item)
-
-            msg = {
-                'notebooks': nbs,
-                'pages': pages,
-                'tags': tag_list,
-            }
-        else:
-            msg = 'A query is required. Pass the q query param.'
-    return JsonResponse({'status': status, msg_label: msg}, status=status_code)

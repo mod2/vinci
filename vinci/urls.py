@@ -3,14 +3,14 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from .views.apis import EntryListAPIView, EntryDetailAPIView
-from .views.apis import NotebookListAPIView
+from .views.apis import NotebookListAPIView, QuickJumpAPIView
 
 vinciapipatterns = patterns(
     '',
     url(r'^$',
         NotebookListAPIView.as_view(),
         name='api_notebook_list'),
-    url(r'^quick-jump/$', 'vinci.views.apis.quick_jump', name='quick_jump'),
+    url(r'^quick-jump/$', QuickJumpAPIView.as_view(), name='quick_jump'),
     url(r'^(?P<notebook_slug>[^\/]+)/$',
         EntryListAPIView.as_view(),
         name='api_entry_list'),

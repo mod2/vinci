@@ -32,3 +32,7 @@ DATABASES = {
 # applications/programs. Basically adds GET endpoints with query params.
 # VINCI_ENABLE_NON_REST_APIS = False
 # VINCI_NON_REST_KEY = 'your non-REST API key'
+
+# These should be strings. Used by the quickjump api.
+VINCI_DEFAULT_API_KEY_USERNAME = None
+VINCI_API_KEY = None

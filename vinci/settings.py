@@ -95,6 +95,9 @@ VINCI_SEARCH_INDEX_DIR = os.path.join(BASE_DIR, 'search.idx')
 VINCI_GENERATE_ENTRY_DOCUMENT_FUNCTION = None
 VINCI_SEARCH_SCHEMA = None
 
+VINCI_DEFAULT_API_KEY_USERNAME = None
+VINCI_API_KEY = None
+
 LOGGING_CONFIG = None
 LOGGING = {
     'version': 1,
@@ -130,6 +133,7 @@ LOGGING = {
 from django.conf import global_settings
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     'vinci.processors.site_title',
+    'vinci.processors.api_key',
 )
 
 

@@ -29,6 +29,7 @@
 		var config = {};
 		config.url = "{% url 'notebooks_list' %}";
 {% if notebook %}		config.notebook = "{{ notebook.slug }}";{% endif %}
+        config.api_key = "{{ API_KEY }}";
 	</script>
 
 	<link rel="shortcut icon" href="{% static 'favicon.png' %}">

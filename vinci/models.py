@@ -191,7 +191,7 @@ class Entry(models.Model):
 
         for line in lines:
             if line.strip():
-                return line[:100]
+                return line
 
         return ''
 

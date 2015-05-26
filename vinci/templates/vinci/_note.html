@@ -3,8 +3,8 @@
 {% block entry_metadata_date %}{% endblock entry_metadata_date %}
 
 {% block entry_list %}
-<h3><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></h3>
-<div class="second-line">{{ entry.second_line }}</div>
+<h3><a href="{{ entry.get_absolute_url }}">{% if entry.title %}{{ entry.title }}{% else %}{{ entry.first_line|truncatechars_html:50 }}{% endif %}</a></h3>
+<div class="second-line">{{ entry.second_line|truncatechars_html:150 }}</div>
 {% endblock entry_list %}
 
 {% block entry_detail %}

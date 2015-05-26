@@ -1004,6 +1004,14 @@ body.active-nav #page .mask {
 	padding-bottom: 15px;
 }
 
+#page #content.list .entry .metadata.container {
+	padding-top: 20px;
+}
+
+#page #content.list .entry .content.container {
+	padding-bottom: 25px;
+}
+
 #page #content .entry.page .content.container {
 	padding-bottom: 15px;
 	padding-top: 15px;

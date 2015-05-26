@@ -13,7 +13,7 @@
 		{% endblock entry_metadata_date %}
 
 		{% block entry_metadata_tags %}
-		{% if entry.tags.all|length > 0 %}
+		{% if entry.tags.all|length > 0 and page_type == 'list' %}
 		<ul class="tags">{% for tag in entry.tags.all %}<li><a href="{% url 'search_notebook_tags' entry.notebook.slug tag %}">#{{ tag }}</a></li>{% endfor %}</ul>
 		{% endif %}
 		{% endblock entry_metadata_tags %}

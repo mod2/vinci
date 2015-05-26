@@ -24,11 +24,19 @@
 	<div class="content container {% block entry_class %}{% endblock entry_class %}">
 	{% if page_type == 'list' %}
 		{% block entry_list %}
+		{% if revision %}
+		{{ revision.html|safe }}
+		{% else %}
 		{{ entry.html|safe }}
+		{% endif %}
 		{% endblock %}
 	{% else %}
 		{% block entry_detail %}
+		{% if revision %}
+		{{ revision.html|safe }}
+		{% else %}
 		{{ entry.html|safe }}
+		{% endif %}
 		{% endblock %}
 	{% endif %}
 	</div>

@@ -910,6 +910,10 @@ body.active-nav #page .mask {
 	text-transform: uppercase;
 }
 
+#page #content .entry .metadata a.date:hover * {
+	color: hsl(0, 0%, 27%) !important;
+}
+
 #page #content .entry .metadata ul.tags {
 	display: block;
 	margin: 0;

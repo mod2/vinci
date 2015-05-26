@@ -1665,8 +1665,12 @@ form.login input.button:hover {
 	font-size: .8em;
 	line-height: 1.2em;
 	margin-top: 0px;
+	word-wrap: break-word;
 }
 
+#page #content.list .entry.note .metadata {
+	display: none;
+}
 
 
 /* Notebook settings */

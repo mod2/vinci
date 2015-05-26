@@ -193,7 +193,7 @@ class Entry(models.Model):
             if line.strip():
                 return line[:100]
 
-        return line[:100]
+        return ''
 
     def html(self):
         content = self.content

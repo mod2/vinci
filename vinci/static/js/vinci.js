@@ -363,6 +363,8 @@ $(document).ready(function() {
 			} else {
 				hideEditPanel($(e.target).parents(".entry"));
 			}
+
+			return false;
 		});
 	}
 	var fields = document.querySelectorAll(".edit-mode input.title");
@@ -375,6 +377,8 @@ $(document).ready(function() {
 			} else {
 				hideEditPanel($(e.target).parents(".entry"));
 			}
+
+			return false;
 		});
 	}
 
@@ -637,7 +641,7 @@ $(document).ready(function() {
 	// --------------------------------------------------
 
 	function autoSave(force, callback) {
-		if (autoSaveInProgress) {
+		if (autoSaveInProgress && !force) {
 			return;
 		} else {
 			autoSaveInProgress = true;

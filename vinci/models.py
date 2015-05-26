@@ -135,6 +135,9 @@ class Notebook(models.Model):
     display_pages = models.BooleanField(default=True)
     display_journals = models.BooleanField(default=False)
 
+    condense_notes = models.BooleanField(default=True)
+    parse_notes = models.BooleanField(default=False)
+
     objects = NotebookManager.as_manager()
 
     def __str__(self):

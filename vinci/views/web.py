@@ -38,7 +38,9 @@ def notebook_settings(request, notebook_slug):
 
 @login_required
 def notebook_section(request, notebook_slug, section):
-    sortby = request.GET.get('sort', settings.VINCI_DEFAULT_SEARCH_ORDER)
+    sortby = settings.VINCI_DEFAULT_SEARCH_ORDER
+    sortby = sortby if section != 'note' else '-revisions__last_modified'
+    sortby = request.GET.get('sort', sortby)
     page = int(request.GET.get('page', 1))
 
     notebook = get_object_or_404(Notebook, slug=notebook_slug)

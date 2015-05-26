@@ -881,7 +881,7 @@ body.active-nav #page .mask {
 	font-size: .8em;
 	margin-bottom: 3px;
 	padding-bottom: 0;
-	padding-top: 10px;
+	padding-top: 20px;
 }
 
 #page #content .entry .metadata a.date {
@@ -1005,15 +1005,11 @@ body.active-nav #page .mask {
 
 #page #content .entry .content.container {
 	padding-top: 0;
-	padding-bottom: 15px;
-}
-
-#page #content.list .entry .metadata.container {
-	padding-top: 20px;
-}
-
-#page #content.list .entry .content.container {
 	padding-bottom: 25px;
+}
+
+#page #content.list .entry.page .metadata.container {
+	display: none;
 }
 
 #page #content .entry.page .content.container {
@@ -1882,10 +1878,15 @@ form.login input.button:hover {
 		float: left;
 		font-size: 1em;
 		margin-right: 25px;
-		padding-bottom: 25px;
+		padding-bottom: 20px;
 		padding-right: 0;
 		padding-top: 25px;
 		width: 170px;
+	}
+
+	#page #content .entry.selected .metadata {
+		padding-left: 55px;
+		margin-right: 15px;
 	}
 
 	#page #content.detail .entry .metadata {
@@ -1917,7 +1918,7 @@ form.login input.button:hover {
 		margin-left: 175px;
 		padding-bottom: 25px;
 		padding-left: 0;
-		padding-top: 25px;
+		padding-top: 20px;
 	}
 
 	#page #content.detail .entry .content.container {
@@ -2108,7 +2109,7 @@ form.login input.button:hover {
 	}
 
 	#page #content .entry.selected .metadata {
-		padding-left: 55px;
+		padding-left: 80px;
 		width: 190px;
 	}
 
@@ -2177,13 +2178,21 @@ form.login input.button:hover {
 		padding-left: 90px;
 		padding-right: 90px;
 	}
+
+	#page #content > footer h2 {
+		width: 110px;
+	}
+
+	#page #content > footer ul {
+		margin-left: 135px;
+	}
 }
 
 @media screen and (min-width: 1000px) {
 	.container {
 		max-width: 900px;
-		padding-left: 150px;
-		padding-right: 150px;
+		padding-left: 130px;
+		padding-right: 130px;
 	}
 
 	#page #content {
@@ -2191,33 +2200,33 @@ form.login input.button:hover {
 	}
 
 	#page #content .entry .metadata {
-		padding-left: 85px;
-		width: 220px;
+		padding-left: 130px;
+		width: 285px;
 	}
 
 	#page #content .entry .content.container {
-		margin-left: 245px;
-		padding-right: 100px;
+		margin-left: 310px;
+		padding-right: 130px;
 	}
 
 	#page #content .entry .edit-mode textarea {
-		padding-left: 150px;
-		padding-right: 150px;
+		padding-left: 130px;
+		padding-right: 130px;
 	}
 
 	#page #content .entry .edit-mode .title {
-		padding-left: 150px;
-		padding-right: 150px;
+		padding-left: 130px;
+		padding-right: 130px;
 	}
 
 	#page #content .entry .edit-mode .group.container {
-		padding-left: 150px;
-		padding-right: 150px;
+		padding-left: 130px;
+		padding-right: 130px;
 	}
 
 	#page #content .entry.selected .metadata {
-		padding-left: 75px;
-		width: 210px;
+		padding-left: 120px;
+		width: 275px;
 	}
 
 	#page #content .entry.selected .content.container {
@@ -2225,8 +2234,8 @@ form.login input.button:hover {
 	}
 
 	#page #content .entry.note .content.container {
-		padding-left: 150px;
-		padding-right: 150px;
+		padding-left: 130px;
+		padding-right: 130px;
 	}
 
 	#page #content .entry.note.selected .content {
@@ -2235,12 +2244,12 @@ form.login input.button:hover {
 	}
 
 	#page #content .entry.page .content.container {
-		padding-left: 150px;
-		padding-right: 150px;
+		padding-left: 130px;
+		padding-right: 130px;
 	}
 
 	#page #content.detail .entry.page .content.container {
-		padding-bottom: 150px;
+		padding-bottom: 130px;
 	}
 
 	#page #content .entry.page.selected .content {
@@ -2253,17 +2262,25 @@ form.login input.button:hover {
 	}
 
 	#add-entry textarea {
-		padding-left: 150px;
-		padding-right: 150px;
+		padding-left: 130px;
+		padding-right: 130px;
 	}
 
 	#add-entry .title {
-		padding-left: 150px;
-		padding-right: 150px;
+		padding-left: 130px;
+		padding-right: 130px;
 	}
 
 	#add-entry .group {
-		padding-left: 150px;
-		padding-right: 150px;
+		padding-left: 130px;
+		padding-right: 130px;
+	}
+
+	#page #content > footer h2 {
+		width: 155px;
+	}
+
+	#page #content > footer ul {
+		margin-left: 180px;
 	}
 }

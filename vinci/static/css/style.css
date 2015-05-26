@@ -1845,6 +1845,11 @@ form.login input.button:hover {
 }
 
 @media screen and (min-width: 600px) {
+	.container {
+		padding-left: 65px;
+		padding-right: 65px;
+	}
+
 	header[role=banner] a.menu {
 		padding-left: 0px;
 	}
@@ -2017,8 +2022,8 @@ form.login input.button:hover {
 
 @media screen and (min-width: 700px) {
 	.container {
-		padding-left: 65px;
-		padding-right: 65px;
+		padding-left: 90px;
+		padding-right: 90px;
 	}
 
 	header[role=banner] .container {
@@ -2165,8 +2170,8 @@ form.login input.button:hover {
 @media screen and (min-width: 1000px) {
 	.container {
 		max-width: 900px;
-		padding-left: 85px;
-		padding-right: 85px;
+		padding-left: 150px;
+		padding-right: 150px;
 	}
 
 	#page #content {

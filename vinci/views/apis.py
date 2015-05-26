@@ -48,7 +48,9 @@ class NotebookLimitMixin(object):
 
 class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
     """
-    # Entries
+    List of entries and notebook operations. Different methods determine what is
+    done.
+
     - **GET** List the entries for the current notebook.
     - **POST** Create a new entry attached to the current notebook.
     - **PUT** Edit the current notebook's name, status, group, or sections.
@@ -147,7 +149,6 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
 
 class EntryDetailAPIView(NotebookLimitMixin, APIView):
     """
-    # Entry
     A single entry detail
     """
     serializer_class = EntrySerializer
@@ -229,7 +230,6 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
 
 class NotebookListAPIView(ListCreateAPIView):
     """
-    # Notebooks
     List of all the notebooks.
 
     ## Optional Parameters
@@ -265,7 +265,6 @@ class NotebookListAPIView(ListCreateAPIView):
 
 class NotebookDetailAPIView(APIView):
     """
-    # Notebook
     A single notebook detail
     """
     serializer_class = NotebookSerializer

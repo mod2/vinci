@@ -179,7 +179,7 @@ $(document).ready(function() {
 				method: 'GET',
 				contentType: 'application/json',
                 beforeSend: function (request) {
-                    request.setRequestHeader('X_API_KEY', config.api_key);
+                    request.setRequestHeader('X-API-KEY', config.api_key);
                 },
 				success: function(data) {
 					var html = '';

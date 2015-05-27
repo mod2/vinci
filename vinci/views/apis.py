@@ -21,6 +21,7 @@ class APIKeyAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
         username = settings.VINCI_DEFAULT_API_KEY_USERNAME
         api_key = request.META.get('HTTP_X_API_KEY')
+
         if not username or not api_key or api_key != settings.VINCI_API_KEY:
             return None
 

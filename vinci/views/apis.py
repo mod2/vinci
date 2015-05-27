@@ -105,6 +105,7 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
         display_notes = request.data.get('display_notes')
         display_pages = request.data.get('display_pages')
         display_journals = request.data.get('display_journals')
+        condense_notes = request.data.get('condense_notes')
 
         if name is not None:
             notebook.name = name
@@ -131,6 +132,9 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
 
         if display_journals is not None:
             notebook.display_journals = display_journals
+
+        if condense_notes is not None:
+            notebook.condense_notes = condense_notes
 
         notebook.save()
 

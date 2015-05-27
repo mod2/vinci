@@ -1103,6 +1103,33 @@ $(document).ready(function() {
 		});
 	});
 
+	// Toggle note section settings
+	//
+	$("#settings #note-section-config span.type").on("click", function() {
+		var url = $("#settings").attr("data-uri");
+		var button = $(this);
+
+		var field = $(this).attr("data-field");
+		var status = !$(this).hasClass("selected"); // Inverse
+
+		var data = {};
+		data[field] = status;
+
+		$.ajax({
+			url: url,
+			method: 'PUT',
+			contentType: 'application/json',
+			data: JSON.stringify(data),
+			success: function(data) {
+				// Toggle section
+				button.toggleClass("selected");
+			},
+			error: function(data) {
+				_showError("Error saving settings", data);
+			},
+		});
+	});
+
 	// Change default section
 
 	$("#settings #default-section span.type").on("click", function() {

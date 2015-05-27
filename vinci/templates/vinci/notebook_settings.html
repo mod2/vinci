@@ -17,18 +17,18 @@
 		<span class="type{% if notebook.display_journals %} selected{% endif %}" data-field="display_journals">Journals</span>
 	</div>
 
-	<h3 class="container">Note Section Options</h3>
-	<div id="note-section-config" class="group container">
-		<span class="type{% if notebook.condense_notes %} selected{% endif %}" data-field="condense_notes">Condense Notes</span>
-		<span class="type{% if notebook.parse_notes %} selected{% endif %}" data-field="parse_notes">Parse Notes</span>
-	</div>
-
 	<h3 class="container">Default Section</h3>
 	<div id="default-section" class="group container">
 		<span class="type{% if notebook.default_section == 'log' %} selected{% endif %}" data-value="log">Logs</span>
 		<span class="type{% if notebook.default_section == 'note' %} selected{% endif %}" data-value="note">Notes</span>
 		<span class="type{% if notebook.default_section == 'page' %} selected{% endif %}" data-value="page">Pages</span>
 		<span class="type{% if notebook.default_section == 'journal' %} selected{% endif %}" data-value="journal">Journals</span>
+	</div>
+
+	<h3 class="container">Note Style</h3>
+	<div id="note-section-config" class="group container">
+		<span class="type{% if notebook.condense_notes %} selected{% endif %}" data-field="condense_notes">Plain</span>
+		<span class="type{% if notebook.parse_notes %} selected{% endif %}" data-field="parse_notes">Parsed</span>
 	</div>
 
 	<h3 class="container">Status</h3>

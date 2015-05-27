@@ -20,6 +20,7 @@ class NotebookSerializer(serializers.ModelSerializer):
                   'display_pages',
                   'display_journals',
                   'condense_notes',
+                  'parse_notes',
                   'author',
                   'entries',
                   )

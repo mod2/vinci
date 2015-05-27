@@ -167,6 +167,7 @@ class Entry(models.Model):
     status = models.CharField(max_length=20,
                               default=STATUS.active,
                               choices=STATUS)
+    last_modified = models.DateTimeField(null=True, blank=True, default=None)
 
     objects = EntryQuerySet.as_manager()
     tags = TaggableManager(blank=True)
@@ -272,6 +273,8 @@ class Revision(models.Model):
         parent = self.entry.current_revision
         self.parent = parent
         super(Revision, self).save()
+        self.entry.last_modified = self.last_modified
+        self.entry.save()
 
     def content_excerpt(self):
         return self.content[:60]

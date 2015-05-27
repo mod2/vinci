@@ -1303,6 +1303,22 @@ $(document).ready(function() {
     // Login form
     // ----------------------------------------------------------
     $('#id_username').focus();
+
+
+    // More shortcuts
+    // ----------------------------------------------------------
+
+	function _goToNotebookSettings() {
+		var settingsUrl = $("main#content").attr("data-notebook-settings-url");
+
+		if (settingsUrl) {
+			window.location.href = settingsUrl;
+		}
+
+		return false;
+	}
+
+	Mousetrap.bind('g s', _goToNotebookSettings);
 });
 
 function processEntries(entries) {

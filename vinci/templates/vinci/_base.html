@@ -183,7 +183,7 @@
 				<div class="container"></div>
 			</section>
 
-			<main id="content" class="{{ page_type }}{% if section %} {{ section }}{% endif %}">
+			<main id="content" class="{{ page_type }}{% if section %} {{ section }}{% endif %}"{% if notebook %} data-notebook-settings-url="{% url 'notebook_settings' notebook.slug %}"{% endif %}>
 				{% block content %}{% endblock content %}
 				{% block nav %}{% endblock nav %}
 

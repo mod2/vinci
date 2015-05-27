@@ -628,6 +628,8 @@ def add_revision(request, notebook_slug, slug):
         }
 
         if entry.entry_type == ENTRY_TYPE.note:
+            entry.title = entry.first_line()
+            entry.save()
             response['first_line'] = entry.first_line()
             response['second_line'] = entry.second_line()
 
@@ -697,6 +699,8 @@ def update_revision(request, notebook_slug, slug, revision_id):
         }
 
         if entry.entry_type == ENTRY_TYPE.note:
+            entry.title = entry.first_line()
+            entry.save()
             response['first_line'] = entry.first_line()
             response['second_line'] = entry.second_line()
 

@@ -16,6 +16,9 @@ ENTRY_TYPE = Choices(
 )
 
 
+LIST_STATUS = Choices('active', 'archived', 'deleted')
+
+
 class StatusQueries(models.QuerySet):
     def active(self):
         return self.filter(status='active')
@@ -302,3 +305,62 @@ class Revision(models.Model):
 
     class Meta:
         ordering = ['-last_modified']
+
+
+class DatedMixin(models.Model):
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_last_modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class StatusMixin(models.Model):
+    STATUS = LIST_STATUS
+
+    status = models.CharField(max_length=10, default=STATUS.active,
+                              choices=STATUS)
+
+    class Meta:
+        abstract = True
+
+
+class BaseListMixin(models.Model):
+    title = models.CharField(max_length=255)
+    order = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        abstract = True
+        ordering = ['order', 'title']
+
+
+class Label(BaseListMixin, models.Model):
+    color = models.CharField(max_length=255)
+
+
+class List(BaseListMixin, StatusMixin, DatedMixin, models.Model):
+    labels = models.ManyToManyField(Label, blank=True,
+                                    related_name="labeled_lists")
+
+
+class Checklist(BaseListMixin, StatusMixin, DatedMixin, models.Model):
+    pass
+
+
+class Card(BaseListMixin, StatusMixin, DatedMixin, models.Model):
+    description = models.TextField(blank=True)
+    list = models.ForeignKey(List, related_name="cards")
+    labels = models.ManyToManyField(Label, blank=True,
+                                    related_name="labeled_cards")
+    checklists = models.ManyToManyField(Checklist, blank=True,
+                                        related_name="cards")
+    mentions = models.ManyToManyField(Entry, blank=True,
+                                      related_name="mentioned_cards")
+
+
+class ChecklistItem(BaseListMixin, StatusMixin, DatedMixin, models.Model):
+    done = models.BooleanField(default=False)
+    checklist = models.ForeignKey(Checklist, related_name="items")

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Entry, Notebook
+from .models import Entry, Notebook, Label, List, Card, Checklist, ChecklistItem
 
 
 class NotebookSerializer(serializers.ModelSerializer):
@@ -78,3 +78,34 @@ class EntrySerializer(serializers.ModelSerializer):
         model = Entry
         fields = ('id', 'title', 'slug', 'date', 'content', 'author',
                   'html', 'notebook')
+
+
+# Kanban board model serializers
+class LabelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Label
+        exclude = ()
+
+
+class ListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = List
+        exclude = ()
+
+
+class CardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Card
+        exclude = ()
+
+
+class ChecklistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Checklist
+        exclude = ()
+
+
+class ChecklistItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChecklistItem
+        exclude = ()

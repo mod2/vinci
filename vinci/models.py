@@ -321,6 +321,8 @@ class StatusMixin(models.Model):
     status = models.CharField(max_length=10, default=STATUS.active,
                               choices=STATUS)
 
+    objects = StatusQueries.as_manager()
+
     class Meta:
         abstract = True
 
@@ -342,23 +344,22 @@ class Label(BaseListMixin, models.Model):
 
 
 class List(BaseListMixin, StatusMixin, DatedMixin, models.Model):
+    notebook = models.ForeignKey(Notebook, related_name="lists")
     labels = models.ManyToManyField(Label, blank=True,
                                     related_name="labeled_lists")
 
 
-class Checklist(BaseListMixin, StatusMixin, DatedMixin, models.Model):
-    pass
-
-
 class Card(BaseListMixin, StatusMixin, DatedMixin, models.Model):
-    description = models.TextField(blank=True)
     list = models.ForeignKey(List, related_name="cards")
+    description = models.TextField(blank=True)
     labels = models.ManyToManyField(Label, blank=True,
                                     related_name="labeled_cards")
-    checklists = models.ManyToManyField(Checklist, blank=True,
-                                        related_name="cards")
     mentions = models.ManyToManyField(Entry, blank=True,
                                       related_name="mentioned_cards")
+
+
+class Checklist(BaseListMixin, StatusMixin, DatedMixin, models.Model):
+    card = models.ForeignKey(Card, related_name="checklists")
 
 
 class ChecklistItem(BaseListMixin, StatusMixin, DatedMixin, models.Model):

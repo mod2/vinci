@@ -88,24 +88,34 @@ class LabelSerializer(serializers.ModelSerializer):
 
 
 class ListSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='list-detail')
+    notebook = serializers.SlugRelatedField(slug_field='slug',
+                                            queryset=Notebook.objects.active())
+
     class Meta:
         model = List
         exclude = ()
 
 
 class CardSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='card-detail')
+
     class Meta:
         model = Card
         exclude = ()
 
 
 class ChecklistSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='checklist-detail')
+
     class Meta:
         model = Checklist
         exclude = ()
 
 
 class ChecklistItemSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='checklistitem-detail')
+
     class Meta:
         model = ChecklistItem
         exclude = ()

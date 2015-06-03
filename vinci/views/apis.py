@@ -1,20 +1,20 @@
-from django.conf import settings
-from django.shortcuts import get_object_or_404
-from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
-from rest_framework.response import Response as APIResponse
-from rest_framework.views import APIView
-from rest_framework.generics import ListCreateAPIView
-from rest_framework import authentication
-from rest_framework import exceptions
-from vinci.serializers import EntrySerializer, NotebookSerializer
-from vinci.models import Entry, Notebook, Group, Revision, DATETIME_FORMAT, ENTRY_TYPE
-from taggit.models import Tag
-import vinci.search_indexer as si
-from django.http import JsonResponse, HttpResponse
-
 import datetime
 import json
+
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.http import JsonResponse, HttpResponse
+from django.shortcuts import get_object_or_404
+from rest_framework import authentication
+from rest_framework import exceptions
+from rest_framework import viewsets
+from rest_framework.generics import ListCreateAPIView
+from rest_framework.response import Response as APIResponse
+from rest_framework.views import APIView
+from taggit.models import Tag
+
+from vinci import models, serializers, search_indexer as si
 
 
 class APIKeyAuthentication(authentication.BaseAuthentication):
@@ -40,7 +40,7 @@ class APIResponseNotFound(APIResponse):
 
 class NotebookLimitMixin(object):
     def get_queryset(self):
-        qs = Entry.objects.all()
+        qs = models.Entry.objects.all()
         notebook_slug = self.kwargs.get('notebook_slug', '')
         if notebook_slug:
             qs = qs.filter(notebook__slug=notebook_slug)
@@ -57,11 +57,11 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
     - **PUT** Edit the current notebook's name, status, group, or sections.
     - **DELETE** Delete the current notebook (sets the status to deleted).
     """
-    serializer_class = EntrySerializer
+    serializer_class = serializers.EntrySerializer
 
     def post(self, request, notebook_slug):
         """Create a new Entry."""
-        notebook = get_object_or_404(Notebook, slug=notebook_slug)
+        notebook = get_object_or_404(models.Notebook, slug=notebook_slug)
         content = request.data.get('content')
         title = request.data.get('title', '')
         tags = request.data.get('tags')
@@ -80,23 +80,23 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
             if date != '':
                 kwargs['date'] = date
 
-            entry = Entry.objects.create(**kwargs)
+            entry = models.Entry.objects.create(**kwargs)
 
             # If it's a note, put the first line in the title field
-            if entry.entry_type == ENTRY_TYPE.note:
+            if entry.entry_type == models.ENTRY_TYPE.note:
                 entry.title = entry.first_line()
                 entry.save()
 
             si.add_index(entry)
-            e = EntrySerializer(entry)
+            e = serializers.EntrySerializer(entry)
 
             return APIResponse(e.data)
         return APIResponse({'detail': 'No content to save.'}, status=400)
 
-    def put(self, request, notebook_slug):
+    def put(self, request, notebook_slug):  # noqa too complex
         """Update an existing Notebook."""
 
-        notebook = get_object_or_404(Notebook, slug=notebook_slug)
+        notebook = get_object_or_404(models.Notebook, slug=notebook_slug)
 
         name = request.data.get('name')
         status = request.data.get('status')
@@ -112,11 +112,11 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
         if name is not None:
             notebook.name = name
 
-        if status is not None and status in Notebook.STATUS:
+        if status is not None and status in models.Notebook.STATUS:
             notebook.status = status
 
         if group is not None:
-            new_group = Group.objects.get(name=group)
+            new_group = models.Group.objects.get(name=group)
             if new_group:
                 notebook.group = new_group
 
@@ -143,15 +143,17 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
 
         notebook.save()
 
-        nb = NotebookSerializer(notebook, context={'request': request})
+        nb = serializers.NotebookSerializer(notebook,
+                                            context={'request': request})
 
         return APIResponse(nb.data)
 
     def delete(self, request, notebook_slug):
         """Delete a Notebook. Sets the status to 'deleted'."""
-        notebook = get_object_or_404(Notebook, slug=notebook_slug)
+        notebook = get_object_or_404(models.Notebook, slug=notebook_slug)
         notebook.status = notebook.STATUS.deleted
-        nb = NotebookSerializer(notebook, context={'request': request})
+        nb = serializers.NotebookSerializer(notebook,
+                                            context={'request': request})
         notebook.delete()
         return APIResponse(nb.data)
 
@@ -160,7 +162,7 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
     """
     A single entry detail
     """
-    serializer_class = EntrySerializer
+    serializer_class = serializers.EntrySerializer
 
     def get_queryset(self):
         slug = self.kwargs.get('slug')
@@ -174,7 +176,7 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
         if slug:
             try:
                 qs = qs.from_slug(slug)
-            except Entry.DoesNotExist:
+            except models.Entry.DoesNotExist:
                 qs = None
 
         return qs
@@ -205,7 +207,8 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
             entry.title = request.data.get('title', '')
 
             if date:
-                entry.date = datetime.datetime.strptime(date, DATETIME_FORMAT)
+                entry.date = datetime.datetime.strptime(date,
+                                                        models.DATETIME_FORMAT)
 
             entry.save()
 
@@ -215,7 +218,7 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
                 entry.tags.clear()
 
             # If it's a note, put the first line in the title field
-            if entry.entry_type == ENTRY_TYPE.note:
+            if entry.entry_type == models.ENTRY_TYPE.note:
                 entry.title = entry.first_line()
                 entry.save()
 
@@ -249,14 +252,14 @@ class NotebookListAPIView(ListCreateAPIView):
 
     * `GET /api/?status=archived` Return list of all the archived notebooks.
     """
-    serializer_class = NotebookSerializer
+    serializer_class = serializers.NotebookSerializer
 
     def get_queryset(self):
-        qs = Notebook.objects
-        status = self.request.GET.get('status', Notebook.STATUS.active)
-        if status == Notebook.STATUS.archived:
+        qs = models.Notebook.objects
+        status = self.request.GET.get('status', models.Notebook.STATUS.active)
+        if status == models.Notebook.STATUS.archived:
             qs = qs.archived()
-        elif status == Notebook.STATUS.deleted:
+        elif status == models.Notebook.STATUS.deleted:
             qs = qs.deleted()
         else:  # show active
             qs = qs.active()
@@ -267,8 +270,9 @@ class NotebookListAPIView(ListCreateAPIView):
         data = {'name': request.data.get('name'),
                 'author': request.user,
                 }
-        notebook = Notebook.objects.create(**data)
-        n = NotebookSerializer(notebook, context={'request': request})
+        notebook = models.Notebook.objects.create(**data)
+        n = serializers.NotebookSerializer(notebook,
+                                           context={'request': request})
         return APIResponse(n.data)
 
 
@@ -276,7 +280,7 @@ class NotebookDetailAPIView(APIView):
     """
     A single notebook detail
     """
-    serializer_class = NotebookSerializer
+    serializer_class = serializers.NotebookSerializer
 
     def get_queryset(self):
         slug = self.kwargs.get('slug')
@@ -290,7 +294,7 @@ class NotebookDetailAPIView(APIView):
         if slug:
             try:
                 qs = qs.from_slug(slug)
-            except Notebook.DoesNotExist:
+            except models.Notebook.DoesNotExist:
                 qs = None
 
         return qs
@@ -324,7 +328,7 @@ class NotebookDetailAPIView(APIView):
                 notebook.status = status
 
             if group != '':
-                new_group = Group.objects.get(name=group)
+                new_group = models.Group.objects.get(name=group)
                 if new_group:
                     notebook.group = new_group
 
@@ -385,14 +389,19 @@ class QuickJumpAPIView(APIView):
             # See if there's a notebook specifier ("home.projects", for example)
             query, _, notebook_specifier = query.partition('.')
 
-            notebooks = Notebook.objects.filter(name__icontains=query)[:5]
+            notebooks = (models.Notebook.objects
+                         .filter(name__icontains=query)
+                         )[:5]
             tags = Tag.objects.filter(name__icontains=query)[:5]
 
-            entries = Entry.objects.filter(title__icontains=query)
+            entries = models.Entry.objects.filter(title__icontains=query)
             if notebook_specifier:
-                # Filter further by a specific notebook (allows user to resolve pages
-                # with same name in different notebooks)
-                entries = entries.filter(notebook__slug__icontains=notebook_specifier)
+                # Filter further by a specific notebook (allows user to resolve
+                # pages with same name in different notebooks)
+                notebook_slug_contains = {
+                    'notebook__slug__icontains': notebook_specifier,
+                }
+                entries = entries.filter(**notebook_slug_contains)
 
                 # Zero out notebooks/tags because we only want pages
                 notebooks = []
@@ -409,9 +418,9 @@ class QuickJumpAPIView(APIView):
 
             for notebook in notebooks:
                 nb = {'name': notebook.name,
-                    'slug': notebook.slug,
-                    'url': notebook.get_absolute_url(),
-                    }
+                      'slug': notebook.slug,
+                      'url': notebook.get_absolute_url(),
+                      }
                 nbs.append(nb)
 
             for entry in entries:
@@ -425,7 +434,8 @@ class QuickJumpAPIView(APIView):
             for tag in tags:
                 tag_item = {'name': tag.name,
                             'slug': tag.slug,
-                            'url': reverse('search_all_tags', kwargs={'tag': tag.slug}),
+                            'url': reverse('search_all_tags',
+                                           kwargs={'tag': tag.slug}),
                             }
                 tag_list.append(tag_item)
 
@@ -437,9 +447,37 @@ class QuickJumpAPIView(APIView):
         else:
             msg = 'A query is required. Pass the q query param.'
 
-        return APIResponse({'status': status, msg_label: msg}, status=status_code)
+        return APIResponse({'status': status, msg_label: msg},
+                           status=status_code)
 
 
+# Kanban board api views
+class LabelAPIViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.LabelSerializer
+    queryset = models.Label.objects.all()
+
+
+class ListAPIViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.ListSerializer
+    queryset = models.List.objects.all()
+
+
+class CardAPIViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.CardSerializer
+    queryset = models.Card.objects.all()
+
+
+class ChecklistAPIViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.ChecklistSerializer
+    queryset = models.Checklist.objects.all()
+
+
+class ChecklistItemAPIViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.ChecklistItemSerializer
+    queryset = models.ChecklistItem.objects.all()
+
+
+# Non rest api views
 def append_today(request, notebook_slug):
     """ Appends to today's entry, creating it if it's not there. """
 
@@ -462,16 +500,19 @@ def append_today(request, notebook_slug):
         tomorrow = today + datetime.timedelta(days=1)
 
         # Notebook
-        notebook = Notebook.objects.get(slug=notebook_slug)
+        notebook = models.Notebook.objects.get(slug=notebook_slug)
 
         if section == '':
             section = notebook.default_section
 
         # Get first entry for today
-        results = Entry.objects.filter(notebook=notebook,
-                                       entry_type=section,
-                                       date__range=[today, tomorrow],
-                                       ).order_by('date')[:1]
+        results = (models.Entry.objects
+                   .filter(notebook=notebook,
+                           entry_type=section,
+                           date__range=[today, tomorrow],
+                           )
+                   .order_by('date')
+                   )[:1]
 
         if len(results) > 0:
             entry = results[0]
@@ -480,7 +521,7 @@ def append_today(request, notebook_slug):
             cur_rev = entry.current_revision
 
             # Add new revision with appended content
-            new_revision = Revision()
+            new_revision = models.Revision()
             new_revision.entry = entry
             new_revision.content = cur_rev.content + content
             new_revision.author = notebook.author
@@ -498,7 +539,7 @@ def append_today(request, notebook_slug):
                       'entry_type': section,
                       'notebook': notebook,
                       }
-            entry = Entry.objects.create(**kwargs)
+            entry = models.Entry.objects.create(**kwargs)
 
         response = {
             'status': 'success',
@@ -539,7 +580,7 @@ def add_entry(request, notebook_slug):
     # Create the entry
     try:
         # Notebook
-        notebook = Notebook.objects.get(slug=notebook_slug)
+        notebook = models.Notebook.objects.get(slug=notebook_slug)
 
         if section == '':
             section = notebook.default_section
@@ -549,7 +590,7 @@ def add_entry(request, notebook_slug):
                   'entry_type': section,
                   'notebook': notebook,
                   }
-        entry = Entry.objects.create(**kwargs)
+        entry = models.Entry.objects.create(**kwargs)
 
         # Save the entry
         entry.save()
@@ -575,7 +616,7 @@ def add_entry(request, notebook_slug):
         return JsonResponse(response)
 
 
-def add_revision(request, notebook_slug, slug):
+def add_revision(request, notebook_slug, slug):  # noqa too complex
     """ Adds a new revision to an entry. """
 
     try:
@@ -589,12 +630,12 @@ def add_revision(request, notebook_slug, slug):
         new_notebook = data.get('notebook', '')
 
         # Notebook
-        notebook = Notebook.objects.get(slug=notebook_slug)
-        entry = Entry.objects.get(id=slug, notebook=notebook)
+        notebook = models.Notebook.objects.get(slug=notebook_slug)
+        entry = models.Entry.objects.get(id=slug, notebook=notebook)
 
         # Create the revision
         if content:
-            revision = Revision()
+            revision = models.Revision()
             revision.content = content.strip()
             revision.author = request.user
             revision.entry = entry
@@ -607,7 +648,8 @@ def add_revision(request, notebook_slug, slug):
             entry.entry_type = type
 
         if date:
-            entry.date = datetime.datetime.strptime(date, DATETIME_FORMAT)
+            entry.date = datetime.datetime.strptime(date,
+                                                    models.DATETIME_FORMAT)
 
         if tags:
             entry.tags.clear()
@@ -617,7 +659,7 @@ def add_revision(request, notebook_slug, slug):
                 entry.save()
 
         if new_notebook:
-            nb = Notebook.objects.get(slug=new_notebook)
+            nb = models.Notebook.objects.get(slug=new_notebook)
             entry.notebook = nb
 
         entry.save()
@@ -627,7 +669,7 @@ def add_revision(request, notebook_slug, slug):
             'status': 'success',
         }
 
-        if entry.entry_type == ENTRY_TYPE.note:
+        if entry.entry_type == models.ENTRY_TYPE.note:
             entry.title = entry.first_line()
             entry.save()
             response['first_line'] = entry.first_line()
@@ -663,12 +705,12 @@ def update_revision(request, notebook_slug, slug, revision_id):
         date = data.get('date', '')
         new_notebook = data.get('notebook', '')
 
-        notebook = Notebook.objects.get(slug=notebook_slug)
-        entry = Entry.objects.get(id=slug, notebook=notebook)
+        notebook = models.Notebook.objects.get(slug=notebook_slug)
+        entry = models.Entry.objects.get(id=slug, notebook=notebook)
 
         # Update it
         if content:
-            revision = Revision.objects.get(id=revision_id)
+            revision = models.Revision.objects.get(id=revision_id)
             revision.content = content.strip()
             revision.save()
 
@@ -679,7 +721,8 @@ def update_revision(request, notebook_slug, slug, revision_id):
             entry.entry_type = type
 
         if date:
-            entry.date = datetime.datetime.strptime(date, DATETIME_FORMAT)
+            entry.date = datetime.datetime.strptime(date,
+                                                    models.DATETIME_FORMAT)
 
         if tags:
             entry.tags.clear()
@@ -688,7 +731,7 @@ def update_revision(request, notebook_slug, slug, revision_id):
             entry.save()  # TODO: Is this needed?
 
         if new_notebook:
-            nb = Notebook.objects.get(slug=new_notebook)
+            nb = models.Notebook.objects.get(slug=new_notebook)
             entry.notebook = nb
 
         entry.save()
@@ -698,7 +741,7 @@ def update_revision(request, notebook_slug, slug, revision_id):
             'status': 'success',
         }
 
-        if entry.entry_type == ENTRY_TYPE.note:
+        if entry.entry_type == models.ENTRY_TYPE.note:
             entry.title = entry.first_line()
             entry.save()
             response['first_line'] = entry.first_line()

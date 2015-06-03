@@ -4,9 +4,17 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from .views.apis import EntryListAPIView, EntryDetailAPIView
 from .views.apis import NotebookListAPIView, QuickJumpAPIView
+from .views import apis
+from rest_framework.routers import DefaultRouter
 
-vinciapipatterns = patterns(
-    '',
+kanban_api_router = DefaultRouter()
+kanban_api_router.register(r'labels', apis.LabelAPIViewSet)
+kanban_api_router.register(r'lists', apis.ListAPIViewSet)
+kanban_api_router.register(r'cards', apis.CardAPIViewSet)
+kanban_api_router.register(r'checklists', apis.ChecklistAPIViewSet)
+kanban_api_router.register(r'checklistitems', apis.ChecklistItemAPIViewSet)
+
+vinciapipatterns = [
     url(r'^$',
         NotebookListAPIView.as_view(),
         name='api_notebook_list'),
@@ -17,7 +25,7 @@ vinciapipatterns = patterns(
     url(r'^(?P<notebook_slug>[^\/]+)/(?P<slug>[^\/]+)/$',
         EntryDetailAPIView.as_view(),
         name='api_entry_detail'),
-)
+]
 
 if settings.VINCI_ENABLE_NON_REST_APIS:
     # Prepend the non-REST APIs so they don't get slurped up
@@ -44,6 +52,7 @@ vincipatterns = patterns(
 
     url(r'^$', 'notebooks_list', name='notebooks_list'),
     url(r'^api/', include(vinciapipatterns)),
+    url(r'^api-kanban/', include(kanban_api_router.urls)),
     url(r'^search/$', 'search_all', name='search_all'),
     url(r'^tag/(?P<tag>[^\/]+)/$', 'search_all_tags', name='search_all_tags'),
 

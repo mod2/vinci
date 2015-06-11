@@ -54,6 +54,11 @@ def notebook_section(request, notebook_slug, section):
 
     notebooks = Notebook.objects.filter(status='active').order_by('name')
 
+    if section == 'list':
+        template = 'lists'
+    else:
+        template = 'entries'
+
     context = {
         'title': notebook.name,
         'notebook': notebook,
@@ -61,10 +66,10 @@ def notebook_section(request, notebook_slug, section):
         'section': section,
         'scope': 'section',
         'entries': entries,
-        'page_type': 'list',
+        'page_type': 'entries',
     }
 
-    return render_to_response('vinci/list.html',
+    return render_to_response('vinci/{}.html'.format(template),
                               context,
                               RequestContext(request),
                               )
@@ -220,7 +225,7 @@ def _search(request, query, notebook=None, section=None):
         'section': section,
         'scope': scope,
         'notebooks': notebooks,
-        'page_type': 'list',
+        'page_type': 'entries',
         'search': True,
     }
 
@@ -228,7 +233,7 @@ def _search(request, query, notebook=None, section=None):
         context['title'] = '{}{}{}'.format(context['title'], settings.VINCI_SITE_TITLE_SEP, notebook.name)
         context['notebook'] = notebook
 
-    return render_to_response('vinci/list.html',
+    return render_to_response('vinci/entries.html',
                               context,
                               RequestContext(request),
                               )

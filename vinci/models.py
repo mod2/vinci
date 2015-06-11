@@ -13,6 +13,7 @@ ENTRY_TYPE = Choices(
     ('note', 'Note'),
     ('page', 'Page'),
     ('journal', 'Journal'),
+    ('list', 'List'),
 )
 
 
@@ -137,6 +138,7 @@ class Notebook(models.Model):
     display_notes = models.BooleanField(default=True)
     display_pages = models.BooleanField(default=True)
     display_journals = models.BooleanField(default=False)
+    display_lists = models.BooleanField(default=False)
 
     condense_notes = models.BooleanField(default=True)
     parse_notes = models.BooleanField(default=False)
@@ -241,6 +243,8 @@ class Entry(models.Model):
             possible_types.append({ 'value': 'page', 'label': 'Page' })
         if self.notebook.display_journals:
             possible_types.append({ 'value': 'journal', 'label': 'Journal' })
+        if self.notebook.display_lists:
+            possible_types.append({ 'value': 'list', 'label': 'list' })
 
         return possible_types
 

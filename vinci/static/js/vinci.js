@@ -604,6 +604,17 @@ $(document).ready(function() {
 		return false;
 	});
 
+	// Go to lists section
+	Mousetrap.bind('g t', function() {
+		var uri = $("#sections").attr("data-list-uri");
+
+		if (uri) {
+			window.location.href = uri;
+		}
+
+		return false;
+	});
+
 	// All notebooks
 	Mousetrap.bind('g h', function() {
 		window.location.href = config.url;
@@ -1104,7 +1115,7 @@ $(document).ready(function() {
 	});
 
 	// Toggle note section settings
-	//
+
 	$("#settings #note-section-config span.type").on("click", function() {
 		var url = $("#settings").attr("data-uri");
 		var button = $(this);
@@ -1319,6 +1330,120 @@ $(document).ready(function() {
 	}
 
 	Mousetrap.bind('g s', _goToNotebookSettings);
+
+
+    // List mode
+    // ----------------------------------------------------------
+
+	resizeBoard();
+
+	makeListsSortable();
+	makeCardsSortable();
+
+
+	// Add card
+	
+	$(".lists").on("click", ".add-card .add-button", function() {
+		var tray = $(this).siblings(".tray");
+		var addButton = $(this);
+		var inputBox = tray.find("textarea");
+
+		if ($(this).siblings(".tray:visible").length) {
+			addButton.html("Add card");
+			tray.slideUp(150, function() {
+				inputBox.val('');
+			});
+		} else {
+			addButton.html("Cancel");
+			tray.slideDown(150, function() {
+				inputBox.focus();
+			});
+		}
+	});
+
+	$(".lists").on("click", ".add-card .save-button", function() {
+		var cardTitle = $(this).siblings("textarea").val().trim();
+		var list = $(this).parents(".list").find("ul.cards");
+
+		if (cardTitle != '') {
+			var html = "<li class='card' style='display: none'>";
+			html += "<span class='title no-desc'>" + cardTitle + "</span>";
+			html += "</li>";
+			list.append(html);
+			list.find("li:last").slideDown(200);
+
+			var tray = $(this).parents(".tray");
+			var inputBox = tray.find("textarea");
+			var addButton = tray.siblings(".add-button");
+			addButton.html("Add card");
+			tray.slideUp(150, function() {
+				inputBox.val('');
+			});
+
+			makeCardsSortable();
+		}
+	});
+
+
+	// Add list
+
+	$(".add-list").on("click", ".add-button", function() {
+		var tray = $(this).siblings(".tray");
+		var addButton = $(this);
+		var inputBox = tray.find("textarea");
+
+		if ($(this).siblings(".tray:visible").length) {
+			addButton.html("Add list");
+			tray.slideUp(150, function() {
+				inputBox.val('');
+			});
+		} else {
+			addButton.html("Cancel");
+			tray.slideDown(150, function() {
+				inputBox.focus();
+			});
+		}
+	});
+
+	$(".add-list").on("click", ".save-button", function() {
+		var listName = $(this).siblings("textarea").val().trim();
+
+		if (listName != '') {
+			var addList = $(this).parents(".add-list");
+
+			var html = "<section class='list' style='display: none'>";
+			html += "<h2>" + listName + "</h2>";
+			html += "<ul class='cards'></ul>";
+			html += "<section class='add-card'>";
+			html += "<div class='tray'>";
+			html += "<textarea></textarea>";
+			html += "<span class='save-button'>Save card</span>";
+			html += "</div>";
+			html += "<span class='add-button'>Add card</span>";
+			html += "</section>";
+
+			addList.before(html);
+
+			var newList = $(".lists .list:last");
+			newList.fadeIn(200);
+
+			resizeBoard();
+			makeListsSortable();
+
+			var tray = $(this).parents(".tray");
+			var inputBox = tray.find("textarea");
+			var addButton = tray.siblings(".add-button");
+			addButton.html("Add list");
+			tray.slideUp(150, function() {
+				inputBox.val('');
+			});
+		}
+	});
+
+
+	Mousetrap.bind("1", function(e) {
+		setLabel(getElement(e), 1);
+	});
 });
 
 function processEntries(entries) {
@@ -1326,4 +1451,40 @@ function processEntries(entries) {
 	// TODO: someday Prism.highlightElement might work, and then we can switch
 	// to run it on only new entries, but for now it doesn't work
 	Prism.highlightAll();
+}
+
+function resizeBoard() {
+	// Calculate total width (add one because of "Add list")
+	var numLists = $(".lists .list").length + 1;
+
+	$("#content .lists").css("width", "calc((" + numLists + " * 270px) + (" + (numLists - 1) + " * 15px))");
+}
+
+function makeListsSortable() {
+	$(".lists").sortable({
+		items: ".list",
+		handle: "h2",
+		placeholder: "list placeholder",
+		forcePlaceholderSize: true,
+	});
+}
+
+function makeCardsSortable() {
+	$("ul.cards").sortable({
+		placeholder: "card placeholder",
+		items: "li",
+		forcePlaceholderSize: true,
+	});
+}
+
+function setLabel(target, labelNum) {
+	$(target).toggleClass("label-" + labelNum);
+}
+
+function getElement(e) {
+	// TODO: this doesn't work yet
+	var x = e.view.screenX;
+	var y = e.view.screenY;
+
+	return document.elementFromPoint(x, y);
 }

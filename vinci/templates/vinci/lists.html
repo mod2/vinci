@@ -2,6 +2,44 @@
 
 {% block content %}
 	<div class="lists">
+		{% for list in notebook.lists.all %}
+		<section class="list">
+			{% if list.labels.all|length %}
+			<div class="labels">
+				{% for label in list.labels.all %}
+				<span class="label-1" style="background-color: {{ label.color }}"></span>
+				{% endfor %}
+			</div>
+			{% endif %}
+
+			<h2><span class="list-edit">&hellip;</span>{{ list.title }}</h2>
+
+			<ul class="cards">
+				{% for card in list.cards.all %}
+				<li class="card">
+					{% if card.labels.all|length %}
+					<span class="labels">
+						{% for label in card.labels.all %}
+						<span class="label-1" style="background-color: {{ label.color }}"></span>
+						{% endfor %}
+					</span>
+					{% endif %}
+					<span class="title">{{ card.title }}</span>
+					{% if card.description %}<span class="desc">{{ card.description }}</span>{% endif %}
+				</li>
+				{% endfor %}
+			</ul>
+
+			<div class="add-card">
+				<div class="tray">
+					<textarea></textarea>
+					<span class="save-button">Save card</span>
+				</div>
+				<span class="add-button">Add card</span>
+			</div>
+		</section>
+		{% endfor %}
+
 		<section class="list">
 			<div class="labels">
 				<span class="label-1"></span>

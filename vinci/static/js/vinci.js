@@ -1363,7 +1363,7 @@ $(document).ready(function() {
 
 	$(".lists").on("click", ".add-card .save-button", function() {
 		var cardTitle = $(this).siblings("textarea").val().trim();
-		var list = $(this).parents(".list").find("ul.cards");
+		var list = $(this).parents(".list:first").find("ul.cards");
 
 		if (cardTitle != '') {
 			var html = "<li class='card' style='display: none'>";

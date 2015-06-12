@@ -1522,6 +1522,10 @@ $(document).ready(function() {
 			$("#modal-card-edit .label[data-label-id=" + labelId + "]").addClass("selected");
 		});
 
+		// Populate list name
+		var listName = card.parents(".list:first").find("h2.list-title .title").html();
+		$("#modal-card-edit .card-edit .list-title").html(listName);
+
 		return false;
 	});
 
@@ -1570,6 +1574,10 @@ $(document).ready(function() {
 				},
 			});
 		}
+	});
+
+	$("#modal-card-edit").on("click", "#cancel-card-edit-button", function() {
+		_hideModals();
 	});
 
 

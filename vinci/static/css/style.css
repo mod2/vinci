@@ -2212,6 +2212,11 @@ body.list-mode #page {
 	text-transform: uppercase;
 }
 
+#modal #modal-card-edit .labels {
+	max-height: 335px;
+	overflow-y: scroll;
+}
+
 #modal #modal-card-edit .labels ul {
 	display: block;
 	margin: 0;
@@ -2231,6 +2236,10 @@ body.list-mode #page {
 	padding: 4px 8px 6px;
 	-webkit-user-select: none;
 	user-select: none;
+}
+
+#modal #modal-card-edit .labels ul li.selected {
+	border-right: solid 10px hsla(0, 0%, 0%, 0.3);
 }
 
 #modal #modal-card-edit .labels ul li + li {
@@ -2302,6 +2311,26 @@ body.list-mode #page {
 #modal #modal-card-edit .card-edit .buttons .cancel {
 	background: hsl(0, 0%, 60%);
 	float: left;
+}
+
+#modal #modal-card-edit .actions .buttons {
+	margin-top: 14px;
+}
+
+#modal #modal-card-edit .actions .buttons .button {
+	background: hsl(0, 0%, 92%);
+	border: solid 1px hsl(0, 0%, 79%);
+	color: hsl(0, 0%, 37%);
+	padding: 3px 8px 4px;
+	width: calc(50% - 7px);
+}
+
+#modal #modal-card-edit .actions .buttons .button:hover {
+	color: hsl(0, 0%, 100%);
+}
+
+#modal #modal-card-edit .actions .buttons .button + .button {
+	margin-left: 10px;
 }
 
 

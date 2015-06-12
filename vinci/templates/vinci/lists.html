@@ -12,7 +12,7 @@
 			</div>
 			{% endif %}
 
-			<h2><span class="list-edit">&hellip;</span>{{ list.title }}</h2>
+			<h2 class="list-title"><span class="list-edit">&hellip;</span><span class="title">{{ list.title }}</span></h2>
 
 			<ul class="cards" data-cards-uri="{% url 'card-list' %}" data-list-uri="{% url 'list-detail' list.id %}">
 				{% for card in list.cards.all %}
@@ -54,6 +54,8 @@
 <div id="modal-card-edit" class="modal">
 	<section class="main-column column">
 		<div class="card-edit">
+			<h3>Card — <span class="list-title"></span></h3>
+
 			<div class="card">
 				<textarea id="card-title-edit" name="card-title-edit"></textarea>
 				<textarea id="card-description-edit" name="card-description-edit"></textarea>
@@ -84,10 +86,14 @@
 		<div class="actions">
 			<h3>Actions</h3>
 
-			Move to list
-			Copy to list
-			Archive card
-			Delete card
+			<div class="buttons">
+				<span id="card-move-button" class="button">Move &rarr;</span>
+				<span id="card-copy-button" class="button">Copy &rarr;</span>
+			</div>
+			<div class="buttons">
+				<span id="card-delete-button" class="button">Delete</span>
+				<span id="card-archive-button" class="button">Archive</span>
+			</div>
 		</div>
 	</section>
 </div>

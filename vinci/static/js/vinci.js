@@ -1529,7 +1529,7 @@ $(document).ready(function() {
 		return false;
 	});
 
-	$("#modal-card-edit").on("click", "#save-card-edit-button", function() {
+	function _saveCardTitleDesc() {
 		var modal = $("#modal-card-edit");
 		var cardTitle = modal.find("textarea#card-title-edit").val().trim();
 		var cardDescription = modal.find("textarea#card-description-edit").val().trim();
@@ -1556,8 +1556,8 @@ $(document).ready(function() {
 					if (cardDescription != '') {
 						cardElement.find(".title").removeClass("no-desc");
 
-						if (cardElement.find(".description").length > 0) {
-							cardElement.find(".description").html(cardDescription);
+						if (cardElement.find(".desc").length > 0) {
+							cardElement.find(".desc").html(cardDescription);
 						} else {
 							$("<span class='desc'>" + cardDescription + "</span>").appendTo(cardElement);
 						}
@@ -1574,7 +1574,20 @@ $(document).ready(function() {
 				},
 			});
 		}
-	});
+
+		return false;
+	}
+
+	$("#modal-card-edit").on("click", "#save-card-edit-button", _saveCardTitleDesc);
+
+	var fields = document.querySelectorAll('#modal-card-edit textarea');
+	for (var i=0; i<fields.length; i++) {
+		Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
+			_saveCardTitleDesc();
+
+			return false;
+		});
+	}
 
 	$("#modal-card-edit").on("click", "#cancel-card-edit-button", function() {
 		_hideModals();

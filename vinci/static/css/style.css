@@ -2213,7 +2213,7 @@ body.list-mode #page {
 }
 
 #modal #modal-card-edit .labels {
-	max-height: 335px;
+	max-height: 345px;
 	overflow-y: scroll;
 }
 

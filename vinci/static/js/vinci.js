@@ -1514,7 +1514,13 @@ $(document).ready(function() {
 		var cardId = card.attr("data-card-id");
 		$("#modal-card-edit").attr("data-card-id", cardId);
 
-		// Autosize the textareas
+		// Populate label info
+		$("#modal-card-edit .label").removeClass("selected");
+		card.find(".labels .label").each(function() {
+			var labelId = $(this).attr("data-label-id");
+
+			$("#modal-card-edit .label[data-label-id=" + labelId + "]").addClass("selected");
+		});
 
 		return false;
 	});
@@ -1567,6 +1573,73 @@ $(document).ready(function() {
 	});
 
 
+	// Edit card labels
+
+	$("#modal-card-edit").on("click", ".labels li.label", function() {
+		var label = $(this);
+
+		// Toggle label class
+		label.toggleClass("selected");
+
+		var modal = $("#modal-card-edit");
+		var labelID = $(this).attr("data-label-id");
+		var url = modal.attr("data-card-uri");
+		var cardId = modal.attr("data-card-id");
+		var cardElement = $(".card[data-card-id=" + cardId + "]");
+
+		// Either way, we want the list of selected labels
+		var labels = modal.find(".labels .label.selected");
+		var labelList = [];
+		for (var i=0; i<labels.length; i++) {
+			labelList.push($(labels[i]).attr("data-label-id"));
+		}
+
+		var data = {
+			labels: labelList,
+		};
+
+		$.ajax({
+			url: url,
+			method: 'PATCH',
+			contentType: 'application/json',
+			data: JSON.stringify(data),
+			success: function(data) {
+				// Update the card HTML
+				
+				if (labels.length > 0) {
+					if (cardElement.find(".labels").length == 0) {
+						// Initialize the label list
+						var html = "<span class='labels'>";
+						for (var i=0; i<labels.length; i++) {
+							var l = $(labels[i]);
+							var id = l.attr("data-label-id");
+							var color = l.attr("data-color");
+							html += "<span class='label' data-label-id='" + id + "' data-color='" + color + "' style='background-color: " + color + ";'></span>";
+						}
+						html += "</span>";
+
+						$(html).prependTo(cardElement);
+					} else {
+						var html = "";
+						for (var i=0; i<labels.length; i++) {
+							var l = $(labels[i]);
+							var id = l.attr("data-label-id");
+							var color = l.attr("data-color");
+							html += "<span class='label' data-label-id='" + id + "' data-color='" + color + "' style='background-color: " + color + ";'></span>";
+						}
+
+						cardElement.find(".labels").html(html);
+					}
+				} else {
+					// No labels
+					cardElement.find(".labels").remove();
+				}
+			},
+			error: function(data) {
+				_showError("Error editing card labels", data);
+			},
+		});
+	});
 
 
 	Mousetrap.bind("1", function(e) {

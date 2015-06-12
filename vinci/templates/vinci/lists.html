@@ -7,7 +7,7 @@
 			{% if list.labels.all|length %}
 			<div class="labels">
 				{% for label in list.labels.all %}
-				<span class="label-1" style="background-color: {{ label.color }}"></span>
+				<span class="label" data-label-id="{{ label.id }}" data-color="{{ label.color }}" style="background-color: {{ label.color }}"></span>
 				{% endfor %}
 			</div>
 			{% endif %}
@@ -20,7 +20,7 @@
 					{% if card.labels.all|length %}
 					<span class="labels">
 						{% for label in card.labels.all %}
-						<span class="label-1" style="background-color: {{ label.color }}"></span>
+						<span class="label" data-label-id="{{ label.id }}" data-color="{{ label.color }}" style="background-color: {{ label.color }}"></span>
 						{% endfor %}
 					</span>
 					{% endif %}
@@ -77,7 +77,7 @@
 
 			<ul>
 				{% for label in labels.all %}
-				<li class="label" data-label-id="{{ label.id }}" style="background-color: {{ label.color }}">{{ label.title }}</li>
+				<li class="label" data-label-id="{{ label.id }}" data-color="{{ label.color }}" style="background-color: {{ label.color }}">{{ label.title }}</li>
 				{% endfor %}
 			</ul>
 		</div>

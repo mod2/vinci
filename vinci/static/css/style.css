@@ -2222,16 +2222,23 @@ body.list-mode #page {
 #modal #modal-card-edit .labels ul li {
 	border-radius: 4px;
 	color: hsl(0, 100%, 100%);
+	cursor: pointer;
 	display: block;
 	line-height: 1.4em;
 	list-style: none;
 	min-height: 2em;
 	overflow: hidden;
 	padding: 4px 8px 6px;
+	-webkit-user-select: none;
+	user-select: none;
 }
 
 #modal #modal-card-edit .labels ul li + li {
 	margin-top: 5px;
+}
+
+#modal #modal-card-edit .labels ul li:hover {
+	background: hsl(0, 0%, 10%) !important;
 }
 
 #modal #modal-card-edit .button {

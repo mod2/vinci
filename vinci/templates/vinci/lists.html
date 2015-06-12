@@ -14,7 +14,7 @@
 
 			<h2><span class="list-edit">&hellip;</span>{{ list.title }}</h2>
 
-			<ul class="cards" data-cards-uri="{% url 'card-list' %}">
+			<ul class="cards" data-cards-uri="{% url 'card-list' %}" data-list-uri="{% url 'list-detail' list.id %}">
 				{% for card in list.cards.all %}
 				<li class="card" data-card-id="{{ card.id }}">
 					{% if card.labels.all|length %}

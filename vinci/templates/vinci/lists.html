@@ -1,7 +1,7 @@
 {% extends 'vinci/_base.html' %}
 
 {% block content %}
-	<div class="lists">
+	<div class="lists" data-lists-uri="{% url 'list-list' %}" data-notebook-slug="{{ notebook.slug }}">
 		{% for list in notebook.lists.all %}
 		<section class="list">
 			{% if list.labels.all|length %}

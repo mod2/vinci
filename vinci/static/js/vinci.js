@@ -1410,32 +1410,53 @@ $(document).ready(function() {
 
 		if (listName != '') {
 			var addList = $(this).parents(".add-list");
+			var url = $(".lists").attr("data-lists-uri");
+			var notebookSlug = $(".lists").attr("data-notebook-slug");
+			var tray = addList.find(".tray");
 
-			var html = "<section class='list' style='display: none'>";
-			html += "<h2>" + listName + "</h2>";
-			html += "<ul class='cards'></ul>";
-			html += "<section class='add-card'>";
-			html += "<div class='tray'>";
-			html += "<textarea></textarea>";
-			html += "<span class='save-button'>Save card</span>";
-			html += "</div>";
-			html += "<span class='add-button'>Add card</span>";
-			html += "</section>";
+			var data = {
+				notebook: notebookSlug,
+				title: listName,
+				status: "active",
+				order: 100,
+				labels: [],
+			};
 
-			addList.before(html);
+			$.ajax({
+				url: url,
+				method: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(data),
+				success: function(data) {
+					var html = "<section class='list' style='display: none'>";
+					html += "<h2>" + listName + "</h2>";
+					html += "<ul class='cards'></ul>";
+					html += "<section class='add-card'>";
+					html += "<div class='tray'>";
+					html += "<textarea></textarea>";
+					html += "<span class='save-button'>Save card</span>";
+					html += "</div>";
+					html += "<span class='add-button'>Add card</span>";
+					html += "</section>";
 
-			var newList = $(".lists .list:last");
-			newList.fadeIn(200);
+					addList.before(html);
 
-			resizeBoard();
-			makeListsSortable();
+					var newList = $(".lists .list:last");
+					newList.fadeIn(200);
 
-			var tray = $(this).parents(".tray");
-			var inputBox = tray.find("textarea");
-			var addButton = tray.siblings(".add-button");
-			addButton.html("Add list");
-			tray.slideUp(150, function() {
-				inputBox.val('');
+					resizeBoard();
+					makeListsSortable();
+
+					var inputBox = tray.find("textarea");
+					var addButton = tray.siblings(".add-button");
+					addButton.html("Add list");
+					tray.slideUp(150, function() {
+						inputBox.val('');
+					});
+				},
+				error: function(data) {
+					_showError("Error autosaving", data);
+				},
 			});
 		}
 	});

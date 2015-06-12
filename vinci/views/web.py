@@ -232,3 +232,8 @@ def _search(request, query, notebook=None, section=None):
                               context,
                               RequestContext(request),
                               )
+
+
+@login_required
+def prefs_view(request):
+    pass

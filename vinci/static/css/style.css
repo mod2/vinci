@@ -2205,8 +2205,9 @@ body.list-mode #page {
 #modal #modal-card-edit h3 {
 	color: hsl(0, 0%, 60%);
 	display: block;
-	font-size: 1em;
+	font-size: .8em;
 	letter-spacing: 0.05em;
+	line-height: 1.2em;
 	margin: 0 0 5px 0;
 	text-transform: uppercase;
 }

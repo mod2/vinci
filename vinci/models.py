@@ -349,7 +349,8 @@ class Label(models.Model):
     color = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.title
+        return ('Label(title="{s.title}", order="{s.order}", color="{s.color}")'
+                .format(s=self))
 
     class Meta:
         ordering = ['order', 'title']

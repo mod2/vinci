@@ -641,6 +641,16 @@ body.active-nav #page .mask {
 	background: hsl(342, 39%, 57%);
 }
 
+#sections.list {
+	background: hsl(182, 13%, 35%);
+}
+
+/*
+#sections.list .container {
+	background: hsl(300, 39%, 57%);
+}
+*/
+
 #sections a {
 	display: none;
 }
@@ -1820,15 +1830,52 @@ form.login input.button:hover {
 /* List mode */
 /* -------------------------------------------------- */
 
+html {
+	height: 100%;
+}
+
+body.list-mode {
+	height: 100%;
+}
+
+body.list-mode .container {
+	margin: 0;
+	max-width: initial;
+	padding: 0 25px;
+}
+
+body.list-mode .wrapper {
+	height: 100%;
+}
+
+body.list-mode #page {
+	-webkit-flex-direction: column;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+body.list-mode #page .mask {
+	display: none;
+}
+
 #page #content.list {
-	bottom: 0;
-	height: calc(100% - 48px);
-	left: 0;
+	-webkit-flex: 1
+	flex: 1;
+}
+
+#page #content.list {
+	border-radius: 0;
+	box-shadow: none;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-direction: column;
+	flex-direction: column;
+	-webkit-flex: 1;
+	flex: 1;
+	margin-bottom: 0;
 	overflow-x: scroll;
 	overflow-y: hidden;
-	position: absolute;
-	right: 0;
-	top: 55px;
 	width: 100%;
 	max-width: 100%;
 }
@@ -1841,6 +1888,7 @@ form.login input.button:hover {
 	display: flex;
 	-webkit-flex-direction: row;
 	flex-direction: row;
+	flex: 1;
 	height: 100%;
 	min-width: 100%;
 	padding: 25px 25px;
@@ -2385,6 +2433,10 @@ form.login input.button:hover {
 		text-transform: none;
 	}
 
+	body.list-mode header[role=banner] h1 a.home {
+		padding-left: 0;
+	}
+
 	header[role=banner] .system {
 		display: block;
 		position: absolute;
@@ -2521,10 +2573,6 @@ form.login input.button:hover {
 	#page #content.journal > footer .container {
 		padding-left: 70px;
 		padding-right: 70px;
-	}
-
-	#page #content.list {
-		top: 62px;
 	}
 }
 

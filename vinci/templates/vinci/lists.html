@@ -52,6 +52,40 @@
 
 {% block modal %}
 <div id="modal-card-edit" class="modal">
-	<h2>Edit Card</h2>
+	<section class="main-column column">
+		<div class="card-edit">
+			<div class="card">
+				<textarea id="card-title-edit" name="card-title-edit"></textarea>
+				<textarea id="card-description-edit" name="card-description-edit"></textarea>
+			</div>
+
+			<div class="buttons">
+				<input id="save-card-edit-button" class="button save" type="button" value="Save"/>
+				<input id="cancel-card-edit-button" class="button cancel" type="button" value="Cancel"/>
+			</div>
+		</div>
+		<div class="checklists">
+			<h3>Checklists</h3>
+
+			Checklists will go here
+		</div>
+	</section>
+
+	<section class="sidebar column">
+		<div class="labels">
+			<h3>Labels</h3>
+
+			<ul>
+				{% for label in labels.all %}
+				<li class="label" data-label-id="{{ label.id }}" style="background-color: {{ label.color }}">{{ label.title }}</li>
+				{% endfor %}
+			</ul>
+		</div>
+		<div class="actions">
+			<h3>Actions</h3>
+
+			Move to list
+		</div>
+	</section>
 </div>
 {% endblock modal %}

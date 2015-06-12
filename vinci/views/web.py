@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 
-from vinci.models import Notebook, Entry, Revision, Group
+from vinci.models import Notebook, Entry, Revision, Group, Label
 import vinci.search_indexer as si
 
 
@@ -56,8 +56,10 @@ def notebook_section(request, notebook_slug, section):
 
     if section == 'list':
         template = 'lists'
+        labels = Label.objects.all()
     else:
         template = 'entries'
+        labels = []
 
     context = {
         'title': notebook.name,
@@ -66,6 +68,7 @@ def notebook_section(request, notebook_slug, section):
         'section': section,
         'scope': 'section',
         'entries': entries,
+        'labels': labels,
         'page_type': 'entries',
     }
 

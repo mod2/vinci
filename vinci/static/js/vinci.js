@@ -1488,6 +1488,30 @@ $(document).ready(function() {
 	});
 
 
+	// Card edit modal
+
+	$(".lists").on("click", "ul.cards .card", function() {
+		// Show the modal
+		$("#modal-card-edit").siblings(".modal").hide();
+		$("#mask").fadeIn(200);
+		$("#modal").fadeIn(200);
+		$("#modal-card-edit").fadeIn(200);
+
+		// Populate it with the card info
+		var card = $(this);
+		var cardTitle = card.find(".title").html();
+		var cardDescription = card.find(".desc").html();
+		$("#modal-card-edit #card-title-edit").val(cardTitle);
+		$("#modal-card-edit #card-description-edit").val(cardDescription);
+
+		// Autosize the textareas
+
+		return false;
+	});
+
+
+
+
 	Mousetrap.bind("1", function(e) {
 		setLabel(getElement(e), 1);
 	});

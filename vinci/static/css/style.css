@@ -1855,10 +1855,6 @@ body.list-mode #page {
 	height: 100%;
 }
 
-body.list-mode #page .mask {
-	display: none;
-}
-
 #page #content.list {
 	-webkit-flex: 1
 	flex: 1;

@@ -3,7 +3,7 @@
 {% block content %}
 	<div class="lists" data-lists-uri="{% url 'list-list' %}" data-notebook-slug="{{ notebook.slug }}">
 		{% for list in notebook.lists.all %}
-		<section class="list">
+		<section class="list" data-list-id="{{ list.id }}">
 			{% if list.labels.all|length %}
 			<div class="labels">
 				{% for label in list.labels.all %}
@@ -14,9 +14,9 @@
 
 			<h2><span class="list-edit">&hellip;</span>{{ list.title }}</h2>
 
-			<ul class="cards">
+			<ul class="cards" data-cards-uri="{% url 'card-list' %}">
 				{% for card in list.cards.all %}
-				<li class="card">
+				<li class="card" data-card-id="{{ card.id }}">
 					{% if card.labels.all|length %}
 					<span class="labels">
 						{% for label in card.labels.all %}
@@ -24,7 +24,7 @@
 						{% endfor %}
 					</span>
 					{% endif %}
-					<span class="title">{{ card.title }}</span>
+					<span class="title{% if not card.description %} no-desc{% endif %}">{{ card.title }}</span>
 					{% if card.description %}<span class="desc">{{ card.description }}</span>{% endif %}
 				</li>
 				{% endfor %}

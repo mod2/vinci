@@ -1363,21 +1363,46 @@ $(document).ready(function() {
 
 	$(".lists").on("click", ".add-card .save-button", function() {
 		var cardTitle = $(this).siblings("textarea").val().trim();
-		var list = $(this).parents(".list:first").find("ul.cards");
 
 		if (cardTitle != '') {
-			var html = "<li class='card' style='display: none'>";
-			html += "<span class='title no-desc'>" + cardTitle + "</span>";
-			html += "</li>";
-			list.append(html);
-			list.find("li:last").slideDown(200);
+			var list = $(this).parents(".list:first");
+			var cardList = list.find("ul.cards");
+			var url = cardList.attr("data-cards-uri");
+			var listId = list.attr("data-list-id");
+			var tray = list.find(".tray");
 
-			var tray = $(this).parents(".tray");
-			var inputBox = tray.find("textarea");
-			var addButton = tray.siblings(".add-button");
-			addButton.html("Add card");
-			tray.slideUp(150, function() {
-				inputBox.val('');
+			var data = {
+				list: listId,
+				title: cardTitle,
+				description: "",
+				status: "active",
+				order: 500,
+				labels: [],
+				mentions: [],
+			};
+
+			$.ajax({
+				url: url,
+				method: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(data),
+				success: function(data) {
+					var html = "<li class='card' style='display: none' data-card-id='" + data.id + "'>";
+					html += "<span class='title no-desc'>" + cardTitle + "</span>";
+					html += "</li>";
+					cardList.append(html);
+					cardList.find("li:last").slideDown(200);
+
+					var inputBox = tray.find("textarea");
+					var addButton = tray.siblings(".add-button");
+					addButton.html("Add card");
+					tray.slideUp(150, function() {
+						inputBox.val('');
+					});
+				},
+				error: function(data) {
+					_showError("Error adding card", data);
+				},
 			});
 
 			makeCardsSortable();
@@ -1428,7 +1453,7 @@ $(document).ready(function() {
 				contentType: 'application/json',
 				data: JSON.stringify(data),
 				success: function(data) {
-					var html = "<section class='list' style='display: none'>";
+					var html = "<section class='list' style='display: none' data-list-id='" + data.id + "'>";
 					html += "<h2>" + listName + "</h2>";
 					html += "<ul class='cards'></ul>";
 					html += "<section class='add-card'>";
@@ -1455,7 +1480,7 @@ $(document).ready(function() {
 					});
 				},
 				error: function(data) {
-					_showError("Error autosaving", data);
+					_showError("Error adding list", data);
 				},
 			});
 		}

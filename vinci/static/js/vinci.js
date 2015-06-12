@@ -1394,6 +1394,8 @@ $(document).ready(function() {
 					cardList.append(html);
 					cardList.find("li:last").slideDown(200);
 
+					_updateCardOrderForList(cardList.parents(".list"));
+
 					var inputBox = tray.find("textarea");
 					var addButton = tray.siblings(".add-button");
 					addButton.html("Add card");
@@ -1570,40 +1572,46 @@ function makeListsSortable() {
 	});
 }
 
+function _updateCardOrderForList(list) {
+	var list = list.find("ul.cards");
+	var url = list.attr("data-list-uri");
+	var order = {};
+
+	// Get all the cards
+	var items = list.find("li");
+
+	for (var i=0; i<items.length; i++) {
+		var item = $(items[i]);
+		order[item.attr("data-card-id")] = i;
+	}
+
+	var data = {
+		'operation': 'card-ordering',
+		'card_orders': order,
+	};
+
+	$.ajax({
+		url: url,
+		method: 'PATCH',
+		contentType: 'application/json',
+		data: JSON.stringify(data),
+		success: function(data) {
+		},
+		error: function(data) {
+			console.log("Error! :(", data);
+		},
+	});
+}
+
 function makeCardsSortable() {
 	$("ul.cards").sortable({
 		placeholder: "card placeholder",
 		items: "li",
 		forcePlaceholderSize: true,
 		update: function(event, ui) {
-			var list = ui.item.parents("ul.cards");
-			var url = list.attr("data-list-uri");
-			var order = {};
+			var list = ui.item.parents(".list");
 
-			// Get all the cards
-			var items = list.find("li");
-
-			for (var i=0; i<items.length; i++) {
-				var item = $(items[i]);
-				order[item.attr("data-card-id")] = i;
-			}
-
-			var data = {
-				'operation': 'card-ordering',
-				'card_orders': order,
-			};
-
-			$.ajax({
-				url: url,
-				method: 'PATCH',
-				contentType: 'application/json',
-				data: JSON.stringify(data),
-				success: function(data) {
-				},
-				error: function(data) {
-					console.log("Error! :(", data);
-				},
-			});
+			_updateCardOrderForList(list);
 		},
 	});
 }

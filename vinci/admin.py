@@ -40,7 +40,7 @@ class RevisionAdmin(admin.ModelAdmin):
 
 @admin.register(Label)
 class LabelAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('title', 'color', 'order')
 
 
 @admin.register(List)

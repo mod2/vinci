@@ -343,8 +343,16 @@ class BaseListMixin(models.Model):
         ordering = ['order', 'title']
 
 
-class Label(BaseListMixin, models.Model):
+class Label(models.Model):
+    title = models.CharField(max_length=255, blank=True)
+    order = models.IntegerField(default=0, blank=True)
     color = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['order', 'title']
 
 
 class List(BaseListMixin, StatusMixin, DatedMixin, models.Model):

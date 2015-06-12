@@ -536,7 +536,7 @@ $(document).ready(function() {
 
 		// Hide modal if it's there
 		if ($("#modal:visible").length) {
-			_hideHelp();
+			_hideModals();
 		}
 	});
 
@@ -630,19 +630,19 @@ $(document).ready(function() {
 		$("#modal-help").fadeIn(200);
 	}
 
-	function _hideHelp() {
-		$("#modal-help").fadeOut(200);
+	function _hideModals() {
+		$("#modal .modal").fadeOut(200);
 		$("#modal").fadeOut(200);
 		$("#mask").fadeOut(200);
 	}
 
 	Mousetrap.bind('?', _showHelp);
 	var modalForm = document.querySelector("#modal");
-	Mousetrap(modalForm).bind('esc', _hideHelp);
+	Mousetrap(modalForm).bind('esc', _hideModals);
 
 	// Hide modal on click mask
 	$("#mask").on("click", function() {
-		_hideHelp();
+		_hideModals();
 	});
 
 
@@ -1472,6 +1472,8 @@ $(document).ready(function() {
 					var newList = $(".lists .list:last");
 					newList.fadeIn(200);
 
+					_updateListOrder();
+
 					resizeBoard();
 					makeListsSortable();
 
@@ -1503,12 +1505,65 @@ $(document).ready(function() {
 		var card = $(this);
 		var cardTitle = card.find(".title").html();
 		var cardDescription = card.find(".desc").html();
-		$("#modal-card-edit #card-title-edit").val(cardTitle);
+		$("#modal-card-edit #card-title-edit").val(cardTitle).focus();
 		$("#modal-card-edit #card-description-edit").val(cardDescription);
+
+		var cardURI = card.attr("data-card-uri");
+		$("#modal-card-edit").attr("data-card-uri", cardURI);
+
+		var cardId = card.attr("data-card-id");
+		$("#modal-card-edit").attr("data-card-id", cardId);
 
 		// Autosize the textareas
 
 		return false;
+	});
+
+	$("#modal-card-edit").on("click", "#save-card-edit-button", function() {
+		var modal = $("#modal-card-edit");
+		var cardTitle = modal.find("textarea#card-title-edit").val().trim();
+		var cardDescription = modal.find("textarea#card-description-edit").val().trim();
+
+		if (cardTitle != '') {
+			var url = modal.attr("data-card-uri");
+			var cardId = modal.attr("data-card-id");
+			var cardElement = $(".card[data-card-id=" + cardId + "]");
+
+			var data = {
+				title: cardTitle,
+				description: cardDescription,
+			};
+
+			$.ajax({
+				url: url,
+				method: 'PATCH',
+				contentType: 'application/json',
+				data: JSON.stringify(data),
+				success: function(data) {
+					// Update the card HTML
+					cardElement.find(".title").html(cardTitle);
+
+					if (cardDescription != '') {
+						cardElement.find(".title").removeClass("no-desc");
+
+						if (cardElement.find(".description").length > 0) {
+							cardElement.find(".description").html(cardDescription);
+						} else {
+							$("<span class='desc'>" + cardDescription + "</span>").appendTo(cardElement);
+						}
+					} else {
+						cardElement.find(".title").addClass("no-desc");
+						cardElement.find(".desc").remove();
+					}
+
+					// Hide the modal
+					_hideModals();
+				},
+				error: function(data) {
+					_showError("Error editing card title/desc", data);
+				},
+			});
+		}
 	});
 
 
@@ -1533,6 +1588,37 @@ function resizeBoard() {
 	$("#content .lists").css("width", "calc((" + numLists + " * 270px) + (" + (numLists - 1) + " * 15px))");
 }
 
+function _updateListOrder() {
+	var parentContainer = $(".lists");
+	var url = parentContainer.attr("data-lists-uri");
+	var order = {};
+
+	// Get all the lists
+	var items = parentContainer.find(".list");
+
+	for (var i=0; i<items.length; i++) {
+		var item = $(items[i]);
+		order[item.attr("data-list-id")] = i;
+	}
+
+	var data = {
+		'operation': 'list-ordering',
+		'list_orders': order,
+	};
+
+	$.ajax({
+		url: url,
+		method: 'PATCH',
+		contentType: 'application/json',
+		data: JSON.stringify(data),
+		success: function(data) {
+		},
+		error: function(data) {
+			console.log("Error! :(", data);
+		},
+	});
+}
+
 function makeListsSortable() {
 	$(".lists").sortable({
 		items: ".list",
@@ -1540,34 +1626,7 @@ function makeListsSortable() {
 		placeholder: "list placeholder",
 		forcePlaceholderSize: true,
 		update: function(event, ui) {
-			var parentContainer = $(".lists");
-			var url = parentContainer.attr("data-lists-uri");
-			var order = {};
-
-			// Get all the lists
-			var items = parentContainer.find(".list");
-
-			for (var i=0; i<items.length; i++) {
-				var item = $(items[i]);
-				order[item.attr("data-list-id")] = i;
-			}
-
-			var data = {
-				'operation': 'list-ordering',
-				'list_orders': order,
-			};
-
-			$.ajax({
-				url: url,
-				method: 'PATCH',
-				contentType: 'application/json',
-				data: JSON.stringify(data),
-				success: function(data) {
-				},
-				error: function(data) {
-					console.log("Error! :(", data);
-				},
-			});
+			_updateListOrder();
 		},
 	});
 }

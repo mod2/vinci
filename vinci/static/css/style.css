@@ -2270,6 +2270,7 @@ body.list-mode #page {
 }
 
 #modal #modal-card-edit .card-edit #card-description-edit {
+	background: hsl(0, 0%, 94%);
 	border: none;
 	border-top: solid 1px hsl(0, 0%, 85%);
 	border-radius: 0 0 3px 3px;
@@ -2278,7 +2279,7 @@ body.list-mode #page {
 	height: 4em;
 	max-height: 6em;
 	line-height: 1.2em;
-	padding: 15px;
+	padding: 10px 15px;
 	resize: none;
 }
 

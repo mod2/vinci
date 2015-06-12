@@ -16,7 +16,7 @@
 
 			<ul class="cards" data-cards-uri="{% url 'card-list' %}" data-list-uri="{% url 'list-detail' list.id %}">
 				{% for card in list.cards.all %}
-				<li class="card" data-card-id="{{ card.id }}">
+				<li class="card" data-card-id="{{ card.id }}" data-card-uri="{% url 'card-detail' card.id %}">
 					{% if card.labels.all|length %}
 					<span class="labels">
 						{% for label in card.labels.all %}

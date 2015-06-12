@@ -624,6 +624,7 @@ $(document).ready(function() {
 
 	// Help dialog
 	function _showHelp() {
+		$("#modal-help").siblings(".modal").hide();
 		$("#mask").fadeIn(200);
 		$("#modal").fadeIn(200);
 		$("#modal-help").fadeIn(200);

@@ -467,6 +467,67 @@ class ListAPIViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ListSerializer
     queryset = models.List.objects.all()
 
+    @staticmethod
+    def _reorder_items(model_qs, pks, orders):
+        objects = model_qs.filter(pk__in=pks)
+        rtn_orders = {}
+        for obj in objects:
+            obj.order = orders[str(obj.pk)]
+            obj.save()
+            rtn_orders[obj.pk] = obj.order
+        return rtn_orders
+
+    def patch(self, request):
+        """
+        Called when a PATCH method is sent to the list-list view.
+
+        Provides reordering of lists.
+        """
+        operation = request.data.get('operation', 'default')
+
+        if operation == 'list-ordering':
+            list_orders = request.data.get('list_orders', False)
+            if not list_orders:
+                return APIResponse({'error': 'list_orders is required'},
+                                   status=400)
+            list_ids = [int(l) for l in list_orders.keys()]
+            rtn_orders = self._reorder_items(models.List.objects,
+                                             list_ids,
+                                             list_orders)
+            status = 200
+        else:
+            rtn_orders = {"detail": "operation attribute required.",
+                          "valid_operations": ["list-ordering"]}
+            status = 400
+
+        return APIResponse(rtn_orders, status=status)
+
+    def partial_update(self, request, pk=None):
+        """
+        Called when a PATCH method is sent to the list-detail view.
+
+        Provides reordering of cards in the list.
+        """
+        list_pk = pk
+        operation = request.data.get('operation', 'default')
+
+        if operation == 'card-ordering':
+            print('card ordering going on', list_pk)
+            card_orders = request.data.get('card_orders', False)
+            if not card_orders:
+                return APIResponse({'error': 'card_orders is required'},
+                                   status=400)
+            card_ids = [int(c) for c in card_orders.keys()]
+            list_cards = models.Card.objects
+            if list_pk:
+                list_cards = list_cards.filter(list__pk=list_pk)
+            rtn_orders = self._reorder_items(list_cards,
+                                             card_ids,
+                                             card_orders)
+            return APIResponse(rtn_orders)
+        else:  # No operation provided, perform normal patch (partial_update).
+            return super().partial_update(request, pk)
+
 
 class CardAPIViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.CardSerializer

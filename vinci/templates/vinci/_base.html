@@ -137,6 +137,10 @@
 						{% if notebook.display_journals %}
 							<span data-value="journal" class="type journal{% if section == 'journal' %} selected{% endif %}">Journal</span>
 						{% endif %}
+						{% if notebook.display_lists %}
+							<span data-value="card" class="type card{% if section == 'list' %} selected{% endif %}">Card</span>
+							<span data-value="list" class="type list">List</span>
+						{% endif %}
 						<input type="hidden" name="type" value="" />
 					</div>
 					<div class="group other notebook container">

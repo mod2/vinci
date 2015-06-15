@@ -1507,7 +1507,7 @@ $(document).ready(function() {
 					resizeBoard();
 					makeListsSortable();
 
-					_hideAddListTray();
+					_hideAddListTray(tray);
 				},
 				error: function(data) {
 					_showError("Error adding list", data);

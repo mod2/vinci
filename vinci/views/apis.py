@@ -464,7 +464,7 @@ class LabelAPIViewSet(viewsets.ModelViewSet):
 
 
 class ListAPIViewSet(viewsets.ModelViewSet):
-    serializer_clasi = serializers.ListSerializer
+    serializer_class = serializers.ListSerializer
     queryset = models.List.objects.all()
 
     @staticmethod

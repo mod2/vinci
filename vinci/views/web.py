@@ -248,6 +248,7 @@ def prefs_view(request):
 
     context = {
         'labels': labels,
+        'title': 'Preferences',
     }
     return render_to_response('vinci/prefs.html',
                               context,

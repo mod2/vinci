@@ -2,18 +2,18 @@
 
 {% block content %}
 <section id="settings" >
-	<h2 class="container">Preferences</h2>
-
-	<h3 class="container">Labels</h3>
+	<h2 class="container">Labels</h2>
 	<div id="section-config" class="group container">
-		<ul>
+		<ul class="labels">
 		{% for label in labels %}
-		<li class="" style="background-color: {{ label.color }}">{{ label.title }}</li>
+			<li class="label" style="background-color: {{ label.color }}">{{ label.title }}</li>
 		{% empty %}
-		<li>No Labels</li>
+			<li>No labels</li>
 		{% endfor %}
 		</ul>
-	</div>
 
+		<input type="text" />
+		<input type="submit" value="Add Label" />
+	</div>
 </section>
 {% endblock content %}

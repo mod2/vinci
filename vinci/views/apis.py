@@ -17,6 +17,91 @@ from taggit.models import Tag
 from vinci import models, serializers, search_indexer as si
 
 
+def _reorder_items(model_qs, orders, owner_id=None):
+    """
+    Given a queryset and an orders dict, sets the order of the items.
+    Possibly also moves the items to a new owner if owner_id is provided.
+
+    Arguments:
+        model_qs - A QuerySet that can be used to get all of the items that
+                   should be updated.
+        orders - A dict where the keys are the ids of the items to be changed
+                 and the values are the order numbers to be saved. {"1": 3,...}
+        owner_id - OPTIONAL id for an owner to move all of the items to.
+    """
+    objects = model_qs.filter(pk__in=[int(pk) for pk in orders.keys()])
+    rtn_orders = {}
+    for obj in objects:
+        obj.order = orders[str(obj.pk)]
+        if owner_id:
+            obj.list_id = owner_id
+        obj.save()
+        rtn_orders[obj.pk] = obj.order
+    return rtn_orders
+
+
+def _validate_custom_methods(request, op_type):
+    operation = request.data.get('operation', 'default')
+    payload = None
+    payload_type = ''
+    if operation == 'default':
+        return False
+
+    if operation == '{}-ordering'.format(op_type):
+        payload = request.data.get('{}_orders'.format(op_type))
+        payload_type = 'ordering'
+    if operation == '{}-copy'.format(op_type):
+        payload = ''
+        payload_type = 'copy'
+
+    return (payload_type, payload)
+
+
+class ReOrderMixin():
+    def patch(self, request):
+        """
+        Reorder items specified by the request.
+        """
+        op_type = self.serializer_class.Meta.model.__name__.lower()
+        queryset = self.queryset
+
+        type_, orders = _validate_custom_methods(request, op_type)
+        if type_ is 'ordering' and orders is None:
+            msg = {'error': '{}_orders is required'.format(op_type)}
+            return APIResponse(msg, status=400)
+        elif type_ is 'ordering' and orders:
+            rtn_orders = _reorder_items(queryset, orders)
+            return APIResponse(rtn_orders)
+        else:
+            return super().patch(request)
+
+
+class ReOrderChildrenMixin():
+    partial_update_model = None
+    partial_update_queryset = None
+
+    def partial_update(self, request, pk=None):
+        if not self.partial_update_model:
+            raise Exception("ReOrderChildrenMixin not configured properly.")
+        op_type = self.partial_update_model.__name__.lower()
+        queryset = self.partial_update_model.objects.all()
+        if self.partial_update_queryset:
+            queryset = self.partial_update_queryset
+        owner_id = pk
+
+        type_, orders = _validate_custom_methods(request, op_type)
+
+        if type_ is 'ordering' and orders is None:
+            msg = {'error': '{}_orders is required'.format(op_type)}
+            return APIResponse(msg, status=400)
+        elif type_ is 'ordering' and orders:
+            rtn_orders = _reorder_items(queryset, orders, owner_id=owner_id)
+            return APIResponse(rtn_orders)
+        else:
+            # No operation provided, perform normal patch (partial_update).
+            return super().partial_update(request, pk)
+
+
 class APIKeyAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
         username = settings.VINCI_DEFAULT_API_KEY_USERNAME
@@ -458,83 +543,15 @@ class QuickJumpAPIView(APIView):
 
 
 # Kanban board api views
-class LabelAPIViewSet(viewsets.ModelViewSet):
+class LabelAPIViewSet(ReOrderMixin, viewsets.ModelViewSet):
     serializer_class = serializers.LabelSerializer
     queryset = models.Label.objects.all()
 
 
-class ListAPIViewSet(viewsets.ModelViewSet):
+class ListAPIViewSet(ReOrderMixin, ReOrderChildrenMixin, viewsets.ModelViewSet):
     serializer_class = serializers.ListSerializer
     queryset = models.List.objects.all()
-
-    @staticmethod
-    def _reorder_items(model_qs, pks, orders, list_id=None):
-        objects = model_qs.filter(pk__in=pks)
-        rtn_orders = {}
-        for obj in objects:
-            obj.order = orders[str(obj.pk)]
-            if list_id:
-                obj.list_id = list_id
-            obj.save()
-            rtn_orders[obj.pk] = obj.order
-        return rtn_orders
-
-    def patch(self, request):
-        """
-        Called when a PATCH method is sent to the list-list view.
-
-        Provides reordering of lists.
-        """
-        operation = request.data.get('operation', 'default')
-
-        if operation == 'list-ordering':
-            list_orders = request.data.get('list_orders', False)
-
-            if not list_orders:
-                return APIResponse({'error': 'list_orders is required'},
-                                   status=400)
-
-            list_ids = [int(l) for l in list_orders.keys()]
-
-            rtn_orders = self._reorder_items(models.List.objects,
-                                             list_ids,
-                                             list_orders)
-            status = 200
-        else:
-            rtn_orders = {"detail": "operation attribute required.",
-                          "valid_operations": ["list-ordering"]}
-            status = 400
-
-        return APIResponse(rtn_orders, status=status)
-
-    def partial_update(self, request, pk=None):
-        """
-        Called when a PATCH method is sent to the list-detail view.
-
-        Provides reordering of cards in the list.
-        """
-        list_pk = pk
-        operation = request.data.get('operation', 'default')
-
-        if operation == 'card-ordering':
-            card_orders = request.data.get('card_orders', False)
-
-            if not card_orders:
-                return APIResponse({'error': 'card_orders is required'},
-                                   status=400)
-
-            card_ids = [int(c) for c in card_orders.keys()]
-            list_cards = models.Card.objects
-
-            rtn_orders = self._reorder_items(list_cards,
-                                             card_ids,
-                                             card_orders,
-                                             list_id=list_pk)
-
-            return APIResponse(rtn_orders)
-        else:
-            # No operation provided, perform normal patch (partial_update).
-            return super().partial_update(request, pk)
+    partial_update_model = models.Card
 
 
 class CardAPIViewSet(viewsets.ModelViewSet):
@@ -542,9 +559,12 @@ class CardAPIViewSet(viewsets.ModelViewSet):
     queryset = models.Card.objects.all()
 
 
-class ChecklistAPIViewSet(viewsets.ModelViewSet):
+class ChecklistAPIViewSet(ReOrderMixin,
+                          ReOrderChildrenMixin,
+                          viewsets.ModelViewSet):
     serializer_class = serializers.ChecklistSerializer
     queryset = models.Checklist.objects.all()
+    partial_update_model = models.ChecklistItem
 
 
 class ChecklistItemAPIViewSet(viewsets.ModelViewSet):

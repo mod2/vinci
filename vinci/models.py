@@ -20,13 +20,14 @@ ENTRY_TYPE = Choices(
 
 LIST_STATUS = Choices('active', 'archived', 'deleted')
 
-# User Profile model
 
+# User Profile model
 class UserPrefs(models.Model):
     user = models.OneToOneField(User, related_name="prefs", primary_key=True)
 
     class Meta:
         ordering = ['user']
+
 
 # Custom Managers and QuerySets
 
@@ -229,8 +230,8 @@ class Entry(models.Model):
                 plugins = __import__("plugins", fromlist=[plugin_name])
                 plugin = getattr(plugins, plugin_name)
                 content = plugin.process(content,
-                                        self,
-                                        self.notebook.get_absolute_url())
+                                         self,
+                                         self.notebook.get_absolute_url())
 
         return content
 
@@ -247,16 +248,9 @@ class Entry(models.Model):
 
         possible_types = []
 
-        if self.notebook.display_logs:
-            possible_types.append({ 'value': 'log', 'label': 'Log' })
-        if self.notebook.display_notes:
-            possible_types.append({ 'value': 'note', 'label': 'Note' })
-        if self.notebook.display_pages:
-            possible_types.append({ 'value': 'page', 'label': 'Page' })
-        if self.notebook.display_journals:
-            possible_types.append({ 'value': 'journal', 'label': 'Journal' })
-        if self.notebook.display_lists:
-            possible_types.append({ 'value': 'list', 'label': 'list' })
+        for value, label in ENTRY_TYPE:
+            if getattr(self.notebook, 'display_{}s'.format(value)):
+                possible_types.append({'value': value, 'label': label})
 
         return possible_types
 
@@ -311,8 +305,8 @@ class Revision(models.Model):
                 plugins = __import__("plugins", fromlist=[plugin_name])
                 plugin = getattr(plugins, plugin_name)
                 content = plugin.process(content,
-                                        self.entry,
-                                        self.entry.notebook.get_absolute_url())
+                                         self.entry,
+                                         self.entry.notebook.get_absolute_url())
 
         return content
 

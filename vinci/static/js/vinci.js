@@ -1711,8 +1711,35 @@ $(document).ready(function() {
 	});
 
 
-	Mousetrap.bind("1", function(e) {
-		setLabel(getElement(e), 1);
+	// List edit modal
+
+	$(".lists").on("click", ".list-edit", function() {
+		// Show the modal
+		$("#modal-list-edit").siblings(".modal").hide();
+		$("#mask").fadeIn(200);
+		$("#modal").fadeIn(200);
+		$("#modal-list-edit").fadeIn(200);
+
+		// Populate it with the list info
+		var list = $(this).parents("section.list:first");
+		var listTitle = list.find(".title").html();
+		$("#modal-list-edit #list-title-edit").val(listTitle).focus();
+
+		var listURI = list.attr("data-list-uri");
+		$("#modal-list-edit").attr("data-list-uri", listURI);
+
+		var listId = list.attr("data-list-id");
+		$("#modal-list-edit").attr("data-list-id", listId);
+
+		// Populate label info
+		$("#modal-list-edit .label").removeClass("selected");
+		list.find("> .labels .label").each(function() {
+			var labelId = $(this).attr("data-label-id");
+
+			$("#modal-list-edit .label[data-label-id=" + labelId + "]").addClass("selected");
+		});
+
+		return false;
 	});
 });
 

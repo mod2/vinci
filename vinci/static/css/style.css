@@ -116,7 +116,7 @@ header[role=banner] .container {
 	padding-top: 0;
 }
 
-body.list-mode header[role=banner] .container {
+body.todo-mode header[role=banner] .container {
 	background: hsl(212, 7%, 14%);
 	max-width: none;
 	margin: 0;
@@ -641,15 +641,9 @@ body.active-nav #page .mask {
 	background: hsl(342, 39%, 57%);
 }
 
-#sections.list {
+#sections.todo {
 	background: hsl(182, 13%, 35%);
 }
-
-/*
-#sections.list .container {
-	background: hsl(300, 39%, 57%);
-}
-*/
 
 #sections a {
 	display: none;
@@ -1827,40 +1821,40 @@ form.login input.button:hover {
 }
 
 
-/* List mode */
+/* Todo mode */
 /* -------------------------------------------------- */
 
 html {
 	height: 100%;
 }
 
-body.list-mode {
+body.todo-mode {
 	height: 100%;
 }
 
-body.list-mode .container {
+body.todo-mode .container {
 	margin: 0;
 	max-width: initial;
 	padding: 0 25px;
 }
 
-body.list-mode .wrapper {
+body.todo-mode .wrapper {
 	height: 100%;
 }
 
-body.list-mode #page {
+body.todo-mode #page {
 	-webkit-flex-direction: column;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
 }
 
-#page #content.list {
+#page #content.todo {
 	-webkit-flex: 1
 	flex: 1;
 }
 
-#page #content.list {
+#page #content.todo {
 	border-radius: 0;
 	box-shadow: none;
 	display: -webkit-flex;
@@ -1876,7 +1870,7 @@ body.list-mode #page {
 	max-width: 100%;
 }
 
-#page #content.list .lists {
+#page #content.todo .lists {
 	-webkit-align-items: flex-start;
 	align-items: flex-start;
 	background: hsl(210, 11%, 26%);
@@ -1890,7 +1884,7 @@ body.list-mode #page {
 	padding: 25px 25px;
 }
 
-#page #content.list .list {
+#page #content.todo .list {
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	background: hsl(0, 0%, 90%);
@@ -1905,21 +1899,21 @@ body.list-mode #page {
 	user-select: none;
 }
 
-#page #content.list .list + .list {
+#page #content.todo .list + .list {
 	margin-left: 15px;
 }
 
-#page #content.list .list.ui-sortable-helper {
+#page #content.todo .list.ui-sortable-helper {
 	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
 	transform: rotate(3deg);
 }
 
-#page #content.list .list.placeholder {
+#page #content.todo .list.placeholder {
 	background: rgba(0, 0, 0, 0.2) !important;
 	box-shadow: none;	
 }
 
-#page #content.list .list h2 {
+#page #content.todo .list h2 {
 	border-radius: 3px 3px 0 0;
 	color: hsl(0, 0%, 20%);
 	cursor: pointer;
@@ -1932,11 +1926,11 @@ body.list-mode #page {
 	position: relative;
 }
 
-#page #content.list .list .labels + .list-edit + h2 {
+#page #content.todo .list .labels + .list-edit + h2 {
 	padding-top: 7px;
 }
 
-#page #content.list .list .list-edit {
+#page #content.todo .list .list-edit {
 	color: hsl(0, 0%, 50%);
 	cursor: pointer;
 	padding: 2px 10px;
@@ -1945,11 +1939,11 @@ body.list-mode #page {
 	top: 0;
 }
 
-#page #content.list .list .list-edit:hover {
+#page #content.todo .list .list-edit:hover {
 	color: hsl(0, 0%, 20%);
 }
 
-#page #content.list .list ul {
+#page #content.todo .list ul {
 	list-style: none;
 	margin: 0;
 	max-height: 100%;
@@ -1958,11 +1952,11 @@ body.list-mode #page {
 	padding: 0;
 }
 
-#page #content.list .list ul .card:first-child {
+#page #content.todo .list ul .card:first-child {
 	margin-top: 0;
 }
 
-#page #content.list .card {
+#page #content.todo .card {
 	background: hsl(0, 0%, 100%);
 	border-radius: 3px;
 	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
@@ -1973,21 +1967,21 @@ body.list-mode #page {
 	padding: 0px;
 }
 
-#page #content.list .card:hover {
+#page #content.todo .card:hover {
 	background: hsl(0, 0%, 95%);
 }
 
-#page #content.list .card .title {
+#page #content.todo .card .title {
 	display: block;
 	line-height: 1.2em;
 	padding: 6px 8px 1px;
 }
 
-#page #content.list .card .title.no-desc {
+#page #content.todo .card .title.no-desc {
 	padding-bottom: 8px;
 }
 
-#page #content.list .card .desc {
+#page #content.todo .card .desc {
 	display: block;
 	color: hsl(0, 0%, 70%);
 	font-size: .75em;
@@ -1996,7 +1990,7 @@ body.list-mode #page {
 	padding: 0px 8px 8px;
 }
 
-#page #content.list .list .add-card .add-button {
+#page #content.todo .list .add-card .add-button {
 	background: hsl(0, 0%, 90%);
 	border-radius: 0 0 3px 3px;
 	color: hsl(0, 0%, 53%);
@@ -2007,15 +2001,15 @@ body.list-mode #page {
 	padding: 9px 10px 11px;
 }
 
-#page #content.list .list .add-card .add-button:hover {
+#page #content.todo .list .add-card .add-button:hover {
 	color: hsl(0, 0%, 25%);
 }
 
-#page #content.list .list .add-card .tray {
+#page #content.todo .list .add-card .tray {
 	display: none;
 }
 
-#page #content.list .list .add-card .tray textarea {
+#page #content.todo .list .add-card .tray textarea {
 	background: hsl(0, 0%, 100%);
 	border-radius: 3px;
 	border: none;
@@ -2029,11 +2023,11 @@ body.list-mode #page {
 	width: calc(100% - 20px);
 }
 
-#page #content.list .list .add-card .tray textarea:focus {
+#page #content.todo .list .add-card .tray textarea:focus {
 	outline: none;
 }
 
-#page #content.list .list .add-card .save-button {
+#page #content.todo .list .add-card .save-button {
 	background: hsl(200, 74%, 45%);
 	border-radius: 3px;
 	color: hsl(0, 100%, 100%);
@@ -2045,70 +2039,70 @@ body.list-mode #page {
 	width: calc(100% - 20px);
 }
 
-#page #content.list .list .add-card .save-button:hover {
+#page #content.todo .list .add-card .save-button:hover {
 	background: hsl(0, 0%, 35%);
 }
 
-#page #content.list .labels {
+#page #content.todo .labels {
 	display: flex;
 	display: -webkit-flex;
 	height: 5px;
 }
 
-#page #content.list .labels span {
+#page #content.todo .labels span {
 	flex: 1;
 	-webkit-flex: 1;
 }
 
-#page #content.list .labels + .title {
+#page #content.todo .labels + .title {
 	padding-top: 6px;
 }
 
-#page #content.list .labels .label-1 {
+#page #content.todo .labels .label-1 {
 	background: hsl(349, 69%, 63%);
 }
 
-#page #content.list .labels .label-2 {
+#page #content.todo .labels .label-2 {
 	background: hsl(70, 49%, 54%);
 }
 
-#page #content.list .labels .label-3 {
+#page #content.todo .labels .label-3 {
 	background: hsl(210, 49%, 54%);
 }
 
-#page #content.list .list > .labels {
+#page #content.todo .list > .labels {
 	height: 7px;
 }
 
-#page #content.list .list > .labels span:first-child {
+#page #content.todo .list > .labels span:first-child {
 	border-top-left-radius: 3px;
 }
 
-#page #content.list .list > .labels span:last-child {
+#page #content.todo .list > .labels span:last-child {
 	border-top-right-radius: 3px;
 }
 
-#page #content.list .card > .labels span:first-child {
+#page #content.todo .card > .labels span:first-child {
 	border-top-left-radius: 2px;
 }
 
-#page #content.list .card > .labels span:last-child {
+#page #content.todo .card > .labels span:last-child {
 	border-top-right-radius: 2px;
 }
 
-#page #content.list .card.ui-sortable-helper {
+#page #content.todo .card.ui-sortable-helper {
 	background: hsl(0, 100%, 100%);
 	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
 	transform: rotate(3deg);
 }
 
-#page #content.list .card.placeholder {
+#page #content.todo .card.placeholder {
 	background: rgba(0, 0, 0, 0.2) !important;
 	box-shadow: none;	
 	display: block;
 }
 
-#page #content.list .add-list {
+#page #content.todo .add-list {
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	background: rgba(0, 0, 0, 0.2);
@@ -2121,20 +2115,20 @@ body.list-mode #page {
 	width: 270px;
 }
 
-#page #content.list .add-list:hover {
+#page #content.todo .add-list:hover {
 	background: rgba(0, 0, 0, 0.3);
 }
 
-#page #content.list .add-list:hover .add-button {
+#page #content.todo .add-list:hover .add-button {
 	color: rgba(255, 255, 255, 0.8);
 }
 
-#page #content.list .add-list .tray {
+#page #content.todo .add-list .tray {
 	display: none;
 	margin-bottom: 8px;
 }
 
-#page #content.list .add-list .tray textarea {
+#page #content.todo .add-list .tray textarea {
 	background: rgba(0, 0, 0, 0.2);
 	border-radius: 3px;
 	border: none;
@@ -2147,11 +2141,11 @@ body.list-mode #page {
 	width: 100%;
 }
 
-#page #content.list .add-list .tray textarea:focus {
+#page #content.todo .add-list .tray textarea:focus {
 	outline: none;
 }
 
-#page #content.list .add-list .save-button {
+#page #content.todo .add-list .save-button {
 	background: hsl(89, 23%, 31%);
 	border-radius: 3px;
 	color: hsl(0, 100%, 100%);
@@ -2163,18 +2157,18 @@ body.list-mode #page {
 	width: 100%;
 }
 
-#page #content.list .add-list .save-button:hover {
+#page #content.todo .add-list .save-button:hover {
 	background: rgba(0, 0, 0, 0.3);
 }
 
-#page #content.list .add-list .tray + .add-button {
+#page #content.todo .add-list .tray + .add-button {
 	color: rgba(255, 255, 255, 0.3);
 	display: block;
 	font-size: .9em;
 }
 
 
-/* List mode: card edit modal */
+/* Todo mode: card edit modal */
 /* -------------------------------------------------- */
 
 #modal #modal-card-edit {
@@ -2342,7 +2336,7 @@ body.list-mode #page {
 /* -------------------------------------------------- */
 
 @media screen and (min-width: 450px) {
-	body:not(.list-mode) .container {
+	body:not(.todo-mode) .container {
 		padding-left: 45px;
 		padding-right: 45px;
 	}
@@ -2380,7 +2374,7 @@ body.list-mode #page {
 }
 
 @media screen and (min-width: 600px) {
-	body:not(.list-mode) .container {
+	body:not(.todo-mode) .container {
 		padding-left: 65px;
 		padding-right: 65px;
 	}
@@ -2561,12 +2555,12 @@ body.list-mode #page {
 }
 
 @media screen and (min-width: 700px) {
-	body:not(.list-mode) .container {
+	body:not(.todo-mode) .container {
 		padding-left: 90px;
 		padding-right: 90px;
 	}
 
-	body:not(.list-mode) header[role=banner] .container {
+	body:not(.todo-mode) header[role=banner] .container {
 		position: relative;
 	}
 
@@ -2578,12 +2572,12 @@ body.list-mode #page {
 		display: none;
 	}
 
-	body:not(.list-mode) header[role=banner] h1 {
+	body:not(.todo-mode) header[role=banner] h1 {
 		position: initial;
 		text-align: center;
 	}
 
-	body:not(.list-mode) header[role=banner] h1 a.home {
+	body:not(.todo-mode) header[role=banner] h1 a.home {
 		display: inline-block;
 		font-size: 1.6em;
 		letter-spacing: -0.02em;
@@ -2592,7 +2586,7 @@ body.list-mode #page {
 		text-transform: none;
 	}
 
-	body.list-mode header[role=banner] h1 a.home {
+	body.todo-mode header[role=banner] h1 a.home {
 		padding-left: 0;
 	}
 

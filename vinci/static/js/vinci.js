@@ -604,9 +604,9 @@ $(document).ready(function() {
 		return false;
 	});
 
-	// Go to lists section
+	// Go to todo section
 	Mousetrap.bind('g t', function() {
-		var uri = $("#sections").attr("data-list-uri");
+		var uri = $("#sections").attr("data-todo-uri");
 
 		if (uri) {
 			window.location.href = uri;
@@ -1333,7 +1333,7 @@ $(document).ready(function() {
 	Mousetrap.bind('g s', _goToNotebookSettings);
 
 
-    // List mode
+    // Todo mode
     // ----------------------------------------------------------
 
 	resizeBoard();

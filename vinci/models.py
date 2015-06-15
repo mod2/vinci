@@ -14,7 +14,7 @@ ENTRY_TYPE = Choices(
     ('note', 'Note'),
     ('page', 'Page'),
     ('journal', 'Journal'),
-    ('list', 'List'),
+    ('todo', 'Todo'),
 )
 
 
@@ -151,7 +151,7 @@ class Notebook(models.Model):
     display_notes = models.BooleanField(default=True)
     display_pages = models.BooleanField(default=True)
     display_journals = models.BooleanField(default=False)
-    display_lists = models.BooleanField(default=False)
+    display_todos = models.BooleanField(default=False)
 
     condense_notes = models.BooleanField(default=True)
     parse_notes = models.BooleanField(default=False)

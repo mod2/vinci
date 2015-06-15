@@ -54,8 +54,8 @@ def notebook_section(request, notebook_slug, section):
 
     notebooks = Notebook.objects.filter(status='active').order_by('name')
 
-    if section == 'list':
-        template = 'lists'
+    if section == 'todo':
+        template = 'todos'
         labels = Label.objects.all()
     else:
         template = 'entries'

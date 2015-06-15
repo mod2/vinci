@@ -1763,7 +1763,6 @@ function makeCardsSortable() {
 		connectWith: "ul.cards",
 		forcePlaceholderSize: true,
 		update: function(event, ui) {
-			console.log(event, ui);
 			var list = ui.item.parents(".list");
 
 			_updateCardOrderForList(list);

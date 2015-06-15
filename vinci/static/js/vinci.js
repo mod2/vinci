@@ -1414,6 +1414,8 @@ $(document).ready(function() {
 
 	$(".lists").on("click", ".add-card .save-button", function() {
 		_addCard($(this));
+
+		return false;
 	});
 
 	// Cmd+Enter (or Ctrl+Enter) to save and close an entry
@@ -1447,11 +1449,11 @@ $(document).ready(function() {
 		}
 	});
 
-	$(".add-list").on("click", ".save-button", function() {
-		var listName = $(this).siblings("textarea").val().trim();
+	function _addList(list) {
+		var listName = list.parents(".tray:first").find("textarea").val().trim();
 
 		if (listName != '') {
-			var addList = $(this).parents(".add-list");
+			var addList = list.parents(".add-list");
 			var url = $(".lists").attr("data-lists-uri");
 			var notebookSlug = $(".lists").attr("data-notebook-slug");
 			var tray = addList.find(".tray");
@@ -1503,7 +1505,23 @@ $(document).ready(function() {
 				},
 			});
 		}
+	}
+
+	$(".add-list").on("click", ".save-button", function() {
+		_addList($(this));
+
+		return false;
 	});
+
+	// Cmd+Enter (or Ctrl+Enter) to add a list
+	var fields = document.querySelectorAll(".add-list textarea");
+	for (var i=0; i<fields.length; i++) {
+		Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
+			_addList($(e.target));
+
+			return false;
+		});
+	}
 
 
 	// Card edit modal

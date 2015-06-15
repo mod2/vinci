@@ -2308,6 +2308,10 @@ body.list-mode #page {
 	float: right;
 }
 
+#modal #modal-card-edit .card-edit .buttons .button:focus {
+	outline: none;
+}
+
 #modal #modal-card-edit .card-edit .buttons .cancel {
 	background: hsl(0, 0%, 60%);
 	float: left;

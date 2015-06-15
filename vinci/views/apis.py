@@ -45,7 +45,7 @@ def _validate_custom_methods(request, op_type):
     payload = None
     payload_type = ''
     if operation == 'default':
-        return False
+        return False, None
 
     if operation == '{}-ordering'.format(op_type):
         payload = request.data.get('{}_orders'.format(op_type))

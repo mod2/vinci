@@ -1741,6 +1741,55 @@ $(document).ready(function() {
 
 		return false;
 	});
+
+	function _saveListTitle() {
+		var modal = $("#modal-list-edit");
+		var listTitle = modal.find("textarea#list-title-edit").val().trim();
+
+		if (listTitle != '') {
+			var url = modal.attr("data-list-uri");
+			var listId = modal.attr("data-list-id");
+			var listElement = $(".list[data-list-id=" + listId + "]");
+
+			var data = {
+				title: listTitle,
+			};
+
+			$.ajax({
+				url: url,
+				method: 'PATCH',
+				contentType: 'application/json',
+				data: JSON.stringify(data),
+				success: function(data) {
+					// Update the list HTML
+					listElement.find(".list-title .title").html(listTitle);
+
+					// Hide the modal
+					_hideModals();
+				},
+				error: function(data) {
+					_showError("Error editing list title", data);
+				},
+			});
+		}
+
+		return false;
+	}
+
+	$("#modal-list-edit").on("click", "#save-list-edit-button", _saveListTitle);
+
+	var fields = document.querySelectorAll('#modal-list-edit textarea');
+	for (var i=0; i<fields.length; i++) {
+		Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
+			_saveListTitle();
+
+			return false;
+		});
+	}
+
+	$("#modal-list-edit").on("click", "#cancel-list-edit-button", function() {
+		_hideModals();
+	});
 });
 
 function processEntries(entries) {

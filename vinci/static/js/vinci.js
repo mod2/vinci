@@ -1642,19 +1642,22 @@ $(document).ready(function() {
 	});
 
 
-	// Edit card labels
+	// Edit card/list labels
 
-	$("#modal-card-edit").on("click", ".labels li.label", function() {
+	$(".todo-edit").on("click", ".labels li.label", function() {
 		var label = $(this);
 
 		// Toggle label class
 		label.toggleClass("selected");
 
-		var modal = $("#modal-card-edit");
+		var modal = $(this).parents(".todo-edit:first");
+		var editType = (modal.attr("id") == "modal-card-edit") ? "card" : "list";
 		var labelID = $(this).attr("data-label-id");
-		var url = modal.attr("data-card-uri");
-		var cardId = modal.attr("data-card-id");
-		var cardElement = $(".card[data-card-id=" + cardId + "]");
+
+		var url = modal.attr("data-" + editType + "-uri");
+		var objId = modal.attr("data-" + editType + "-id");
+		var objElement = $("." + editType + "[data-" + editType + "-id=" + objId + "]");
+		var labelsWrapper = objElement.find("> .labels");
 
 		// Either way, we want the list of selected labels
 		var labels = modal.find(".labels .label.selected");
@@ -1673,10 +1676,10 @@ $(document).ready(function() {
 			contentType: 'application/json',
 			data: JSON.stringify(data),
 			success: function(data) {
-				// Update the card HTML
+				// Update the HTML
 				
 				if (labels.length > 0) {
-					if (cardElement.find(".labels").length == 0) {
+					if (labelsWrapper.length == 0) {
 						// Initialize the label list
 						var html = "<span class='labels'>";
 						for (var i=0; i<labels.length; i++) {
@@ -1687,7 +1690,7 @@ $(document).ready(function() {
 						}
 						html += "</span>";
 
-						$(html).prependTo(cardElement);
+						$(html).prependTo(objElement);
 					} else {
 						var html = "";
 						for (var i=0; i<labels.length; i++) {
@@ -1697,15 +1700,15 @@ $(document).ready(function() {
 							html += "<span class='label' data-label-id='" + id + "' data-color='" + color + "' style='background-color: " + color + ";'></span>";
 						}
 
-						cardElement.find(".labels").html(html);
+						labelsWrapper.html(html);
 					}
 				} else {
 					// No labels
-					cardElement.find(".labels").remove();
+					labelsWrapper.remove();
 				}
 			},
 			error: function(data) {
-				_showError("Error editing card labels", data);
+				_showError("Error editing card/list labels", data);
 			},
 		});
 	});

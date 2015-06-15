@@ -5,11 +5,11 @@
 		{% for list in notebook.lists.all %}
 		<section class="list" data-list-id="{{ list.id }}" data-list-uri="{% url 'list-detail' list.id %}">
 			{% if list.labels.all|length %}
-			<div class="labels">
+			<span class="labels">
 				{% for label in list.labels.all %}
 				<span class="label" data-label-id="{{ label.id }}" data-color="{{ label.color }}" style="background-color: {{ label.color }}"></span>
 				{% endfor %}
-			</div>
+			</span>
 			{% endif %}
 
 			<h2 class="list-title"><span class="list-edit">&hellip;</span><span class="title">{{ list.title }}</span></h2>

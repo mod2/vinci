@@ -1486,8 +1486,8 @@ $(document).ready(function() {
 				contentType: 'application/json',
 				data: JSON.stringify(data),
 				success: function(data) {
-					var html = "<section class='list' style='display: none' data-list-id='" + data.id + "'>";
-					html += "<h2>" + listName + "</h2>";
+					var html = "<section class='list' style='display: none' data-list-id='" + data.id + "' data-list-uri='" + data.url + "'>";
+					html += "<h2 class='list-title'><span class='list-edit'>&hellip;</span><span class='title'>" + listName + "</span></h2>";
 					html += "<ul class='cards'></ul>";
 					html += "<section class='add-card'>";
 					html += "<div class='tray'>";

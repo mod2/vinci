@@ -24,7 +24,7 @@ def create_default_labels(apps, schema_editor):
 def remove_default_labels(apps, schema_editor):
     Label = apps.get_model('vinci', 'Label')
     for order, color in enumerate(default_label_colors):
-        Label.objects.delete(order=order, color=color)
+        Label.objects.filter(order=order, color=color).delete()
 
 
 class Migration(migrations.Migration):

@@ -240,3 +240,16 @@ def _search(request, query, notebook=None, section=None):
                               context,
                               RequestContext(request),
                               )
+
+
+@login_required
+def prefs_view(request):
+    labels = Label.objects.all()
+
+    context = {
+        'labels': labels,
+    }
+    return render_to_response('vinci/prefs.html',
+                              context,
+                              RequestContext(request),
+                              )

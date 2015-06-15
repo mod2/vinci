@@ -1642,6 +1642,72 @@ $(document).ready(function() {
 	});
 
 
+	// Archive button for cards/lists 
+
+	$(".todo-edit").on("click", ".actions #card-archive-button, .actions #list-archive-button", function() {
+		var modal = $(this).parents(".todo-edit:first");
+		var editType = (modal.attr("id") == "modal-card-edit") ? "card" : "list";
+
+		var url = modal.attr("data-" + editType + "-uri");
+		var objId = modal.attr("data-" + editType + "-id");
+		var objElement = $("." + editType + "[data-" + editType + "-id=" + objId + "]");
+
+		var data = {
+			status: 'archived',
+		};
+
+		$.ajax({
+			url: url,
+			method: 'PATCH',
+			contentType: 'application/json',
+			data: JSON.stringify(data),
+			success: function(data) {
+				// Make the object disappear
+				objElement.slideUp(200, function() {
+					$(this).remove();
+					_hideModals();
+				});
+			},
+			error: function(data) {
+				_showError("Error archiving card/list", data);
+			},
+		});
+	});
+
+
+	// Delete button for cards/lists 
+
+	$(".todo-edit").on("click", ".actions #card-delete-button, .actions #list-delete-button", function() {
+		var modal = $(this).parents(".todo-edit:first");
+		var editType = (modal.attr("id") == "modal-card-edit") ? "card" : "list";
+
+		var url = modal.attr("data-" + editType + "-uri");
+		var objId = modal.attr("data-" + editType + "-id");
+		var objElement = $("." + editType + "[data-" + editType + "-id=" + objId + "]");
+
+		var data = {
+			status: 'deleted',
+		};
+
+		$.ajax({
+			url: url,
+			method: 'PATCH',
+			contentType: 'application/json',
+			data: JSON.stringify(data),
+			success: function(data) {
+				// Make the object disappear
+				objElement.slideUp(200, function() {
+					$(this).remove();
+					_hideModals();
+				});
+			},
+			error: function(data) {
+				_showError("Error deleting card/list", data);
+			},
+		});
+	});
+
+
 	// Edit card/list labels
 
 	$(".todo-edit").on("click", ".labels li.label", function() {

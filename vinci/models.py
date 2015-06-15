@@ -168,6 +168,9 @@ class Notebook(models.Model):
         self.status = self.STATUS.deleted
         self.save()
 
+    def get_active_lists(self):
+        return self.lists.filter(status=LIST_STATUS.active)
+
 
 class Entry(models.Model):
     STATUS = Choices(
@@ -370,6 +373,9 @@ class List(BaseListMixin, StatusMixin, DatedMixin, models.Model):
     notebook = models.ForeignKey(Notebook, related_name="lists")
     labels = models.ManyToManyField(Label, blank=True,
                                     related_name="labeled_lists")
+
+    def get_active_cards(self):
+        return self.cards.filter(status=LIST_STATUS.active)
 
 
 class Card(BaseListMixin, StatusMixin, DatedMixin, models.Model):

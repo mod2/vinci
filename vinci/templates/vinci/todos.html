@@ -2,7 +2,7 @@
 
 {% block content %}
 	<div class="lists" data-lists-uri="{% url 'list-list' %}" data-notebook-slug="{{ notebook.slug }}">
-		{% for list in notebook.lists.all %}
+		{% for list in notebook.get_active_lists %}
 		<section class="list" data-list-id="{{ list.id }}" data-list-uri="{% url 'list-detail' list.id %}">
 			{% if list.labels.all|length %}
 			<span class="labels">
@@ -15,7 +15,7 @@
 			<h2 class="list-title"><span class="list-edit">&hellip;</span><span class="title">{{ list.title }}</span></h2>
 
 			<ul class="cards" data-cards-uri="{% url 'card-list' %}" data-list-uri="{% url 'list-detail' list.id %}">
-				{% for card in list.cards.all %}
+				{% for card in list.get_active_cards %}
 				<li class="card" data-card-id="{{ card.id }}" data-card-uri="{% url 'card-detail' card.id %}">
 					{% if card.labels.all|length %}
 					<span class="labels">

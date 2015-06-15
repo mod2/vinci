@@ -542,7 +542,7 @@ class QuickJumpAPIView(APIView):
                            status=status_code)
 
 
-# Kanban board api views
+# Todo board api views
 class LabelAPIViewSet(ReOrderMixin, viewsets.ModelViewSet):
     serializer_class = serializers.LabelSerializer
     queryset = models.Label.objects.all()

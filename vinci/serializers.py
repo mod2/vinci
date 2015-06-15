@@ -80,7 +80,7 @@ class EntrySerializer(serializers.ModelSerializer):
                   'html', 'notebook')
 
 
-# Kanban board model serializers
+# Todo board model serializers
 class LabelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Label

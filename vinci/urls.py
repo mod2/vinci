@@ -7,12 +7,12 @@ from .views.apis import NotebookListAPIView, QuickJumpAPIView
 from .views import apis
 from rest_framework.routers import DefaultRouter
 
-kanban_api_router = DefaultRouter()
-kanban_api_router.register(r'labels', apis.LabelAPIViewSet)
-kanban_api_router.register(r'lists', apis.ListAPIViewSet)
-kanban_api_router.register(r'cards', apis.CardAPIViewSet)
-kanban_api_router.register(r'checklists', apis.ChecklistAPIViewSet)
-kanban_api_router.register(r'checklistitems', apis.ChecklistItemAPIViewSet)
+todo_api_router = DefaultRouter()
+todo_api_router.register(r'labels', apis.LabelAPIViewSet)
+todo_api_router.register(r'lists', apis.ListAPIViewSet)
+todo_api_router.register(r'cards', apis.CardAPIViewSet)
+todo_api_router.register(r'checklists', apis.ChecklistAPIViewSet)
+todo_api_router.register(r'checklistitems', apis.ChecklistItemAPIViewSet)
 
 vinciapipatterns = [
     url(r'^$',
@@ -52,7 +52,7 @@ vincipatterns = patterns(
 
     url(r'^$', 'notebooks_list', name='notebooks_list'),
     url(r'^api/', include(vinciapipatterns)),
-    url(r'^api-kanban/', include(kanban_api_router.urls)),
+    url(r'^api-todo/', include(todo_api_router.urls)),
     url(r'^search/$', 'search_all', name='search_all'),
     url(r'^tag/(?P<tag>[^\/]+)/$', 'search_all_tags', name='search_all_tags'),
 

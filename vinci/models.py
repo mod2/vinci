@@ -317,7 +317,7 @@ class Revision(models.Model):
         ordering = ['-last_modified']
 
 
-# Base models for kanban models
+# Base models for todo models
 
 class DatedMixin(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
@@ -351,7 +351,7 @@ class BaseListMixin(models.Model):
         ordering = ['order', 'title']
 
 
-# Kanban Models
+# Todo models
 
 class Label(models.Model):
     title = models.CharField(max_length=255, blank=True)

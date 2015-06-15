@@ -1350,10 +1350,7 @@ $(document).ready(function() {
 		var inputBox = tray.find("textarea");
 
 		if ($(this).siblings(".tray:visible").length) {
-			addButton.html("Add card");
-			tray.slideUp(150, function() {
-				inputBox.val('');
-			});
+			_hideAddCardTray(tray);
 		} else {
 			addButton.html("Cancel");
 			tray.slideDown(150, function() {
@@ -1361,6 +1358,15 @@ $(document).ready(function() {
 			});
 		}
 	});
+
+	function _hideAddCardTray(tray) {
+		var inputBox = tray.find("textarea");
+		var addButton = tray.siblings(".add-button");
+		addButton.html("Add card");
+		tray.slideUp(150, function() {
+			inputBox.val('');
+		});
+	}
 
 	function _addCard(card) {
 		var cardTitle = card.parents(".tray:first").find("textarea").val().trim();
@@ -1396,12 +1402,7 @@ $(document).ready(function() {
 
 					_updateCardOrderForList(cardList.parents("section.list:first"));
 
-					var inputBox = tray.find("textarea");
-					var addButton = tray.siblings(".add-button");
-					addButton.html("Add card");
-					tray.slideUp(150, function() {
-						inputBox.val('');
-					});
+					_hideAddCardTray(tray);
 				},
 				error: function(data) {
 					_showError("Error adding card", data);
@@ -1418,11 +1419,18 @@ $(document).ready(function() {
 		return false;
 	});
 
-	// Cmd+Enter (or Ctrl+Enter) to save and close an entry
+	// Cmd+Enter (or Ctrl+Enter) to add a card
 	var fields = document.querySelectorAll(".add-card textarea");
 	for (var i=0; i<fields.length; i++) {
 		Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
 			_addCard($(e.target));
+
+			return false;
+		});
+
+		Mousetrap(fields[i]).bind('esc', function(e) {
+			var tray = $(e.target).parents(".tray:first");
+			_hideAddCardTray(tray);
 
 			return false;
 		});
@@ -1437,10 +1445,7 @@ $(document).ready(function() {
 		var inputBox = tray.find("textarea");
 
 		if ($(this).siblings(".tray:visible").length) {
-			addButton.html("Add list");
-			tray.slideUp(150, function() {
-				inputBox.val('');
-			});
+			_hideAddListTray(tray);
 		} else {
 			addButton.html("Cancel");
 			tray.slideDown(150, function() {
@@ -1448,6 +1453,15 @@ $(document).ready(function() {
 			});
 		}
 	});
+
+	function _hideAddListTray(tray) {
+		var inputBox = tray.find("textarea");
+		var addButton = tray.siblings(".add-button");
+		addButton.html("Add list");
+		tray.slideUp(150, function() {
+			inputBox.val('');
+		});
+	}
 
 	function _addList(list) {
 		var listName = list.parents(".tray:first").find("textarea").val().trim();
@@ -1493,12 +1507,7 @@ $(document).ready(function() {
 					resizeBoard();
 					makeListsSortable();
 
-					var inputBox = tray.find("textarea");
-					var addButton = tray.siblings(".add-button");
-					addButton.html("Add list");
-					tray.slideUp(150, function() {
-						inputBox.val('');
-					});
+					_hideAddListTray();
 				},
 				error: function(data) {
 					_showError("Error adding list", data);
@@ -1518,6 +1527,13 @@ $(document).ready(function() {
 	for (var i=0; i<fields.length; i++) {
 		Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
 			_addList($(e.target));
+
+			return false;
+		});
+
+		Mousetrap(fields[i]).bind('esc', function(e) {
+			var tray = $(e.target).parents(".tray:first");
+			_hideAddListTray(tray);
 
 			return false;
 		});

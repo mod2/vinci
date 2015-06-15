@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.shortcuts import resolve_url
 from django_extensions.db.fields import AutoSlugField
 from django.utils.text import slugify
@@ -18,6 +19,15 @@ ENTRY_TYPE = Choices(
 
 LIST_STATUS = Choices('active', 'archived', 'deleted')
 
+# User Profile model
+
+class UserPrefs(models.Model):
+    user = models.OneToOneField(User, related_name="prefs", primary_key=True)
+
+    class Meta:
+        ordering = ['user']
+
+# Custom Managers and QuerySets
 
 class StatusQueries(models.QuerySet):
     def active(self):
@@ -99,6 +109,8 @@ class EntryQuerySet(StatusQueries, models.QuerySet):
 
         return entry
 
+
+# Vinci Models
 
 class Group(models.Model):
     name = models.CharField(max_length=255)
@@ -307,6 +319,8 @@ class Revision(models.Model):
         ordering = ['-last_modified']
 
 
+# Base models for kanban models
+
 class DatedMixin(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
@@ -338,6 +352,8 @@ class BaseListMixin(models.Model):
         abstract = True
         ordering = ['order', 'title']
 
+
+# Kanban Models
 
 class Label(BaseListMixin, models.Model):
     color = models.CharField(max_length=255)

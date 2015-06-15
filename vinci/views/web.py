@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 
-from vinci.models import Notebook, Entry, Revision, Group
+from vinci.models import Notebook, Entry, Revision, Group, Label
 import vinci.search_indexer as si
 
 
@@ -236,4 +236,12 @@ def _search(request, query, notebook=None, section=None):
 
 @login_required
 def prefs_view(request):
-    pass
+    labels = Label.objects.all()
+
+    context = {
+        'labels': labels,
+    }
+    return render_to_response('vinci/prefs.html',
+                              context,
+                              RequestContext(request),
+                              )

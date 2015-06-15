@@ -464,7 +464,7 @@ class LabelAPIViewSet(viewsets.ModelViewSet):
 
 
 class ListAPIViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.ListSerializer
+    serializer_clasi = serializers.ListSerializer
     queryset = models.List.objects.all()
 
     @staticmethod
@@ -487,10 +487,13 @@ class ListAPIViewSet(viewsets.ModelViewSet):
 
         if operation == 'list-ordering':
             list_orders = request.data.get('list_orders', False)
+
             if not list_orders:
                 return APIResponse({'error': 'list_orders is required'},
                                    status=400)
+
             list_ids = [int(l) for l in list_orders.keys()]
+
             rtn_orders = self._reorder_items(models.List.objects,
                                              list_ids,
                                              list_orders)
@@ -512,20 +515,25 @@ class ListAPIViewSet(viewsets.ModelViewSet):
         operation = request.data.get('operation', 'default')
 
         if operation == 'card-ordering':
-            print('card ordering going on', list_pk)
             card_orders = request.data.get('card_orders', False)
+
             if not card_orders:
                 return APIResponse({'error': 'card_orders is required'},
                                    status=400)
+
             card_ids = [int(c) for c in card_orders.keys()]
             list_cards = models.Card.objects
+
             if list_pk:
                 list_cards = list_cards.filter(list__pk=list_pk)
+
             rtn_orders = self._reorder_items(list_cards,
                                              card_ids,
                                              card_orders)
+
             return APIResponse(rtn_orders)
-        else:  # No operation provided, perform normal patch (partial_update).
+        else:
+            # No operation provided, perform normal patch (partial_update).
             return super().partial_update(request, pk)
 
 

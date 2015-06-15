@@ -468,11 +468,13 @@ class ListAPIViewSet(viewsets.ModelViewSet):
     queryset = models.List.objects.all()
 
     @staticmethod
-    def _reorder_items(model_qs, pks, orders):
+    def _reorder_items(model_qs, pks, orders, list_id=None):
         objects = model_qs.filter(pk__in=pks)
         rtn_orders = {}
         for obj in objects:
             obj.order = orders[str(obj.pk)]
+            if list_id:
+                obj.list_id = list_id
             obj.save()
             rtn_orders[obj.pk] = obj.order
         return rtn_orders
@@ -524,12 +526,10 @@ class ListAPIViewSet(viewsets.ModelViewSet):
             card_ids = [int(c) for c in card_orders.keys()]
             list_cards = models.Card.objects
 
-            if list_pk:
-                list_cards = list_cards.filter(list__pk=list_pk)
-
             rtn_orders = self._reorder_items(list_cards,
                                              card_ids,
-                                             card_orders)
+                                             card_orders,
+                                             list_id=list_pk)
 
             return APIResponse(rtn_orders)
         else:

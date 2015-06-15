@@ -1366,7 +1366,7 @@ $(document).ready(function() {
 		var cardTitle = $(this).siblings("textarea").val().trim();
 
 		if (cardTitle != '') {
-			var list = $(this).parents(".list:first");
+			var list = $(this).parents("section.list:first");
 			var cardList = list.find("ul.cards");
 			var url = cardList.attr("data-cards-uri");
 			var listId = list.attr("data-list-id");
@@ -1394,7 +1394,7 @@ $(document).ready(function() {
 					cardList.append(html);
 					cardList.find("li:last").slideDown(200);
 
-					_updateCardOrderForList(cardList.parents(".list"));
+					_updateCardOrderForList(cardList.parents("section.list:first"));
 
 					var inputBox = tray.find("textarea");
 					var addButton = tray.siblings(".add-button");
@@ -1523,7 +1523,7 @@ $(document).ready(function() {
 		});
 
 		// Populate list name
-		var listName = card.parents(".list:first").find("h2.list-title .title").html();
+		var listName = card.parents("section.list:first").find("h2.list-title .title").html();
 		$("#modal-card-edit .card-edit .list-title").html(listName);
 
 		return false;
@@ -1688,7 +1688,7 @@ function _updateListOrder() {
 	var order = {};
 
 	// Get all the lists
-	var items = parentContainer.find(".list");
+	var items = parentContainer.find("section.list");
 
 	for (var i=0; i<items.length; i++) {
 		var item = $(items[i]);
@@ -1763,7 +1763,7 @@ function makeCardsSortable() {
 		connectWith: "ul.cards",
 		forcePlaceholderSize: true,
 		update: function(event, ui) {
-			var list = ui.item.parents(".list");
+			var list = ui.item.parents("section.list:first");
 
 			_updateCardOrderForList(list);
 		},

@@ -1578,6 +1578,24 @@ $(document).ready(function() {
 		var checklistHtml = card.find(".checklistHtml").html();
 		$("#modal-card-edit .checklists").html(checklistHtml);
 
+		var fields = document.querySelectorAll('#modal-card-edit .add-checklist-item textarea');
+		for (var i=0; i<fields.length; i++) {
+			Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
+				_addChecklistItem($(e.target));
+
+				return false;
+			});
+		}
+
+		var fields = document.querySelectorAll('#modal-card-edit .add-checklist textarea');
+		for (var i=0; i<fields.length; i++) {
+			Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
+				_addChecklist($(e.target));
+
+				return false;
+			});
+		}
+
 		// Make checklists sortable
 		makeChecklistsSortable();
 		makeChecklistItemsSortable();
@@ -1636,7 +1654,7 @@ $(document).ready(function() {
 
 	$("#modal-card-edit").on("click", "#save-card-edit-button", _saveCardTitleDesc);
 
-	var fields = document.querySelectorAll('#modal-card-edit textarea');
+	var fields = document.querySelectorAll('#modal-card-edit .card textarea');
 	for (var i=0; i<fields.length; i++) {
 		Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
 			_saveCardTitleDesc();

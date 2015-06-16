@@ -1574,6 +1574,12 @@ $(document).ready(function() {
 		var listName = card.parents("section.list:first").find("h2.list-title .title").html();
 		$("#modal-card-edit .card-edit .list-title").html(listName);
 
+		// Populate checklists
+
+		// Make checklists sortable
+		makeChecklistsSortable();	
+		makeChecklistItemsSortable();	
+
 		return false;
 	});
 
@@ -2020,6 +2026,31 @@ function makeCardsSortable() {
 			var list = ui.item.parents("section.list:first");
 
 			_updateCardOrderForList(list);
+		},
+	});
+}
+
+function makeChecklistsSortable() {
+	$(".checklists").sortable({
+		items: ".checklist",
+		handle: "h2.checklist-title",
+		placeholder: "placeholder",
+		forcePlaceholderSize: true,
+		update: function(event, ui) {
+			// Update order
+		},
+	});
+}
+
+function makeChecklistItemsSortable() {
+	$(".checklist").sortable({
+		items: ".checklist-item",
+		handle: ".label",
+		connectWith: ".checklist",
+		placeholder: "placeholder",
+		forcePlaceholderSize: true,
+		update: function(event, ui) {
+			// Update order
 		},
 	});
 }

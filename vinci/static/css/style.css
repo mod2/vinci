@@ -2366,6 +2366,14 @@ body.todo-mode #page {
 	position: relative;
 }
 
+#modal .todo-edit .checklists .checklist.ui-sortable-helper {
+	background: hsl(0, 0%, 90%);
+	border-radius: 3px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+	padding: 10px;
+	transform: rotate(3deg);
+}
+
 #modal .todo-edit .checklists .checklist .checklist-edit {
 	color: hsl(0, 0%, 50%);
 	cursor: pointer;
@@ -2381,6 +2389,7 @@ body.todo-mode #page {
 
 #modal .todo-edit .checklists .checklist h2.checklist-title {
 	color: hsl(205, 37%, 62%);
+	cursor: pointer;
 	font-size: .9em;
 	letter-spacing: 0.05em;
 	margin: 0;
@@ -2397,6 +2406,13 @@ body.todo-mode #page {
 	cursor: pointer;
 	display: flex;
 	overflow: hidden;
+}
+
+#modal .todo-edit .checklists .checklist-item.ui-sortable-helper {
+	background: hsl(0, 0%, 90%);
+	border-radius: 3px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+	transform: rotate(3deg);
 }
 
 #modal .todo-edit .checklists .checklist-item .checkbox {
@@ -2418,6 +2434,12 @@ body.todo-mode #page {
 	box-shadow: none;
 }
 
+#modal .todo-edit .checklists .checklist-item .checkbox:hover {
+	background: hsl(0, 0%, 60%);
+	border: none;
+	box-shadow: none;
+}
+
 #modal .todo-edit .checklists .checklist-item.checked .label {
 	color: hsl(0, 0%, 72%);
 	font-style: italic;
@@ -2425,6 +2447,7 @@ body.todo-mode #page {
 
 #modal .todo-edit .checklists .checklist-item .label {
 	color: hsl(0, 0%, 30%);
+	cursor: pointer;
 	flex: 1;
 	line-height: 1.1em;
 	padding: 6px 0;

@@ -1871,8 +1871,31 @@ $(document).ready(function() {
 
 	// Checklists
 
+	function _checkItem(item) {
+		item.toggleClass("checked");
+
+		var done = item.hasClass("checked");
+		var url = item.attr("data-checklist-item-uri");
+
+		var data = {
+			done: done,
+		};
+
+		$.ajax({
+			url: url,
+			method: 'PATCH',
+			contentType: 'application/json',
+			data: JSON.stringify(data),
+			success: function(data) {
+			},
+			error: function(data) {
+				_showError("Error checking item", data);
+			},
+		});
+	}
+
 	$(".todo-edit").on("click", ".checklist-item .checkbox", function() {
-		$(this).parents(".checklist-item:first").toggleClass("checked");
+		_checkItem($(this).parents(".checklist-item:first"));
 	});
 
 	$(".todo-edit").on("click", ".checklist-item .label", function() {

@@ -26,6 +26,8 @@
 					{% endif %}
 					<span class="title{% if not card.description %} no-desc{% endif %}">{{ card.title }}</span>
 					{% if card.description %}<span class="desc">{{ card.description }}</span>{% endif %}
+
+					<div class="checklistHtml">{% include 'vinci/_checklists.html' %}</div>
 				</li>
 				{% endfor %}
 			</ul>
@@ -51,7 +53,7 @@
 {% endblock content %}
 
 {% block modal %}
-<div id="modal-card-edit" class="modal todo-edit">
+<div id="modal-card-edit" class="modal todo-edit" data-checklists-uri="{% url 'checklist-list' %}" data-checklistitems-uri="{% url 'checklistitem-list' %}">
 	<section class="main-column column">
 		<div class="card-edit edit">
 			<h3>Card — <span class="list-title"></span></h3>
@@ -66,7 +68,7 @@
 				<input id="cancel-card-edit-button" class="button cancel" type="button" value="Cancel"/>
 			</div>
 		</div>
-		<div class="checklists">
+		<div class="checklists-wrapper">
 			<h3>Checklists</h3>
 
 			<div class="checklists">
@@ -127,12 +129,20 @@
 					<div class="add-checklist-item">
 						<div class="tray">
 							<textarea></textarea>
-							<span class="save-button">Save item</span>
+							<span class="save-button button">Save item</span>
 						</div>
 						<span class="plus">+</span>
 						<span class="add-button">Add item</span>
 					</div>
 				</div>
+			</div>
+
+			<div class="add-checklist">
+				<div class="tray">
+					<textarea></textarea>
+					<span class="save-button button">Save checklist</span>
+				</div>
+				<span class="add-button">Add checklist</span>
 			</div>
 		</div>
 	</section>

@@ -58,7 +58,7 @@ $(document).ready(function() {
 
 	// Error
 	// --------------------------------------------------
-	
+
 	function _showError(label, message) {
 		var html = "<h2>" + label + "</h2>";
 		if (message != '') {
@@ -1087,7 +1087,7 @@ $(document).ready(function() {
 			},
 		});
 	});
-	
+
 	// Toggle sections
 
 	$("#settings #section-config span.type").on("click", function() {
@@ -1343,7 +1343,7 @@ $(document).ready(function() {
 
 
 	// Add card
-	
+
 	$(".lists").on("click", ".add-card .add-button", function() {
 		var tray = $(this).siblings(".tray");
 		var addButton = $(this);
@@ -1403,13 +1403,13 @@ $(document).ready(function() {
 					_updateCardOrderForList(cardList.parents("section.list:first"));
 
 					_hideAddCardTray(tray);
+
+					makeCardsSortable();
 				},
 				error: function(data) {
 					_showError("Error adding card", data);
 				},
 			});
-
-			makeCardsSortable();
 		}
 	}
 
@@ -1575,10 +1575,12 @@ $(document).ready(function() {
 		$("#modal-card-edit .card-edit .list-title").html(listName);
 
 		// Populate checklists
+		var checklistHtml = card.find(".checklistHtml").html();
+		$("#modal-card-edit .checklists").html(checklistHtml);
 
 		// Make checklists sortable
-		makeChecklistsSortable();	
-		makeChecklistItemsSortable();	
+		makeChecklistsSortable();
+		makeChecklistItemsSortable();
 
 		return false;
 	});
@@ -1648,7 +1650,7 @@ $(document).ready(function() {
 	});
 
 
-	// Archive button for cards/lists 
+	// Archive button for cards/lists
 
 	$(".todo-edit").on("click", ".actions #card-archive-button, .actions #list-archive-button", function() {
 		var modal = $(this).parents(".todo-edit:first");
@@ -1681,7 +1683,7 @@ $(document).ready(function() {
 	});
 
 
-	// Delete button for cards/lists 
+	// Delete button for cards/lists
 
 	$(".todo-edit").on("click", ".actions #card-delete-button, .actions #list-delete-button", function() {
 		var modal = $(this).parents(".todo-edit:first");
@@ -1749,7 +1751,7 @@ $(document).ready(function() {
 			data: JSON.stringify(data),
 			success: function(data) {
 				// Update the HTML
-				
+
 				if (labels.length > 0) {
 					if (labelsWrapper.length == 0) {
 						// Initialize the label list
@@ -1868,7 +1870,7 @@ $(document).ready(function() {
 
 
 	// Checklists
-	
+
 	$(".todo-edit").on("click", ".checklist-item .checkbox", function() {
 		$(this).parents(".checklist-item:first").toggleClass("checked");
 	});
@@ -1923,6 +1925,152 @@ $(document).ready(function() {
 				inputBox.focus();
 			});
 		}
+
+		return false;
+	});
+
+	function _addChecklistItem(checklistItem) {
+		var tray = checklistItem.parents(".tray:first");
+		var itemTitle = tray.find("textarea").val().trim();
+
+		if (itemTitle != '') {
+			var modal = $("#modal-card-edit");
+			var url = modal.attr("data-checklistitems-uri");
+			var checklist = checklistItem.parents(".checklist:first");
+			var checklistItems = checklist.find(".checklist-items");
+			var checklistId = checklist.attr("data-checklist-id");
+
+			var data = {
+				title: itemTitle,
+				status: "active",
+				order: 500,
+				done: false,
+				checklist: checklistId,
+			};
+
+			$.ajax({
+				url: url,
+				method: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(data),
+				success: function(data) {
+					// Add checklist item to DOM
+
+					var html = '<div class="checklist-item" data-checklist-item-id="' + data.id + '" style="display: none;">';
+					html += '<span class="checkbox"></span>';
+					html += '<span class="label">' + itemTitle + '</span>';
+					html += '<input type="text" class="label-edit" value="' + escape(itemTitle) + '" />';
+					html += '<span class="save-item-button button">Save</span>';
+					html += '<span class="cancel-item-button">&times;</span>';
+					html += '</div>';
+
+					checklistItems.append(html);
+					checklistItems.find(".checklist-item:last").slideDown(200);
+
+					_updateChecklistItemOrder(checklist);
+
+					_hideAddChecklistItemTray(tray);
+
+					makeChecklistItemsSortable();
+				},
+				error: function(data) {
+					_showError("Error adding checklist item", data);
+				},
+			});
+		}
+	}
+
+	$(".checklists").on("click", ".add-checklist-item .save-button", function() {
+		_addChecklistItem($(this));
+
+		return false;
+	});
+
+
+	function _hideAddChecklistTray(tray) {
+		var inputBox = tray.find("textarea");
+		var addButton = tray.siblings(".add-button");
+		addButton.html("Add checklist");
+		tray.slideUp(150, function() {
+			inputBox.val('');
+		});
+
+		return false;
+	}
+
+	$(".checklists-wrapper").on("click", ".add-checklist .add-button", function() {
+		var tray = $(this).siblings(".tray");
+		var addButton = $(this);
+		var inputBox = tray.find("textarea");
+
+		if ($(this).siblings(".tray:visible").length) {
+			_hideAddChecklistTray(tray);
+		} else {
+			addButton.html("Cancel");
+			tray.slideDown(150, function() {
+				inputBox.focus();
+			});
+		}
+
+		return false;
+	});
+
+	function _addChecklist(checklist) {
+		var tray = checklist.parents(".tray:first");
+		var checklistTitle = tray.find("textarea").val().trim();
+
+		if (checklistTitle != '') {
+			var modal = $("#modal-card-edit");
+			var cardId = modal.attr("data-card-id");
+			var url = modal.attr("data-checklists-uri");
+			var checklistWrapper = modal.find(".checklists");
+
+			var data = {
+				title: checklistTitle,
+				status: "active",
+				order: 500,
+				card: cardId,
+			};
+
+			$.ajax({
+				url: url,
+				method: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(data),
+				success: function(data) {
+					// Add checklist to DOM
+					var html = '<div class="checklist ui-sortable" data-checklist-id="' + data.id + '" style="display: none;">';
+					html += '<span class="checklist-edit">&hellip;</span>';
+					html += '<h2 class="checklist-title">' + checklistTitle + '</h2>';
+					html += '<div class="checklist-items"></div>';
+					html += '<div class="add-checklist-item">';
+					html += '<div class="tray">';
+					html += '<textarea></textarea>';
+					html += '<span class="save-button button">Save item</span>';
+					html += '</div>';
+					html += '<span class="plus">+</span>';
+					html += '<span class="add-button">Add item</span>';
+					html += '</div>';
+					html += '</div>';
+
+					checklistWrapper.append(html);
+					checklistWrapper.find(".checklist:last").slideDown(200);
+
+					_updateChecklistOrder();
+
+					_hideAddChecklistTray(tray);
+
+					makeChecklistsSortable();
+				},
+				error: function(data) {
+					_showError("Error adding checklist", data);
+				},
+			});
+		}
+	}
+
+	$(".checklists-wrapper").on("click", ".add-checklist .save-button", function() {
+		_addChecklist($(this));
 
 		return false;
 	});
@@ -2038,6 +2186,7 @@ function makeChecklistsSortable() {
 		forcePlaceholderSize: true,
 		update: function(event, ui) {
 			// Update order
+			_updateChecklistOrder(list);
 		},
 	});
 }
@@ -2051,6 +2200,44 @@ function makeChecklistItemsSortable() {
 		forcePlaceholderSize: true,
 		update: function(event, ui) {
 			// Update order
+			var checklist = ui.item.parents(".checklist:first");
+
+			_updateChecklistItemOrder(checklist);
+		},
+	});
+}
+
+function _updateChecklistOrder() {
+	// TODO
+}
+
+function _updateChecklistItemOrder(checklist) {
+	var checklistWrapper = checklist.find(".checklist-items");
+	var url = checklist.attr("data-checklist-uri");
+	var order = {};
+
+	// Get all the items
+	var items = checklistWrapper.find(".checklist-item");
+
+	for (var i=0; i<items.length; i++) {
+		var item = $(items[i]);
+		order[item.attr("data-checklist-item-id")] = i;
+	}
+
+	var data = {
+		'operation': 'checklistitem-ordering',
+		'checklistitem_orders': order,
+	};
+
+	$.ajax({
+		url: url,
+		method: 'PATCH',
+		contentType: 'application/json',
+		data: JSON.stringify(data),
+		success: function(data) {
+		},
+		error: function(data) {
+			console.log("Error! :(", data);
 		},
 	});
 }

@@ -55,13 +55,6 @@ $(document).ready(function() {
 		return false;
 	});
 
-	/*
-	$("#modal").on("click touchstart", function(e) {
-		_hideModals();
-		return false;
-	});
-	*/
-
 
 	// Error
 	// --------------------------------------------------
@@ -1603,6 +1596,21 @@ $(document).ready(function() {
 			});
 		}
 
+		var fields = document.querySelectorAll('#modal-card-edit .label-edit');
+		for (var i=0; i<fields.length; i++) {
+			Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
+				_saveChecklistItem($(e.target).parents(".checklist-item:first"));
+
+				return false;
+			});
+
+			Mousetrap(fields[i]).bind('esc', function(e) {
+				_hideChecklistItemEditTray($(e.target).parents(".checklist-item:first"));
+
+				return false;
+			});
+		}
+
 		// Make checklists sortable
 		makeChecklistsSortable();
 		makeChecklistItemsSortable();
@@ -1936,15 +1944,19 @@ $(document).ready(function() {
 		return false;
 	});
 
-	$(".todo-edit").on("click", ".checklist-item .cancel-item-button", function() {
+	function _hideChecklistItemEditTray(item) {
 		// Hide checklist item edit area
-		var label = $(this).siblings(".label");
-		var items = $(this).siblings(".label-edit, .save-item-button, .cancel-item-button");
+		var label = item.find(".label");
+		var items = item.find(".label-edit, .save-item-button, .cancel-item-button");
 
-		$(this).fadeOut(100);
 		items.fadeOut(100, function() {
 			label.fadeIn(100);
 		});
+	}
+
+	$(".todo-edit").on("click", ".checklist-item .cancel-item-button", function() {
+		// Hide checklist item edit area
+		_hideChecklistItemEditTray($(this).parents(".checklist-item:first"));
 
 		return false;
 	});
@@ -2119,6 +2131,45 @@ $(document).ready(function() {
 
 	$(".checklists-wrapper").on("click", ".add-checklist .save-button", function() {
 		_addChecklist($(this));
+
+		return false;
+	});
+
+
+	// Rename checklist items
+
+	function _saveChecklistItem(item) {
+		var newTitle = item.find(".label-edit").val().trim();
+
+		if (newTitle != '') {
+			var url = item.attr("data-checklist-item-uri");
+
+			var data = {
+				title: newTitle,
+			};
+
+			$.ajax({
+				url: url,
+				method: 'PATCH',
+				contentType: 'application/json',
+				data: JSON.stringify(data),
+				success: function(data) {
+					// Update HTML
+					item.find(".label").html(newTitle);
+
+					_hideChecklistItemEditTray(item);
+				},
+				error: function(data) {
+					_showError("Error renaming checklist item", data);
+				},
+			});
+		}
+
+		return false;
+	}
+	
+	$(".checklists").on("click", ".checklist-item .save-item-button", function() {
+		_saveChecklistItem($(this).parents(".checklist-item:first"));
 
 		return false;
 	});

@@ -1349,6 +1349,7 @@ nav[role=pagination] {
 }
 
 #modal {
+	pointer-events: none;
 	display: none;
 	left: 0;
 	position: absolute;
@@ -1364,6 +1365,7 @@ nav[role=pagination] {
 	color: #fff;
 	margin: 50px auto;
 	max-width: 600px;
+	pointer-events: auto;
 }
 
 #modal .modal h2 {

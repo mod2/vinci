@@ -16,19 +16,7 @@
 
 			<ul class="cards" data-cards-uri="{% url 'card-list' %}" data-list-uri="{% url 'list-detail' list.id %}">
 				{% for card in list.get_active_cards %}
-				<li class="card" data-card-id="{{ card.id }}" data-card-uri="{% url 'card-detail' card.id %}">
-					{% if card.labels.all|length %}
-					<span class="labels">
-						{% for label in card.labels.all %}
-						<span class="label" data-label-id="{{ label.id }}" data-color="{{ label.color }}" style="background-color: {{ label.color }}"></span>
-						{% endfor %}
-					</span>
-					{% endif %}
-					<span class="title{% if not card.description %} no-desc{% endif %}">{{ card.title }}</span>
-					{% if card.description %}<span class="desc">{{ card.description }}</span>{% endif %}
-
-					<div class="checklistHtml">{% include 'vinci/_checklists.html' %}</div>
-				</li>
+				{% include 'vinci/_card.html' %}
 				{% endfor %}
 			</ul>
 

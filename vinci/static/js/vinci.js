@@ -55,6 +55,13 @@ $(document).ready(function() {
 		return false;
 	});
 
+	/*
+	$("#modal").on("click touchstart", function(e) {
+		_hideModals();
+		return false;
+	});
+	*/
+
 
 	// Error
 	// --------------------------------------------------

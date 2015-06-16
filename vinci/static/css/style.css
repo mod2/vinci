@@ -1993,6 +1993,21 @@ body.todo-mode #page {
 	padding: 0px 8px 8px;
 }
 
+#page #content.todo .card .checklists {
+	display: inline;
+	color: hsl(0, 0%, 85%);
+	float: right;
+	font-size: .75em;
+	line-height: 1.2em;
+	margin-left: 10px;
+	margin-top: 3px;
+	padding: 0px 5px 8px;
+}
+
+#page #content.todo .card .checklists span {
+	color: hsl(0, 0%, 70%);
+}
+
 #page #content.todo .card .checklistHtml {
 	display: none;
 }

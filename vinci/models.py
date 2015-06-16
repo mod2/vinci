@@ -389,6 +389,12 @@ class Card(BaseListMixin, StatusMixin, DatedMixin, models.Model):
     def get_active_checklists(self):
         return self.checklists.filter(status="active")
 
+    def total_checklist_items(self):
+        return ChecklistItem.objects.filter(checklist__in=self.get_active_checklists).count()
+
+    def finished_checklist_items(self):
+        return ChecklistItem.objects.filter(done=True, checklist__in=self.get_active_checklists).count()
+
 
 class Checklist(BaseListMixin, StatusMixin, DatedMixin, models.Model):
     card = models.ForeignKey(Card, related_name="checklists")

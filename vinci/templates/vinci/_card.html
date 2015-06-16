@@ -6,14 +6,15 @@
 		{% endfor %}
 	</span>
 	{% endif %}
-	<span class="title{% if not card.description %} no-desc{% endif %}">{{ card.title }}</span>
-	{% if card.description %}<span class="desc">{{ card.description }}</span>{% endif %}
 
-	{% if card.has_checklists %}
+	{% if card.checklists.all|length > 0 %}
 	<span class="checklists">
-		{{ card.finished_checklist_items }} / {{ card.total_checklist_items }}
+		<span class="finished">{{ card.finished_checklist_items }}</span> / <span class="total">{{ card.total_checklist_items }}</span>
 	</span>
 	{% endif %}
+
+	<span class="title{% if not card.description %} no-desc{% endif %}">{{ card.title }}</span>
+	{% if card.description %}<span class="desc">{{ card.description }}</span>{% endif %}
 
 	<div class="checklistHtml">{% include 'vinci/_checklists.html' %}</div>
 </li>

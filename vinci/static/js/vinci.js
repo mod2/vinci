@@ -1859,6 +1859,67 @@ $(document).ready(function() {
 	$("#modal-list-edit").on("click", "#cancel-list-edit-button", function() {
 		_hideModals();
 	});
+
+
+	// Checklists
+	
+	$(".todo-edit").on("click", ".checklist-item .checkbox", function() {
+		$(this).parents(".checklist-item:first").toggleClass("checked");
+	});
+
+	$(".todo-edit").on("click", ".checklist-item .label", function() {
+		// Open checklist item edit area
+		var labelEdit = $(this).siblings(".label-edit");
+		var buttons = $(this).siblings(".save-item-button, .cancel-item-button");
+
+		$(this).fadeOut(100, function() {
+			labelEdit.fadeIn(100).focus();
+			buttons.fadeIn(100);
+		});
+
+		return false;
+	});
+
+	$(".todo-edit").on("click", ".checklist-item .cancel-item-button", function() {
+		// Hide checklist item edit area
+		var label = $(this).siblings(".label");
+		var items = $(this).siblings(".label-edit, .save-item-button, .cancel-item-button");
+
+		$(this).fadeOut(100);
+		items.fadeOut(100, function() {
+			label.fadeIn(100);
+		});
+
+		return false;
+	});
+
+	function _hideAddChecklistItemTray(tray) {
+		var inputBox = tray.find("textarea");
+		var addButton = tray.siblings(".add-button");
+		addButton.html("Add item");
+		tray.slideUp(150, function() {
+			inputBox.val('');
+		});
+
+		return false;
+	}
+
+	$(".checklists").on("click", ".add-checklist-item .add-button", function() {
+		var tray = $(this).siblings(".tray");
+		var addButton = $(this);
+		var inputBox = tray.find("textarea");
+
+		if ($(this).siblings(".tray:visible").length) {
+			_hideAddChecklistItemTray(tray);
+		} else {
+			addButton.html("Cancel");
+			tray.slideDown(150, function() {
+				inputBox.focus();
+			});
+		}
+
+		return false;
+	});
 });
 
 function processEntries(entries) {

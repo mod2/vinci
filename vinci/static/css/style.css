@@ -2493,7 +2493,7 @@ body.todo-mode #page {
 #modal .todo-edit .checklists .add-checklist-item .add-button {
 	background: hsl(0, 0%, 90%);
 	border-radius: 0 0 3px 3px;
-	color: hsl(0, 0%, 53%);
+	color: hsl(0, 0%, 73%);
 	cursor: pointer;
 	display: inline-block;
 	font-size: .8em;

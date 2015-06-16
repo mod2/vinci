@@ -2186,7 +2186,7 @@ function makeChecklistsSortable() {
 		forcePlaceholderSize: true,
 		update: function(event, ui) {
 			// Update order
-			_updateChecklistOrder(list);
+			_updateChecklistOrder();
 		},
 	});
 }
@@ -2208,7 +2208,34 @@ function makeChecklistItemsSortable() {
 }
 
 function _updateChecklistOrder() {
-	// TODO
+	var checklists = $(".checklists");
+	var url = $("#modal-card-edit").attr("data-checklists-uri");
+	var order = {};
+
+	// Get all the items
+	var items = checklists.find(".checklist");
+
+	for (var i=0; i<items.length; i++) {
+		var item = $(items[i]);
+		order[item.attr("data-checklist-id")] = i;
+	}
+
+	var data = {
+		'operation': 'checklist-ordering',
+		'checklist_orders': order,
+	};
+
+	$.ajax({
+		url: url,
+		method: 'PATCH',
+		contentType: 'application/json',
+		data: JSON.stringify(data),
+		success: function(data) {
+		},
+		error: function(data) {
+			console.log("Error! :(", data);
+		},
+	});
 }
 
 function _updateChecklistItemOrder(checklist) {

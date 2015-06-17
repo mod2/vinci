@@ -255,7 +255,7 @@ nav[role=menu] {
 
 	float: left;
 	overflow: hidden;
-	overflow-y: scroll;
+	overflow-y: auto;
 	padding-bottom: 1em;
 	padding-top: 1em;
 	position: fixed;
@@ -1858,6 +1858,7 @@ body.todo-mode #page {
 }
 
 #page #content.todo {
+	background: hsl(210, 11%, 26%);
 	border-radius: 0;
 	box-shadow: none;
 	display: -webkit-flex;
@@ -1876,15 +1877,14 @@ body.todo-mode #page {
 #page #content.todo .lists {
 	-webkit-align-items: flex-start;
 	align-items: flex-start;
-	background: hsl(210, 11%, 26%);
 	display: -webkit-flex;
 	display: flex;
 	-webkit-flex-direction: row;
 	flex-direction: row;
 	flex: 1;
 	height: 100%;
+	margin: 25px 25px;
 	min-width: 100%;
-	padding: 25px 25px;
 }
 
 #page #content.todo .list {
@@ -1950,7 +1950,7 @@ body.todo-mode #page {
 	list-style: none;
 	margin: 0;
 	max-height: 100%;
-	overflow-y: scroll;
+	overflow-y: auto;
 	margin: 10px 0 0;
 	padding: 0;
 }
@@ -2074,6 +2074,7 @@ body.todo-mode #page {
 #page #content.todo .labels span {
 	flex: 1;
 	-webkit-flex: 1;
+	height: 5px;
 }
 
 #page #content.todo .labels + .title {
@@ -2093,6 +2094,10 @@ body.todo-mode #page {
 }
 
 #page #content.todo .list > .labels {
+	height: 7px;
+}
+
+#page #content.todo .list > .labels span {
 	height: 7px;
 }
 

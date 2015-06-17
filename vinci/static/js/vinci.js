@@ -1338,6 +1338,9 @@ $(document).ready(function() {
 
 	resizeBoard();
 
+	// Resize board on window resize
+	$(window).resize(resizeBoard);
+
 	makeListsSortable();
 	makeCardsSortable();
 
@@ -2187,6 +2190,10 @@ function resizeBoard() {
 	var numLists = $(".lists .list").length + 1;
 
 	$("#content .lists").css("width", "calc((" + numLists + " * 270px) + (" + (numLists - 1) + " * 15px))");
+
+	// Calculate max-height (max-height: 100% doesn't work with flexbox for some reason)
+	var height = $("#content .lists").height();
+	$("#content .list").css("max-height", height);
 }
 
 function _updateListOrder() {

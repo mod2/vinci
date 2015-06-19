@@ -1586,15 +1586,53 @@ $(document).ready(function() {
 		_updateCardLabels(card);
 	}
 
+	function _getChecklistHTML(checklist) {
+		var html = '<div class="checklist" data-checklist-id="' + checklist.id + '" data-checklist-uri="' + checklist.url + '">';
+		html += '<span class="checklist-edit">&hellip;</span>';
+		html += '<h2 class="checklist-title">' + checklist.title + '</h2>';
+		html += '<input type="text" class="checklist-title-edit" value="' + checklist.title + '" />';
+		html += '<span class="save-checklist-button button">Save</span>';
+		html += '<span class="cancel-checklist-button">&times;</span>';
+
+		html += '<div class="checklist-edit-tray actions">';
+		html += '<span class="button delete-checklist-button">Delete Checklist</span>';
+		html += '</div>';
+
+		html += '<div class="checklist-items">';
+
+		for (var i=0; i<checklist.items.length; i++) {
+			var item = checklist.items[i];
+
+			html += '<div class="checklist-item';
+			if (item.done) html += ' checked';
+			html += '" data-checklist-item-id="' + item.id + '" data-checklist-item-uri="' + item.url + '">';
+			html += '<span class="checkbox"></span>';
+			html += '<span class="label">' + item.title + '</span>';
+			html += '<input type="text" class="label-edit" value="' + item.title + '" />';
+			html += '<span class="controls">';
+			html += '<span class="delete-item-button button">Delete</span>';
+			html += '<span class="save-item-button button">Save</span>';
+			html += '<span class="cancel-item-button">&times;</span>';
+			html += '</span>';
+			html += '</div>';
+		}
+		html += '</div>';
+
+		html += '<div class="add-checklist-item">';
+		html += '<div class="tray">';
+		html += '<textarea></textarea>';
+		html += '<span class="save-button button">Save item</span>';
+		html += '</div>';
+		html += '<span class="plus">+</span>';
+		html += '<span class="add-button">Add item</span>';
+		html += '</div>';
+		html += '</div>';
+
+		return html;
+	}
+
 	// Card edit modal
-
 	$(".lists").on("click", "ul.cards .card", function() {
-		// Show the modal
-		$("#modal-card-edit").siblings(".modal").hide();
-		$("#mask").fadeIn(200);
-		$("#modal").fadeIn(200);
-		$("#modal-card-edit").css("display", "flex").fadeIn(200);
-
 		// Populate it with the card info
 		var card = $(this);
 		var cardTitle = card.find(".title").html();
@@ -1616,36 +1654,59 @@ $(document).ready(function() {
 		$("#modal-card-edit .card-edit .list-title").html(listName);
 
 		// Populate checklists
-		var checklistHtml = card.find(".checklistHtml").html();
-		$("#modal-card-edit .checklists").html(checklistHtml);
+		$.ajax({
+			url: cardURI,
+			method: 'GET',
+			contentType: 'application/json',
+			success: function(data) {
+				var html = '';
 
-		var fields = document.querySelectorAll('#modal-card-edit .add-checklist-item textarea');
-		for (var i=0; i<fields.length; i++) {
-			Mousetrap(fields[i]).bind(['enter', 'mod+enter', 'shift+enter'], function(e) {
-				_addChecklistItem($(e.target));
+				for (var i=0; i<data.checklists.length; i++) {
+					html += _getChecklistHTML(data.checklists[i]);
+				}
+				card.find(".checklistHtml").html();
+				$("#modal-card-edit .checklists").html(html);
 
-				return false;
-			});
-		}
+				// Bind checklist item adding
+				var fields = document.querySelectorAll('#modal-card-edit .add-checklist-item textarea');
+				for (var i=0; i<fields.length; i++) {
+					Mousetrap(fields[i]).bind(['enter', 'mod+enter', 'shift+enter'], function(e) {
+						_addChecklistItem($(e.target));
 
-		var fields = document.querySelectorAll('#modal-card-edit .label-edit');
-		for (var i=0; i<fields.length; i++) {
-			Mousetrap(fields[i]).bind(['enter', 'mod+enter', 'shift+enter'], function(e) {
-				_saveChecklistItem($(e.target).parents(".checklist-item:first"));
+						return false;
+					});
+				}
 
-				return false;
-			});
+				// Bind checklist item saving
+				var fields = document.querySelectorAll('#modal-card-edit .label-edit');
+				for (var i=0; i<fields.length; i++) {
+					Mousetrap(fields[i]).bind(['enter', 'mod+enter', 'shift+enter'], function(e) {
+						_saveChecklistItem($(e.target).parents(".checklist-item:first"));
 
-			Mousetrap(fields[i]).bind('esc', function(e) {
-				_hideChecklistItemEditTray($(e.target).parents(".checklist-item:first"));
+						return false;
+					});
 
-				return false;
-			});
-		}
+					Mousetrap(fields[i]).bind('esc', function(e) {
+						_hideChecklistItemEditTray($(e.target).parents(".checklist-item:first"));
 
-		// Make checklists sortable
-		makeChecklistsSortable();
-		makeChecklistItemsSortable();
+						return false;
+					});
+				}
+
+				// Make checklists sortable
+				makeChecklistsSortable();
+				makeChecklistItemsSortable();
+
+				// Show the modal
+				$("#modal-card-edit").siblings(".modal").hide();
+				$("#mask").fadeIn(200);
+				$("#modal").fadeIn(200);
+				$("#modal-card-edit").css("display", "flex").fadeIn(200);
+			},
+			error: function(data) {
+				_showError("Error editing card title/desc", data);
+			},
+		});
 
 		return false;
 	});

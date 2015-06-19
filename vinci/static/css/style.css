@@ -2136,10 +2136,13 @@ body.todo-mode #page {
 	border-radius: 3px;
 	color: rgba(255, 255, 255, 0.6);
 	cursor: pointer;
-	margin-left: 15px;
 	padding: 10px;
 	user-select: none;
 	width: 270px;
+}
+
+#page #content.todo .list + .add-list {
+	margin-left: 15px;
 }
 
 #page #content.todo .add-list:hover {

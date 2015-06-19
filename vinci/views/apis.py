@@ -904,18 +904,32 @@ def add_card(request, notebook_slug):
         if list == None:
             raise Exception
 
-        card = models.Card()
-        card.title = content.strip()
-        card.order = 0
-        card.notebook = notebook
-        card.list = list
+        cards = content.strip().split('\n')
 
-        # Save the card
-        card.save()
+        num_cards = len(cards)
+        if num_cards > 1:
+            # Reorder existing cards so the new ones show up in order
+            # (If there's just one, order=0 will put it at the top)
+            list_cards = models.Card.objects.filter(list=list).order_by('order')
+            for card in list_cards:
+                card.order += num_cards
+                card.save()
+
+        order = 0
+        for text in cards:
+            card = models.Card()
+            card.title = text
+            card.order = order
+            card.notebook = notebook
+            card.list = list
+            card.save()
+
+            order += 1
 
         response = {
             'status': 'success',
             'id': card.id,
+            'number': len(cards)
         }
     except Exception as e:
         response = {

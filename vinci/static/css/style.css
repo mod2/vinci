@@ -1379,7 +1379,7 @@ nav[role=pagination] {
 	border-radius: 5px;
 	box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
 	color: #fff;
-	display: none !important;
+	display: none;
 	margin: 50px auto;
 	max-width: 600px;
 	pointer-events: auto;
@@ -2224,8 +2224,11 @@ body.todo-mode #page {
 #modal .todo-edit {
 	background: hsl(0, 0%, 90%);
 	color: hsl(0, 0%, 0%);
-	display: flex;
 	flex-direction: row;
+}
+
+#modal .todo-edit.active {
+	display: flex;
 }
 
 #modal .todo-edit .main-column {

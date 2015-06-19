@@ -615,6 +615,17 @@ $(document).ready(function() {
 		return false;
 	});
 
+	// Go to today section
+	Mousetrap.bind('g d', function() {
+		var uri = $("#sections").attr("data-today-uri");
+
+		if (uri) {
+			window.location.href = uri;
+		}
+
+		return false;
+	});
+
 	// All notebooks
 	Mousetrap.bind('g h', function() {
 		window.location.href = config.url;
@@ -1582,7 +1593,7 @@ $(document).ready(function() {
 		$("#modal-card-edit").siblings(".modal").hide();
 		$("#mask").fadeIn(200);
 		$("#modal").fadeIn(200);
-		$("#modal-card-edit").fadeIn(200);
+		$("#modal-card-edit").css("display", "flex").fadeIn(200);
 
 		// Populate it with the card info
 		var card = $(this);
@@ -1851,7 +1862,7 @@ $(document).ready(function() {
 		$("#modal-list-edit").siblings(".modal").hide();
 		$("#mask").fadeIn(200);
 		$("#modal").fadeIn(200);
-		$("#modal-list-edit").fadeIn(200);
+		$("#modal-list-edit").addClass("active").fadeIn(200);
 
 		// Populate it with the list info
 		var list = $(this).parents("section.list:first");

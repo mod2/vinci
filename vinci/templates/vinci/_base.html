@@ -93,7 +93,7 @@
 			{% endblock header %}
 
 			{% block sections %}
-			<div id="sections" class="{% if section %}{{ section }}{% else %}nosection{% endif %}" {% if notebook.display_logs %}data-log-uri="{% url 'notebook_section' notebook.slug 'log' %}"{% endif %} {% if notebook.display_notes %}data-note-uri="{% url 'notebook_section' notebook.slug 'note' %}"{% endif %} {% if notebook.display_pages %}data-page-uri="{% url 'notebook_section' notebook.slug 'page' %}"{% endif %} {% if notebook.display_journals %}data-journal-uri="{% url 'notebook_section' notebook.slug 'journal' %}"{% endif %}{% if notebook.display_todos %}data-todo-uri="{% url 'notebook_section' notebook.slug 'todo' %}"{% endif %}>
+			<div id="sections" class="{% if section %}{{ section }}{% else %}nosection{% endif %}" {% if notebook.display_logs %}data-log-uri="{% url 'notebook_section' notebook.slug 'log' %}"{% endif %} {% if notebook.display_notes %}data-note-uri="{% url 'notebook_section' notebook.slug 'note' %}"{% endif %} {% if notebook.display_pages %}data-page-uri="{% url 'notebook_section' notebook.slug 'page' %}"{% endif %} {% if notebook.display_journals %}data-journal-uri="{% url 'notebook_section' notebook.slug 'journal' %}"{% endif %}{% if notebook.display_todos %}data-todo-uri="{% url 'notebook_section' notebook.slug 'todo' %}"{% endif %} data-today-uri="{% url 'today' %}">
 				<div class="container"></div>
 			</div>
 			{% endblock sections %}
@@ -270,6 +270,11 @@
 					<div class="group">
 						<label>g t</label>
 						<span>Todos</span>
+					</div>
+
+					<div class="group">
+						<label>g d</label>
+						<span>Today</span>
 					</div>
 
 					<div class="group">

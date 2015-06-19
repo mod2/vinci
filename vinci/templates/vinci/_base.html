@@ -39,7 +39,7 @@
 	{% endblock head %}
 </head>
 
-<body{% if section == 'todo' %} class="todo-mode"{% endif %}>
+<body{% if section == 'todo' %} class="todo-mode"{% elif section == 'today' %} class="today-mode"{% endif %}>
 	<div class="wrapper">
 		{% block menu %}
 		<nav role="menu">

@@ -642,6 +642,14 @@ body.active-nav #page .mask {
 	background: hsl(342, 39%, 57%);
 }
 
+#sections.today {
+	background: hsl(296, 37%, 42%);
+}
+
+#sections.today .container {
+	background: hsl(296, 39%, 57%);
+}
+
 #sections.todo {
 	background: hsl(182, 13%, 35%);
 }
@@ -1948,7 +1956,6 @@ body.todo-mode #page {
 
 #page #content.todo .list ul {
 	list-style: none;
-	margin: 0;
 	max-height: 100%;
 	overflow-y: auto;
 	margin: 10px 0 0;
@@ -2648,6 +2655,78 @@ body.todo-mode #page {
 
 #modal .todo-edit .checklist .checklist-edit-tray.actions .button {
 	width: auto;
+}
+
+
+/* Today Mode */
+/* -------------------------------------------------- */
+
+#page #content.today {
+	background: none;
+	box-shadow: none;
+}
+
+.today-wrapper {
+	margin: 0px auto;
+	max-width: 450px;
+}
+
+.today-mode .list {
+	margin-top: 35px;
+	padding: 0 25px;
+}
+
+.today-mode h2 {
+	color: hsl(296, 57%, 49%);
+	font-size: 1.3em;
+	font-weight: normal;
+	margin: 0 0 5px 0;
+}
+
+.today-mode .list ul.cards {
+	list-style: none;
+	max-height: 100%;
+	overflow-y: auto;
+	margin: 0;
+	padding: 0;
+}
+
+.today-mode .list ul.cards:first-child {
+	margin-top: 0;
+}
+
+.today-mode .card {
+	background: hsl(0, 0%, 100%);
+	border-radius: 3px;
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+	cursor: pointer;
+	font-size: 1.2em;
+	line-height: 1.3em;
+	margin: 8px 2px;
+	padding: 0px;
+}
+
+.today-mode .card:hover {
+	background: hsl(0, 0%, 95%);
+}
+
+.today-mode .card .title {
+	display: block;
+	line-height: 1.2em;
+	padding: 9px 12px 11px;
+}
+
+.today-mode .card .title.no-desc {
+	padding-bottom: 8px;
+}
+
+.today-mode .card .desc {
+	display: block;
+	color: hsl(0, 0%, 70%);
+	font-size: .75em;
+	line-height: 1.2em;
+	margin-top: 2px;
+	padding: 0px 8px 8px;
 }
 
 

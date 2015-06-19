@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 
-from vinci.models import Notebook, Entry, Revision, Group, Label
+from vinci.models import Notebook, Entry, Revision, Group, Label, List, Card
 import vinci.search_indexer as si
 
 
@@ -151,6 +151,27 @@ def notebooks_list(request):
     }
 
     return render_to_response('vinci/index.html',
+                              context,
+                              RequestContext(request),
+                              )
+
+
+@login_required
+def today(request):
+    # Get all Today lists
+    today_lists = List.objects.filter(title='Today')
+
+    section = 'today'
+
+    context = {
+        'title': 'Today',
+        'today_lists': today_lists,
+        'section': section,
+        'scope': 'all',
+        'page_type': 'today',
+    }
+
+    return render_to_response('vinci/today.html',
                               context,
                               RequestContext(request),
                               )

@@ -58,6 +58,7 @@ vincipatterns = patterns(
     url(r'^api-todo/', include(todo_api_router.urls)),
     url(r'^search/$', 'search_all', name='search_all'),
     url(r'^tag/(?P<tag>[^\/]+)/$', 'search_all_tags', name='search_all_tags'),
+    url(r'^today/$', 'today', name='today'),
 
     url(r'^(?P<notebook_slug>[^\/]+)/$',
         'notebook_home', name='notebook'),

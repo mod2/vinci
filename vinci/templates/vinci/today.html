@@ -1,0 +1,22 @@
+{% extends 'vinci/_base.html' %}
+
+{% block content %}
+
+<section class="today-wrapper">
+{% for list in today_lists %}
+	<div class="list">
+		<h2>{{ list.notebook.name }}</h2>
+
+		<ul class="cards">
+			{% for card in list.cards.all %}
+			<li class="card">
+				<span class="title{% if not card.description %} no-desc{% endif %}">{{ card.title }}</span>
+				{% if card.description %}<span class="desc">{{ card.description }}</span>{% endif %}
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endfor %}
+</section>
+
+{% endblock content %}

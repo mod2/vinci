@@ -107,7 +107,7 @@ class ChecklistItemSerializer(serializers.ModelSerializer):
 
 class ChecklistSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='checklist-detail')
-    items = ChecklistItemSerializer(many=True)
+    items = ChecklistItemSerializer(many=True, read_only=True)
 
     class Meta:
         model = Checklist
@@ -116,7 +116,7 @@ class ChecklistSerializer(serializers.ModelSerializer):
 
 class CardSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='card-detail')
-    checklists = ChecklistSerializer(many=True)
+    checklists = ChecklistSerializer(many=True, read_only=True)
 
     class Meta:
         model = Card

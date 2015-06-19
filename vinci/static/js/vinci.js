@@ -1399,6 +1399,7 @@ $(document).ready(function() {
 				status: "active",
 				order: 500,
 				labels: [],
+				checklists: [],
 				mentions: [],
 			};
 
@@ -1414,7 +1415,6 @@ $(document).ready(function() {
 					cardList.append(html);
 					cardList.find("li:last").slideDown(200);
 
-
 					_updateCardOrderForList(cardList.parents("section.list:first"));
 
 					_hideAddCardTray(tray);
@@ -1422,6 +1422,7 @@ $(document).ready(function() {
 					makeCardsSortable();
 				},
 				error: function(data) {
+					console.log(data);
 					_showError("Error adding card", data);
 				},
 			});

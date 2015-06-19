@@ -1356,6 +1356,10 @@ nav[role=pagination] {
 	z-index: 80000;
 }
 
+#mask.active {
+	display: block;
+}
+
 #modal {
 	pointer-events: none;
 	display: none;
@@ -1366,14 +1370,23 @@ nav[role=pagination] {
 	z-index: 100000;
 }
 
+#modal.active {
+	display: block;
+}
+
 #modal .modal {
 	background: hsl(213, 30%, 27%);
 	border-radius: 5px;
 	box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
 	color: #fff;
+	display: none !important;
 	margin: 50px auto;
 	max-width: 600px;
 	pointer-events: auto;
+}
+
+#modal .modal.active {
+	display: flex !important;
 }
 
 #modal .modal h2 {
@@ -2708,6 +2721,11 @@ body.todo-mode #page {
 
 .today-mode .card:hover {
 	background: hsl(0, 0%, 95%);
+}
+
+.today-mode .card a {
+	color: hsl(0, 0%, 20%);
+	text-decoration: none;
 }
 
 .today-mode .card .title {

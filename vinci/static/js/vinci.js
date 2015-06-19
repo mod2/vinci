@@ -1558,6 +1558,23 @@ $(document).ready(function() {
 	}
 
 
+	function _updateCardLabels(card) {
+		// Populate label info
+		$("#modal-card-edit .label").removeClass("selected");
+		card.find(".labels .label").each(function() {
+			var labelId = $(this).attr("data-label-id");
+
+			$("#modal-card-edit .label[data-label-id=" + labelId + "]").addClass("selected");
+		});
+	}
+
+	if ($("#modal-card-edit.active").length > 0) {
+		var cardId = $("#modal-card-edit").attr("data-card-id");
+		var card = $("ul.cards li.card[data-card-id=" + cardId + "]");
+		console.log(cardId, card);
+		_updateCardLabels(card);
+	}
+
 	// Card edit modal
 
 	$(".lists").on("click", "ul.cards .card", function() {
@@ -1581,12 +1598,7 @@ $(document).ready(function() {
 		$("#modal-card-edit").attr("data-card-id", cardId);
 
 		// Populate label info
-		$("#modal-card-edit .label").removeClass("selected");
-		card.find(".labels .label").each(function() {
-			var labelId = $(this).attr("data-label-id");
-
-			$("#modal-card-edit .label[data-label-id=" + labelId + "]").addClass("selected");
-		});
+		_updateCardLabels(card);
 
 		// Populate list name
 		var listName = card.parents("section.list:first").find("h2.list-title .title").html();

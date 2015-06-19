@@ -10,8 +10,10 @@
 		<ul class="cards">
 			{% for card in list.cards.all %}
 			<li class="card">
+				<a href="{% url 'card_detail' list.notebook.slug card.id %}">
 				<span class="title{% if not card.description %} no-desc{% endif %}">{{ card.title }}</span>
 				{% if card.description %}<span class="desc">{{ card.description }}</span>{% endif %}
+				</a>
 			</li>
 			{% endfor %}
 		</ul>

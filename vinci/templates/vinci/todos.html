@@ -41,14 +41,16 @@
 {% endblock content %}
 
 {% block modal %}
-<div id="modal-card-edit" class="modal todo-edit" data-checklists-uri="{% url 'checklist-list' %}" data-checklistitems-uri="{% url 'checklistitem-list' %}">
+
+{% block modal-card-edit %}{% endblock modal-card-edit %}
+<div id="modal-card-edit" class="modal todo-edit {% block modal-class %}{% endblock modal-class %}" data-checklists-uri="{% url 'checklist-list' %}" data-checklistitems-uri="{% url 'checklistitem-list' %}" {% block modal-card-data %}{% endblock modal-card-data %}>
 	<section class="main-column column">
 		<div class="card-edit edit">
-			<h3>Card — <span class="list-title"></span></h3>
+			<h3>Card — <span class="list-title">{% block modal-list-title %}{% endblock modal-list-title %}</span></h3>
 
 			<div class="card">
-				<textarea id="card-title-edit" name="card-title-edit"></textarea>
-				<textarea id="card-description-edit" name="card-description-edit"></textarea>
+				<textarea id="card-title-edit" name="card-title-edit">{% block modal-card-title %}{% endblock modal-card-title %}</textarea>
+				<textarea id="card-description-edit" name="card-description-edit">{% block modal-card-description %}{% endblock modal-card-description %}</textarea>
 			</div>
 
 			<div class="buttons">
@@ -59,7 +61,7 @@
 		<div class="checklists-wrapper">
 			<h3>Checklists</h3>
 
-			<div class="checklists"></div>
+			<div class="checklists">{% block modal-checklists %}{% endblock modal-checklists %}</div>
 
 			<span class="add-checklist-button">Add checklist</span>
 		</div>

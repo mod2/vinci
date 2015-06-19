@@ -79,6 +79,35 @@ def notebook_section(request, notebook_slug, section):
 
 
 @login_required
+def card_detail(request, notebook_slug, card_id):
+    try:
+        card = Card.objects.get(id=card_id, list__notebook__slug=notebook_slug)
+    except Card.DoesNotExist:
+        return HttpResponseNotFound('Card does not exist.')
+
+    template = 'card'
+    labels = Label.objects.all()
+    notebooks = Notebook.objects.filter(status='active').order_by('name')
+    section = 'todo'
+
+    context = {
+        'title': card.title,
+        'notebook': card.list.notebook,
+        'notebooks': notebooks,
+        'card': card,
+        'labels': labels,
+        'section': section,
+        'scope': 'section',
+        'page_type': 'detail',
+    }
+
+    return render_to_response('vinci/card.html',
+                              context,
+                              RequestContext(request),
+                              )
+
+
+@login_required
 def entry_detail(request, notebook_slug, section, entry_slug):
     try:
         entry = Entry.objects.from_slug(entry_slug, notebook_slug)

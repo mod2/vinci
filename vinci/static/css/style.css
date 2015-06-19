@@ -2506,6 +2506,7 @@ body.todo-mode #page {
 
 #modal .todo-edit .checklists .checklist-item .cancel-item-button {
 	color: hsl(0, 0%, 70%);
+	cursor: pointer;
 	display: none;
 	font-size: 1.2em;
 	margin-left: 10px;
@@ -2601,6 +2602,7 @@ body.todo-mode #page {
 	padding: 0;
 	resize: none;
 	text-transform: uppercase;
+	width: 65%;
 }
 
 #modal .todo-edit .checklist .checklist-title-edit:focus {
@@ -2615,6 +2617,7 @@ body.todo-mode #page {
 
 #modal .todo-edit .checklist .cancel-checklist-button {
 	color: hsl(0, 0%, 70%);
+	cursor: pointer;
 	display: none;
 	font-size: 1.2em;
 	margin-left: 10px;

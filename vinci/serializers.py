@@ -97,25 +97,27 @@ class ListSerializer(serializers.ModelSerializer):
         exclude = ()
 
 
-class CardSerializer(serializers.ModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name='card-detail')
+class ChecklistItemSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='checklistitem-detail')
 
     class Meta:
-        model = Card
+        model = ChecklistItem
         exclude = ()
 
 
 class ChecklistSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='checklist-detail')
+    items = ChecklistItemSerializer(many=True)
 
     class Meta:
         model = Checklist
         exclude = ()
 
 
-class ChecklistItemSerializer(serializers.ModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name='checklistitem-detail')
+class CardSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='card-detail')
+    checklists = ChecklistSerializer(many=True)
 
     class Meta:
-        model = ChecklistItem
+        model = Card
         exclude = ()

@@ -50,8 +50,11 @@ article, aside, figure, figcaption, footer, header, hgroup, menu, nav, section, 
 }
 
 .wrapper {
-	position: fixed;
 	width: 100%;
+}
+
+.wrapper.todo-mode {
+	position: fixed;
 }
 
 .container {
@@ -2707,6 +2710,7 @@ body.todo-mode #page {
 .today-mode .list ul.cards {
 	list-style: none;
 	max-height: 100%;
+	overflow: hidden;
 	overflow-y: auto;
 	margin: 0;
 	padding: 0;
@@ -2743,7 +2747,7 @@ body.todo-mode #page {
 }
 
 .today-mode .card .title.no-desc {
-	padding-bottom: 8px;
+	padding-bottom: 11px;
 }
 
 .today-mode .card .desc {

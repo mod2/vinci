@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,7 +42,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'vinci',
     'rest_framework',
-)
+]
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -147,6 +147,16 @@ REST_FRAMEWORK = {
 }
 
 from local_settings import *  # noqa
+
+if DEBUG:
+    INSTALLED_APPS.append('debug_toolbar.apps.DebugToolbarConfig')
+
+    DEBUG_TOOLBAR_PANELS = (
+        'debug_toolbar.panels.profiling.ProfilingPanel',
+        'debug_toolbar.panels.sql.SQLPanel',
+        'debug_toolbar.panels.templates.TemplatesPanel',
+        'debug_toolbar.panels.timer.TimerPanel',
+    )
 
 if SECRET_KEY == 'vinci':
     raise ImproperlyConfigured('SECRET_KEY must be provided.')

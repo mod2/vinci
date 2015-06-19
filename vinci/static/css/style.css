@@ -1970,9 +1970,9 @@ body.todo-mode #page {
 #page #content.todo .list ul {
 	list-style: none;
 	max-height: 100%;
+	margin: 0;
 	overflow-y: auto;
-	margin: 10px 0 0;
-	padding: 0;
+	padding: 10px 0 0;
 }
 
 #page #content.todo .list ul .card:first-child {

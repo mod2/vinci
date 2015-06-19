@@ -1722,33 +1722,35 @@ $(document).ready(function() {
 	// Delete button for cards/lists
 
 	$(".todo-edit").on("click", ".actions #card-delete-button, .actions #list-delete-button", function() {
-		var modal = $(this).parents(".todo-edit:first");
-		var editType = (modal.attr("id") == "modal-card-edit") ? "card" : "list";
+		if (confirm("Are you sure you want to delete this?")) {
+			var modal = $(this).parents(".todo-edit:first");
+			var editType = (modal.attr("id") == "modal-card-edit") ? "card" : "list";
 
-		var url = modal.attr("data-" + editType + "-uri");
-		var objId = modal.attr("data-" + editType + "-id");
-		var objElement = $("." + editType + "[data-" + editType + "-id=" + objId + "]");
+			var url = modal.attr("data-" + editType + "-uri");
+			var objId = modal.attr("data-" + editType + "-id");
+			var objElement = $("." + editType + "[data-" + editType + "-id=" + objId + "]");
 
-		var data = {
-			status: 'deleted',
-		};
+			var data = {
+				status: 'deleted',
+			};
 
-		$.ajax({
-			url: url,
-			method: 'PATCH',
-			contentType: 'application/json',
-			data: JSON.stringify(data),
-			success: function(data) {
-				// Make the object disappear
-				objElement.slideUp(200, function() {
-					$(this).remove();
-					_hideModals();
-				});
-			},
-			error: function(data) {
-				_showError("Error deleting card/list", data);
-			},
-		});
+			$.ajax({
+				url: url,
+				method: 'PATCH',
+				contentType: 'application/json',
+				data: JSON.stringify(data),
+				success: function(data) {
+					// Make the object disappear
+					objElement.slideUp(200, function() {
+						$(this).remove();
+						_hideModals();
+					});
+				},
+				error: function(data) {
+					_showError("Error deleting card/list", data);
+				},
+			});
+		}
 	});
 
 

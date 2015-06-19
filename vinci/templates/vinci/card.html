@@ -8,6 +8,4 @@
 {% block modal-card-title %}{{ card.title }}{% endblock modal-card-title %}
 {% block modal-card-description %}{{ card.description }}{% endblock modal-card-description %}
 
-{% block modal-checklists %}{% include 'vinci/_checklists.html' %}{% endblock modal-checklists %}
-
 {% block modal-card-data %}data-card-id="{{ card.id }}" data-card-uri="{% url 'card-detail' card.id %}"{% endblock modal-card-data %}

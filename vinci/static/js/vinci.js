@@ -1579,11 +1579,13 @@ $(document).ready(function() {
 		});
 	}
 
+	// Card detail page
 	if ($("#modal-card-edit.active").length > 0) {
 		var cardId = $("#modal-card-edit").attr("data-card-id");
 		var card = $("ul.cards li.card[data-card-id=" + cardId + "]");
-		console.log(cardId, card);
+		var url = card.attr("data-card-uri");
 		_updateCardLabels(card);
+		_loadChecklists(url, card);
 	}
 
 	function _getChecklistHTML(checklist) {
@@ -1631,31 +1633,10 @@ $(document).ready(function() {
 		return html;
 	}
 
-	// Card edit modal
-	$(".lists").on("click", "ul.cards .card", function() {
-		// Populate it with the card info
-		var card = $(this);
-		var cardTitle = card.find(".title").html();
-		var cardDescription = card.find(".desc").html();
-		$("#modal-card-edit #card-title-edit").val(cardTitle).focus();
-		$("#modal-card-edit #card-description-edit").val(cardDescription);
-
-		var cardURI = card.attr("data-card-uri");
-		$("#modal-card-edit").attr("data-card-uri", cardURI);
-
-		var cardId = card.attr("data-card-id");
-		$("#modal-card-edit").attr("data-card-id", cardId);
-
-		// Populate label info
-		_updateCardLabels(card);
-
-		// Populate list name
-		var listName = card.parents("section.list:first").find("h2.list-title .title").html();
-		$("#modal-card-edit .card-edit .list-title").html(listName);
-
+	function _loadChecklists(url, card, callback) {
 		// Populate checklists
 		$.ajax({
-			url: cardURI,
+			url: url,
 			method: 'GET',
 			contentType: 'application/json',
 			success: function(data) {
@@ -1697,15 +1678,44 @@ $(document).ready(function() {
 				makeChecklistsSortable();
 				makeChecklistItemsSortable();
 
-				// Show the modal
-				$("#modal-card-edit").siblings(".modal").hide();
-				$("#mask").fadeIn(200);
-				$("#modal").fadeIn(200);
-				$("#modal-card-edit").css("display", "flex").fadeIn(200);
+				if (typeof callback != 'undefined') {
+					callback();
+				}
 			},
 			error: function(data) {
-				_showError("Error editing card title/desc", data);
+				_showError("Error loading checklist data", data);
 			},
+		});
+	}
+
+	// Card edit modal
+	$(".lists").on("click", "ul.cards .card", function() {
+		// Populate it with the card info
+		var card = $(this);
+		var cardTitle = card.find(".title").html();
+		var cardDescription = card.find(".desc").html();
+		$("#modal-card-edit #card-title-edit").val(cardTitle).focus();
+		$("#modal-card-edit #card-description-edit").val(cardDescription);
+
+		var cardURI = card.attr("data-card-uri");
+		$("#modal-card-edit").attr("data-card-uri", cardURI);
+
+		var cardId = card.attr("data-card-id");
+		$("#modal-card-edit").attr("data-card-id", cardId);
+
+		// Populate label info
+		_updateCardLabels(card);
+
+		// Populate list name
+		var listName = card.parents("section.list:first").find("h2.list-title .title").html();
+		$("#modal-card-edit .card-edit .list-title").html(listName);
+
+		_loadChecklists(cardURI, card, function() {
+			// Show the modal
+			$("#modal-card-edit").siblings(".modal").hide();
+			$("#mask").fadeIn(200);
+			$("#modal").fadeIn(200);
+			$("#modal-card-edit").css("display", "flex").fadeIn(200);
 		});
 
 		return false;

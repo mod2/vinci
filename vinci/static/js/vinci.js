@@ -1939,11 +1939,11 @@ $(document).ready(function() {
 	$(".todo-edit").on("click", ".checklist-item .label", function() {
 		// Open checklist item edit area
 		var labelEdit = $(this).siblings(".label-edit");
-		var buttons = $(this).siblings(".save-item-button, .cancel-item-button");
+		var controls = $(this).siblings(".controls");
 
 		$(this).fadeOut(100, function() {
 			labelEdit.fadeIn(100).focus();
-			buttons.fadeIn(100);
+			controls.fadeIn(100);
 		});
 
 		return false;
@@ -1952,7 +1952,7 @@ $(document).ready(function() {
 	function _hideChecklistItemEditTray(item) {
 		// Hide checklist item edit area
 		var label = item.find(".label");
-		var items = item.find(".label-edit, .save-item-button, .cancel-item-button");
+		var items = item.find(".label-edit, .controls");
 
 		items.fadeOut(100, function() {
 			label.fadeIn(100);
@@ -1965,6 +1965,30 @@ $(document).ready(function() {
 
 		return false;
 	});
+
+	$(".todo-edit").on("click", ".checklist-item .delete-item-button", function() {
+		if (confirm("Are you sure you want to delete that item?")) {
+			var item = $(this).parents(".checklist-item:first");
+			var url = item.attr("data-checklist-item-uri");
+
+			$.ajax({
+				url: url,
+				method: 'DELETE',
+				contentType: 'application/json',
+				success: function(data) {
+					_hideChecklistItemEditTray(item);
+					item.slideUp(150).remove();
+				},
+				error: function(data) {
+					_showError("Error deleting checklist item", data);
+				},
+			});
+		}
+
+		return false;
+	});
+
+
 
 	function _hideAddChecklistItemTray(tray) {
 		var inputBox = tray.find("textarea");
@@ -2075,6 +2099,12 @@ $(document).ready(function() {
 				var html = '<div class="checklist ui-sortable" data-checklist-id="' + data.id + '" data-checklist-uri="' + data.url + '" style="display: none;">';
 				html += '<span class="checklist-edit">&hellip;</span>';
 				html += '<h2 class="checklist-title">Checklist</h2>';
+				html += '<input type="text" class="checklist-title-edit" value="Checklist" />';
+				html += '<span class="save-checklist-button button">Save</span>';
+				html += '<span class="cancel-checklist-button">&times;</span>';
+				html += '<div class="checklist-edit-tray actions">';
+				html += '<span class="button delete-checklist-button">Delete Checklist</span>';
+				html += '</div>';
 				html += '<div class="checklist-items"></div>';
 				html += '<div class="add-checklist-item">';
 				html += '<div class="tray">';
@@ -2132,7 +2162,7 @@ $(document).ready(function() {
 
 		return false;
 	}
-	
+
 	$(".checklists").on("click", ".checklist-item .save-item-button", function() {
 		_saveChecklistItem($(this).parents(".checklist-item:first"));
 
@@ -2201,9 +2231,45 @@ $(document).ready(function() {
 
 		return false;
 	}
-	
+
 	$(".checklists").on("click", ".checklist .save-checklist-button", function() {
 		_saveChecklist($(this).parents(".checklist:first"));
+
+		return false;
+	});
+
+
+	// Delete checklists
+
+	$(".checklists").on("click", ".checklist .checklist-edit", function() {
+		var tray = $(this).siblings(".checklist-edit-tray");
+
+		if ($(this).siblings(".checklist-edit-tray:visible").length > 0) {
+			tray.slideUp(100);
+		} else {
+			tray.slideDown(100);
+		}
+
+		return false;
+	});
+
+	$(".checklists").on("click", ".checklist .delete-checklist-button", function() {
+		var checklist = $(this).parents(".checklist:first");
+		var url = checklist.attr("data-checklist-uri");
+		var tray = $(this).parents(".tray:first");
+
+		$.ajax({
+			url: url,
+			method: 'DELETE',
+			contentType: 'application/json',
+			success: function(data) {
+				checklist.slideUp(150).remove();
+				tray.slideUp(150);
+			},
+			error: function(data) {
+				_showError("Error deleting checklist", data);
+			},
+		});
 
 		return false;
 	});

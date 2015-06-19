@@ -2301,7 +2301,7 @@ body.todo-mode #page {
 	margin-top: 14px;
 }
 
-#modal .todo-edit .actions .buttons .button {
+#modal .todo-edit .actions .button {
 	background: hsl(0, 0%, 92%);
 	border: solid 1px hsl(0, 0%, 79%);
 	color: hsl(0, 0%, 37%);
@@ -2309,11 +2309,11 @@ body.todo-mode #page {
 	width: calc(50% - 7px);
 }
 
-#modal .todo-edit .actions .buttons .button:hover {
+#modal .todo-edit .actions .button:hover {
 	color: hsl(0, 0%, 100%);
 }
 
-#modal .todo-edit .actions .buttons .button + .button {
+#modal .todo-edit .actions .button + .button {
 	margin-left: 10px;
 }
 
@@ -2498,8 +2498,17 @@ body.todo-mode #page {
 	outline: none;
 }
 
-#modal .todo-edit .checklists .checklist-item .save-item-button {
+#modal .todo-edit .checklists .checklist-item .controls {
 	display: none;
+}
+
+#modal .todo-edit .checklists .checklist-item .save-item-button {
+	margin-top: 2px;
+	padding: 1px 9px 3px;
+}
+
+#modal .todo-edit .checklists .checklist-item .delete-item-button {
+	background: hsl(0, 40%, 50%);
 	margin-top: 2px;
 	padding: 1px 9px 3px;
 }
@@ -2507,7 +2516,6 @@ body.todo-mode #page {
 #modal .todo-edit .checklists .checklist-item .cancel-item-button {
 	color: hsl(0, 0%, 70%);
 	cursor: pointer;
-	display: none;
 	font-size: 1.2em;
 	margin-left: 10px;
 	margin-top: 2px;
@@ -2626,6 +2634,20 @@ body.todo-mode #page {
 
 #modal .todo-edit .checklist .cancel-checklist-button:hover {
 	color: hsl(0, 0%, 10%);
+}
+
+#modal .todo-edit .checklist .checklist-edit-tray {
+	background: hsl(0, 0%, 100%);
+	border-radius: 3px;
+	box-shadow: 0 1px 5px hsl(0, 0%, 80%);
+	display: none;
+	margin-top: 5px;
+	padding: 5px;
+	text-align: right;
+}
+
+#modal .todo-edit .checklist .checklist-edit-tray.actions .button {
+	width: auto;
 }
 
 

@@ -6,14 +6,21 @@
 		<span class="save-checklist-button button">Save</span>
 		<span class="cancel-checklist-button">&times;</span>
 
+		<div class="checklist-edit-tray actions">
+			<span class="button delete-checklist-button">Delete Checklist</span>
+		</div>
+
 		<div class="checklist-items">
 			{% for item in checklist.get_active_items %}
 			<div class="checklist-item{% if item.done %} checked{% endif %}" data-checklist-item-id="{{ item.id }}" data-checklist-item-uri="{% url 'checklistitem-detail' item.id %}">
 				<span class="checkbox"></span>
 				<span class="label">{{ item.title }}</span>
 				<input type="text" class="label-edit" value="{{ item.title }}" />
-				<span class="save-item-button button">Save</span>
-				<span class="cancel-item-button">&times;</span>
+				<span class="controls">
+					<span class="delete-item-button button">Delete</span>
+					<span class="save-item-button button">Save</span>
+					<span class="cancel-item-button">&times;</span>
+				</span>
 			</div>
 			{% endfor %}
 		</div>

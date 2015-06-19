@@ -7,7 +7,7 @@
 	</span>
 	{% endif %}
 
-	{% if card.checklists.all|length > 0 %}
+	{% if card.checklists.all|length > 0 and card.total_checklist_items > 0 %}
 	<span class="checklists">
 		<span class="finished">{{ card.finished_checklist_items }}</span> / <span class="total">{{ card.total_checklist_items }}</span>
 	</span>

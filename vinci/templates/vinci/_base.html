@@ -32,7 +32,12 @@
         config.api_key = "{{ API_KEY }}";
 	</script>
 
+	{% if section %}
+	<link rel="shortcut icon" href="{% static 'favicon/' %}favicon-{{ section }}.png">
+	{% else %}
 	<link rel="shortcut icon" href="{% static 'favicon.png' %}">
+	{% endif %}
+
 	<link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
 	<link rel="apple-touch-icon-precomposed" href="{% static 'apple-touch-icon.png' %}">
 

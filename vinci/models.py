@@ -392,7 +392,7 @@ class Card(BaseListMixin, StatusMixin, DatedMixin, models.Model):
     labels = models.ManyToManyField(Label, blank=True,
                                     related_name="labeled_cards")
     # Used to cache labels for speed on dashboard
-    #label_cache = models.CharField(max_length=255, blank=True, null=True)
+    label_cache = models.CharField(max_length=255, blank=True, null=True)
 
     mentions = models.ManyToManyField(Entry, blank=True,
                                       related_name="mentioned_cards")

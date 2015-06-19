@@ -401,7 +401,7 @@ $(document).ready(function() {
 		parentEntry.find("input[name=type]").val(entryType);
 
 		// Update the parent entry class
-		parentEntry.removeClass("log").removeClass("note").removeClass("page").removeClass("journal");
+		parentEntry.removeClass("log").removeClass("note").removeClass("page").removeClass("journal").removeClass("todo");
 		parentEntry.addClass(entryType);
 
 		return false;

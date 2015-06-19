@@ -1642,41 +1642,43 @@ $(document).ready(function() {
 			success: function(data) {
 				var html = '';
 
-				for (var i=0; i<data.checklists.length; i++) {
-					html += _getChecklistHTML(data.checklists[i]);
+				if (data.checklists) {
+					for (var i=0; i<data.checklists.length; i++) {
+						html += _getChecklistHTML(data.checklists[i]);
+					}
+					card.find(".checklistHtml").html();
+					$("#modal-card-edit .checklists").html(html);
+
+					// Bind checklist item adding
+					var fields = document.querySelectorAll('#modal-card-edit .add-checklist-item textarea');
+					for (var i=0; i<fields.length; i++) {
+						Mousetrap(fields[i]).bind(['enter', 'mod+enter', 'shift+enter'], function(e) {
+							_addChecklistItem($(e.target));
+
+							return false;
+						});
+					}
+
+					// Bind checklist item saving
+					var fields = document.querySelectorAll('#modal-card-edit .label-edit');
+					for (var i=0; i<fields.length; i++) {
+						Mousetrap(fields[i]).bind(['enter', 'mod+enter', 'shift+enter'], function(e) {
+							_saveChecklistItem($(e.target).parents(".checklist-item:first"));
+
+							return false;
+						});
+
+						Mousetrap(fields[i]).bind('esc', function(e) {
+							_hideChecklistItemEditTray($(e.target).parents(".checklist-item:first"));
+
+							return false;
+						});
+					}
+
+					// Make checklists sortable
+					makeChecklistsSortable();
+					makeChecklistItemsSortable();
 				}
-				card.find(".checklistHtml").html();
-				$("#modal-card-edit .checklists").html(html);
-
-				// Bind checklist item adding
-				var fields = document.querySelectorAll('#modal-card-edit .add-checklist-item textarea');
-				for (var i=0; i<fields.length; i++) {
-					Mousetrap(fields[i]).bind(['enter', 'mod+enter', 'shift+enter'], function(e) {
-						_addChecklistItem($(e.target));
-
-						return false;
-					});
-				}
-
-				// Bind checklist item saving
-				var fields = document.querySelectorAll('#modal-card-edit .label-edit');
-				for (var i=0; i<fields.length; i++) {
-					Mousetrap(fields[i]).bind(['enter', 'mod+enter', 'shift+enter'], function(e) {
-						_saveChecklistItem($(e.target).parents(".checklist-item:first"));
-
-						return false;
-					});
-
-					Mousetrap(fields[i]).bind('esc', function(e) {
-						_hideChecklistItemEditTray($(e.target).parents(".checklist-item:first"));
-
-						return false;
-					});
-				}
-
-				// Make checklists sortable
-				makeChecklistsSortable();
-				makeChecklistItemsSortable();
 
 				if (typeof callback != 'undefined') {
 					callback();

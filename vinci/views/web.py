@@ -72,6 +72,11 @@ def notebook_section(request, notebook_slug, section):
         'page_type': 'entries',
     }
 
+    if section == 'todo':
+        context['lists'] = notebook.get_active_lists()
+        context['num_lists'] = len(context['lists']) + 1
+        context['num_lists_sub_one'] = context['num_lists'] - 1
+
     return render_to_response('vinci/{}.html'.format(template),
                               context,
                               RequestContext(request),
@@ -100,6 +105,11 @@ def card_detail(request, notebook_slug, card_id):
         'scope': 'section',
         'page_type': 'detail',
     }
+
+    if section == 'todo':
+        context['lists'] = card.list.notebook.get_active_lists()
+        context['num_lists'] = len(context['lists']) + 1
+        context['num_lists_sub_one'] = context['num_lists'] - 1
 
     return render_to_response('vinci/card.html',
                               context,

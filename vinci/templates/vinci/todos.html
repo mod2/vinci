@@ -1,9 +1,9 @@
 {% extends 'vinci/_base.html' %}
 
 {% block content %}
-	<div class="lists" data-lists-uri="{% url 'list-list' %}" data-notebook-slug="{{ notebook.slug }}" data-cards-uri="{% url 'card-list' %}">
-		{% for list in notebook.get_active_lists %}
-		<section class="list" data-list-id="{{ list.id }}" data-list-uri="{% url 'list-detail' list.id %}">
+	<div class="lists" data-lists-uri="{% url 'list-list' %}" data-notebook-slug="{{ notebook.slug }}" data-cards-uri="{% url 'card-list' %}" style="width: calc(({{ num_lists }} * 270px) + ({{ num_lists_sub_one }} * 15px))">
+		{% for list in lists %}
+		<section class="list" data-list-id="{{ list.id }}" data-list-uri="{% url 'list-detail' list.id %}" style="width: 270px;">
 			{% if list.labels.all|length %}
 			<span class="labels">
 				{% for label in list.labels.all %}

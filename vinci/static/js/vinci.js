@@ -2019,7 +2019,7 @@ $(document).ready(function() {
 				success: function(data) {
 					// Add checklist item to DOM
 
-					var html = '<div class="checklist-item" data-checklist-item-id="' + data.id + '" style="display: none;">';
+					var html = '<div class="checklist-item" data-checklist-item-id="' + data.id + '" data-checklist-item-uri="' + data.url + '" style="display: none;">';
 					html += '<span class="checkbox"></span>';
 					html += '<span class="label">' + itemTitle + '</span>';
 					html += '<input type="text" class="label-edit" value="' + escape(itemTitle) + '" />';
@@ -2102,7 +2102,7 @@ $(document).ready(function() {
 				data: JSON.stringify(data),
 				success: function(data) {
 					// Add checklist to DOM
-					var html = '<div class="checklist ui-sortable" data-checklist-id="' + data.id + '" style="display: none;">';
+					var html = '<div class="checklist ui-sortable" data-checklist-id="' + data.id + '" data-checklist-uri="' + data.url + '" style="display: none;">';
 					html += '<span class="checklist-edit">&hellip;</span>';
 					html += '<h2 class="checklist-title">' + checklistTitle + '</h2>';
 					html += '<div class="checklist-items"></div>';

@@ -1031,7 +1031,7 @@ body.active-nav #page .mask {
 	padding-bottom: 25px;
 }
 
-#page #content.entries .entry.page .metadata.container {
+#page #content.list .entry.page .metadata.container {
 	display: none;
 }
 
@@ -1677,13 +1677,13 @@ form.login input.button:hover {
 /* Page */
 /* -------------------------------------------------- */
 
-#page #content.entries .entry.page h3.page-title {
+#page #content.list .entry.page h3.page-title {
 	font-size: 1em;
 	font-weight: 600;
 	line-height: 1.2em;
 }
 
-#page #content.entries .entry.page h3.page-title a {
+#page #content.list .entry.page h3.page-title a {
 	text-decoration: none;
 }
 
@@ -1691,22 +1691,22 @@ form.login input.button:hover {
 /* Note */
 /* -------------------------------------------------- */
 
-#page #content.entries .entry.note h3 {
+#page #content.list .entry.note h3 {
 	font-size: .95em;
 	font-style: normal;
 	margin-bottom: 2px;
 }
 
-#page #content.entries .entry.note h3 a {
+#page #content.list .entry.note h3 a {
 	text-decoration: none;
 }
 
-#page #content.entries .entry.note .content.container {
+#page #content.list .entry.note .content.container {
 	padding-bottom: 15px;
 	padding-top: 15px;
 }
 
-#page #content.entries .entry.note .content .second-line {
+#page #content.list .entry.note .content .second-line {
 	color: #888;
 	font-size: .8em;
 	line-height: 1.2em;
@@ -1714,7 +1714,7 @@ form.login input.button:hover {
 	word-wrap: break-word;
 }
 
-#page #content.entries .entry.note .metadata {
+#page #content.list .entry.note .metadata {
 	display: none;
 }
 

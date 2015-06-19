@@ -2136,6 +2136,75 @@ $(document).ready(function() {
 
 		return false;
 	});
+
+
+	// Rename checklists
+
+	$(".todo-edit").on("click", ".checklist .checklist-title", function() {
+		// Open checklist item edit area
+		var titleEdit = $(this).siblings(".checklist-title-edit");
+		var buttons = $(this).siblings(".save-checklist-button, .cancel-checklist-button");
+
+		$(this).fadeOut(100, function() {
+			titleEdit.fadeIn(100).focus();
+			buttons.fadeIn(100);
+		});
+
+		return false;
+	});
+
+	function _hideChecklistEditTray(item) {
+		// Hide checklist edit area
+		var title = item.find(".checklist-title");
+		var items = item.find(".checklist-title-edit, .save-checklist-button, .cancel-checklist-button");
+
+		items.fadeOut(100, function() {
+			title.fadeIn(100);
+		});
+	}
+
+	$(".todo-edit").on("click", ".checklist .cancel-checklist-button", function() {
+		// Hide checklist edit area
+		_hideChecklistEditTray($(this).parents(".checklist:first"));
+
+		return false;
+	});
+
+	function _saveChecklist(item) {
+		var newTitle = item.find(".checklist-title-edit").val().trim();
+
+		if (newTitle != '') {
+			var url = item.attr("data-checklist-uri");
+
+			var data = {
+				title: newTitle,
+			};
+
+			$.ajax({
+				url: url,
+				method: 'PATCH',
+				contentType: 'application/json',
+				data: JSON.stringify(data),
+				success: function(data) {
+					// Update HTML
+					item.find(".checklist-title").html(newTitle);
+
+					_hideChecklistEditTray(item);
+				},
+				error: function(data) {
+					_showError("Error renaming checklist", data);
+				},
+			});
+		}
+
+		return false;
+	}
+	
+	$(".checklists").on("click", ".checklist .save-checklist-button", function() {
+		_saveChecklist($(this).parents(".checklist:first"));
+
+		return false;
+	});
 });
 
 function processEntries(entries) {

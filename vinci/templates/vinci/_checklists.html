@@ -2,6 +2,9 @@
 	<div class="checklist" data-checklist-id="{{ checklist.id }}" data-checklist-uri="{% url 'checklist-detail' checklist.id %}">
 		<span class="checklist-edit">&hellip;</span>
 		<h2 class="checklist-title">{{ checklist.title }}</h2>
+		<input type="text" class="checklist-title-edit" value="{{ checklist.title }}" />
+		<span class="save-checklist-button button">Save</span>
+		<span class="cancel-checklist-button">&times;</span>
 
 		<div class="checklist-items">
 			{% for item in checklist.get_active_items %}

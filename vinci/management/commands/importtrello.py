@@ -62,7 +62,7 @@ class Command(BaseCommand):
                 print("Importing cards")
                 card_mapping = {}
                 for trello_card in board['cards']:
-                    if trello_card['closed'] == False:
+                    if trello_card['closed'] == False and trello_card['idList'] in list_mapping:
                         card_list = list_mapping[trello_card['idList']]
 
                         card = Card()
@@ -86,14 +86,16 @@ class Command(BaseCommand):
                 for trello_action in board['actions']:
                     if trello_action['type'] == 'commentCard':
                         card_id = trello_action['data']['card']['id']
-                        card = card_mapping[card_id]
 
-                        comment = trello_action['data']['text'].strip()
+                        if card_id in card_mapping:
+                            card = card_mapping[card_id]
 
-                        # Append the comment to the card's description
-                        card.description += "\n\n{}".format(comment)
-                        card.description = card.description.strip()
-                        card.save()
+                            comment = trello_action['data']['text'].strip()
+
+                            # Append the comment to the card's description
+                            card.description += "\n\n{}".format(comment)
+                            card.description = card.description.strip()
+                            card.save()
 
             # Add checklists
             if import_checklists:
@@ -101,24 +103,26 @@ class Command(BaseCommand):
 
                 for trello_checklist in board['checklists']:
                     card_id = trello_checklist['idCard']
-                    card = card_mapping[card_id]
 
-                    # Create and add to card
-                    checklist = Checklist()
-                    checklist.card = card
-                    checklist.title = trello_checklist['name']
-                    checklist.order = trello_checklist['pos']
-                    checklist.save()
+                    if card_id in card_mapping:
+                        card = card_mapping[card_id]
 
-                    # Add items
-                    for trello_item in trello_checklist['checkItems']:
-                        item = ChecklistItem()
-                        item.checklist = checklist
-                        item.title = trello_item['name']
-                        if trello_item['state'] == 'complete':
-                            item.done = True
-                        item.order = trello_item['pos']
-                        item.save()
+                        # Create and add to card
+                        checklist = Checklist()
+                        checklist.card = card
+                        checklist.title = trello_checklist['name']
+                        checklist.order = trello_checklist['pos']
+                        checklist.save()
+
+                        # Add items
+                        for trello_item in trello_checklist['checkItems']:
+                            item = ChecklistItem()
+                            item.checklist = checklist
+                            item.title = trello_item['name']
+                            if trello_item['state'] == 'complete':
+                                item.done = True
+                            item.order = trello_item['pos']
+                            item.save()
 
 
             # TODO: Reorder cards to more sane positions

@@ -4,6 +4,7 @@
 
 <section class="today-wrapper">
 {% for list in today_lists %}
+{% if list.cards.all|length %}
 	<div class="list">
 		<h2>{{ list.notebook.name }}</h2>
 
@@ -18,6 +19,7 @@
 			{% endfor %}
 		</ul>
 	</div>
+{% endif %}
 {% endfor %}
 </section>
 

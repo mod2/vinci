@@ -2571,47 +2571,21 @@ body.todo-mode #page {
 	outline: none;
 }
 
-#modal .todo-edit .add-checklist {
-	margin-top: 15px;
-}
-
-#modal .todo-edit .add-checklist .add-button {
+#modal .todo-edit .add-checklist-button {
 	background: hsl(0, 0%, 90%);
 	border-radius: 0 0 3px 3px;
 	color: hsl(0, 0%, 53%);
 	cursor: pointer;
-	display: inline-block;
+	display: block;
 	font-size: .8em;
+	margin-top: 15px;
 	padding: 0;
 	-webkit-user-select: none;
 	user-select: none;
 }
 
-#modal .todo-edit .add-checklist .add-button:hover {
+#modal .todo-edit .add-checklist-button:hover {
 	color: hsl(0, 0%, 25%);
-}
-
-#modal .todo-edit .add-checklist .tray {
-	display: none;
-	margin-top: 5px;
-}
-
-#modal .todo-edit .add-checklist .tray textarea {
-	background: hsl(0, 0%, 100%);
-	border-radius: 3px;
-	border: none;
-	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
-	font-family: Source Sans Pro, Helvetica, Arial, sans-serif;
-	font-size: 1em;
-	line-height: 1.3em;
-	margin: 0;
-	padding: 7px 8px 9px;
-	resize: none;
-	width: calc(100% - 10px);
-}
-
-#modal .todo-edit .add-checklist .tray textarea:focus {
-	outline: none;
 }
 
 

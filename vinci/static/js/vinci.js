@@ -2050,90 +2050,50 @@ $(document).ready(function() {
 	});
 
 
-	function _hideAddChecklistTray(tray) {
-		var inputBox = tray.find("textarea");
-		var addButton = tray.siblings(".add-button");
-		addButton.html("Add checklist");
-		tray.slideUp(150, function() {
-			inputBox.val('');
+	$(".checklists-wrapper").on("click", ".add-checklist-button", function() {
+		var modal = $("#modal-card-edit");
+		var cardId = modal.attr("data-card-id");
+		var url = modal.attr("data-checklists-uri");
+		var checklistWrapper = modal.find(".checklists");
+
+		var data = {
+			title: "Checklist",
+			status: "active",
+			order: 500,
+			card: cardId,
+		};
+
+		$.ajax({
+			url: url,
+			method: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify(data),
+			success: function(data) {
+				// Add checklist to DOM
+				var html = '<div class="checklist ui-sortable" data-checklist-id="' + data.id + '" data-checklist-uri="' + data.url + '" style="display: none;">';
+				html += '<span class="checklist-edit">&hellip;</span>';
+				html += '<h2 class="checklist-title">Checklist</h2>';
+				html += '<div class="checklist-items"></div>';
+				html += '<div class="add-checklist-item">';
+				html += '<div class="tray">';
+				html += '<textarea></textarea>';
+				html += '<span class="save-button button">Save item</span>';
+				html += '</div>';
+				html += '<span class="plus">+</span>';
+				html += '<span class="add-button">Add item</span>';
+				html += '</div>';
+				html += '</div>';
+
+				checklistWrapper.append(html);
+				checklistWrapper.find(".checklist:last").slideDown(200);
+
+				_updateChecklistOrder();
+				makeChecklistsSortable();
+			},
+			error: function(data) {
+				_showError("Error adding checklist", data);
+			},
 		});
-
-		return false;
-	}
-
-	$(".checklists-wrapper").on("click", ".add-checklist .add-button", function() {
-		var tray = $(this).siblings(".tray");
-		var addButton = $(this);
-		var inputBox = tray.find("textarea");
-
-		if ($(this).siblings(".tray:visible").length) {
-			_hideAddChecklistTray(tray);
-		} else {
-			addButton.html("Cancel");
-			tray.slideDown(150, function() {
-				inputBox.focus();
-			});
-		}
-
-		return false;
-	});
-
-	function _addChecklist(checklist) {
-		var tray = checklist.parents(".tray:first");
-		var checklistTitle = tray.find("textarea").val().trim();
-
-		if (checklistTitle != '') {
-			var modal = $("#modal-card-edit");
-			var cardId = modal.attr("data-card-id");
-			var url = modal.attr("data-checklists-uri");
-			var checklistWrapper = modal.find(".checklists");
-
-			var data = {
-				title: checklistTitle,
-				status: "active",
-				order: 500,
-				card: cardId,
-			};
-
-			$.ajax({
-				url: url,
-				method: 'POST',
-				contentType: 'application/json',
-				data: JSON.stringify(data),
-				success: function(data) {
-					// Add checklist to DOM
-					var html = '<div class="checklist ui-sortable" data-checklist-id="' + data.id + '" data-checklist-uri="' + data.url + '" style="display: none;">';
-					html += '<span class="checklist-edit">&hellip;</span>';
-					html += '<h2 class="checklist-title">' + checklistTitle + '</h2>';
-					html += '<div class="checklist-items"></div>';
-					html += '<div class="add-checklist-item">';
-					html += '<div class="tray">';
-					html += '<textarea></textarea>';
-					html += '<span class="save-button button">Save item</span>';
-					html += '</div>';
-					html += '<span class="plus">+</span>';
-					html += '<span class="add-button">Add item</span>';
-					html += '</div>';
-					html += '</div>';
-
-					checklistWrapper.append(html);
-					checklistWrapper.find(".checklist:last").slideDown(200);
-
-					_updateChecklistOrder();
-
-					_hideAddChecklistTray(tray);
-
-					makeChecklistsSortable();
-				},
-				error: function(data) {
-					_showError("Error adding checklist", data);
-				},
-			});
-		}
-	}
-
-	$(".checklists-wrapper").on("click", ".add-checklist .save-button", function() {
-		_addChecklist($(this));
 
 		return false;
 	});

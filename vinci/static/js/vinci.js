@@ -888,7 +888,7 @@ $(document).ready(function() {
 	Mousetrap.bind('A', _focusAddNotebookTray);
 	var field = document.querySelector('#add-notebook input[type=text]');
 	Mousetrap(field).bind('esc', _unfocusAddNotebookTray);
-	Mousetrap(field).bind(['mod+enter', 'shift+enter'], _addNotebook);
+	Mousetrap(field).bind(['enter', 'mod+enter', 'shift+enter'], _addNotebook);
 
 	$("#add-notebook").submit(_addNotebook);
 
@@ -1377,7 +1377,7 @@ $(document).ready(function() {
 		if (cardTitle != '') {
 			var list = card.parents("section.list:first");
 			var cardList = list.find("ul.cards");
-			var url = cardList.attr("data-cards-uri");
+			var url = $(".lists").attr("data-cards-uri");
 			var listId = list.attr("data-list-id");
 			var tray = list.find(".tray");
 
@@ -1403,6 +1403,7 @@ $(document).ready(function() {
 					cardList.append(html);
 					cardList.find("li:last").slideDown(200);
 
+
 					_updateCardOrderForList(cardList.parents("section.list:first"));
 
 					_hideAddCardTray(tray);
@@ -1425,7 +1426,7 @@ $(document).ready(function() {
 	// Cmd+Enter (or Ctrl+Enter) to add a card
 	var fields = document.querySelectorAll(".add-card textarea");
 	for (var i=0; i<fields.length; i++) {
-		Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
+		Mousetrap(fields[i]).bind(['enter', 'mod+enter', 'shift+enter'], function(e) {
 			_addCard($(e.target));
 
 			return false;
@@ -1511,6 +1512,20 @@ $(document).ready(function() {
 					makeListsSortable();
 
 					_hideAddListTray(tray);
+
+					var field = newList.find(".add-card textarea")[0];
+					Mousetrap(field).bind(['enter', 'mod+enter', 'shift+enter'], function(e) {
+						_addCard($(e.target));
+
+						return false;
+					});
+
+					Mousetrap(field).bind('esc', function(e) {
+						var tray = $(e.target).parents(".tray:first");
+						_hideAddCardTray(tray);
+
+						return false;
+					});
 				},
 				error: function(data) {
 					_showError("Error adding list", data);
@@ -1528,7 +1543,7 @@ $(document).ready(function() {
 	// Cmd+Enter (or Ctrl+Enter) to add a list
 	var fields = document.querySelectorAll(".add-list textarea");
 	for (var i=0; i<fields.length; i++) {
-		Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
+		Mousetrap(fields[i]).bind(['enter', 'mod+enter', 'shift+enter'], function(e) {
 			_addList($(e.target));
 
 			return false;
@@ -1583,17 +1598,8 @@ $(document).ready(function() {
 
 		var fields = document.querySelectorAll('#modal-card-edit .add-checklist-item textarea');
 		for (var i=0; i<fields.length; i++) {
-			Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
+			Mousetrap(fields[i]).bind(['enter', 'mod+enter', 'shift+enter'], function(e) {
 				_addChecklistItem($(e.target));
-
-				return false;
-			});
-		}
-
-		var fields = document.querySelectorAll('#modal-card-edit .add-checklist textarea');
-		for (var i=0; i<fields.length; i++) {
-			Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
-				_addChecklist($(e.target));
 
 				return false;
 			});
@@ -1601,7 +1607,7 @@ $(document).ready(function() {
 
 		var fields = document.querySelectorAll('#modal-card-edit .label-edit');
 		for (var i=0; i<fields.length; i++) {
-			Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
+			Mousetrap(fields[i]).bind(['enter', 'mod+enter', 'shift+enter'], function(e) {
 				_saveChecklistItem($(e.target).parents(".checklist-item:first"));
 
 				return false;
@@ -1895,7 +1901,7 @@ $(document).ready(function() {
 
 	var fields = document.querySelectorAll('#modal-list-edit textarea');
 	for (var i=0; i<fields.length; i++) {
-		Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
+		Mousetrap(fields[i]).bind(['enter', 'mod+enter', 'shift+enter'], function(e) {
 			_saveListTitle();
 
 			return false;
@@ -2049,8 +2055,11 @@ $(document).ready(function() {
 					html += '<span class="checkbox"></span>';
 					html += '<span class="label">' + itemTitle + '</span>';
 					html += '<input type="text" class="label-edit" value="' + escape(itemTitle) + '" />';
-					html += '<span class="save-item-button button">Save</span>';
-					html += '<span class="cancel-item-button">&times;</span>';
+					html += '<span class="controls">\n';
+					html += '<span class="delete-item-button button">Delete</span>\n';
+					html += '<span class="save-item-button button">Save</span>\n';
+					html += '<span class="cancel-item-button">&times;</span>\n';
+					html += '</span>';
 					html += '</div>';
 
 					checklistItems.append(html);
@@ -2121,6 +2130,13 @@ $(document).ready(function() {
 
 				_updateChecklistOrder();
 				makeChecklistsSortable();
+
+				var field = checklistWrapper.find(".checklist:last")[0];
+				Mousetrap(field).bind(['enter', 'mod+enter', 'shift+enter'], function(e) {
+					_addChecklistItem($(e.target));
+
+					return false;
+				});
 			},
 			error: function(data) {
 				_showError("Error adding checklist", data);

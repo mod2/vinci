@@ -43,21 +43,21 @@ def notebook_section(request, notebook_slug, section):
     sortby = request.GET.get('sort', sortby)
     page = int(request.GET.get('page', 1))
 
-    notebook = get_object_or_404(Notebook, slug=notebook_slug)
-
-    entries = (notebook.entries
-               .active()
-               .filter(entry_type=section)
-               .order_by(sortby)
-               )
-    entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE).page(page)
-
     notebooks = Notebook.objects.filter(status='active').order_by('name')
+    notebook = get_object_or_404(Notebook, slug=notebook_slug)
 
     if section == 'todo':
         template = 'todos'
         labels = Label.objects.all()
+        entries = []
     else:
+        entries = (notebook.entries
+                .active()
+                .filter(entry_type=section)
+                .order_by(sortby)
+                )
+        entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE).page(page)
+
         template = 'entries'
         labels = []
 

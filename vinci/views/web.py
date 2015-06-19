@@ -188,7 +188,7 @@ def notebooks_list(request):
 @login_required
 def today(request):
     # Get all Today lists
-    today_lists = List.objects.filter(title='Today')
+    today_lists = List.objects.filter(title='Today').order_by('notebook__name')
 
     section = 'today'
 

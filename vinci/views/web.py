@@ -69,7 +69,7 @@ def notebook_section(request, notebook_slug, section):
         'scope': 'section',
         'entries': entries,
         'labels': labels,
-        'page_type': 'entries',
+        'page_type': 'list',
     }
 
     if section == 'todo':
@@ -288,7 +288,7 @@ def _search(request, query, notebook=None, section=None):
         'section': section,
         'scope': scope,
         'notebooks': notebooks,
-        'page_type': 'entries',
+        'page_type': 'list',
         'search': True,
     }
 

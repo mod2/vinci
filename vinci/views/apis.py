@@ -857,3 +857,77 @@ def update_revision(request, notebook_slug, slug, revision_id):
 
     # Return JSON response
     return JsonResponse(response)
+
+def add_card(request, notebook_slug):
+    """ Adds an entry to a notebook. """
+
+    callback = request.GET.get('callback', '')
+    key = request.GET.get('key', '')
+    list_slug = request.GET.get('list', '')
+    section = 'todo'
+
+    if key != settings.VINCI_NON_REST_KEY:
+        # Must have API key
+        return JsonResponse({})
+
+    if request.method == 'GET':
+        content = request.GET.get('content')
+    elif request.method == 'POST':
+        content = request.POST.get('content')
+
+    notebook = models.Notebook.objects.get(slug=notebook_slug)
+
+    # First figure out which list to add it to
+    if list_slug != '':
+        # User specified a list, so get it
+        try:
+            list = models.List.objects.get(slug=list_slug, notebook=notebook)
+        except models.List.DoesNotExist:
+            list = None
+            pass
+    else:
+        # Try to get the Inbox list
+        try:
+            list = models.List.objects.get(slug='inbox')
+        except models.List.DoesNotExist:
+            # No Inbox list, so get first list if it's there
+            list = models.List.objects.first()
+
+            if not list:
+                # Create a list if there isn't one
+                list = models.List()
+                list.title = "Inbox"
+                list.save()
+
+    # Add the card
+    try:
+        if list == None:
+            raise Exception
+
+        card = models.Card()
+        card.title = content.strip()
+        card.order = 0
+        card.notebook = notebook
+        card.list = list
+
+        # Save the card
+        card.save()
+
+        response = {
+            'status': 'success',
+            'id': card.id,
+        }
+    except Exception as e:
+        response = {
+            'status': 'error',
+            'message': '{}'.format(e),
+        }
+
+    if callback:
+        # Redirect to callback
+        response = HttpResponse("", status=302)
+        response['Location'] = callback
+        return response
+    else:
+        # Return JSON response
+        return JsonResponse(response)

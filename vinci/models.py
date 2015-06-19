@@ -373,7 +373,13 @@ class List(BaseListMixin, StatusMixin, DatedMixin, models.Model):
     notebook = models.ForeignKey(Notebook, related_name="lists")
     labels = models.ManyToManyField(Label, blank=True,
                                     related_name="labeled_lists")
-    slug = AutoSlugField(populate_from='title', unique=False, editable=True)
+    slug = models.SlugField(blank=True, default='')
+
+    def save(self, **kwargs):
+        if self.title:
+            self.slug = slugify(self.title)
+
+        super(List, self).save()
 
     def get_active_cards(self):
         return self.cards.filter(status=LIST_STATUS.active)

@@ -37,6 +37,9 @@ if settings.VINCI_ENABLE_NON_REST_APIS:
         url(r'^(?P<notebook_slug>[^\/]+)/add-entry/$',
             'vinci.views.apis.add_entry',
             name='api_entry_add_entry'),
+        url(r'^(?P<notebook_slug>[^\/]+)/add-card/$',
+            'vinci.views.apis.add_card',
+            name='api_entry_add_card'),
 
         # TODO: convert these
         url(r'^(?P<notebook_slug>[^\/]+)/(?P<slug>[^\/]+)/add-revision/$',

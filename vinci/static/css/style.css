@@ -196,6 +196,7 @@ header[role=banner] .system {
 
 header[role=site] {
 	align-items: flex-end;
+	-webkit-align-items: flex-end;
 	background: hsl(212, 34%, 20%);
 	display: none;
 	overflow: hidden;
@@ -227,6 +228,7 @@ header[role=site] h1 a {
 }
 
 header[role=site] .system {
+	-webkit-flex: 0.25;
 	flex: 0.25;
 	text-align: right;
 }
@@ -1389,6 +1391,7 @@ nav[role=pagination] {
 }
 
 #modal .modal.active {
+	display: -webkit-flex !important;
 	display: flex !important;
 }
 
@@ -1398,10 +1401,12 @@ nav[role=pagination] {
 }
 
 #modal .modal .columns {
+	display: -webkit-flex !important;
 	display: flex;
 }
 
 #modal .modal .columns .column {
+	-webkit-flex: 1;
 	flex: 1;
 	padding: 15px 25px;
 }
@@ -1871,13 +1876,14 @@ body.todo-mode .wrapper {
 
 body.todo-mode #page {
 	-webkit-flex-direction: column;
+	display: -webkit-flex;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
 }
 
 #page #content.todo {
-	-webkit-flex: 1
+	-webkit-flex: 1;
 	flex: 1;
 }
 
@@ -1905,6 +1911,7 @@ body.todo-mode #page {
 	display: flex;
 	-webkit-flex-direction: row;
 	flex-direction: row;
+	-webkit-flex: 1;
 	flex: 1;
 	height: 100%;
 	margin: 25px 25px;
@@ -2231,20 +2238,24 @@ body.todo-mode #page {
 /* -------------------------------------------------- */
 
 #modal .todo-edit {
+	-webkit-flex-direction: row;
 	background: hsl(0, 0%, 90%);
 	color: hsl(0, 0%, 0%);
 	flex-direction: row;
 }
 
 #modal .todo-edit.active {
+	display: -webkit-flex;
 	display: flex;
 }
 
 #modal .todo-edit .main-column {
+	-webkit-flex: 1;
 	flex: 1;
 }
 
 #modal .todo-edit .sidebar {
+	-webkit-flex: 0.6;
 	background: hsl(0, 0%, 85%);
 	border-radius: 0 5px 5px 0;
 	flex: 0.6;
@@ -2464,8 +2475,10 @@ body.todo-mode #page {
 }
 
 #modal .todo-edit .checklists .checklist-item {
+	align-items: -webkit-flex-start;
 	align-items: flex-start;
 	cursor: pointer;
+	display: -webkit-flex;
 	display: flex;
 	overflow: hidden;
 }
@@ -2510,6 +2523,7 @@ body.todo-mode #page {
 #modal .todo-edit .checklists .checklist-item .label {
 	color: hsl(0, 0%, 30%);
 	cursor: pointer;
+	-webkit-flex: 1;
 	flex: 1;
 	line-height: 1.1em;
 	padding: 6px 0;
@@ -2519,6 +2533,7 @@ body.todo-mode #page {
 	background: none;
 	border: none;
 	display: none;
+	-webkit-flex: 1;
 	flex: 1;
 	font-size: 1em;
 	height: 2em;
@@ -2634,6 +2649,7 @@ body.todo-mode #page {
 	border: none;
 	color: hsl(205, 37%, 62%);
 	display: none;
+	-webkit-flex: 1;
 	flex: 1;
 	font-size: .9em;
 	height: 2em;

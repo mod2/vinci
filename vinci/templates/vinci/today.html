@@ -4,12 +4,12 @@
 
 <section class="today-wrapper">
 {% for list in today_lists %}
-{% if list.cards.all|length %}
+{% if list.get_active_cards|length %}
 	<div class="list">
 		<h2>{{ list.notebook.name }}</h2>
 
 		<ul class="cards">
-			{% for card in list.cards.all %}
+			{% for card in list.get_active_cards %}
 			<li class="card">
 				<a href="{% url 'card_detail' list.notebook.slug card.id %}">
 				<span class="title{% if not card.description %} no-desc{% endif %}">{{ card.title }}</span>

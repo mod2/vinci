@@ -2399,7 +2399,7 @@ function resizeBoard() {
 	// Calculate total width (add one because of "Add list")
 	var numLists = $(".lists .list").length + 1;
 
-	$("#content .lists").css("width", "calc((" + numLists + " * 270px) + (" + (numLists - 1) + " * 15px))");
+	$("#content .lists").css("width", "calc((" + numLists + " * 270px) + (" + numLists + " * 15px))");
 
 	// Calculate max-height (max-height: 100% doesn't work with flexbox for some reason)
 	var height = $("#content .lists").height();

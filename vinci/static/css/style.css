@@ -2766,7 +2766,7 @@ body.todo-mode #page {
 .today-mode .card .title {
 	display: block;
 	line-height: 1.2em;
-	padding: 9px 12px 11px;
+	padding: 9px 12px 5px;
 }
 
 .today-mode .card .title.no-desc {
@@ -2779,7 +2779,7 @@ body.todo-mode #page {
 	font-size: .75em;
 	line-height: 1.2em;
 	margin-top: 2px;
-	padding: 0px 8px 8px;
+	padding: 0px 12px 8px;
 }
 
 

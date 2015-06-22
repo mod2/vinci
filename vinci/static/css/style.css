@@ -2120,16 +2120,16 @@ body.todo-mode #page {
 #page #content.todo .labels {
 	display: flex;
 	display: -webkit-flex;
-	height: 5px;
-	margin-left: 9px;
+	height: 4px;
+	margin: 0 9px;
 }
 
 #page #content.todo .labels span {
 	flex: 1;
 	-webkit-flex: 1;
-	height: 5px;
+	height: 4px;
 	max-width: 35px;
-	border-radius: 0 0 2px 2px;
+	border-radius: 0 0 4px 4px;
 }
 
 #page #content.todo .labels span + span {

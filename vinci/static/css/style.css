@@ -2137,7 +2137,7 @@ body.todo-mode #page {
 }
 
 #page #content.todo .labels + .title {
-	padding-top: 6px;
+	padding-top: 5px;
 }
 
 #page #content.todo .labels .label-1 {

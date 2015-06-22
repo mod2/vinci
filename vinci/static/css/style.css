@@ -2048,6 +2048,22 @@ body.todo-mode #page {
 	display: none;
 }
 
+#page #content.todo .list .add-card {
+	min-height: 3em;
+	overflow: hidden;
+}
+
+#page #content.todo .list .add-card.active {
+	background: hsl(0, 0%, 90%);
+	border-radius: 5px;
+	box-shadow: 0 -1px 15px rgba(0, 0, 0, 0.5);
+	margin-left: -15px;
+	min-height: 9.5em;
+	padding-top: 10px;
+	width: 300px;
+	z-index: 50000;
+}
+
 #page #content.todo .list .add-card .add-button {
 	background: hsl(0, 0%, 90%);
 	border-radius: 0 0 3px 3px;
@@ -2105,16 +2121,23 @@ body.todo-mode #page {
 	display: flex;
 	display: -webkit-flex;
 	height: 5px;
+	margin-left: 9px;
 }
 
 #page #content.todo .labels span {
 	flex: 1;
 	-webkit-flex: 1;
 	height: 5px;
+	max-width: 35px;
+	border-radius: 0 0 2px 2px;
+}
+
+#page #content.todo .labels span + span {
+	margin-left: 3px;
 }
 
 #page #content.todo .labels + .title {
-	padding-top: 6px;
+	padding-top: 4px;
 }
 
 #page #content.todo .labels .label-1 {
@@ -2131,26 +2154,11 @@ body.todo-mode #page {
 
 #page #content.todo .list > .labels {
 	height: 7px;
+	margin-left: 11px;
 }
 
 #page #content.todo .list > .labels span {
 	height: 7px;
-}
-
-#page #content.todo .list > .labels span:first-child {
-	border-top-left-radius: 3px;
-}
-
-#page #content.todo .list > .labels span:last-child {
-	border-top-right-radius: 3px;
-}
-
-#page #content.todo .card > .labels span:first-child {
-	border-top-left-radius: 2px;
-}
-
-#page #content.todo .card > .labels span:last-child {
-	border-top-right-radius: 2px;
 }
 
 #page #content.todo .card.ui-sortable-helper {
@@ -2725,6 +2733,11 @@ body.todo-mode #page {
 	margin: 0 0 5px 0;
 }
 
+.today-mode h2 a {
+	color: hsl(296, 57%, 49%);
+	text-decoration: none;
+}
+
 .today-mode .list ul.cards {
 	list-style: none;
 	max-height: 100%;
@@ -2761,7 +2774,7 @@ body.todo-mode #page {
 .today-mode .card .title {
 	display: block;
 	line-height: 1.2em;
-	padding: 9px 12px 11px;
+	padding: 9px 12px 5px;
 }
 
 .today-mode .card .title.no-desc {
@@ -2774,7 +2787,7 @@ body.todo-mode #page {
 	font-size: .75em;
 	line-height: 1.2em;
 	margin-top: 2px;
-	padding: 0px 8px 8px;
+	padding: 0px 12px 8px;
 }
 
 

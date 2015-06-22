@@ -1360,22 +1360,29 @@ $(document).ready(function() {
 
 	$(".lists").on("click", ".add-card .add-button", function() {
 		var tray = $(this).siblings(".tray");
+		var container = $(this).parents(".add-card:first");
 		var addButton = $(this);
 		var inputBox = tray.find("textarea");
+
+		$(this).blur();
 
 		if ($(this).siblings(".tray:visible").length) {
 			_hideAddCardTray(tray);
 		} else {
+			container.addClass("active");
 			addButton.html("Cancel");
-			tray.slideDown(150, function() {
+			tray.fadeIn(150, function() {
 				inputBox.focus();
 			});
 		}
 	});
 
 	function _hideAddCardTray(tray) {
+		var container = tray.parents(".add-card:first");
 		var inputBox = tray.find("textarea");
 		var addButton = tray.siblings(".add-button");
+
+		container.removeClass("active");
 		addButton.html("Add card");
 		tray.slideUp(150, function() {
 			inputBox.val('');
@@ -2399,7 +2406,7 @@ function resizeBoard() {
 	// Calculate total width (add one because of "Add list")
 	var numLists = $(".lists .list").length + 1;
 
-	$("#content .lists").css("width", "calc((" + numLists + " * 270px) + (" + (numLists - 1) + " * 15px))");
+	$("#content .lists").css("width", "calc((" + numLists + " * 270px) + (" + numLists + " * 15px))");
 
 	// Calculate max-height (max-height: 100% doesn't work with flexbox for some reason)
 	var height = $("#content .lists").height();

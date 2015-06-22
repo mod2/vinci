@@ -75,7 +75,6 @@ def notebook_section(request, notebook_slug, section):
     if section == 'todo':
         context['lists'] = notebook.get_active_lists()
         context['num_lists'] = len(context['lists']) + 1
-        context['num_lists_sub_one'] = context['num_lists'] - 1
 
     return render_to_response('vinci/{}.html'.format(template),
                               context,

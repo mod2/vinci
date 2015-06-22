@@ -2048,6 +2048,22 @@ body.todo-mode #page {
 	display: none;
 }
 
+#page #content.todo .list .add-card {
+	min-height: 3em;
+	overflow: hidden;
+}
+
+#page #content.todo .list .add-card.active {
+	background: hsl(0, 0%, 90%);
+	border-radius: 5px;
+	box-shadow: 0 -1px 15px rgba(0, 0, 0, 0.5);
+	margin-left: -15px;
+	min-height: 9.5em;
+	padding-top: 10px;
+	width: 300px;
+	z-index: 50000;
+}
+
 #page #content.todo .list .add-card .add-button {
 	background: hsl(0, 0%, 90%);
 	border-radius: 0 0 3px 3px;

@@ -1360,24 +1360,31 @@ $(document).ready(function() {
 
 	$(".lists").on("click", ".add-card .add-button", function() {
 		var tray = $(this).siblings(".tray");
+		var container = $(this).parents(".add-card:first");
 		var addButton = $(this);
 		var inputBox = tray.find("textarea");
+
+		$(this).blur();
 
 		if ($(this).siblings(".tray:visible").length) {
 			_hideAddCardTray(tray);
 		} else {
+			container.addClass("active");
 			addButton.html("Cancel");
-			tray.slideDown(150, function() {
+			tray.fadeIn(150, function() {
 				inputBox.focus();
 			});
 		}
 	});
 
 	function _hideAddCardTray(tray) {
+		var container = tray.parents(".add-card:first");
 		var inputBox = tray.find("textarea");
 		var addButton = tray.siblings(".add-button");
+
+		container.removeClass("active");
 		addButton.html("Add card");
-		tray.slideUp(150, function() {
+		tray.fadeOut(150, function() {
 			inputBox.val('');
 		});
 	}

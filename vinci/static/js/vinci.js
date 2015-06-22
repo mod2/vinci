@@ -1384,7 +1384,7 @@ $(document).ready(function() {
 
 		container.removeClass("active");
 		addButton.html("Add card");
-		tray.fadeOut(150, function() {
+		tray.slideUp(150, function() {
 			inputBox.val('');
 		});
 	}

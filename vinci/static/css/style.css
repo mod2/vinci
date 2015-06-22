@@ -2121,16 +2121,23 @@ body.todo-mode #page {
 	display: flex;
 	display: -webkit-flex;
 	height: 5px;
+	margin-left: 9px;
 }
 
 #page #content.todo .labels span {
 	flex: 1;
 	-webkit-flex: 1;
 	height: 5px;
+	max-width: 35px;
+	border-radius: 0 0 2px 2px;
+}
+
+#page #content.todo .labels span + span {
+	margin-left: 3px;
 }
 
 #page #content.todo .labels + .title {
-	padding-top: 6px;
+	padding-top: 4px;
 }
 
 #page #content.todo .labels .label-1 {
@@ -2147,26 +2154,11 @@ body.todo-mode #page {
 
 #page #content.todo .list > .labels {
 	height: 7px;
+	margin-left: 11px;
 }
 
 #page #content.todo .list > .labels span {
 	height: 7px;
-}
-
-#page #content.todo .list > .labels span:first-child {
-	border-top-left-radius: 3px;
-}
-
-#page #content.todo .list > .labels span:last-child {
-	border-top-right-radius: 3px;
-}
-
-#page #content.todo .card > .labels span:first-child {
-	border-top-left-radius: 2px;
-}
-
-#page #content.todo .card > .labels span:last-child {
-	border-top-right-radius: 2px;
 }
 
 #page #content.todo .card.ui-sortable-helper {

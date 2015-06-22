@@ -2725,6 +2725,11 @@ body.todo-mode #page {
 	margin: 0 0 5px 0;
 }
 
+.today-mode h2 a {
+	color: hsl(296, 57%, 49%);
+	text-decoration: none;
+}
+
 .today-mode .list ul.cards {
 	list-style: none;
 	max-height: 100%;

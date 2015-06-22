@@ -18,7 +18,7 @@ class Command(BaseCommand):
                 try:
                     inbox_list = List.objects.get(slug='inbox', notebook=list.notebook)
 
-                    num_cards = inbox_list.cards.all().count()
+                    num_cards = inbox_list.get_active_cards().count()
                     if num_cards > 0:
                         # Reorder existing cards so the new ones show up in order
                         # (If there's just one, order=0 will put it at the top)
@@ -29,7 +29,7 @@ class Command(BaseCommand):
 
                     # Move all cards from list to inbox_list
                     order = 0
-                    for card in list.cards.all():
+                    for card in list.get_active_cards():
                         card.list = inbox_list
                         card.order = order
                         card.save()

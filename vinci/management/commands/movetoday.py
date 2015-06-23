@@ -12,11 +12,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            today_lists = List.objects.filter(slug='today')
+            today_lists = List.objects.filter(slug='today', status='active')
 
             for list in today_lists:
                 try:
-                    inbox_list = List.objects.get(slug='inbox', notebook=list.notebook)
+                    inbox_list = List.objects.filter(slug='inbox', notebook=list.notebook, status='active')[0]
 
                     num_cards = inbox_list.get_active_cards().count()
                     if num_cards > 0:

@@ -572,7 +572,7 @@ class ChecklistItemAPIViewSet(viewsets.ModelViewSet):
     queryset = models.ChecklistItem.objects.all()
 
 
-# Non rest api views
+# Non-REST API views
 def append_today(request, notebook_slug):
     """ Appends to today's entry, creating it if it's not there. """
 
@@ -858,6 +858,7 @@ def update_revision(request, notebook_slug, slug, revision_id):
     # Return JSON response
     return JsonResponse(response)
 
+
 def add_card(request, notebook_slug):
     """ Adds an entry to a notebook. """
 
@@ -881,14 +882,14 @@ def add_card(request, notebook_slug):
     if list_slug != '':
         # User specified a list, so get it
         try:
-            list = models.List.objects.get(slug=list_slug, notebook=notebook)
+            list = models.List.objects.filter(slug=list_slug, notebook=notebook, status='active').first()
         except models.List.DoesNotExist:
             list = None
             pass
     else:
         # Try to get the Inbox list
         try:
-            list = models.List.objects.get(slug='inbox')
+            list = models.List.objects.filter(slug='inbox', notebook=notebook, status='active').first()
         except models.List.DoesNotExist:
             # No Inbox list, so get first list if it's there
             list = models.List.objects.first()

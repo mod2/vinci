@@ -2393,6 +2393,73 @@ $(document).ready(function() {
 
 		return false;
 	});
+
+
+	// Today mode click card (modal)
+
+	$(".today-mode").on("click", "ul.cards .card", function() {
+		// Populate it with the card info
+		var card = $(this);
+
+		var cardURI = card.attr("data-card-uri");
+		$("#modal-today-card").attr("data-card-uri", cardURI);
+
+		var cardPageURI = card.attr("data-card-page-uri");
+		$("#modal-today-card a#go-to-card-link").attr("href", cardPageURI);
+
+		var cardId = card.attr("data-card-id");
+		$("#modal-today-card").attr("data-card-id", cardId);
+
+		// Show the modal
+		$("#modal-today-card").siblings(".modal").hide();
+		$("#mask").fadeIn(200);
+		$("#modal").fadeIn(200);
+		$("#modal-today-card").css("display", "flex").fadeIn(200);
+
+		return false;
+	});
+
+	// Archive/delete card from Today mode
+	$("#modal-today-card").on("click", "#today-archive-card-button, #today-delete-card-button", function() {
+		var modal = $("#modal-today-card");
+
+		if ($(this).attr("id") == "today-archive-card-button") {
+			var status = "archived";
+		} else {
+			var status = "deleted";
+		}
+
+		if (status == "deleted") {
+			if (!confirm("Are you sure you want to delete that card?")) {
+				return false;
+			}
+		}
+
+		var url = modal.attr("data-card-uri");
+		var cardId = modal.attr("data-card-id");
+		var element = $("ul.cards li[data-card-id=" + cardId + "]");
+
+		var data = {
+			status: status,
+		};
+
+		$.ajax({
+			url: url,
+			method: 'PATCH',
+			contentType: 'application/json',
+			data: JSON.stringify(data),
+			success: function(data) {
+				// Make the object disappear
+				element.slideUp(200, function() {
+					$(this).remove();
+					_hideModals();
+				});
+			},
+			error: function(data) {
+				_showError("Error archiving/deleting card", data);
+			},
+		});
+	});
 });
 
 function processEntries(entries) {

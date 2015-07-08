@@ -2808,6 +2808,41 @@ body.today-mode {
 }
 
 
+/* Today mode modal */
+/* -------------------------------------------------- */
+
+.today-mode #modal-today-card {
+	flex-direction: column;
+	-webkit-flex-direction: column;
+	max-width: 300px;
+	padding: 10px;
+}
+
+.today-mode #modal-today-card > * + * { /* Not as weird as it looks */
+	margin-top: 10px;
+}
+
+.today-mode #modal-today-card input.button {
+	font-size: 1em;
+}
+
+.today-mode #modal-today-card input.button:hover {
+	background: hsl(0, 0%, 15%) !important;
+}
+
+.today-mode #modal-today-card a#go-to-card-link {
+	color: #fff;
+	display: block;
+	margin-top: 25px;
+	text-align: center;
+	text-decoration: none;
+}
+
+.today-mode #modal-today-card a#go-to-card-link:hover {
+	text-decoration: underline;
+}
+
+
 /* Media queries */
 /* -------------------------------------------------- */
 

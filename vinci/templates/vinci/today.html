@@ -10,11 +10,9 @@
 
 		<ul class="cards">
 			{% for card in list.get_active_cards %}
-			<li class="card">
-				<a target="_blank" href="{% url 'card_detail' list.notebook.slug card.id %}">
+			<li class="card" data-card-id="{{ card.id }}" data-card-uri="{% url 'card-detail' card.id %}" data-card-page-uri="{% url 'card_detail' list.notebook.slug card.id %}">
 				<span class="title{% if not card.description %} no-desc{% endif %}">{{ card.title }}</span>
 				{% if card.description %}<span class="desc">{{ card.description }}</span>{% endif %}
-				</a>
 			</li>
 			{% endfor %}
 		</ul>
@@ -24,3 +22,11 @@
 </section>
 
 {% endblock content %}
+
+{% block modal %}
+<div id="modal-today-card" class="modal">
+	<input id="today-archive-card-button" class="button archive" type="button" value="Archive Card" />
+	<input id="today-delete-card-button" class="button delete" type="button" value="Delete Card" />
+	<a id="go-to-card-link" target="_blank" href="">Go to Card</a>
+</div>
+{% endblock modal %}

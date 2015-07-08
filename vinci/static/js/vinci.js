@@ -1784,7 +1784,7 @@ $(document).ready(function() {
 
 	var fields = document.querySelectorAll('#modal-card-edit .card textarea');
 	for (var i=0; i<fields.length; i++) {
-		Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
+		Mousetrap(fields[i]).bind(['enter', 'mod+enter', 'shift+enter'], function(e) {
 			_saveCardTitleDesc();
 
 			return false;

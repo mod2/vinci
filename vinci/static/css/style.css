@@ -1385,14 +1385,9 @@ nav[role=pagination] {
 	box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
 	color: #fff;
 	display: none;
-	margin: 50px auto;
-	max-width: 600px;
+	margin: 10px auto;
+	max-width: 300px;
 	pointer-events: auto;
-}
-
-#modal .modal.active {
-	display: -webkit-flex !important;
-	display: flex !important;
 }
 
 #modal .modal h2 {
@@ -1400,14 +1395,7 @@ nav[role=pagination] {
 	padding: 25px 25px 0;
 }
 
-#modal .modal .columns {
-	display: -webkit-flex !important;
-	display: flex;
-}
-
 #modal .modal .columns .column {
-	-webkit-flex: 1;
-	flex: 1;
 	padding: 15px 25px;
 }
 
@@ -1431,6 +1419,32 @@ nav[role=pagination] {
 	font-size: .9em;
 	line-height: 1.1em;
 	margin-left: 95px;
+}
+
+@media screen and (min-width: 620px) {
+	#modal {
+		position: absolute;
+	}
+
+	#modal .modal {
+		margin: 50px auto;
+		max-width: 600px;
+	}
+
+	#modal .modal.active {
+		display: -webkit-flex !important;
+		display: flex !important;
+	}
+
+	#modal .modal .columns {
+		display: -webkit-flex !important;
+		display: flex;
+	}
+
+	#modal .modal .columns .column {
+		-webkit-flex: 1;
+		flex: 1;
+	}
 }
 
 
@@ -2250,11 +2264,11 @@ body.todo-mode #page {
 	background: hsl(0, 0%, 90%);
 	color: hsl(0, 0%, 0%);
 	flex-direction: row;
+	position: absolute;
 }
 
 #modal .todo-edit.active {
-	display: -webkit-flex;
-	display: flex;
+	display: block;
 }
 
 #modal .todo-edit .main-column {
@@ -2303,7 +2317,7 @@ body.todo-mode #page {
 	border-radius: 4px;
 	color: hsl(0, 100%, 100%);
 	cursor: pointer;
-	display: block;
+	display: inline-block;
 	line-height: 1.4em;
 	list-style: none;
 	min-height: 2em;
@@ -2311,6 +2325,7 @@ body.todo-mode #page {
 	padding: 4px 8px 6px;
 	-webkit-user-select: none;
 	user-select: none;
+	width: 30px;
 }
 
 #modal .todo-edit .labels ul li.selected {
@@ -2366,6 +2381,22 @@ body.todo-mode #page {
 
 #modal .todo-edit .actions .button + .button {
 	margin-left: 10px;
+}
+
+@media screen and (min-width: 620px) {
+	#modal .todo-edit {
+		position: initial;
+	}
+
+	#modal .todo-edit.active {
+		display: -webkit-flex;
+		display: flex;
+	}
+
+	#modal .todo-edit .labels ul li {
+		display: block;
+		width: 100%;
+	}
 }
 
 
@@ -2716,10 +2747,7 @@ body.todo-mode #page {
 }
 
 .today-wrapper {
-	display: -webkit-flex;
-	display: flex;
-	-webkit-flex-wrap: wrap;
-	flex-wrap: wrap;
+	display: block;
 	margin: 0px auto;
 	padding-bottom: 100px;
 }
@@ -2729,12 +2757,24 @@ body.today-mode {
 }
 
 .today-mode .list {
-	-webkit-flex: 1;
-	flex: 1;
 	margin-top: 35px;
-	max-width: 300px;
 	min-width: 300px;
 	padding: 0 25px;
+}
+
+@media screen and (min-width: 500px) {
+	.today-wrapper {
+		display: -webkit-flex;
+		display: flex;
+		-webkit-flex-wrap: wrap;
+		flex-wrap: wrap;
+	}
+
+	.today-mode .list {
+		-webkit-flex: 1;
+		flex: 1;
+		max-width: 300px;
+	}
 }
 
 .today-mode h2 {

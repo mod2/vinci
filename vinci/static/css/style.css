@@ -2942,8 +2942,9 @@ body.today-mode {
 	#page #content .entry .metadata a.date span.notebook {
 		display: block;
 		font-size: .8em;
+		line-height: 1.1em;
 		margin-left: 0px;
-		margin-top: 5px;
+		margin-top: 8px;
 	}
 
 	#page #content .entry .content.container {

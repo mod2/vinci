@@ -2524,8 +2524,8 @@ function makeListsSortable() {
 }
 
 function _updateCardOrderForList(list) {
-	var list = list.find("ul.cards");
 	var url = list.attr("data-list-uri");
+	var list = list.find("ul.cards");
 	var order = {};
 
 	// Get all the cards

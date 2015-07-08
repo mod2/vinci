@@ -5,7 +5,7 @@
 <section class="today-wrapper">
 {% for list in today_lists %}
 {% if list.get_active_cards|length %}
-	<div class="list">
+	<section class="list" data-list-id="{{ list.id }}" data-list-uri="{% url 'list-detail' list.id %}">
 		<h2><a target="_blank" href="{% url 'notebook_section' list.notebook.slug 'todo' %}">{{ list.notebook.name }}</a></h2>
 
 		<ul class="cards">
@@ -16,7 +16,7 @@
 			</li>
 			{% endfor %}
 		</ul>
-	</div>
+	</section>
 {% endif %}
 {% endfor %}
 </section>

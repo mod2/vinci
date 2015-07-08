@@ -2181,7 +2181,7 @@ body.todo-mode #page {
 	transform: rotate(3deg);
 }
 
-#page #content.todo .card.placeholder {
+#page #content .card.placeholder {
 	background: rgba(0, 0, 0, 0.2) !important;
 	box-shadow: none;	
 	display: block;

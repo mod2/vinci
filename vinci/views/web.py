@@ -4,6 +4,11 @@ from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+
+from django.utils import timezone
+from django.utils.timezone import utc, make_aware
+from datetime import datetime
 
 from vinci.models import Notebook, Entry, Revision, Group, Label, List, Card
 import vinci.search_indexer as si
@@ -210,6 +215,81 @@ def today(request):
     }
 
     return render_to_response('vinci/today.html',
+                              context,
+                              RequestContext(request),
+                              )
+
+
+@login_required
+def diary(request, day):
+    """ Get every entry (log/journal) from the specified day, ordered by notebook. """
+
+    # Note: day needs to be YYYY-MM-DD form
+
+    # Get list of all active notebooks (for add tray)
+    notebooks = Notebook.objects.filter(status='active').order_by('name')
+
+    # Convert date to a datetime object
+    current_tz = timezone.get_current_timezone()
+    the_date = datetime.strptime(day, "%Y-%m-%d")
+    beginning = the_date.replace(hour=0, minute=0, second=0, tzinfo=current_tz)
+    end = the_date.replace(hour=23, minute=59, second=59, tzinfo=current_tz)
+
+    print(beginning, end)
+
+    # Convert to UTC
+    #local_beginning = current_tz.localize(beginning, is_dst=None)
+    #local_end = current_tz.localize(end, is_dst=None)
+    #beginning_utc = local_beginning.astimezone(utc)
+    #end_utc = local_end.astimezone(utc)
+
+    # Get all the entries on that day
+    entries = Entry.objects.filter(status='active',
+                                   date__gte=beginning,
+                                   date__lte=end)
+    print(entries)
+
+    # Limit it to just logs and journals
+    entries = entries.filter(Q(entry_type='log')
+                            | Q(entry_type='journal'))
+
+    # Sort by notebook and date and date and date and date
+    entries = entries.order_by('notebook__name', 'date')
+
+    # Now group them into notebooks
+    diary_notebooks = []
+    for entry in entries:
+        try:
+            nb_slug = diary_notebooks[-1]['slug']
+
+            if entry.notebook.slug == nb_slug:
+                # Same notebook as the last entry
+                diary_notebooks[-1]['entries'].append(entry)
+            else:
+                # New notebook
+                diary_notebooks.append({
+                    'name': entry.notebook.name,
+                    'slug': entry.notebook.slug,
+                    'entries': [entry],
+                })
+        except IndexError as e:
+            # No notebooks in the list yet
+            diary_notebooks.append({
+                'name': entry.notebook.name,
+                'slug': entry.notebook.slug,
+                'entries': [],
+            })
+
+    context = {
+        'title': 'Diary ({})'.format(day),
+        'notebooks': notebooks,
+        'diary_notebooks': diary_notebooks,
+        'section': 'log',
+        'scope': 'all',
+        'page_type': 'diary',
+    }
+
+    return render_to_response('vinci/diary.html',
                               context,
                               RequestContext(request),
                               )

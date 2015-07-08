@@ -1,0 +1,15 @@
+{% extends 'vinci/_base.html' %}
+
+{% block content %}
+	{% block entries %}
+	<section class="entries">
+		{% for notebook in diary_notebooks %}
+		{% if notebook.entries|length %}
+			{% for entry in notebook.entries %}
+				{% include 'vinci/_log.html' %}
+			{% endfor %}
+		{% endif %}
+		{% endfor %}
+	</section>
+	{% endblock entries %}
+{% endblock content %}

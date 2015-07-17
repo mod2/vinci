@@ -1416,7 +1416,7 @@ $(document).ready(function() {
 				contentType: 'application/json',
 				data: JSON.stringify(data),
 				success: function(data) {
-					var html = "<li class='card' style='display: none' data-card-id='" + data.id + "'>";
+					var html = "<li class='card' style='display: none' data-card-id='" + data.id + "' data-card-uri='/api-todo/cards/" + data.id + "/'>";
 					html += "<span class='title no-desc'>" + cardTitle + "</span>";
 					html += "</li>";
 					cardList.append(html);

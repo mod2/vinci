@@ -1084,14 +1084,6 @@ body.active-nav #page .mask {
 	outline: none;
 }
 
-#page #content .edit-mode .dirty {
-	background: hsl(85, 71%, 93%) !important;
-}
-
-#page #content .edit-mode ul.tagit.dirty li.tagit-new input[type=text] {
-	background: hsl(85, 71%, 93%) !important;
-}
-
 #page #content .edit-mode .group {
 	background: hsl(209, 48%, 88%);
 	font-size: .8em;
@@ -1812,10 +1804,6 @@ form.login input.button:hover {
 
 #settings input[type=text]:focus {
 	outline: none;
-}
-
-#settings input[type=text].dirty {
-	background: hsl(85, 71%, 93%) !important;
 }
 
 #settings input[type=submit].button {

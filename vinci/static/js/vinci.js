@@ -1,7 +1,5 @@
 // CSRF stuff
 
-var autoSaveInProgress = false;
-
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -359,13 +357,10 @@ $(document).ready(function() {
 	var fields = document.querySelectorAll(".edit-mode textarea");
 	for (var i=0; i<fields.length; i++) {
 		Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
-			if ($(e.target).hasClass("dirty")) {
-				autoSave(true, function() {
-					hideEditPanel($(e.target).parents(".entry"));
-				});
-			} else {
+			// Save the contents
+			save(function() {
 				hideEditPanel($(e.target).parents(".entry"));
-			}
+			});
 
 			return false;
 		});
@@ -373,13 +368,10 @@ $(document).ready(function() {
 	var fields = document.querySelectorAll(".edit-mode input.title");
 	for (var i=0; i<fields.length; i++) {
 		Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
-			if ($(e.target).hasClass("dirty")) {
-				autoSave(true, function() {
-					hideEditPanel($(e.target).parents(".entry"));
-				});
-			} else {
+			// Save the contents
+			save(function() {
 				hideEditPanel($(e.target).parents(".entry"));
-			}
+			});
 
 			return false;
 		});
@@ -663,19 +655,13 @@ $(document).ready(function() {
 	$("input[name=tags]").tagit();
 
 
-	// Autosave
+	// Save entry
 	// --------------------------------------------------
 
-	function autoSave(force, callback) {
-		if (autoSaveInProgress && !force) {
-			return;
-		} else {
-			autoSaveInProgress = true;
-		}
-
+	function save(callback) {
 		var currentBox = $("textarea[name=content]:visible");
 
-		if ((currentBox && currentBox.val()) || force) {
+		if (currentBox && currentBox.val()) {
 			// Get updated stuff
 			var currentText = currentBox.val().trim();
 			var currentTitle = currentBox.siblings("input[name=title]");
@@ -761,7 +747,6 @@ $(document).ready(function() {
 					contentType: 'application/json',
 					data: JSON.stringify(data),
 					success: function(data) {
-						$(".dirty").removeClass("dirty");
 						currentBox.attr("data-revision-id", data.revision_id);
 
 						// Update current cache
@@ -805,39 +790,18 @@ $(document).ready(function() {
 							}
 						}
 
-						autoSaveInProgress = false;
-
 						if (callback) {
 							callback();
 						}
 					},
 					error: function(data) {
 						currentBox.addClass("error");
-						_showError("Error autosaving", data);
-						autoSaveInProgress = false;
+						_showError("Error saving", data);
 					},
 				});
-			} else {
-				currentBox.removeClass("dirty");
-				autoSaveInProgress = false;
 			}
-		} else {
-			autoSaveInProgress = false;
 		}
 	}
-
-	// Autosave any open add/edit boxes every 3 seconds
-	var intervalId = window.setInterval(autoSave, 3000);
-
-	// When the user types into the fields, make them slightly green
-	// so it's clear that they're not saved
-	$("textarea[name=content], input[name=title], input[name=tags], input[name=date]").on("input", function() {
-		$(this).addClass("dirty");
-	});
-
-	$("li.tagit-new input[type=text]").on("input", function() {
-		$("ul.tagit").addClass("dirty");
-	});
 
 
 	// Add notebook tray
@@ -1071,10 +1035,6 @@ $(document).ready(function() {
 
 	// Rename notebook
 
-	$("#settings input[name=notebook-name]").on("input", function() {
-		$(this).addClass("dirty");
-	});
-
 	$("#settings input.rename-notebook").on("click", function() {
 		var field = $("#settings input[name=notebook-name]");
 		var url = $("#settings").attr("data-uri");
@@ -1090,7 +1050,6 @@ $(document).ready(function() {
 			contentType: 'application/json',
 			data: JSON.stringify(data),
 			success: function(data) {
-				field.removeClass("dirty");
 				$("#settings input.rename-notebook").blur();
 			},
 			error: function(data) {
@@ -1314,7 +1273,7 @@ $(document).ready(function() {
 		var currentText = $("textarea#text").val().trim();
 
 		if (currentText != sceneText) {
-			autoSave();
+			save();
 
 			confirm("Not done yet");
 			// Delay a bit to let the autosave do its thing

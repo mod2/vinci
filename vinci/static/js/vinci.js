@@ -365,7 +365,7 @@ $(document).ready(function() {
 			return false;
 		});
 	}
-	var fields = document.querySelectorAll(".edit-mode input.title");
+	var fields = document.querySelectorAll(".edit-mode input[type=text]");
 	for (var i=0; i<fields.length; i++) {
 		Mousetrap(fields[i]).bind(['mod+enter', 'shift+enter'], function(e) {
 			// Save the contents
@@ -809,6 +809,11 @@ $(document).ready(function() {
 						_showError("Error saving", data);
 					},
 				});
+			} else {
+				// Not submitting, but still do the callback
+				if (callback) {
+					callback();
+				}
 			}
 		}
 	}
@@ -1013,7 +1018,7 @@ $(document).ready(function() {
 	var field = document.querySelector('#add-entry textarea');
 	Mousetrap(field).bind('esc', _unfocusAddEntry);
 	Mousetrap(field).bind(['mod+enter', 'shift+enter'], _addEntry);
-	$("#add-entry .add.button").on("click", _addEntry);
+	$("#add-entry .add").on("click", _addEntry);
 
 	$("span.add-entry").on("click", function() {
 		_hideMenu();

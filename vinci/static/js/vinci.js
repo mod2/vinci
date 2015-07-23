@@ -402,7 +402,7 @@ $(document).ready(function() {
 	function toggleOthers(selector) {
 		var theOthers = selector.parents(".edit-mode").find(".other");
 
-		if ($(".edit-mode .other:visible").length > 0) {
+		if (selector.parents(".edit-mode").find(".other:visible").length > 0) {
 			theOthers.slideUp(200);
 		} else {
 			theOthers.slideDown(200);

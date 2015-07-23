@@ -7,6 +7,8 @@ from django.utils.text import slugify
 from model_utils import Choices
 from taggit.managers import TaggableManager
 
+import datetime
+
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 ENTRY_TYPE = Choices(
@@ -104,9 +106,10 @@ class EntryQuerySet(StatusQueries, models.QuerySet):
 
         # Update dates
         if 'date' in kwargs:
-            revision.last_modified = kwargs['date']
+            the_date = datetime.datetime.strptime(kwargs['date'], DATETIME_FORMAT)
+            revision.last_modified = the_date
             revision.save()
-            entry.date = kwargs['date']
+            entry.date = the_date
             entry.save()
 
         return entry

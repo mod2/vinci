@@ -411,8 +411,18 @@ $(document).ready(function() {
 		return false;
 	}
 
-	$(".edit-mode .group.more a").on("click", function() {
+	$(".edit-mode .group.more a.toggle").on("click", function() {
 		toggleOthers($(this));
+
+		return false;
+	});
+
+	// Save entry
+
+	$(".edit-mode .group.more a.save").on("click", function(e) {
+		save(function() {
+			hideEditPanel($(e.target).parents(".entry"));
+		});
 
 		return false;
 	});

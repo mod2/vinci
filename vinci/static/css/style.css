@@ -1170,6 +1170,7 @@ body.active-nav #page .mask {
 
 #page #content .edit-mode .group.more {
 	background: hsl(0, 0%, 100%);
+	color: hsl(0, 0%, 90%);
 	padding-bottom: 25px;
 }
 

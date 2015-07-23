@@ -2838,6 +2838,22 @@ body.today-mode {
 }
 
 
+/* Revisions */
+/* -------------------------------------------------- */
+
+#page #content > footer ul.revisions li.hidden {
+	display: none;
+}
+
+#page #content > footer ul.revisions.show li.hidden {
+	display: block;
+}
+
+#page #content > footer ul.revisions li a.toggle {
+	font-size: .9em;
+}
+
+
 /* Today mode modal */
 /* -------------------------------------------------- */
 

@@ -2434,6 +2434,14 @@ $(document).ready(function() {
 			},
 		});
 	});
+
+
+	// Revision display toggle
+	$("ul.revisions li a.toggle").on("click", function() {
+		$(this).parents("ul.revisions").toggleClass("show");
+
+		return false;
+	});
 });
 
 function processEntries(entries) {

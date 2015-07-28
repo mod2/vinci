@@ -227,7 +227,7 @@ def diary(request, day):
     # Note: day needs to be YYYY-MM-DD form
 
     # Get list of all active notebooks (for add tray)
-    notebooks = Notebook.objects.filter(status='active').order_by('name')
+    notebooks = Notebook.objects.exclude(status='deleted').order_by('name')
 
     # Convert date to a datetime object
     current_tz = timezone.get_current_timezone()
@@ -238,8 +238,8 @@ def diary(request, day):
     # Convert to UTC
     #local_beginning = current_tz.localize(beginning, is_dst=None)
     #local_end = current_tz.localize(end, is_dst=None)
-    #beginning_utc = local_beginning.astimezone(utc)
-    #end_utc = local_end.astimezone(utc)
+    beginning_utc = beginning.astimezone(utc)
+    end_utc = end.astimezone(utc)
 
     # Get all the entries on that day
     entries = Entry.objects.filter(status='active',
@@ -247,40 +247,15 @@ def diary(request, day):
                                    date__lte=end)
 
     # Limit it to just logs and journals
-    entries = entries.filter(Q(entry_type='log')
-                            | Q(entry_type='journal'))
+    entries = entries.filter(Q(entry_type='log') | Q(entry_type='journal'))
 
-    # Sort by notebook and date and date and date and date
-    entries = entries.order_by('notebook__name', 'date')
-
-    # Now group them into notebooks
-    diary_notebooks = []
-    for entry in entries:
-        try:
-            nb_slug = diary_notebooks[-1]['slug']
-
-            if entry.notebook.slug == nb_slug:
-                # Same notebook as the last entry
-                diary_notebooks[-1]['entries'].append(entry)
-            else:
-                # New notebook
-                diary_notebooks.append({
-                    'name': entry.notebook.name,
-                    'slug': entry.notebook.slug,
-                    'entries': [entry],
-                })
-        except IndexError as e:
-            # No notebooks in the list yet
-            diary_notebooks.append({
-                'name': entry.notebook.name,
-                'slug': entry.notebook.slug,
-                'entries': [],
-            })
+    # Sort by notebook and date
+    entries = entries.order_by('date', 'notebook__name')
 
     context = {
         'title': 'Diary ({})'.format(day),
         'notebooks': notebooks,
-        'diary_notebooks': diary_notebooks,
+        'entries': entries,
         'section': 'log',
         'scope': 'all',
         'page_type': 'diary',

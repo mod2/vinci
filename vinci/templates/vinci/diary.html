@@ -3,12 +3,8 @@
 {% block content %}
 	{% block entries %}
 	<section class="entries">
-		{% for notebook in diary_notebooks %}
-		{% if notebook.entries|length %}
-			{% for entry in notebook.entries %}
-				{% include 'vinci/_log.html' %}
-			{% endfor %}
-		{% endif %}
+		{% for entry in entries %}
+			{% include 'vinci/_log.html' %}
 		{% endfor %}
 	</section>
 	{% endblock entries %}

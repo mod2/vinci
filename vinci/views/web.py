@@ -236,15 +236,13 @@ def diary(request, day):
     end = the_date.replace(hour=23, minute=59, second=59, tzinfo=current_tz)
 
     # Convert to UTC
-    #local_beginning = current_tz.localize(beginning, is_dst=None)
-    #local_end = current_tz.localize(end, is_dst=None)
     beginning_utc = beginning.astimezone(utc)
     end_utc = end.astimezone(utc)
 
     # Get all the entries on that day
     entries = Entry.objects.filter(status='active',
-                                   date__gte=beginning,
-                                   date__lte=end)
+                                   date__gte=beginning_utc,
+                                   date__lte=end_utc)
 
     # Limit it to just logs and journals
     entries = entries.filter(Q(entry_type='log') | Q(entry_type='journal'))

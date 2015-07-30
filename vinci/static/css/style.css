@@ -1920,6 +1920,7 @@ body.todo-mode #page {
 	height: 100%;
 	margin: 25px 25px;
 	min-width: 100%;
+	overflow-y: hidden;
 }
 
 #page #content.todo .list {

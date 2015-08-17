@@ -36,3 +36,6 @@ DATABASES = {
 # These should be strings. Used by the quickjump api.
 VINCI_DEFAULT_API_KEY_USERNAME = None
 VINCI_API_KEY = None
+
+# For the image plugin, expects YYYY/MM substructure beyond this
+# VINCI_IMAGE_BASE_URL = "http://url/to/your/images"

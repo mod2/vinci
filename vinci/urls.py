@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from .views.apis import EntryListAPIView, EntryDetailAPIView
 from .views.apis import NotebookListAPIView, QuickJumpAPIView
 from .views import apis
@@ -90,3 +91,5 @@ urlpatterns = patterns(
         name='preferences'),
     url(r'^', include(vincipatterns)),
 )
+
+urlpatterns += staticfiles_urlpatterns()

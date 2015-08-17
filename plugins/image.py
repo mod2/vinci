@@ -5,10 +5,16 @@
 # Automatically looks in the static/YYYY/MM directory using the entry date
 
 import re
-# from flask import url_for
+from django.conf import settings
 
 def process(content, entry, notebook_url):
-    # content = re.sub(r'\(\((.*?)\)\)',
-    #                  r'<figure><img src="%sstatic/images/%04d/%02d/\1" alt="\1" /></figure>' % (url_for('index'), entry.date.year, entry.date.month), content)
+    content = re.sub(r'\(\((.*?)\)\)',
+                     r'<figure><img src="{}/{:04}/{:02}/\1" alt="\1" /></figure>'.format(
+                         settings.VINCI_IMAGE_BASE_URL,
+                         entry.date.year,
+                         entry.date.month
+                         ),
+                     content
+                     )
 
     return content

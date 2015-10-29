@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Entry, Notebook, Label, List, Card, Checklist, ChecklistItem
+from .models import Entry, Notebook
 
 
 class NotebookSerializer(serializers.ModelSerializer):
@@ -80,44 +80,3 @@ class EntrySerializer(serializers.ModelSerializer):
                   'html', 'notebook')
 
 
-# Todo board model serializers
-class LabelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Label
-        exclude = ()
-
-
-class ListSerializer(serializers.ModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name='list-detail')
-    notebook = serializers.SlugRelatedField(slug_field='slug',
-                                            queryset=Notebook.objects.active())
-
-    class Meta:
-        model = List
-        exclude = ()
-
-
-class ChecklistItemSerializer(serializers.ModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name='checklistitem-detail')
-
-    class Meta:
-        model = ChecklistItem
-        exclude = ()
-
-
-class ChecklistSerializer(serializers.ModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name='checklist-detail')
-    items = ChecklistItemSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Checklist
-        exclude = ()
-
-
-class CardSerializer(serializers.ModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name='card-detail')
-    checklists = ChecklistSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Card
-        exclude = ()

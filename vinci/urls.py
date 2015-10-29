@@ -8,13 +8,6 @@ from .views.apis import NotebookListAPIView, QuickJumpAPIView
 from .views import apis
 from rest_framework.routers import DefaultRouter
 
-todo_api_router = DefaultRouter()
-todo_api_router.register(r'labels', apis.LabelAPIViewSet)
-todo_api_router.register(r'lists', apis.ListAPIViewSet)
-todo_api_router.register(r'cards', apis.CardAPIViewSet)
-todo_api_router.register(r'checklists', apis.ChecklistAPIViewSet)
-todo_api_router.register(r'checklistitems', apis.ChecklistItemAPIViewSet)
-
 vinciapipatterns = [
     url(r'^$',
         NotebookListAPIView.as_view(),
@@ -38,9 +31,6 @@ if settings.VINCI_ENABLE_NON_REST_APIS:
         url(r'^(?P<notebook_slug>[^\/]+)/add-entry/$',
             'vinci.views.apis.add_entry',
             name='api_entry_add_entry'),
-        url(r'^(?P<notebook_slug>[^\/]+)/add-card/$',
-            'vinci.views.apis.add_card',
-            name='api_entry_add_card'),
 
         # TODO: convert these
         url(r'^(?P<notebook_slug>[^\/]+)/(?P<slug>[^\/]+)/add-revision/$',
@@ -56,7 +46,6 @@ vincipatterns = patterns(
 
     url(r'^$', 'notebooks_list', name='notebooks_list'),
     url(r'^api/', include(vinciapipatterns)),
-    url(r'^api-todo/', include(todo_api_router.urls)),
     url(r'^search/$', 'search_all', name='search_all'),
     url(r'^tag/(?P<tag>[^\/]+)/$', 'search_all_tags', name='search_all_tags'),
     url(r'^today/$', 'today', name='today'),
@@ -64,14 +53,12 @@ vincipatterns = patterns(
 
     url(r'^(?P<notebook_slug>[^\/]+)/$',
         'notebook_home', name='notebook'),
-    url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page|journal|todo)/$',
+    url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page|journal)/$',
         'notebook_section', name='notebook_section'),
-    url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page|journal|todo)/search/$',
+    url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page|journal)/search/$',
         'search_notebook_section', name='search_notebook_section'),
     url(r'^(?P<notebook_slug>[^\/]+)/tag/(?P<tag>[^\/]+)/$',
         'search_notebook_tags', name='search_notebook_tags'),
-    url(r'^(?P<notebook_slug>[^\/]+)/todo/(?P<card_id>[^\/]+)/$',
-        'card_detail', name='card_detail'),
     url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page|journal)/(?P<entry_slug>[^\/]+)/$',
         'entry_detail', name='entry'),
     url(r'^(?P<notebook_slug>[^\/]+)/(?P<section>log|note|page|journal)/(?P<entry_slug>[^\/]+)/(?P<revision_id>[^\/]+)/$',

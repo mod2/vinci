@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.utils.timezone import utc, make_aware
 from datetime import datetime
 
-from vinci.models import Notebook, Entry, Revision, Group, Label, List, Card
+from vinci.models import Notebook, Entry, Revision, Group
 import vinci.search_indexer as si
 
 
@@ -51,20 +51,15 @@ def notebook_section(request, notebook_slug, section):
     notebooks = Notebook.objects.filter(status='active').order_by('name')
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
 
-    if section == 'todo':
-        template = 'todos'
-        labels = Label.objects.all()
-        entries = []
-    else:
-        entries = (notebook.entries
-                .active()
-                .filter(entry_type=section)
-                .order_by(sortby)
-                )
-        entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE).page(page)
+    entries = (notebook.entries
+            .active()
+            .filter(entry_type=section)
+            .order_by(sortby)
+            )
+    entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE).page(page)
 
-        template = 'entries'
-        labels = []
+    template = 'entries'
+    labels = []
 
     context = {
         'title': notebook.name,
@@ -77,45 +72,7 @@ def notebook_section(request, notebook_slug, section):
         'page_type': 'list',
     }
 
-    if section == 'todo':
-        context['lists'] = notebook.get_active_lists()
-        context['num_lists'] = len(context['lists']) + 1
-
     return render_to_response('vinci/{}.html'.format(template),
-                              context,
-                              RequestContext(request),
-                              )
-
-
-@login_required
-def card_detail(request, notebook_slug, card_id):
-    try:
-        card = Card.objects.get(id=card_id, list__notebook__slug=notebook_slug)
-    except Card.DoesNotExist:
-        return HttpResponseNotFound('Card does not exist.')
-
-    template = 'card'
-    labels = Label.objects.all()
-    notebooks = Notebook.objects.filter(status='active').order_by('name')
-    section = 'todo'
-
-    context = {
-        'title': card.title,
-        'notebook': card.list.notebook,
-        'notebooks': notebooks,
-        'card': card,
-        'labels': labels,
-        'section': section,
-        'scope': 'section',
-        'page_type': 'detail',
-    }
-
-    if section == 'todo':
-        context['lists'] = card.list.notebook.get_active_lists()
-        context['num_lists'] = len(context['lists']) + 1
-        context['num_lists_sub_one'] = context['num_lists'] - 1
-
-    return render_to_response('vinci/card.html',
                               context,
                               RequestContext(request),
                               )

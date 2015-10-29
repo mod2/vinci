@@ -191,7 +191,6 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
         display_notes = request.data.get('display_notes')
         display_pages = request.data.get('display_pages')
         display_journals = request.data.get('display_journals')
-        display_todos = request.data.get('display_todos')
         condense_notes = request.data.get('condense_notes')
         parse_notes = request.data.get('parse_notes')
 
@@ -220,9 +219,6 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
 
         if display_journals is not None:
             notebook.display_journals = display_journals
-
-        if display_todos is not None:
-            notebook.display_todos = display_todos
 
         if condense_notes is not None:
             notebook.condense_notes = condense_notes
@@ -408,7 +404,6 @@ class NotebookDetailAPIView(APIView):
         display_notes = request.data.get('display_notes', '')
         display_pages = request.data.get('display_pages', '')
         display_journals = request.data.get('display_journals', '')
-        display_todos = request.data.get('display_todos', '')
 
         if notebook:
             if name != '':
@@ -429,7 +424,6 @@ class NotebookDetailAPIView(APIView):
             notebook.display_notes = display_notes
             notebook.display_pages = display_pages
             notebook.display_journals = display_journals
-            notebook.display_todos = display_todos
 
             notebook.save()
 
@@ -540,36 +534,6 @@ class QuickJumpAPIView(APIView):
 
         return APIResponse({'status': status, msg_label: msg},
                            status=status_code)
-
-
-# Todo board api views
-class LabelAPIViewSet(ReOrderMixin, viewsets.ModelViewSet):
-    serializer_class = serializers.LabelSerializer
-    queryset = models.Label.objects.all()
-
-
-class ListAPIViewSet(ReOrderMixin, ReOrderChildrenMixin, viewsets.ModelViewSet):
-    serializer_class = serializers.ListSerializer
-    queryset = models.List.objects.all()
-    partial_update_model = models.Card
-
-
-class CardAPIViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.CardSerializer
-    queryset = models.Card.objects.all()
-
-
-class ChecklistAPIViewSet(ReOrderMixin,
-                          ReOrderChildrenMixin,
-                          viewsets.ModelViewSet):
-    serializer_class = serializers.ChecklistSerializer
-    queryset = models.Checklist.objects.all()
-    partial_update_model = models.ChecklistItem
-
-
-class ChecklistItemAPIViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.ChecklistItemSerializer
-    queryset = models.ChecklistItem.objects.all()
 
 
 # Non-REST API views
@@ -858,91 +822,3 @@ def update_revision(request, notebook_slug, slug, revision_id):
     # Return JSON response
     return JsonResponse(response)
 
-
-def add_card(request, notebook_slug):
-    """ Adds an entry to a notebook. """
-
-    callback = request.GET.get('callback', '')
-    key = request.GET.get('key', '')
-    list_slug = request.GET.get('list', '')
-    section = 'todo'
-
-    if key != settings.VINCI_NON_REST_KEY:
-        # Must have API key
-        return JsonResponse({})
-
-    if request.method == 'GET':
-        content = request.GET.get('content')
-    elif request.method == 'POST':
-        content = request.POST.get('content')
-
-    notebook = models.Notebook.objects.get(slug=notebook_slug)
-
-    # First figure out which list to add it to
-    if list_slug != '':
-        # User specified a list, so get it
-        try:
-            list = models.List.objects.filter(slug=list_slug, notebook=notebook, status='active').first()
-        except models.List.DoesNotExist:
-            list = None
-            pass
-    else:
-        # Try to get the Inbox list
-        try:
-            list = models.List.objects.filter(slug='inbox', notebook=notebook, status='active').first()
-        except models.List.DoesNotExist:
-            # No Inbox list, so get first list if it's there
-            list = models.List.objects.first()
-
-            if not list:
-                # Create a list if there isn't one
-                list = models.List()
-                list.title = "Inbox"
-                list.save()
-
-    # Add the card
-    try:
-        if list == None:
-            raise Exception
-
-        cards = content.strip().split('\n')
-
-        num_cards = len(cards)
-        if num_cards > 1:
-            # Reorder existing cards so the new ones show up in order
-            # (If there's just one, order=0 will put it at the top)
-            list_cards = models.Card.objects.filter(list=list).order_by('order')
-            for card in list_cards:
-                card.order += num_cards
-                card.save()
-
-        order = 0
-        for text in cards:
-            card = models.Card()
-            card.title = text
-            card.order = order
-            card.notebook = notebook
-            card.list = list
-            card.save()
-
-            order += 1
-
-        response = {
-            'status': 'success',
-            'id': card.id,
-            'number': len(cards)
-        }
-    except Exception as e:
-        response = {
-            'status': 'error',
-            'message': '{}'.format(e),
-        }
-
-    if callback:
-        # Redirect to callback
-        response = HttpResponse("", status=302)
-        response['Location'] = callback
-        return response
-    else:
-        # Return JSON response
-        return JsonResponse(response)

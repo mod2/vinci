@@ -44,7 +44,7 @@
 	{% endblock head %}
 </head>
 
-<body{% if section == 'todo' %} class="todo-mode"{% elif section == 'today' %} class="today-mode"{% endif %}>
+<body>
 	<div class="wrapper">
 		{% block menu %}
 		<nav role="menu">
@@ -60,7 +60,6 @@
 				{% if notebook.display_notes %}<a href="{% url 'notebook_section' notebook.slug 'note' %}">Notes</a>{% endif %}
 				{% if notebook.display_pages %}<a href="{% url 'notebook_section' notebook.slug 'page' %}">Pages</a>{% endif %}
 				{% if notebook.display_journals %}<a href="{% url 'notebook_section' notebook.slug 'journal' %}">Journals</a>{% endif %}
-				{% if notebook.display_todos %}<a href="{% url 'notebook_section' notebook.slug 'todo' %}">Todos</a>{% endif %}
 			</div>
 
 			<div class="group">
@@ -98,7 +97,7 @@
 			{% endblock header %}
 
 			{% block sections %}
-			<div id="sections" class="{% if section %}{{ section }}{% else %}nosection{% endif %}" {% if notebook.display_logs %}data-log-uri="{% url 'notebook_section' notebook.slug 'log' %}"{% endif %} {% if notebook.display_notes %}data-note-uri="{% url 'notebook_section' notebook.slug 'note' %}"{% endif %} {% if notebook.display_pages %}data-page-uri="{% url 'notebook_section' notebook.slug 'page' %}"{% endif %} {% if notebook.display_journals %}data-journal-uri="{% url 'notebook_section' notebook.slug 'journal' %}"{% endif %}{% if notebook.display_todos %}data-todo-uri="{% url 'notebook_section' notebook.slug 'todo' %}"{% endif %} data-today-uri="{% url 'today' %}">
+			<div id="sections" class="{% if section %}{{ section }}{% else %}nosection{% endif %}" {% if notebook.display_logs %}data-log-uri="{% url 'notebook_section' notebook.slug 'log' %}"{% endif %} {% if notebook.display_notes %}data-note-uri="{% url 'notebook_section' notebook.slug 'note' %}"{% endif %} {% if notebook.display_pages %}data-page-uri="{% url 'notebook_section' notebook.slug 'page' %}"{% endif %} {% if notebook.display_journals %}data-journal-uri="{% url 'notebook_section' notebook.slug 'journal' %}"{% endif %}>
 				<div class="container"></div>
 			</div>
 			{% endblock sections %}
@@ -141,10 +140,6 @@
 						{% endif %}
 						{% if notebook.display_journals %}
 							<span data-value="journal" class="type journal{% if section == 'journal' %} selected{% endif %}">Journal</span>
-						{% endif %}
-						{% if notebook.display_todos %}
-							<span data-value="card" class="type card{% if section == 'todo' %} selected{% endif %}">Card</span>
-							<span data-value="list" class="type list">List</span>
 						{% endif %}
 						<input type="hidden" name="type" value="" />
 					</div>
@@ -269,16 +264,6 @@
 					<div class="group">
 						<label>g j</label>
 						<span>Journals</span>
-					</div>
-
-					<div class="group">
-						<label>g t</label>
-						<span>Todos</span>
-					</div>
-
-					<div class="group">
-						<label>g d</label>
-						<span>Today</span>
 					</div>
 
 					<div class="group">

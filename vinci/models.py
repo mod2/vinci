@@ -16,14 +16,11 @@ ENTRY_TYPE = Choices(
     ('note', 'Note'),
     ('page', 'Page'),
     ('journal', 'Journal'),
-    ('todo', 'Todo'),
 )
 
 
-LIST_STATUS = Choices('active', 'archived', 'deleted')
-
-
 # User Profile model
+
 class UserPrefs(models.Model):
     user = models.OneToOneField(User, related_name="prefs", primary_key=True)
 
@@ -154,7 +151,6 @@ class Notebook(models.Model):
     display_notes = models.BooleanField(default=True)
     display_pages = models.BooleanField(default=True)
     display_journals = models.BooleanField(default=False)
-    display_todos = models.BooleanField(default=False)
 
     condense_notes = models.BooleanField(default=True)
     parse_notes = models.BooleanField(default=False)
@@ -170,9 +166,6 @@ class Notebook(models.Model):
     def delete(self):
         self.status = self.STATUS.deleted
         self.save()
-
-    def get_active_lists(self):
-        return self.lists.filter(status=LIST_STATUS.active)
 
 
 class Entry(models.Model):
@@ -323,100 +316,3 @@ class Revision(models.Model):
         ordering = ['-last_modified']
 
 
-# Base models for todo models
-
-class DatedMixin(models.Model):
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_last_modified = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        abstract = True
-
-
-class StatusMixin(models.Model):
-    STATUS = LIST_STATUS
-
-    status = models.CharField(max_length=10, default=STATUS.active,
-                              choices=STATUS)
-
-    objects = StatusQueries.as_manager()
-
-    class Meta:
-        abstract = True
-
-
-class BaseListMixin(models.Model):
-    title = models.CharField(max_length=255)
-    order = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        abstract = True
-        ordering = ['order', 'title']
-
-
-# Todo models
-
-class Label(models.Model):
-    title = models.CharField(max_length=255, blank=True)
-    order = models.IntegerField(default=0, blank=True)
-    color = models.CharField(max_length=255)
-
-    def __str__(self):
-        return ('Label(title="{s.title}", order="{s.order}", color="{s.color}")'
-                .format(s=self))
-
-    class Meta:
-        ordering = ['order', 'title']
-
-
-class List(BaseListMixin, StatusMixin, DatedMixin, models.Model):
-    notebook = models.ForeignKey(Notebook, related_name="lists")
-    labels = models.ManyToManyField(Label, blank=True,
-                                    related_name="labeled_lists")
-    slug = models.SlugField(blank=True, default='')
-
-    def save(self, **kwargs):
-        if self.title:
-            self.slug = slugify(self.title)
-
-        super(List, self).save()
-
-    def get_active_cards(self):
-        return self.cards.filter(status=LIST_STATUS.active)
-
-
-class Card(BaseListMixin, StatusMixin, DatedMixin, models.Model):
-    list = models.ForeignKey(List, related_name="cards")
-    description = models.TextField(blank=True)
-
-    labels = models.ManyToManyField(Label, blank=True,
-                                    related_name="labeled_cards")
-    # Used to cache labels for speed on dashboard
-    label_cache = models.CharField(max_length=255, blank=True, null=True)
-
-    mentions = models.ManyToManyField(Entry, blank=True,
-                                      related_name="mentioned_cards")
-
-    def get_active_checklists(self):
-        return self.checklists.filter(status="active")
-
-    def total_checklist_items(self):
-        return ChecklistItem.objects.filter(checklist__in=self.get_active_checklists).count()
-
-    def finished_checklist_items(self):
-        return ChecklistItem.objects.filter(done=True, checklist__in=self.get_active_checklists).count()
-
-
-class Checklist(BaseListMixin, StatusMixin, DatedMixin, models.Model):
-    card = models.ForeignKey(Card, related_name="checklists")
-
-    def get_active_items(self):
-        return self.items.filter(status="active")
-
-
-class ChecklistItem(BaseListMixin, StatusMixin, DatedMixin, models.Model):
-    done = models.BooleanField(default=False)
-    checklist = models.ForeignKey(Checklist, related_name="items")

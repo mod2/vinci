@@ -56,10 +56,7 @@
 
 			{% if notebook %}
 			<div class="group">
-				{% if notebook.display_logs %}<a href="{% url 'notebook_section' notebook.slug 'log' %}">Logs</a>{% endif %}
-				{% if notebook.display_notes %}<a href="{% url 'notebook_section' notebook.slug 'note' %}">Notes</a>{% endif %}
-				{% if notebook.display_pages %}<a href="{% url 'notebook_section' notebook.slug 'page' %}">Pages</a>{% endif %}
-				{% if notebook.display_journals %}<a href="{% url 'notebook_section' notebook.slug 'journal' %}">Journals</a>{% endif %}
+				<a href="{% url 'notebook_section' notebook.slug 'log' %}">Logs</a>
 			</div>
 
 			<div class="group">
@@ -97,7 +94,7 @@
 			{% endblock header %}
 
 			{% block sections %}
-			<div id="sections" class="{% if section %}{{ section }}{% else %}nosection{% endif %}" {% if notebook.display_logs %}data-log-uri="{% url 'notebook_section' notebook.slug 'log' %}"{% endif %} {% if notebook.display_notes %}data-note-uri="{% url 'notebook_section' notebook.slug 'note' %}"{% endif %} {% if notebook.display_pages %}data-page-uri="{% url 'notebook_section' notebook.slug 'page' %}"{% endif %} {% if notebook.display_journals %}data-journal-uri="{% url 'notebook_section' notebook.slug 'journal' %}"{% endif %}>
+			<div id="sections" class="{% if section %}{{ section }}{% else %}nosection{% endif %}">
 				<div class="container"></div>
 			</div>
 			{% endblock sections %}

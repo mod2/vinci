@@ -26,7 +26,6 @@ else:
                     notebook=ID,
                     content=TEXT(analyzer=StemmingAnalyzer(), stored=True),
                     tag=KEYWORD(field_boost=2.0),
-                    type=ID,
                     title=TEXT(field_boost=2.0),
                     date=DATETIME,
                     )
@@ -49,7 +48,6 @@ def _generate_entry_document(entry):
            'content': entry.title + ' ' + entry.content,
            'title': entry.title,
            'tag': ' '.join([t.name for t in entry.tags.all()]),
-           'type': entry.entry_type,
            'date': entry.date,
            }
     return doc
@@ -99,7 +97,7 @@ def delete_from_index(document):
 
 
 def search(query_string, page=1, results_per_page=10, sort_order='relevance',
-           notebook=None, entry_type=None):
+           notebook=None):
     ix = get_or_create_index()
 
     qp = QueryParser('content', ix.schema)
@@ -108,9 +106,6 @@ def search(query_string, page=1, results_per_page=10, sort_order='relevance',
 
     if notebook:
         query = query & Term('notebook', notebook.slug)
-
-    if entry_type:
-        query = query & Term('type', entry_type)
 
     entry_ids = {}
     results = None

@@ -9,26 +9,9 @@
 		<input type="submit" class="rename-notebook button" value="Rename" />
 	</div>
 
-	<h3 class="container">Sections</h3>
-	<div id="section-config" class="group container">
-		<span class="type{% if notebook.display_logs %} selected{% endif %}" data-field="display_logs">Logs</span>
-		<span class="type{% if notebook.display_notes %} selected{% endif %}" data-field="display_notes">Notes</span>
-		<span class="type{% if notebook.display_pages %} selected{% endif %}" data-field="display_pages">Pages</span>
-		<span class="type{% if notebook.display_journals %} selected{% endif %}" data-field="display_journals">Journals</span>
-	</div>
-
 	<h3 class="container">Default Section</h3>
 	<div id="default-section" class="group container">
 		<span class="type{% if notebook.default_section == 'log' %} selected{% endif %}" data-value="log">Logs</span>
-		<span class="type{% if notebook.default_section == 'note' %} selected{% endif %}" data-value="note">Notes</span>
-		<span class="type{% if notebook.default_section == 'page' %} selected{% endif %}" data-value="page">Pages</span>
-		<span class="type{% if notebook.default_section == 'journal' %} selected{% endif %}" data-value="journal">Journals</span>
-	</div>
-
-	<h3 class="container">Note Style</h3>
-	<div id="note-section-config" class="group container">
-		<span class="type{% if notebook.condense_notes %} selected{% endif %}" data-field="condense_notes">Toggle Condensed</span>
-		<span class="type{% if notebook.parse_notes %} selected{% endif %}" data-field="parse_notes">Toggle Parsed</span>
 	</div>
 
 	<h3 class="container">Status</h3>

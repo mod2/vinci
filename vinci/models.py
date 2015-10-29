@@ -11,14 +11,6 @@ import datetime
 
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
-ENTRY_TYPE = Choices(
-    ('log', 'Log'),
-    ('note', 'Note'),
-    ('page', 'Page'),
-    ('journal', 'Journal'),
-)
-
-
 # User Profile model
 
 class UserPrefs(models.Model):
@@ -144,16 +136,7 @@ class Notebook(models.Model):
     group = models.ForeignKey(Group, related_name="notebooks", default=None,
                               null=True, blank=True)
 
-    default_section = models.CharField(max_length=20,
-                                       default=ENTRY_TYPE.log,
-                                       choices=ENTRY_TYPE)
-    display_logs = models.BooleanField(default=True)
-    display_notes = models.BooleanField(default=True)
-    display_pages = models.BooleanField(default=True)
-    display_journals = models.BooleanField(default=False)
-
-    condense_notes = models.BooleanField(default=True)
-    parse_notes = models.BooleanField(default=False)
+    default_section = models.CharField(max_length=20, blank=True, null=True)
 
     objects = NotebookManager.as_manager()
 
@@ -178,9 +161,6 @@ class Entry(models.Model):
     slug = models.SlugField(blank=True, default='')
     notebook = models.ForeignKey(Notebook, related_name='entries')
     date = models.DateTimeField(auto_now_add=True)
-    entry_type = models.CharField(max_length=20,
-                                  default=ENTRY_TYPE.log,
-                                  choices=ENTRY_TYPE)
     status = models.CharField(max_length=20,
                               default=STATUS.active,
                               choices=STATUS)
@@ -219,18 +199,12 @@ class Entry(models.Model):
     def html(self):
         content = self.content
 
-        # Don't run notes through the plugins
-        if self.entry_type == ENTRY_TYPE.note and not self.notebook.parse_notes:
-            content = content.replace('\n', '<br>')
-            content = content.replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
-            content = content.replace('    ', '&nbsp;&nbsp;&nbsp;&nbsp;')
-        else:
-            for plugin_name in settings.VINCI_PLUGINS:
-                plugins = __import__("plugins", fromlist=[plugin_name])
-                plugin = getattr(plugins, plugin_name)
-                content = plugin.process(content,
-                                         self,
-                                         self.notebook.get_absolute_url())
+        for plugin_name in settings.VINCI_PLUGINS:
+            plugins = __import__("plugins", fromlist=[plugin_name])
+            plugin = getattr(plugins, plugin_name)
+            content = plugin.process(content,
+                                        self,
+                                        self.notebook.get_absolute_url())
 
         return content
 
@@ -239,19 +213,6 @@ class Entry(models.Model):
         if self.slug:
             slug = self.slug
         return resolve_url('entry', self.notebook.slug, self.entry_type, slug)
-
-    def get_possible_types(self):
-        """ Returns list of possible types for this notebook. """
-
-        # TODO: make this more elegant
-
-        possible_types = []
-
-        for value, label in ENTRY_TYPE:
-            if getattr(self.notebook, 'display_{}s'.format(value)):
-                possible_types.append({'value': value, 'label': label})
-
-        return possible_types
 
     def __str__(self):
         return "{}".format(self.current_revision)
@@ -294,18 +255,12 @@ class Revision(models.Model):
     def html(self):
         content = self.content
 
-        # Don't run notes through the plugins
-        if self.entry.entry_type == ENTRY_TYPE.note:
-            content = content.replace('\n', '<br>')
-            content = content.replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
-            content = content.replace('    ', '&nbsp;&nbsp;&nbsp;&nbsp;')
-        else:
-            for plugin_name in settings.VINCI_PLUGINS:
-                plugins = __import__("plugins", fromlist=[plugin_name])
-                plugin = getattr(plugins, plugin_name)
-                content = plugin.process(content,
-                                         self.entry,
-                                         self.entry.notebook.get_absolute_url())
+        for plugin_name in settings.VINCI_PLUGINS:
+            plugins = __import__("plugins", fromlist=[plugin_name])
+            plugin = getattr(plugins, plugin_name)
+            content = plugin.process(content,
+                                        self.entry,
+                                        self.entry.notebook.get_absolute_url())
 
         return content
 

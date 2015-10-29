@@ -150,7 +150,6 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
         content = request.data.get('content')
         title = request.data.get('title', '')
         tags = request.data.get('tags')
-        type = request.data.get('type', '')
         date = request.data.get('date', '')
 
         if content:
@@ -159,18 +158,12 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
                       'notebook': notebook,
                       'title': title,
                       'tags': tags,
-                      'entry_type': type,
                       }
 
             if date != '':
                 kwargs['date'] = date
 
             entry = models.Entry.objects.create(**kwargs)
-
-            # If it's a note, put the first line in the title field
-            if entry.entry_type == models.ENTRY_TYPE.note:
-                entry.title = entry.first_line()
-                entry.save()
 
             si.add_index(entry)
             e = serializers.EntrySerializer(entry)
@@ -187,12 +180,6 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
         status = request.data.get('status')
         group = request.data.get('group')
         default_section = request.data.get('default_section')
-        display_logs = request.data.get('display_logs')
-        display_notes = request.data.get('display_notes')
-        display_pages = request.data.get('display_pages')
-        display_journals = request.data.get('display_journals')
-        condense_notes = request.data.get('condense_notes')
-        parse_notes = request.data.get('parse_notes')
 
         if name is not None:
             notebook.name = name
@@ -207,24 +194,6 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
 
         if default_section is not None:
             notebook.default_section = default_section
-
-        if display_logs is not None:
-            notebook.display_logs = display_logs
-
-        if display_notes is not None:
-            notebook.display_notes = display_notes
-
-        if display_pages is not None:
-            notebook.display_pages = display_pages
-
-        if display_journals is not None:
-            notebook.display_journals = display_journals
-
-        if condense_notes is not None:
-            notebook.condense_notes = condense_notes
-
-        if parse_notes is not None:
-            notebook.parse_notes = parse_notes
 
         notebook.save()
 
@@ -301,11 +270,6 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
                 entry.tags.set(*tags)
             else:
                 entry.tags.clear()
-
-            # If it's a note, put the first line in the title field
-            if entry.entry_type == models.ENTRY_TYPE.note:
-                entry.title = entry.first_line()
-                entry.save()
 
             si.update_index(entry)
             e = self.serializer_class(entry).data
@@ -400,10 +364,6 @@ class NotebookDetailAPIView(APIView):
         status = request.data.get('status', '')
         group = request.data.get('group', '')
         default_section = request.data.get('default_section', '')
-        display_logs = request.data.get('display_logs', '')
-        display_notes = request.data.get('display_notes', '')
-        display_pages = request.data.get('display_pages', '')
-        display_journals = request.data.get('display_journals', '')
 
         if notebook:
             if name != '':
@@ -567,7 +527,7 @@ def append_today(request, notebook_slug):
         # Get first entry for today
         results = (models.Entry.objects
                    .filter(notebook=notebook,
-                           entry_type=section,
+                           section=section,
                            date__range=[today, tomorrow],
                            )
                    .order_by('date')
@@ -595,7 +555,7 @@ def append_today(request, notebook_slug):
 
             kwargs = {'content': content.strip(),
                       'author': request.user,
-                      'entry_type': section,
+                      'section': section,
                       'notebook': notebook,
                       }
             entry = models.Entry.objects.create(**kwargs)
@@ -646,7 +606,7 @@ def add_entry(request, notebook_slug):
 
         kwargs = {'content': content.strip(),
                   'author': notebook.author,
-                  'entry_type': section,
+                  'section': section,
                   'notebook': notebook,
                   }
         entry = models.Entry.objects.create(**kwargs)
@@ -683,7 +643,6 @@ def add_revision(request, notebook_slug, slug):  # noqa too complex
 
         content = data.get('content', '')
         title = data.get('title', '')
-        type = data.get('type', '')
         tags = data.get('tags', '')
         date = data.get('date', '')
         new_notebook = data.get('notebook', '')
@@ -702,9 +661,6 @@ def add_revision(request, notebook_slug, slug):  # noqa too complex
 
         if title:
             entry.title = title
-
-        if type:
-            entry.entry_type = type
 
         if date:
             entry.date = datetime.datetime.strptime(date,
@@ -727,12 +683,6 @@ def add_revision(request, notebook_slug, slug):  # noqa too complex
         response = {
             'status': 'success',
         }
-
-        if entry.entry_type == models.ENTRY_TYPE.note:
-            entry.title = entry.first_line()
-            entry.save()
-            response['first_line'] = entry.first_line()
-            response['second_line'] = entry.second_line()
 
         if content:
             response['revision_id'] = revision.id
@@ -759,7 +709,6 @@ def update_revision(request, notebook_slug, slug, revision_id):
 
         content = data.get('content', '')
         title = data.get('title', '')
-        type = data.get('type', '')
         tags = data.get('tags', '')
         date = data.get('date', '')
         new_notebook = data.get('notebook', '')
@@ -775,9 +724,6 @@ def update_revision(request, notebook_slug, slug, revision_id):
 
         if title:
             entry.title = title
-
-        if type:
-            entry.entry_type = type
 
         if date:
             entry.date = datetime.datetime.strptime(date,
@@ -799,12 +745,6 @@ def update_revision(request, notebook_slug, slug, revision_id):
         response = {
             'status': 'success',
         }
-
-        if entry.entry_type == models.ENTRY_TYPE.note:
-            entry.title = entry.first_line()
-            entry.save()
-            response['first_line'] = entry.first_line()
-            response['second_line'] = entry.second_line()
 
         if content:
             response['revision_id'] = revision.id

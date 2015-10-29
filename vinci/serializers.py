@@ -15,12 +15,6 @@ class NotebookSerializer(serializers.ModelSerializer):
                   'status',
                   'group',
                   'default_section',
-                  'display_logs',
-                  'display_notes',
-                  'display_pages',
-                  'display_journals',
-                  'condense_notes',
-                  'parse_notes',
                   'author',
                   'entries',
                   )

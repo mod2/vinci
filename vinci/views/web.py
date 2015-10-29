@@ -53,7 +53,7 @@ def notebook_section(request, notebook_slug, section):
 
     entries = (notebook.entries
             .active()
-            .filter(entry_type=section)
+            .filter(section=section)
             .order_by(sortby)
             )
     entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE).page(page)
@@ -264,7 +264,7 @@ def _search(request, query, notebook=None, section=None):
         }
 
         if section:
-            search_params['entry_type'] = section
+            search_params['section'] = section
 
         if notebook:
             search_params['notebook'] = notebook

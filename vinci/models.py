@@ -151,6 +151,28 @@ class Notebook(models.Model):
         self.save()
 
 
+class Section(models.Model):
+    STATUS = Choices(
+        ('active', 'Active'),
+        ('archived', 'Archived'),
+        ('deleted', 'Deleted'),
+    )
+
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(blank=True, default='')
+
+    status = models.CharField(max_length=20,
+                              default=STATUS.active,
+                              choices=STATUS)
+
+    notebook = models.ForeignKey(Notebook, related_name='sections')
+
+    default_view = models.CharField(max_length=30, blank=True, null=True)
+
+    dotfile = models.TextField()
+    custom_css = models.TextField()
+
+
 class Entry(models.Model):
     STATUS = Choices(
         ('active', 'Active'),
@@ -269,5 +291,3 @@ class Revision(models.Model):
 
     class Meta:
         ordering = ['-last_modified']
-
-

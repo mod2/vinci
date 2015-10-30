@@ -56,7 +56,9 @@
 
 			{% if notebook %}
 			<div class="group">
-				<a href="{% url 'notebook_section' notebook.slug 'log' %}">Logs</a>
+				{% for s in sections %}
+				<a href="{% url 'notebook_section' notebook.slug s.slug %}">{{ s.name }}</a>
+				{% endfor %}
 			</div>
 
 			<div class="group">

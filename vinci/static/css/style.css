@@ -1313,7 +1313,7 @@ body.active-nav #page .mask {
 /* -------------------------------------------------- */
 
 nav[role=pagination] {
-	display: none;
+	border-top: solid 1px #ddd;
 }
 
 

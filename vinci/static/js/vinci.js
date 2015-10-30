@@ -231,6 +231,7 @@ $(document).ready(function() {
 	// Infinite scroll
 	// --------------------------------------------------
 
+	/*
 	if ($("nav[role=pagination] a.next")) {
 		$(".entries").infinitescroll({
 			navSelector: "nav[role=pagination]",
@@ -241,6 +242,7 @@ $(document).ready(function() {
 			},
 		}, processEntries);
 	}
+	*/
 
 
 	// Add viewport to the window object

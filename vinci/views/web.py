@@ -10,8 +10,10 @@ from django.utils import timezone
 from django.utils.timezone import utc, make_aware
 from datetime import datetime
 
-from vinci.models import Notebook, Entry, Revision, Group
+from vinci.models import Notebook, Section, Entry, Revision, Group
 import vinci.search_indexer as si
+
+from vinci.utils import get_sections_for_notebook
 
 
 @login_required
@@ -42,21 +44,22 @@ def notebook_settings(request, notebook_slug):
 
 
 @login_required
-def notebook_section(request, notebook_slug, section):
+def notebook_section(request, notebook_slug, section_slug):
     sortby = settings.VINCI_DEFAULT_SEARCH_ORDER
-    sortby = sortby if section != 'note' else '-last_modified'
     sortby = request.GET.get('sort', sortby)
     page = int(request.GET.get('page', 1))
 
-    notebooks = Notebook.objects.filter(status='active').order_by('name')
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
+    section = get_object_or_404(Section, slug=section_slug, notebook=notebook)
 
-    entries = (notebook.entries
-            .active()
-            .filter(section=section)
-            .order_by(sortby)
-            )
+    entries = notebook.entries.active()
+    if section:
+        entries = entries.filter(section=section)
+    entries = entries.order_by(sortby)
     entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE).page(page)
+
+    # Get sections (for sidebar list)
+    sections = get_sections_for_notebook(notebook)
 
     template = 'entries'
     labels = []
@@ -64,8 +67,8 @@ def notebook_section(request, notebook_slug, section):
     context = {
         'title': notebook.name,
         'notebook': notebook,
-        'notebooks': notebooks,
-        'section': section,
+        'section': section_slug,
+        'sections': sections,
         'scope': 'section',
         'entries': entries,
         'labels': labels,
@@ -79,7 +82,7 @@ def notebook_section(request, notebook_slug, section):
 
 
 @login_required
-def entry_detail(request, notebook_slug, section, entry_slug):
+def entry_detail(request, notebook_slug, section_slug, entry_slug):
     try:
         entry = Entry.objects.from_slug(entry_slug, notebook_slug)
     except Entry.DoesNotExist:
@@ -104,7 +107,7 @@ def entry_detail(request, notebook_slug, section, entry_slug):
 
 
 @login_required
-def revision_detail(request, notebook_slug, section, entry_slug, revision_id):
+def revision_detail(request, notebook_slug, section_slug, entry_slug, revision_id):
     try:
         entry = Entry.objects.from_slug(entry_slug, notebook_slug)
     except Entry.DoesNotExist:
@@ -151,27 +154,6 @@ def notebooks_list(request):
     }
 
     return render_to_response('vinci/index.html',
-                              context,
-                              RequestContext(request),
-                              )
-
-
-@login_required
-def today(request):
-    # Get all Today lists
-    today_lists = List.objects.filter(title='Today', status='active').order_by('notebook__name')
-
-    section = 'today'
-
-    context = {
-        'title': 'Today',
-        'today_lists': today_lists,
-        'section': section,
-        'scope': 'all',
-        'page_type': 'today',
-    }
-
-    return render_to_response('vinci/today.html',
                               context,
                               RequestContext(request),
                               )
@@ -235,8 +217,9 @@ def search_notebook_tags(request, notebook_slug, tag):
 
 
 @login_required
-def search_notebook_section(request, notebook_slug, section):
+def search_notebook_section(request, notebook_slug, section_slug):
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
+    section = get_object_or_404(Section, slug=section_slug, notebook=notebook)
     return _search(request, request.GET.get('q'), notebook, section)
 
 

@@ -169,8 +169,8 @@ class Section(models.Model):
 
     default_view = models.CharField(max_length=30, blank=True, null=True)
 
-    dotfile = models.TextField()
-    custom_css = models.TextField()
+    dotfile = models.TextField(blank=True, null=True)
+    custom_css = models.TextField(blank=True, null=True)
 
 
 class Entry(models.Model):
@@ -182,6 +182,7 @@ class Entry(models.Model):
     title = models.CharField(max_length=100, blank=True, default='')
     slug = models.SlugField(blank=True, default='')
     notebook = models.ForeignKey(Notebook, related_name='entries')
+    section = models.ForeignKey(Section, related_name='entries', null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20,
                               default=STATUS.active,
@@ -234,7 +235,7 @@ class Entry(models.Model):
         slug = self.id
         if self.slug:
             slug = self.slug
-        return resolve_url('entry', self.notebook.slug, self.entry_type, slug)
+        return resolve_url('entry', self.notebook.slug, slug)
 
     def __str__(self):
         return "{}".format(self.current_revision)

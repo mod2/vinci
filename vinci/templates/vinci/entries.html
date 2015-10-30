@@ -6,7 +6,7 @@
 		{% for entry in entries %}
 			{% if search %}
 				{% include 'vinci/_search.html' %}
-			{% elif %}
+			{% else %}
 				{% include 'vinci/_log.html' %}
 			{% endif %}
 		{% empty %}
@@ -17,8 +17,10 @@
 {% endblock content %}
 
 {% block nav %}
-<nav role="pagination" class="container">
-	{% if entries.has_prev %}<a class="prev" href="?{% if query %}q={{ query }}&{% endif %}page={{ entries.previous_page_number }}">Prev</a>{% endif %}
-	{% if entries.has_next %}<a class="next" href="?{% if query %}q={{ query }}&{% endif %}page={{ entries.next_page_number }}">Next</a>{% endif %}
+<nav role="pagination">
+	<div class="container">
+		{% if entries.has_prev %}<a class="prev" href="?{% if query %}q={{ query }}&{% endif %}page={{ entries.previous_page_number }}">Prev</a>{% endif %}
+		{% if entries.has_next %}<a class="next" href="?{% if query %}q={{ query }}&{% endif %}page={{ entries.next_page_number }}">Next</a>{% endif %}
+	</div>
 </nav>
 {% endblock nav %}

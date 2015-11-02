@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User
 
 from vinci.models import Notebook, Entry, Section
+from vinci.utils import get_or_create_section
 
 class Command(BaseCommand):
     args = '<listfile>'
@@ -20,15 +21,7 @@ class Command(BaseCommand):
                 id, section_slug = line.split(':')
                 section_slug = section_slug.strip()
 
-                try:
-                    section = Section.objects.get(slug=section_slug, notebook=notebook)
-                except Exception as e:
-                    # Create it
-                    section = Section()
-                    section.name = section_slug
-                    section.slug = section_slug
-                    section.notebook = notebook
-                    section.save()
+                section = get_or_create_section(section_slug, notebook_slug)
 
                 entry = Entry.objects.get(id=id)
                 entry.section = section

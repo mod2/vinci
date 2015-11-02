@@ -13,6 +13,7 @@ vinciapipatterns = [
         NotebookListAPIView.as_view(),
         name='api_notebook_list'),
     url(r'^quick-jump/$', QuickJumpAPIView.as_view(), name='quick_jump'),
+    url(r'^add/$', 'vinci.views.apis.add_payload', name='api_add_payload'),
     url(r'^(?P<notebook_slug>[^\/]+)/$',
         EntryListAPIView.as_view(),
         name='api_entry_list'),
@@ -28,7 +29,7 @@ if settings.VINCI_ENABLE_NON_REST_APIS:
         url(r'^(?P<notebook_slug>[^\/]+)/append-today/$',
             'vinci.views.apis.append_today',
             name='api_entry_append_today'),
-        url(r'^(?P<notebook_slug>[^\/]+)/add-entry/$',
+        url(r'^add-entry/$',
             'vinci.views.apis.add_entry',
             name='api_entry_add_entry'),
 

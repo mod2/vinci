@@ -115,7 +115,7 @@
 			{% endblock add_notebook %}
 
 			{% block add_entry %}
-			<form id="add-entry" class="edit-mode" {% if notebook %}data-uri="{% url 'api_entry_list' notebook.slug %}" data-notebook-slug="{{ notebook.slug }}"{% endif %}{% if section %} data-section-slug="{{ section.slug }}"{% endif %}>
+			<form id="add-entry" class="edit-mode" data-uri="{% url 'api_add_payload' %}" {% if notebook %}data-notebook-slug="{{ notebook.slug }}"{% endif %}{% if section %} data-section-slug="{{ section.slug }}"{% endif %}>
 				<input class="title container" name="title" type="text" value="" placeholder="Title" />
 				<textarea name="entry-content" class="container"></textarea>
 

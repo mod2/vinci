@@ -771,3 +771,39 @@ def update_revision(request, notebook_slug, slug, revision_id):
     # Return JSON response
     return JsonResponse(response)
 
+
+def add_payload(request):
+    """Add a payload from the content query parameter."""
+
+    content = request.data.get('content')
+    section_slug = request.GET.get('section', None)
+
+    payload = parse_payload(content) 
+
+    # Get or create notebook/section
+    if 'notebook' in payload:
+        notebook_slug = payload['notebook']
+        payload['notebook'] = get_or_create_notebook(notebook_slug)
+    else:
+        # Default to the notebook we're in
+        notebook = get_or_create_notebook(notebook_slug)
+
+    if 'section' in payload:
+        section_slug = payload['section']
+        payload['section'] = get_or_create_section(section_slug, notebook_slug)
+    else:
+        if section_slug:
+            # Section passed in
+            payload['section'] = get_or_create_section(section_slug, notebook_slug)
+        elif notebook.default_section is None:
+            # Try the notebook's default section
+            payload['section'] = notebook.default_section
+
+    if len(payload['content'].strip()) > 0:
+        entry = models.Entry.objects.create(**payload)
+
+        si.add_index(entry)
+        e = serializers.EntrySerializer(entry)
+
+        return APIResponse(e.data)
+    return APIResponse({'detail': 'No content to save.'}, status=400)

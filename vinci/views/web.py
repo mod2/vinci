@@ -51,6 +51,7 @@ def notebook_section(request, notebook_slug, section_slug):
 
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
     section = get_object_or_404(Section, slug=section_slug, notebook=notebook)
+    print(section)
 
     entries = notebook.entries.active()
     if section:

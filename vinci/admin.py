@@ -21,7 +21,7 @@ class NotebookAdmin(admin.ModelAdmin):
 
 @admin.register(Section)
 class SectionAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug',)
+    list_display = ('name', 'slug', 'notebook',)
     pass
 
 

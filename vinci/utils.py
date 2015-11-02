@@ -36,3 +36,47 @@ def get_or_create_section(section_slug, notebook_slug):
         section.save()
 
     return section
+
+def parse_payload(payload):
+    """ Parses a payload and returns dictionary with content + metadata. """
+
+    response = {
+        'content': '',
+    }
+
+    for line in payload.split('\n'):
+        if len(line.strip()) > 0:
+            # See if it's a notebook selector
+            if line[0:2] == '::':
+                selector = line[2:]
+                # ::notebook/section OR ::notebook
+                if '/' in selector:
+                    notebook, section = selector.split('/')
+                else:
+                    notebook = selector
+                    section = None
+
+                response['notebook'] = notebook.strip()
+                if section:
+                    response['section'] = section.strip()
+
+            elif line[0] == ':':
+                # Normal metadata (:title Title)
+                command_list = line[1:].split(' ')
+                command = command_list[0]
+                value = ' '.join(command_list[1:])
+
+                response[command] = value
+            
+            else:
+                # Normal line
+                response['content'] += '{}\n'.format(line.strip())
+
+        else:
+            # Blank line
+            response['content'] += '\n'
+
+    # Strip the content
+    response['content'] = response['content'].strip()
+
+    return response

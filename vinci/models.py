@@ -73,11 +73,6 @@ class EntryQuerySet(StatusQueries, models.QuerySet):
             content = ''
 
         try:
-            user = kwargs.pop('author')
-        except KeyError:
-            user = ''
-
-        try:
             tags = kwargs.pop('tags')
         except KeyError:
             tags = ''
@@ -86,7 +81,6 @@ class EntryQuerySet(StatusQueries, models.QuerySet):
 
         revision = Revision()
         revision.content = content
-        revision.author = user
         revision.entry = entry
         revision.save()
 
@@ -135,8 +129,6 @@ class Notebook(models.Model):
     status = models.CharField(max_length=20,
                               default=STATUS.active,
                               choices=STATUS)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL,
-                               related_name='notebooks')
     group = models.ForeignKey(Group, related_name="notebooks", default=None,
                               null=True, blank=True)
 
@@ -208,7 +200,7 @@ class Entry(models.Model):
     @content.setter
     def content(self, value):
         cr = self.current_revision
-        r = Revision(content=value, entry=self, parent=cr, author=cr.author)
+        r = Revision(content=value, entry=self, parent=cr)
         r.save()
 
     def first_line(self):
@@ -297,8 +289,6 @@ class Revision(models.Model):
     entry = models.ForeignKey(Entry, related_name='revisions')
     parent = models.ForeignKey('self', related_name='children',
                                null=True, blank=True)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL,
-                               related_name='revisions')
     last_modified = models.DateTimeField(auto_now_add=True)
 
     def save(self):

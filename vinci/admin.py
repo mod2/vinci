@@ -39,6 +39,6 @@ class EntryAdmin(admin.ModelAdmin):
 
 @admin.register(Revision)
 class RevisionAdmin(admin.ModelAdmin):
-    list_display = ('last_modified', 'content_excerpt', 'parent', 'author',)
+    list_display = ('last_modified', 'content_excerpt', 'parent',)
     pass
 

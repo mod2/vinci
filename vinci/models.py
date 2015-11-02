@@ -38,7 +38,7 @@ class NotebookManager(StatusQueries, models.QuerySet):
 
 
 class EntryQuerySet(StatusQueries, models.QuerySet):
-    def from_slug(self, slug, notebook_slug=None):
+    def from_slug(self, slug, section_slug=None, notebook_slug=None):
         # See if it's a post ID or a page slug
         try:
             slug_id = int(slug)
@@ -52,6 +52,10 @@ class EntryQuerySet(StatusQueries, models.QuerySet):
         # If there's a notebook slug, filter by it
         if notebook_slug:
             entries = entries.filter(notebook__slug=notebook_slug)
+
+        # If there's a section slug, filter by it
+        if section_slug:
+            entries = entries.filter(section__slug=section_slug)
 
         # Get the first entry
         entry = entries.first()
@@ -219,6 +223,31 @@ class Entry(models.Model):
 
         return ''
 
+    def get_payload(self):
+        content = self.content
+
+        content += '\n\n'
+
+        # ::notebook/section
+        content += '::{}'.format(self.notebook.slug)
+        if self.section:
+            content += '/{}'.format(self.section.slug)
+        content += '\n'
+
+        # :title Title
+        if self.title:
+            content += ':title {}\n'.format(self.title)
+
+        # :date 2013-10-10 09:09:10
+        content += ':date {}\n'.format(str(self.date)[:19])
+
+        # :tags one-tag, two-tag
+        if len(self.tags.all()):
+            content += ':tags {}\n'.format(', '.join([str(tag) for tag in self.tags.all()]))
+
+        return content.strip()
+
+
     def html(self):
         content = self.content
 
@@ -233,9 +262,16 @@ class Entry(models.Model):
 
     def get_absolute_url(self):
         slug = self.id
+
         if self.slug:
             slug = self.slug
-        return resolve_url('entry', self.notebook.slug, slug)
+
+        if self.section:
+            section_slug = self.section.slug
+        else:
+            section_slug = None
+
+        return resolve_url('entry', self.notebook.slug, section_slug, slug)
 
     def __str__(self):
         return "{}".format(self.current_revision)

@@ -85,9 +85,11 @@ def notebook_section(request, notebook_slug, section_slug):
 @login_required
 def entry_detail(request, notebook_slug, section_slug, entry_slug):
     try:
-        entry = Entry.objects.from_slug(entry_slug, notebook_slug)
+        entry = Entry.objects.from_slug(entry_slug, section_slug, notebook_slug)
     except Entry.DoesNotExist:
         return HttpResponseNotFound('Entry does not exist.')
+
+    section = Section.objects.get(slug=section_slug, notebook__slug=notebook_slug)
 
     notebooks = Notebook.objects.filter(status='active').order_by('name')
 
@@ -110,7 +112,10 @@ def entry_detail(request, notebook_slug, section_slug, entry_slug):
 @login_required
 def revision_detail(request, notebook_slug, section_slug, entry_slug, revision_id):
     try:
-        entry = Entry.objects.from_slug(entry_slug, notebook_slug)
+        if section_slug:
+            entry = Entry.objects.from_slug(entry_slug, section_slug, notebook_slug)
+        else:
+            entry = Entry.objects.from_slug(entry_slug, None, notebook_slug)
     except Entry.DoesNotExist:
         return HttpResponseNotFound('Entry does not exist.')
 

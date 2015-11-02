@@ -36,7 +36,7 @@
 			<h2>Revisions</h2>
 			<ul class="revisions">
 				{% for rev in entry.revisions.all %}
-				<li{% if forloop.counter > 2 %} class="hidden"{% endif %}><a href="{% url 'revision' entry.notebook.slug entry.id rev.id %}">{{ rev.last_modified }}</a></li>
+				<li{% if forloop.counter > 2 %} class="hidden"{% endif %}><a href="{% url 'revision' entry.notebook.slug entry.section.slug entry.id rev.id %}">{{ rev.last_modified }}</a></li>
 				{% endfor %}
 				{% if entry.revisions.all|length > 2 %}
 				<li><a class="toggle" href="">Toggle full list ({{ entry.revisions.all|length }} revisions)</a></li>

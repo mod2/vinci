@@ -89,7 +89,10 @@ def entry_detail(request, notebook_slug, section_slug, entry_slug):
     except Entry.DoesNotExist:
         return HttpResponseNotFound('Entry does not exist.')
 
-    section = Section.objects.get(slug=section_slug, notebook__slug=notebook_slug)
+    try:
+        section = Section.objects.get(slug=section_slug, notebook__slug=notebook_slug)
+    except Section.DoesNotExist:
+        return HttpResponseNotFound('Section does not exist.')
 
     notebooks = Notebook.objects.filter(status='active').order_by('name')
 

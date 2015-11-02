@@ -934,17 +934,11 @@ $(document).ready(function() {
 
 	function _addEntry() {
 		var currentBox = $("#add-entry textarea[name=entry-content]:visible");
+		var currentNotebook = $("#add-entry").attr("data-notebook-slug");
+		var currentSection = $("#add-entry").attr("data-section-slug");
 
 		if (currentBox && currentBox.val()) {
 			var currentText = currentBox.val().trim();
-			var currentTitle = currentBox.siblings("input[name=title]");
-			if (currentTitle) {
-				currentTitle = currentTitle.val().trim();
-			}
-			var currentTags = currentBox.siblings(".edit-panel").find("input[name=tags]").val().trim();
-			var currentDate = currentBox.siblings(".edit-panel").find("input[name=date]").val();
-			var currentType = currentBox.siblings(".edit-panel").find("span.type.selected").attr("data-value");
-			var currentNotebook = currentBox.siblings(".edit-panel").find("select[name=notebook]").val();
 
 			var data = {};
 
@@ -952,24 +946,8 @@ $(document).ready(function() {
 				data['content'] = currentText;
 			}
 
-			if (currentTitle) {
-				data['title'] = currentTitle;
-			}
-
-			if (currentTags) {
-				data['tags'] = currentTags;
-			}
-
-			if (currentDate) {
-				data['date'] = currentDate;
-			}
-
-			if (currentType) {
-				data['type'] = currentType;
-			}
-
-			if (currentNotebook) {
-				data['notebook'] = currentNotebook;
+			if (currentSection) {
+				data['section'] = currentSection;
 			}
 
 			// Construct this manually because the notebook may have changed
@@ -981,9 +959,7 @@ $(document).ready(function() {
 				contentType: 'application/json',
 				data: JSON.stringify(data),
 				success: function(data) {
-					// Redirect to that notebook
-					var newUrl = "/" + currentNotebook + "/" + currentType + "/";
-					window.location.href = newUrl;
+					console.log("success");
 				},
 				error: function(data) {
 					_showError("Error adding entry", data);

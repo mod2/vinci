@@ -42,22 +42,9 @@
 	</div>
 
 	<form class="edit-mode">
-		<input class="title container" name="title" type="text" value="{{ entry.title }}" placeholder="Title" />
-		<textarea name="content" class="container">{% if revision %}{{ revision.content }}{% else %}{{ entry.current_revision.content }}{% endif %}</textarea>
+		<textarea name="content" class="container">{% if revision %}{{ revision.get_payload }}{% else %}{{ entry.current_revision.get_payload }}{% endif %}</textarea>
 
 		<div class="edit-panel">
-			<div class="group tags other container">
-				<label>Tags:</label><input name="tags" type="text" value="{{ entry.tags.all|join:',' }}" />
-			</div>
-			<div class="group other container">
-				<label>Date:</label><input name="date" type="text" value="{{ entry.date|date:'Y-m-d H:i:s' }}" />
-			</div>
-			<div class="group other notebook container">
-				<label>Notebook:</label>
-				<select name="notebook">
-					{% for n in notebooks %}<option value="{{ n.slug }}"{% if entry.notebook.slug == n.slug %} selected{% endif %}>{{ n.name }}</option>{% endfor %}
-				</select>
-			</div>
 			<div class="group other container">
 				<div class="buttons">
 					<span class="button delete">Delete Entry</span>
@@ -69,11 +56,4 @@
 			</div>
 		</div>
 	</form>
-	<div class="original hidden">
-		<input name="original_title" type="text" class="title" value="{{ entry.title }}" />
-		<textarea>{{ entry.current_revision.content }}</textarea>
-		<input name="original_tags" type="hidden" value="{{ entry.tags.all|join:',' }}" />
-		<input name="original_date" type="hidden" value="{{ entry.date|date:'Y-m-d H:i:s' }}" />
-		<input name="original_notebook" type="hidden" value="{{ entry.notebook.slug }}" />
-	</div>
 </article>

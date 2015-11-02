@@ -66,7 +66,10 @@ def parse_payload(payload):
                 command = command_list[0]
                 value = ' '.join(command_list[1:])
 
-                response[command] = value
+                if command == 'tag' or command == 'tags':
+                    response[command] = [x.strip() for x in value.split(',')]
+                else:
+                    response[command] = value
             
             else:
                 # Normal line

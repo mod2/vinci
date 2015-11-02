@@ -15,7 +15,7 @@ from rest_framework.views import APIView
 from taggit.models import Tag
 
 from vinci import models, serializers, search_indexer as si
-
+from vinci.utils import get_or_create_notebook, get_or_create_section, parse_payload
 
 def _reorder_items(model_qs, orders, owner_id=None):
     """
@@ -146,24 +146,33 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
 
     def post(self, request, notebook_slug):
         """Create a new Entry."""
-        notebook = get_object_or_404(models.Notebook, slug=notebook_slug)
+
         content = request.data.get('content')
-        title = request.data.get('title', '')
-        tags = request.data.get('tags')
-        date = request.data.get('date', '')
+        section_slug = request.data.get('section')
 
-        if content:
-            kwargs = {'content': content,
-                      'author': request.user,
-                      'notebook': notebook,
-                      'title': title,
-                      'tags': tags,
-                      }
+        payload = parse_payload(content) 
 
-            if date != '':
-                kwargs['date'] = date
+        # Get or create notebook/section
+        if 'notebook' in payload:
+            notebook_slug = payload['notebook']
+            payload['notebook'] = get_or_create_notebook(notebook_slug)
+        else:
+            # Default to the notebook we're in
+            notebook = get_or_create_notebook(notebook_slug)
 
-            entry = models.Entry.objects.create(**kwargs)
+        if 'section' in payload:
+            section_slug = payload['section']
+            payload['section'] = get_or_create_section(section_slug, notebook_slug)
+        else:
+            if section_slug:
+                # Section passed in
+                payload['section'] = get_or_create_section(section_slug, notebook_slug)
+            elif notebook.default_section is None:
+                # Try the notebook's default section
+                payload['section'] = notebook.default_section
+
+        if len(payload['content'].strip()) > 0:
+            entry = models.Entry.objects.create(**payload)
 
             si.add_index(entry)
             e = serializers.EntrySerializer(entry)

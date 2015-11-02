@@ -132,7 +132,7 @@ class Notebook(models.Model):
     group = models.ForeignKey(Group, related_name="notebooks", default=None,
                               null=True, blank=True)
 
-    default_section = models.CharField(max_length=20, blank=True, null=True)
+    default_section = models.ForeignKey("Section", related_name="default_notebooks", blank=True, null=True)
 
     objects = NotebookManager.as_manager()
 
@@ -216,29 +216,10 @@ class Entry(models.Model):
         return ''
 
     def get_payload(self):
-        content = self.content
-
-        content += '\n\n'
-
-        # ::notebook/section
-        content += '::{}'.format(self.notebook.slug)
-        if self.section:
-            content += '/{}'.format(self.section.slug)
-        content += '\n'
-
-        # :title Title
-        if self.title:
-            content += ':title {}\n'.format(self.title)
-
-        # :date 2013-10-10 09:09:10
-        content += ':date {}\n'.format(str(self.date)[:19])
-
-        # :tags one-tag, two-tag
-        if len(self.tags.all()):
-            content += ':tags {}\n'.format(', '.join([str(tag) for tag in self.tags.all()]))
-
-        return content.strip()
-
+        if self.current_revision:
+            return self.current_revision.get_payload()
+        else:
+            return ''
 
     def html(self):
         content = self.content
@@ -300,6 +281,30 @@ class Revision(models.Model):
 
     def content_excerpt(self):
         return self.content[:60]
+
+    def get_payload(self):
+        content = self.content
+
+        content += '\n\n'
+
+        # ::notebook/section
+        content += '::{}'.format(self.entry.notebook.slug)
+        if self.entry.section:
+            content += '/{}'.format(self.entry.section.slug)
+        content += '\n'
+
+        # :title Title
+        if self.entry.title:
+            content += ':title {}\n'.format(self.entry.title)
+
+        # :date 2013-10-10 09:09:10
+        content += ':date {}\n'.format(str(self.entry.date)[:19])
+
+        # :tags one-tag, two-tag
+        if len(self.entry.tags.all()):
+            content += ':tags {}\n'.format(', '.join([str(tag) for tag in self.entry.tags.all()]))
+
+        return content.strip()
 
     def html(self):
         content = self.content

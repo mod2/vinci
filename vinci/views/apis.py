@@ -324,14 +324,13 @@ class NotebookListAPIView(ListCreateAPIView):
         return qs
 
     def post(self, request):
-        """Create a new Notebook."""
-        data = {'name': request.data.get('name'),
-                'author': request.user,
-                }
-        notebook = models.Notebook.objects.create(**data)
-        n = serializers.NotebookSerializer(notebook,
-                                           context={'request': request})
-        return APIResponse(n.data)
+        """ POST payload. """
+        response = add_payload(request)
+
+        if 'error' in response:
+            return APIResponse({'detail': response['error']}, status=response['status'])
+        else:
+            return APIResponse(response)
 
 
 class NotebookDetailAPIView(APIView):
@@ -775,7 +774,17 @@ def update_revision(request, notebook_slug, slug, revision_id):
 def add_payload(request):
     """Add a payload from the content query parameter."""
 
-    content = request.data.get('content')
+    if hasattr(request, 'data'):
+        content = request.data.get('content')
+    else:
+        content = request.GET.get('content', '')
+
+    if content == '':
+        return {
+            'error': 'No content to save',
+            'status': 400,
+        }
+
     section_slug = request.GET.get('section', None)
 
     payload = parse_payload(content) 
@@ -805,5 +814,28 @@ def add_payload(request):
         si.add_index(entry)
         e = serializers.EntrySerializer(entry)
 
-        return APIResponse(e.data)
-    return APIResponse({'detail': 'No content to save.'}, status=400)
+        return e.data
+
+    return {
+        'error': 'No content to save',
+        'status': 400,
+    }
+
+def add_payload_endpoint(request):
+    callback = request.GET.get('callback', '')
+    key = request.GET.get('key', '')
+    section = request.GET.get('section', '')
+
+    if key != settings.VINCI_NON_REST_KEY:
+        return JsonResponse({})
+
+    response = add_payload(request)
+
+    if callback and 'error' not in response:
+        # Redirect to callback
+        response = HttpResponse("", status=302)
+        response['Location'] = callback
+        return response
+    else:
+        # Return JSON response
+        return JsonResponse(response)

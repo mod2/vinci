@@ -13,7 +13,7 @@ vinciapipatterns = [
         NotebookListAPIView.as_view(),
         name='api_notebook_list'),
     url(r'^quick-jump/$', QuickJumpAPIView.as_view(), name='quick_jump'),
-    url(r'^add/$', 'vinci.views.apis.add_payload', name='api_add_payload'),
+    url(r'^add/$', 'vinci.views.apis.add_payload_endpoint', name='api_add_payload'),
     url(r'^(?P<notebook_slug>[^\/]+)/$',
         EntryListAPIView.as_view(),
         name='api_entry_list'),

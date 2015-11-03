@@ -1896,11 +1896,11 @@ form.login input.button:hover {
 		padding-left: 35px;
 	}
 
-	#page #content .entry.selected .content {
+	#page #content .entry.selected .content.container {
 		padding-left: 35px;
 	}
 
-	#all-notebooks .notebook.selected .content {
+	#all-notebooks .notebook.selected .content.container {
 		padding-left: 35px;
 	}
 
@@ -1944,7 +1944,7 @@ form.login input.button:hover {
 
 	#page #content .entry.selected .metadata {
 		padding-left: 55px;
-		margin-right: 15px;
+		margin-right: 5px;
 	}
 
 	#page #content.detail .entry .metadata {
@@ -1983,6 +1983,11 @@ form.login input.button:hover {
 	#page #content.detail .entry .content.container {
 		padding-bottom: 45px;
 		padding-top: 45px;
+	}
+
+	#page #content .entry.selected .content.container {
+		margin-left: 185px;
+		padding-left: 0;
 	}
 
 	#page #content .entry .metadata ul.tags {
@@ -2277,57 +2282,22 @@ form.login input.button:hover {
 		max-width: 900px;
 	}
 
-	#page #content .entry .metadata {
-		padding-left: 130px;
-		width: 285px;
-	}
-
 	#page #content .entry .content.container {
 		margin-left: 310px;
-		padding-right: 130px;
-	}
-
-	#page #content .entry .edit-mode textarea {
-		padding-left: 130px;
-		padding-right: 130px;
-	}
-
-	#page #content .entry .edit-mode .title {
-		padding-left: 130px;
-		padding-right: 130px;
-	}
-
-	#page #content .entry .edit-mode .group.container {
-		padding-left: 130px;
-		padding-right: 130px;
 	}
 
 	#page #content .entry.selected .metadata {
-		padding-left: 120px;
-		width: 275px;
+		padding-left: 80px;
+		width: 295px;
 	}
 
 	#page #content .entry.selected .content.container {
 		margin-left: 235px;
 	}
 
-	#page #content .entry.note .content.container {
-		padding-left: 130px;
-		padding-right: 130px;
-	}
-
 	#page #content .entry.note.selected .content {
 		margin-left: 0;
 		padding-left: 120px;
-	}
-
-	#page #content .entry.page .content.container {
-		padding-left: 130px;
-		padding-right: 130px;
-	}
-
-	#page #content.detail .entry.page .content.container {
-		padding-bottom: 130px;
 	}
 
 	#page #content .entry.page.selected .content {

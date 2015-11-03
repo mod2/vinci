@@ -120,48 +120,15 @@
 				<textarea name="entry-content" class="container"></textarea>
 
 				<div class="edit-panel">
-					<div class="group tags other container">
-						<label>Tags:</label><input name="tags" type="text" value="" />
-					</div>
-					<div class="group other container">
-						<label>Date:</label><input name="date" type="text" value="" />
-					</div>
-					<div class="group other container">
-						<label>Type:</label>
-						{% if notebook.display_logs %}
-							<span data-value="log" class="type log{% if section == 'log' %} selected{% endif %}">Log</span>
-						{% endif %}
-						{% if notebook.display_notes %}
-							<span data-value="note" class="type note{% if section == 'note' %} selected{% endif %}">Note</span>
-						{% endif %}
-						{% if notebook.display_pages %}
-							<span data-value="page" class="type page{% if section == 'page' %} selected{% endif %}">Page</span>
-						{% endif %}
-						{% if notebook.display_journals %}
-							<span data-value="journal" class="type journal{% if section == 'journal' %} selected{% endif %}">Journal</span>
-						{% endif %}
-						<input type="hidden" name="type" value="" />
-					</div>
-					<div class="group other notebook container">
-						<label>Notebook:</label>
-						<select name="notebook">
-							{% for n in notebooks %}<option value="{{ n.slug }}"{% if notebook.slug == n.slug %} selected{% endif %}>{{ n.name }}</option>{% endfor %}
-						</select>
-					</div>
-					<div class="group other container">
-						<div class="buttons">
-							<span class="button append-to-today">Append to Today</span>
-						</div>
-					</div>
 					<div class="group more container">
-						<a class="toggle" href="">Toggle advanced</a> &mdash; <a class="add" href="">Add</a>
+						<a class="add" href="">Add</a>
 					</div>
 				</div>
 			</form>
 			{% endblock add_entry %}
 
 			{% block search %}
-			<form id="search" data-search-all-uri="{% url 'search_all' %}"{% if notebook and section %} data-search-section-uri="{% url 'search_notebook_section' notebook.slug section %}"{% endif %}{% if notebook %}data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}"{% endif %} data-quickjump-uri="{% url 'quick_jump' %}" class="{{ page_type }}">
+			<form id="search" data-search-all-uri="{% url 'search_all' %}"{% if notebook and section %} data-search-section-uri="{% url 'search_notebook_section' notebook.slug section.slug %}"{% endif %}{% if notebook %}data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}"{% endif %} data-quickjump-uri="{% url 'quick_jump' %}" class="{{ page_type }}">
 				<div class="container">
 					<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
 					<section class="scope">

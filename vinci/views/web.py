@@ -22,11 +22,12 @@ def notebook_home(request, notebook_slug):
 
     if notebook.default_section:
         section = notebook.default_section
-    else:
-        section = None
 
-    # Redirect to the default section for this notebook
-    return redirect('notebook_section', notebook_slug=notebook_slug, section=section)
+        # Redirect to the default section for this notebook
+        return redirect('notebook_section', notebook_slug=notebook_slug, section_slug=section)
+    else:
+        # Show the notebook root
+        return notebook_section(request, notebook_slug=notebook_slug, section_slug=None)
 
 
 @login_required
@@ -62,8 +63,14 @@ def notebook_section(request, notebook_slug, section_slug):
         section = None
 
     entries = notebook.entries.active()
+
     if section:
+        # Filter by section
         entries = entries.filter(section=section)
+    else:
+        # Get entries that aren't in any section
+        entries = entries.filter(section__isnull=True)
+
     entries = entries.order_by(sortby)
     entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE).page(page)
 

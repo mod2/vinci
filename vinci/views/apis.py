@@ -785,8 +785,13 @@ def add_payload(request):
             'status': 400,
         }
 
-    notebook_slug = request.GET.get('notebook', None)
-    section_slug = request.GET.get('section', None)
+    notebook_slug = request.data.get('notebook', None)
+    if notebook_slug is None:
+        notebook_slug = request.GET.get('notebook', None)
+
+    section_slug = request.data.get('section', None)
+    if section_slug is None:
+        section_slug = request.GET.get('section', None)
 
     payload = parse_payload(content) 
 
@@ -816,7 +821,7 @@ def add_payload(request):
             'status': 400,
         }
 
-    if len(payload['content'].strip()) > 0:
+    if len(payload['content'].strip()) > 0 and payload['notebook']:
         entry = models.Entry.objects.create(**payload)
 
         si.add_index(entry)
@@ -825,7 +830,7 @@ def add_payload(request):
         return e.data
     else:
         return {
-            'error': 'No content to save',
+            'error': 'No content to save or notebook is not specified',
             'status': 400,
         }
 
@@ -833,7 +838,6 @@ def add_payload(request):
 def add_payload_endpoint(request):
     callback = request.GET.get('callback', '')
     key = request.GET.get('key', '')
-    section = request.GET.get('section', '')
 
     if key != settings.VINCI_NON_REST_KEY:
         return JsonResponse({})

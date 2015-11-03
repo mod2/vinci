@@ -15,17 +15,21 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
 var csrftoken = getCookie('csrftoken');
 
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
+
 $.ajaxSetup({
     beforeSend: function(xhr, settings) {
         if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
             xhr.setRequestHeader("X-CSRFToken", csrftoken);
         }
+
+		xhr.setRequestHeader('X-API-KEY', config.api_key);
     }
 });
 
@@ -176,9 +180,6 @@ $(document).ready(function() {
 				url: url + "?q=" + query,
 				method: 'GET',
 				contentType: 'application/json',
-                beforeSend: function (request) {
-                    request.setRequestHeader('X-API-KEY', config.api_key);
-                },
 				success: function(data) {
 					var html = '';
 
@@ -939,19 +940,12 @@ $(document).ready(function() {
 
 		if (currentBox && currentBox.val()) {
 			var currentText = currentBox.val().trim();
-
+			var url = "/api/";
 			var data = {};
 
-			if (currentText) {
-				data['content'] = currentText;
-			}
-
-			if (currentSection) {
-				data['section'] = currentSection;
-			}
-
-			// Construct this manually because the notebook may have changed
-			var url = "/api/" + currentNotebook + "/";
+			if (currentText) data['content'] = currentText;
+			if (currentNotebook) data['notebook'] = currentNotebook;
+			if (currentSection) data['section'] = currentSection;
 
 			$.ajax({
 				url: url,

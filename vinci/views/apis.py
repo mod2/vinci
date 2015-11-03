@@ -785,6 +785,7 @@ def add_payload(request):
             'status': 400,
         }
 
+    notebook_slug = request.GET.get('notebook', None)
     section_slug = request.GET.get('section', None)
 
     payload = parse_payload(content) 
@@ -793,9 +794,9 @@ def add_payload(request):
     if 'notebook' in payload:
         notebook_slug = payload['notebook']
         payload['notebook'] = get_or_create_notebook(notebook_slug)
-    else:
+    elif notebook_slug:
         # Default to the notebook we're in
-        notebook = get_or_create_notebook(notebook_slug)
+        payload['notebook'] = get_or_create_notebook(notebook_slug)
 
     if 'section' in payload:
         section_slug = payload['section']
@@ -804,9 +805,16 @@ def add_payload(request):
         if section_slug:
             # Section passed in
             payload['section'] = get_or_create_section(section_slug, notebook_slug)
-        elif notebook.default_section is None:
+        elif 'notebook' in payload and hasattr(payload['notebook'], 'default_section') and payload['notebook'].default_section is None:
             # Try the notebook's default section
-            payload['section'] = notebook.default_section
+            payload['section'] = payload['notebook'].default_section
+
+    # Make sure there's a section or notebook
+    if ('notebook' not in payload or payload['notebook'] is None) and ('section' not in payload or payload['section'] is None):
+        return {
+            'error': 'No notebook/section specified',
+            'status': 400,
+        }
 
     if len(payload['content'].strip()) > 0:
         entry = models.Entry.objects.create(**payload)
@@ -815,11 +823,12 @@ def add_payload(request):
         e = serializers.EntrySerializer(entry)
 
         return e.data
+    else:
+        return {
+            'error': 'No content to save',
+            'status': 400,
+        }
 
-    return {
-        'error': 'No content to save',
-        'status': 400,
-    }
 
 def add_payload_endpoint(request):
     callback = request.GET.get('callback', '')

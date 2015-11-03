@@ -2112,7 +2112,6 @@ form.login input.button:hover {
 
 	body header[role=banner] h1 {
 		position: initial;
-		text-align: center;
 	}
 
 	body header[role=banner] h1 a.home {

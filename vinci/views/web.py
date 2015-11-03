@@ -20,8 +20,13 @@ from vinci.utils import get_sections_for_notebook
 def notebook_home(request, notebook_slug):
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
 
+    if notebook.default_section:
+        section = notebook.default_section
+    else:
+        section = None
+
     # Redirect to the default section for this notebook
-    return redirect('notebook_section', notebook_slug=notebook_slug, section=notebook.default_section)
+    return redirect('notebook_section', notebook_slug=notebook_slug, section=section)
 
 
 @login_required
@@ -50,8 +55,11 @@ def notebook_section(request, notebook_slug, section_slug):
     page = int(request.GET.get('page', 1))
 
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
-    section = get_object_or_404(Section, slug=section_slug, notebook=notebook)
-    print(section)
+
+    if section_slug:
+        section = get_object_or_404(Section, slug=section_slug, notebook=notebook)
+    else:
+        section = None
 
     entries = notebook.entries.active()
     if section:
@@ -68,7 +76,7 @@ def notebook_section(request, notebook_slug, section_slug):
     context = {
         'title': notebook.name,
         'notebook': notebook,
-        'section': section_slug,
+        'section': section,
         'sections': sections,
         'scope': 'section',
         'entries': entries,

@@ -304,6 +304,9 @@ class Revision(models.Model):
         if len(self.entry.tags.all()):
             content += ':tags {}\n'.format(', '.join([str(tag) for tag in self.entry.tags.all()]))
 
+        # :id 2930
+        content += ':id {}'.format(self.entry.id)
+
         return content.strip()
 
     def html(self):

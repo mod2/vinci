@@ -46,12 +46,6 @@
 	<div class="wrapper">
 		{% block menu %}
 		<nav role="menu">
-			<div class="group">
-				<span class="add-entry">Add Entry</span>
-				<span class="show-search">Search</span>
-				<span class="show-quickjump">Quickjump</span>
-			</div>
-
 			{% if notebook %}
 			<div class="group">
 				{% for s in sections %}
@@ -89,6 +83,11 @@
 							{% endif %}
 						{% endblock header_title %}
 					</h1>
+					<div class="group">
+						<span class="add-entry">+</span>
+						<span class="show-search">S</span>
+						<span class="show-quickjump">QJ</span>
+					</div>
 				</div>
 			</header>
 			{% endblock header %}

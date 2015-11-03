@@ -812,7 +812,7 @@ $(document).ready(function() {
 				contentType: 'application/json',
 				data: JSON.stringify(data),
 				success: function(data) {
-					console.log("success");
+					window.location.reload();
 				},
 				error: function(data) {
 					_showError("Error adding entry", data);
@@ -830,8 +830,11 @@ $(document).ready(function() {
 	$("#add-entry .add").on("click", _addEntry);
 
 	$("span.add-entry").on("click", function() {
-		_hideMenu();
-		_focusAddEntry();
+		if ($("#add-entry:visible").length > 0) {
+			_unfocusAddEntry();
+		} else {
+			_focusAddEntry();
+		}
 	});
 
 
@@ -839,13 +842,19 @@ $(document).ready(function() {
 	// --------------------------------------------------
 
 	$("span.show-search").on("click", function() {
-		_hideMenu();
-		_focusSearch();
+		if ($("#search:visible").length > 0) {
+			_unfocusSearch();
+		} else {
+			_focusSearch();
+		}
 	});
 
 	$("span.show-quickjump").on("click", function() {
-		_hideMenu();
-		_focusQuickJump();
+		if ($("#search:visible").length > 0) {
+			_unfocusSearch();
+		} else {
+			_focusQuickJump();
+		}
 	});
 
 	$("span.add-notebook").on("click", function() {

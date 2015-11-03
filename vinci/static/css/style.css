@@ -111,6 +111,7 @@ header[role=banner] {
 header[role=banner] .container {
 	background: hsl(212, 7%, 24%);
 	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+	display: flex;
 	overflow: hidden;
 	padding-bottom: 0;
 	padding-top: 0;
@@ -118,6 +119,7 @@ header[role=banner] .container {
 
 header[role=banner] h1 {
 	color: #fff;
+	flex: 1;
 	font-size: 1em;
 	font-weight: 400;
 	left: 60px;
@@ -177,6 +179,23 @@ header[role=banner] a.add {
 
 header[role=banner] .system {
 	display: none;
+}
+
+header[role=banner] .group {
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+header[role=banner] .group span {
+	color: #fff;
+	cursor: pointer;
+	display: inline-block;
+	padding-top: 1.3em;
+	padding-left: 10px;
+}
+
+header[role=banner] .group span:hover {
+	color: hsl(48, 81%, 74%) !important;
 }
 
 

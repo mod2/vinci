@@ -45,14 +45,8 @@
 		<textarea name="content" class="container">{% if revision %}{{ revision.get_payload }}{% else %}{{ entry.current_revision.get_payload }}{% endif %}</textarea>
 
 		<div class="edit-panel">
-			<div class="group other container">
-				<div class="buttons">
-					<span class="button delete">Delete Entry</span>
-					<a class="button" href="{{ entry.get_absolute_url }}">Go to Entry</a>
-				</div>
-			</div>
 			<div class="group more container">
-				<a class="toggle" href="">Toggle advanced</a> &mdash; <a class="save" href="">Save</a>
+				<a class="save" href="">Save</a> &mdash; <a class="delete" href="">Delete</span> &mdash; <a href="{{ entry.get_absolute_url }}">Go to entry</a>
 			</div>
 		</div>
 	</form>

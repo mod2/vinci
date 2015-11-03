@@ -349,11 +349,6 @@ $(document).ready(function() {
 			hideEditPanel($(e.target).parents(".entry"));
 			hideNotebookEditPanel($(e.target).parents(".notebook"));
 		});
-
-		Mousetrap(fields[i]).bind('ctrl+t', function(e) {
-			toggleOthers($(e.target));
-			return false;
-		});
 	}
 
 	// Cmd+Enter (or Ctrl+Enter) to save and close an entry
@@ -398,24 +393,6 @@ $(document).ready(function() {
 		// Update the parent entry class
 		parentEntry.removeClass("log").removeClass("note").removeClass("page").removeClass("journal");
 		parentEntry.addClass(entryType);
-
-		return false;
-	});
-
-	function toggleOthers(selector) {
-		var theOthers = selector.parents(".edit-mode").find(".other");
-
-		if (selector.parents(".edit-mode").find(".other:visible").length > 0) {
-			theOthers.slideUp(200);
-		} else {
-			theOthers.slideDown(200);
-		}
-
-		return false;
-	}
-
-	$(".edit-mode .group.more a.toggle").on("click", function() {
-		toggleOthers($(this));
 
 		return false;
 	});

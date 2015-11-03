@@ -6,6 +6,7 @@ from django_extensions.db.fields import AutoSlugField
 from django.utils.text import slugify
 from model_utils import Choices
 from taggit.managers import TaggableManager
+from django.utils.timezone import localtime
 
 import datetime
 
@@ -304,7 +305,8 @@ class Revision(models.Model):
             content += ':title {}\n'.format(self.entry.title)
 
         # :date 2013-10-10 09:09:10
-        content += ':date {}\n'.format(str(self.entry.date)[:19])
+        entry_date = localtime(self.entry.date) # convert to local time
+        content += ':date {}\n'.format(str(entry_date)[:19])
 
         # :tags one-tag, two-tag
         if len(self.entry.tags.all()):

@@ -549,6 +549,7 @@ def append_today(request, notebook_slug):
 
             # Add new revision with appended content
             new_revision = models.Revision()
+
             new_revision.entry = entry
             new_revision.content = cur_rev.content + content
             new_revision.author = notebook.author
@@ -775,23 +776,19 @@ def add_payload(request):
     """Add a payload from the content query parameter."""
 
     if hasattr(request, 'data'):
-        content = request.data.get('content')
+        content = request.data.get('content', '')
+        notebook_slug = request.data.get('notebook', None)
+        section_slug = request.data.get('section', None)
     else:
         content = request.GET.get('content', '')
+        notebook_slug = request.GET.get('notebook', None)
+        section_slug = request.GET.get('section', None)
 
     if content == '':
         return {
             'error': 'No content to save',
             'status': 400,
         }
-
-    notebook_slug = request.data.get('notebook', None)
-    if notebook_slug is None:
-        notebook_slug = request.GET.get('notebook', None)
-
-    section_slug = request.data.get('section', None)
-    if section_slug is None:
-        section_slug = request.GET.get('section', None)
 
     payload = parse_payload(content) 
 
@@ -821,18 +818,52 @@ def add_payload(request):
             'status': 400,
         }
 
-    if len(payload['content'].strip()) > 0 and payload['notebook']:
-        entry = models.Entry.objects.create(**payload)
+    # See if it's an existing entry
+    stripped_content = payload['content'].strip()
 
-        si.add_index(entry)
+    if 'id' in payload and len(stripped_content) > 0:
+        entry = models.Entry.objects.get(id=payload['id'])
+
+        # Create new revision
+        revision = models.Revision()
+        revision.content = stripped_content
+        revision.entry = entry
+        revision.save()
+
+        if 'title' in payload:
+            entry.title = payload['title']
+        else:
+            entry.title = ''
+
+        # Tags
+        entry.tags.clear()
+        if 'tags' in payload or 'tag' in payload:
+            tags = [t.strip() for t in payload['tags'].split(',')]
+            entry.tags.add(tags)
+
+        # Update date
+        if 'date' in payload:
+            the_date = datetime.datetime.strptime(payload['date'], models.DATETIME_FORMAT)
+            revision.last_modified = the_date
+            revision.save()
+            entry.date = the_date
+            entry.save()
+
         e = serializers.EntrySerializer(entry)
-
         return e.data
     else:
-        return {
-            'error': 'No content to save or notebook is not specified',
-            'status': 400,
-        }
+        if len(stripped_content) > 0 and payload['notebook']:
+            entry = models.Entry.objects.create(**payload)
+
+            si.add_index(entry)
+            e = serializers.EntrySerializer(entry)
+
+            return e.data
+        else:
+            return {
+                'error': 'No content to save or notebook is not specified',
+                'status': 400,
+            }
 
 
 def add_payload_endpoint(request):

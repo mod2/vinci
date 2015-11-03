@@ -653,149 +653,37 @@ $(document).ready(function() {
 		var currentBox = $("textarea[name=content]:visible");
 
 		if (currentBox && currentBox.val()) {
-			// Get updated stuff
 			var currentText = currentBox.val().trim();
-			var currentTitle = currentBox.siblings("input[name=title]");
-			if (currentTitle) {
-				currentTitle = currentTitle.val().trim();
-			}
-			var currentTags = currentBox.siblings(".edit-panel").find("input[name=tags]").val().trim();
-			var currentDate = currentBox.siblings(".edit-panel").find("input[name=date]").val();
-			var currentType = currentBox.siblings(".edit-panel").find("span.type.selected").attr("data-value");
-			var currentNotebook = currentBox.siblings(".edit-panel").find("select[name=notebook]").val();
-
-			// Originals
-			var originalBox = currentBox.parents(".edit-mode").siblings(".original").find("textarea");
-			var originalText = originalBox.val().trim();
-			var originalTitle = originalBox.siblings("input[name=original_title]");
-			if (originalTitle) {
-				originalTitle = originalTitle.val().trim();
-			}
-			var originalTags = originalBox.siblings("input[name=original_tags]").val();
-			if (typeof originalTags == 'undefined') {
-				originalTags = '';
-			}
-			var originalDate = originalBox.siblings("input[name=original_date]").val();
-			var originalType = originalBox.siblings("input[name=original_type]").val();
-			var originalNotebook = originalBox.siblings("input[name=original_notebook]").val();
-
 			var entry = currentBox.parents(".entry");
 			var entryId = entry.attr("data-id");
-			var url = entry.attr("data-api-uri");
+			var url = $(".entries").attr("data-uri");
 			var notebookSlug = entry.attr("data-notebook-slug");
 
 			var submit = false;
-			var data = {};
+			var data = {
+				'content': currentText,
+			};
 
-			if (currentText != originalText) {
-				data['content'] = currentText;
-				submit = true;
-			}
+			$.ajax({
+				url: url,
+				method: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(data),
+				success: function(data) {
+					// Update the returned HTML
+					if (data.html) {
+						entry.find(".content.container").html(data.html);
+					}
 
-			if (currentTitle != originalTitle) {
-				data['title'] = currentTitle;
-				submit = true;
-			}
-
-			if (currentTags != originalTags) {
-				if (currentTags == '' && originalTags != '') {
-					data['tags'] = '[CLEAR]';
-				} else {
-					data['tags'] = currentTags;
-				}
-				submit = true;
-			}
-
-			if (currentDate != originalDate) {
-				data['date'] = currentDate;
-				submit = true;
-			}
-
-			if (currentType != originalType) {
-				data['type'] = currentType;
-				submit = true;
-			}
-
-			if (currentNotebook != originalNotebook) {
-				data['notebook'] = currentNotebook;
-				submit = true;
-			}
-
-			if (submit) {
-				// Get an initial revision if it's not there
-				if (!$("textarea[name=content]").attr("data-revision-id")) {
-					// New revision for this session
-					url += "add-revision/";
-				} else {
-					// Update revision for this session
-					var revisionId = $("textarea[name=content]").attr("data-revision-id");
-					url += "update-revision/" + revisionId + "/";
-				}
-
-				$.ajax({
-					url: url,
-					method: 'POST',
-					contentType: 'application/json',
-					data: JSON.stringify(data),
-					success: function(data) {
-						currentBox.attr("data-revision-id", data.revision_id);
-
-						// Update current cache
-						originalBox.html(currentText);
-
-						if (currentTitle != originalTitle) {
-							// Redirect to new page
-							var newUrl = "/" + currentNotebook + "/" + currentType + "/" + entryId + "/";
-							window.location.href = newUrl;
-						}
-
-						if (currentTags != originalTags) {
-							originalBox.siblings("input[name=original_tags]").val(currentTags);
-						}
-
-						if (currentDate != originalDate) {
-							originalBox.siblings("input[name=original_date]").val(currentDate);
-						}
-
-						if (currentType != originalType) {
-							originalBox.siblings("input[name=original_type]").val(currentType);
-						}
-
-						if (currentNotebook != originalNotebook) {
-							originalBox.siblings("input[name=original_notebook]").val(currentNotebook);
-						}
-
-						// Update the returned HTML
-						if (data.html) {
-							if (currentType == 'page') {
-								entry.find(".content.container .page-content").html(data.html);
-							} else if (currentType == 'note') {
-								// Do title differently
-								var html = '<h3><a href="">' + data.first_line + '</a></h3>';
-								if (data.second_line) {
-									html += '<div class="second-line">' + data.second_line + '</div>';
-								}
-								entry.find(".content.container").html(html);
-							} else {
-								entry.find(".content.container").html(data.html);
-							}
-						}
-
-						if (callback) {
-							callback();
-						}
-					},
-					error: function(data) {
-						currentBox.addClass("error");
-						_showError("Error saving", data);
-					},
-				});
-			} else {
-				// Not submitting, but still do the callback
-				if (callback) {
-					callback();
-				}
-			}
+					if (callback) {
+						callback();
+					}
+				},
+				error: function(data) {
+					currentBox.addClass("error");
+					_showError("Error saving", data);
+				},
+			});
 		}
 	}
 
@@ -940,7 +828,7 @@ $(document).ready(function() {
 
 		if (currentBox && currentBox.val()) {
 			var currentText = currentBox.val().trim();
-			var url = "/api/";
+			var url = $("#add-entry").attr("data-uri");
 			var data = {};
 
 			if (currentText) data['content'] = currentText;

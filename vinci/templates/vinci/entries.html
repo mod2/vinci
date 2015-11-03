@@ -2,7 +2,7 @@
 
 {% block content %}
 	{% block entries %}
-	<section class="entries">
+	<section class="entries" data-uri="{% url 'api_notebook_list' %}">
 		{% for entry in entries %}
 			{% if search %}
 				{% include 'vinci/_search.html' %}

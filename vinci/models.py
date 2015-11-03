@@ -137,7 +137,7 @@ class Notebook(models.Model):
     objects = NotebookManager.as_manager()
 
     def __str__(self):
-        return "{0.name}".format(self)
+        return "{}".format(self.slug)
 
     def get_absolute_url(self):
         return resolve_url('notebook', self.slug)
@@ -167,6 +167,12 @@ class Section(models.Model):
 
     dotfile = models.TextField(blank=True, null=True)
     custom_css = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return "{}/{}".format(self.notebook.slug, self.slug)
+
+    def get_absolute_url(self):
+        return resolve_url('notebook_section', self.notebook.slug, self.slug)
 
 
 class Entry(models.Model):

@@ -135,6 +135,8 @@ class Notebook(models.Model):
 
     default_section = models.ForeignKey("Section", related_name="default_notebooks", blank=True, null=True)
 
+    default_mode = models.CharField(max_length=30, blank=True, null=True)
+
     objects = NotebookManager.as_manager()
 
     def __str__(self):
@@ -164,7 +166,7 @@ class Section(models.Model):
 
     notebook = models.ForeignKey(Notebook, related_name='sections')
 
-    default_view = models.CharField(max_length=30, blank=True, null=True)
+    default_mode = models.CharField(max_length=30, blank=True, null=True)
 
     dotfile = models.TextField(blank=True, null=True)
     custom_css = models.TextField(blank=True, null=True)

@@ -30,8 +30,8 @@
         config.api_key = "{{ API_KEY }}";
 	</script>
 
-	{% if section %}
-	<link rel="shortcut icon" href="{% static 'favicon/' %}favicon-{{ section }}.png">
+	{% if mode %}
+	<link rel="shortcut icon" href="{% static 'favicon/' %}favicon-{{ mode }}.png">
 	{% else %}
 	<link rel="shortcut icon" href="{% static 'favicon.png' %}">
 	{% endif %}

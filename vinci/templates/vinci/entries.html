@@ -7,10 +7,10 @@
 			{% if search %}
 				{% include 'vinci/_search.html' %}
 			{% else %}
-				{% STUB %}
+				%%%STUB%%%
 			{% endif %}
 		{% empty %}
-		<article class="entry container empty"><div>No {% if section %}{{ section }} {% endif %}entries. Not a single one.</div><span class="add-entry">Add an entry</span></article>
+		<article class="entry container empty"><div>No entries. Not a single one.</div><span class="add-entry">Add an entry</span></article>
 		{% endfor %}
 	</section>
 	{% endblock entries %}

@@ -97,7 +97,7 @@ def delete_from_index(document):
 
 
 def search(query_string, page=1, results_per_page=10, sort_order='relevance',
-           notebook=None):
+           notebook=None, section=None):
     ix = get_or_create_index()
 
     qp = QueryParser('content', ix.schema)
@@ -106,6 +106,9 @@ def search(query_string, page=1, results_per_page=10, sort_order='relevance',
 
     if notebook:
         query = query & Term('notebook', notebook.slug)
+
+    if section:
+        query = query & Term('section', section.slug)
 
     entry_ids = {}
     results = None

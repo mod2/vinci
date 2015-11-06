@@ -89,7 +89,7 @@
 					<h1>
 						{% block header_title %}
 							{% if notebook %}
-								<a class="home" href="{{ notebook.get_absolute_url }}">{{ notebook.name }}</a>
+								<a class="home" href="{% if section %}{{ section.get_absolute_url }}{% else %}{{ notebook.get_absolute_url }}{% endif %}">::{{ notebook.slug }}{% if section %}/{{ section.slug }}{% endif %}</a>
 							{% else %}
 								<span>{{ title }}</span>
 							{% endif %}
@@ -125,7 +125,6 @@
 
 			{% block add_entry %}
 			<form id="add-entry" class="edit-mode" data-uri="{% url 'api_notebook_list' %}" {% if notebook %}data-notebook-slug="{{ notebook.slug }}"{% endif %}{% if section %} data-section-slug="{{ section.slug }}"{% endif %}>
-				<input class="title container" name="title" type="text" value="" placeholder="Title" />
 				<textarea name="entry-content" class="container"></textarea>
 
 				<div class="edit-panel">
@@ -153,7 +152,7 @@
 			{% if query %}
 			<section id="results">
 				<div class="container">
-					<h2>{{ total }} {% if section %}{{ section }} {% endif %}result{% if total != 1 %}s{% endif %} for <span>{{ query }}</span></h2>
+					<h2>{{ total }} result{% if total != 1 %}s{% endif %} for <span>{{ query }}</span></h2>
 				</div>
 			</section>
 			{% endif %}
@@ -203,7 +202,9 @@
 						<label>k</label>
 						<span>Move up in entry list</span>
 					</div>
+				</div>
 
+				<div class="column">
 					<div class="group">
 						<label>e</label>
 						<span>Edit entry</span>
@@ -213,32 +214,10 @@
 						<label>C-&#x23ce;</label>
 						<span>Save entry</span>
 					</div>
-				</div>
 
-				<div class="column">
 					<div class="group">
 						<label>g /</label>
 						<span>Quickjump</span>
-					</div>
-
-					<div class="group">
-						<label>g l</label>
-						<span>Logs</span>
-					</div>
-
-					<div class="group">
-						<label>g n</label>
-						<span>Notes</span>
-					</div>
-
-					<div class="group">
-						<label>g p</label>
-						<span>Pages</span>
-					</div>
-
-					<div class="group">
-						<label>g j</label>
-						<span>Journals</span>
 					</div>
 
 					<div class="group">

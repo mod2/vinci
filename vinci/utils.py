@@ -158,7 +158,7 @@ def load_template_for_mode(template, mode):
                 mode_html = settings.VINCI_MODES['log']['detail']
 
         # Replace the stub with the mode-specific template HTML
-        data = re.sub(r"{% STUB %}", mode_html, data)
+        data = re.sub(r"%%%STUB%%%", mode_html, data)
     except:
         data = ''
 

@@ -154,6 +154,9 @@ def entry_detail(request, notebook_slug, section_slug, entry_slug):
 
     notebooks = Notebook.objects.filter(status='active').order_by('name')
 
+    # Get sections (for sidebar list)
+    sections = get_sections_for_notebook(entry.notebook)
+
     context = {
         'title': entry.notebook.name,
         'mode': mode,
@@ -161,6 +164,7 @@ def entry_detail(request, notebook_slug, section_slug, entry_slug):
         'notebook': entry.notebook,
         'notebooks': notebooks,
         'entry': entry,
+        'sections': sections,
         'section': section,
         'scope': 'section',
         'page_type': 'detail',
@@ -215,6 +219,9 @@ def revision_detail(request, notebook_slug, section_slug, entry_slug, revision_i
             entry.notebook.default_mode = mode
             entry.notebook.save()
 
+    # Get sections (for sidebar list)
+    sections = get_sections_for_notebook(entry.notebook)
+
     context = {
         'title': entry.notebook.name,
         'mode': mode,
@@ -222,6 +229,7 @@ def revision_detail(request, notebook_slug, section_slug, entry_slug, revision_i
         'notebook': entry.notebook,
         'entry': entry,
         'revision': revision,
+        'sections': sections,
         'section': section,
         'scope': 'section',
         'page_type': 'detail',

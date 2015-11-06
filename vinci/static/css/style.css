@@ -1283,7 +1283,17 @@ body.wiki-mode #page #content.detail .entry .content.container {
 nav[role=pagination] {
 	background: #eee;
 	border-top: solid 1px #ddd;
+	overflow: hidden;
 	padding: 12px 0;
+}
+
+nav[role=pagination] a {
+	font-style: italic;
+	text-decoration: none;
+}
+
+nav[role=pagination] a.next {
+	float: right;
 }
 
 

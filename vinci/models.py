@@ -38,6 +38,10 @@ class NotebookManager(StatusQueries, models.QuerySet):
     pass
 
 
+class SectionManager(StatusQueries, models.QuerySet):
+    pass
+
+
 class EntryQuerySet(StatusQueries, models.QuerySet):
     def from_slug(self, slug, section_slug=None, notebook_slug=None):
         # See if it's a post ID or a page slug
@@ -170,6 +174,8 @@ class Section(models.Model):
 
     dotfile = models.TextField(blank=True, null=True)
     custom_css = models.TextField(blank=True, null=True)
+
+    objects = SectionManager.as_manager()
 
     def __str__(self):
         return "{}/{}".format(self.notebook.slug, self.slug)

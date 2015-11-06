@@ -844,8 +844,6 @@ def add_payload(request):
         # Update date
         if 'date' in payload:
             the_date = datetime.datetime.strptime(payload['date'], models.DATETIME_FORMAT)
-            revision.last_modified = the_date
-            revision.save()
             entry.date = the_date
             entry.save()
 

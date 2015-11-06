@@ -42,7 +42,7 @@
 	{% endblock head %}
 </head>
 
-<body>
+<body {% if mode %}class="{{ mode }}-mode"{% endif %}>
 	<div class="wrapper">
 		{% block menu %}
 		<nav role="menu">

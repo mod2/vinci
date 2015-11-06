@@ -54,9 +54,15 @@ def notebook_section(request, notebook_slug, section_slug):
     sortby = settings.VINCI_DEFAULT_SEARCH_ORDER
     sortby = request.GET.get('sort', sortby)
     page = int(request.GET.get('page', 1))
-    mode = request.GET.get('mode', 'log')
 
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
+
+    if notebook.default_mode:
+        default_mode = notebook.default_mode
+    else:
+        default_mode = 'log'
+
+    mode = request.GET.get('mode', default_mode)
 
     if section_slug:
         section = get_object_or_404(Section, slug=section_slug, notebook=notebook)
@@ -80,8 +86,16 @@ def notebook_section(request, notebook_slug, section_slug):
 
     labels = []
 
+    # Save mode as default unless sticky is set
+    if notebook.default_mode != mode:
+        sticky = request.GET.get('sticky', '')
+        if sticky != 'false':
+            notebook.default_mode = mode
+            notebook.save()
+
     context = {
         'title': notebook.name,
+        'mode': mode,
         'notebook': notebook,
         'section': section,
         'sections': sections,
@@ -100,22 +114,35 @@ def notebook_section(request, notebook_slug, section_slug):
 
 @login_required
 def entry_detail(request, notebook_slug, section_slug, entry_slug):
-    mode = request.GET.get('mode', 'log')
-
     try:
         entry = Entry.objects.from_slug(entry_slug, section_slug, notebook_slug)
     except Entry.DoesNotExist:
         return HttpResponseNotFound('Entry does not exist.')
+
+    if entry.notebook.default_mode:
+        default_mode = entry.notebook.default_mode
+    else:
+        default_mode = 'log'
+
+    mode = request.GET.get('mode', default_mode)
 
     try:
         section = Section.objects.get(slug=section_slug, notebook__slug=notebook_slug)
     except Section.DoesNotExist:
         return HttpResponseNotFound('Section does not exist.')
 
+    # Save mode as default unless sticky is set
+    if entry.notebook.default_mode != mode:
+        sticky = request.GET.get('sticky', '')
+        if sticky != 'false':
+            entry.notebook.default_mode = mode
+            entry.notebook.save()
+
     notebooks = Notebook.objects.filter(status='active').order_by('name')
 
     context = {
         'title': entry.notebook.name,
+        'mode': mode,
         'notebook': entry.notebook,
         'notebooks': notebooks,
         'entry': entry,

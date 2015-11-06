@@ -1,4 +1,5 @@
 import re
+import os.path
 
 from django.conf import settings
 
@@ -99,24 +100,26 @@ def load_modes(modes, base):
         }
 
         # Load detail first
-        detail_filename = modes[key]['detail']
+        detail_filename = '{}_detail.html'.format(key)
         if detail_filename != '':
             filename = '{}/{}'.format(base, detail_filename)
-            with open(filename, 'r') as f:
-                data = f.read()
-            response[key]['detail'] = data
+            if os.path.isfile(filename):
+                with open(filename, 'r') as f:
+                    data = f.read()
+                response[key]['detail'] = data
 
         # Load list
-        list_filename = modes[key]['list']
+        list_filename = '{}_list.html'.format(key)
         if list_filename == '':
             # Use detail
             response[key]['list'] = response[key]['detail']
         else:
             # Load list
             filename = '{}/{}'.format(base, list_filename)
-            with open(filename, 'r') as f:
-                data = f.read()
-            response[key]['list'] = data
+            if os.path.isfile(filename):
+                with open(filename, 'r') as f:
+                    data = f.read()
+                response[key]['list'] = data
 
     return response
 
@@ -133,6 +136,7 @@ def load_template_for_mode(template, mode):
 
         # Load the template HTML
         filename = '{}/vinci/templates/vinci/{}.html'.format(settings.BASE_DIR, slug)
+
         with open(filename, 'r') as f:
             data = f.read()
 

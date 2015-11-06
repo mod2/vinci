@@ -2,15 +2,13 @@
     <a class="controls-toggle" href="">&nbsp;</a>
 
 	<div class="content container {% block entry_class %}{% endblock entry_class %}">
-		<h1 class="page-title">{{ entry.title }}</h1>
-
-		<div class="page-content">
-			{% if revision %}
-			{{ revision.html|safe }}
-			{% else %}
-			{{ entry.html|safe }}
-			{% endif %}
-		</div>
+		{% block entry_list %}
+		{% if revision %}
+		{{ revision.html|safe }}
+		{% else %}
+		{{ entry.html|safe }}
+		{% endif %}
+		{% endblock %}
 	</div>
 
 	<form class="edit-mode">

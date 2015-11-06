@@ -623,35 +623,35 @@ body.active-nav #page .mask {
 	display: none;
 }
 
-#sections.log {
+body.log-mode #sections {
 	background: hsl(210, 37%, 42%);
 }
 
-#sections.log .container {
+body.log-mode #sections .container {
 	background: hsl(210, 47%, 57%);
 }
 
-#sections.note {
+body.note-mode #sections {
 	background: hsl(55, 37%, 42%);
 }
 
-#sections.note .container {
+body.note-mode #sections .container {
 	background: hsl(55, 39%, 57%);
 }
 
-#sections.page {
+body.wiki-mode #sections {
 	background: hsl(93, 37%, 42%);
 }
 
-#sections.page .container {
+body.wiki-mode #sections .container {
 	background: hsl(93, 39%, 57%);
 }
 
-#sections.journal {
+body.journal-mode #sections {
 	background: hsl(342, 37%, 42%);
 }
 
-#sections.journal .container {
+body.journal-mode #sections .container {
 	background: hsl(342, 39%, 57%);
 }
 
@@ -1029,18 +1029,15 @@ body.active-nav #page .mask {
 	padding-bottom: 25px;
 }
 
-#page #content.list .entry.page .metadata.container {
-	display: none;
-}
-
-#page #content .entry.page .content.container {
+body.wiki-mode #page #content .content.container {
 	padding-bottom: 15px;
 	padding-top: 15px;
 }
 
-#page #content.detail .entry.page .content.container {
+body.wiki-mode #page #content.detail .entry .content.container {
 	padding-bottom: 40px;
 }
+
 
 #page #content .entry .original.hidden {
 	display: none;
@@ -1049,22 +1046,6 @@ body.active-nav #page .mask {
 #page #content .edit-mode {
 	display: none;
 	padding-top: 0;
-}
-
-#page #content .edit-mode input.title {
-	border: none;
-	display: none;
-	font-size: 1.3em;
-	width: 100%;
-}
-
-
-#page #content .edit-mode input.title:focus {
-	outline: none;
-}
-
-#page #content .entry.page .edit-mode input.title {
-	display: block;
 }
 
 #page #content .edit-mode textarea {
@@ -1111,49 +1092,6 @@ body.active-nav #page .mask {
 #page #content .edit-mode .group input[type=text]:focus {
 	color: #333;
 	outline: none;
-}
-
-#page #content .edit-mode .group ul.tagit {
-	background: #fff;
-	border: none;
-	border-radius: 3px;
-	display: inline-block;
-	margin: 0;
-	width: calc(100% - 80px);
-}
-
-#page #content .edit-mode .group ul.tagit li.tagit-choice .tagit-label:not(a) {
-	color: #222;
-}
-
-#page #content .edit-mode .group ul.tagit li.tagit-choice {
-	background-color: #d4efbc;
-	border-color: #d4efbc;
-	border-radius: 3px;
-	margin-bottom: 0;
-}
-
-#page #content .edit-mode .group ul.tagit li.tagit-choice-editable {
-	font-size: 1em;
-	padding: 0px 20px 1px 6px;
-}
-
-#page #content .edit-mode .group ul.tagit li.tagit-choice .tagit-close {
-	margin-top: -8px;
-}
-
-#page #content .edit-mode .group ul.tagit li.tagit-choice .tagit-close .text-icon {
-	font-family: Source Sans Pro, Helvetica, Arial, sans-serif;
-	color: #9ec78b;
-}
-
-#page #content .edit-mode .group ul.tagit input[type=text] {
-	font-size: 1em;
-	width: 100px;
-}
-
-#page #content .edit-mode .group ul.tagit li.tagit-new {
-	margin-top: 0;
 }
 
 #page #content .edit-mode .group select {
@@ -1332,7 +1270,9 @@ body.active-nav #page .mask {
 /* -------------------------------------------------- */
 
 nav[role=pagination] {
+	background: #eee;
 	border-top: solid 1px #ddd;
+	padding: 12px 0;
 }
 
 
@@ -1490,23 +1430,6 @@ form.login input.button:hover {
 	display: none;
 }
 
-#add-entry input.title {
-	border: none;
-	display: none;
-	font-size: 1.3em;
-	width: 100%;
-}
-
-#add-entry input.title:focus {
-	outline: none;
-}
-
-#add-entry.page input.title {
-	display: block;
-	padding-bottom: 5px;
-	padding-top: 30px;
-}
-
 #add-entry textarea {
 	border: none;
 	display: block;
@@ -1555,53 +1478,6 @@ form.login input.button:hover {
 	outline: none;
 }
 
-#add-entry .group ul.tagit {
-	background: #fff;
-	border: none;
-	border-radius: 3px;
-	display: inline-block;
-	margin: 0;
-	width: calc(100% - 80px);
-}
-
-#add-entry .group ul.tagit li.tagit-choice .tagit-label:not(a) {
-	color: #222;
-}
-
-#add-entry .group ul.tagit li.tagit-choice {
-	background-color: #d4efbc;
-	border-color: #d4efbc;
-	border-radius: 3px;
-	margin-bottom: 0;
-}
-
-#add-entry .group ul.tagit li.tagit-choice-editable {
-	font-size: 1em;
-	padding: 0px 20px 1px 6px;
-}
-
-#add-entry .group ul.tagit li.tagit-choice .tagit-close {
-	margin-top: -8px;
-}
-
-#add-entry .group ul.tagit li.tagit-choice .tagit-close .text-icon {
-	font-family: Source Sans Pro, Helvetica, Arial, sans-serif;
-	color: #9ec78b;
-}
-
-#add-entry .group ul.tagit input[type=text] {
-	font-size: 1em;
-	width: 100px;
-}
-
-#add-entry .group ul.tagit li.tagit-new {
-	margin-top: 0;
-}
-
-#add-entry .group select {
-	width: calc(100% - 85px);
-}
-
 #add-entry .group.other {
 	display: none;
 }
@@ -1623,32 +1499,6 @@ form.login input.button:hover {
 	color: hsl(0, 0%, 30%);	
 }
 
-#add-entry .group span.type {
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	background: hsl(210, 47%, 75%);
-	border-radius: 2px;
-	color: hsl(210, 41%, 39%);
-	cursor: pointer;
-	display: inline-block;
-	padding: 0px 8px 2px;
-	user-select: none;
-}
-
-#add-entry .group span.type:hover {
-	background: hsl(210, 13%, 46%);
-	color: #fff;
-}
-
-#add-entry .group span.type + span.type {
-	margin-left: 2px;
-}
-
-#add-entry .group span.type.selected {
-	background: hsl(210, 13%, 46%);
-	color: #fff;
-}
-
 #add-entry .group .buttons {
 	margin-left: 80px;
 	padding-bottom: 15px;
@@ -1664,19 +1514,15 @@ form.login input.button:hover {
 	width: auto;
 }
 
-#add-entry .group .buttons .button.append-to-today {
-	background: hsl(39, 19%, 52%);
-}
-
 
 /* Journal */
 /* -------------------------------------------------- */
 
-#page #content .entry.journal .metadata a.date date {
+body.journal-mode #page #content .entry .metadata a.date date {
 	font-size: 1.2em;
 }
 
-#page #content .entry.journal .metadata a.date date span {
+body.journal-mode #page #content .entry .metadata a.date date span {
 	display: inline-block;
 	font-style: italic;
 	margin-left: 15px;
@@ -1686,13 +1532,13 @@ form.login input.button:hover {
 /* Page */
 /* -------------------------------------------------- */
 
-#page #content.list .entry.page h3.page-title {
+body.wiki-mode #page #content.list .entry h3.page-title {
 	font-size: 1em;
 	font-weight: 600;
 	line-height: 1.2em;
 }
 
-#page #content.list .entry.page h3.page-title a {
+body.wiki-mode #page #content.list .entry h3.page-title a {
 	text-decoration: none;
 }
 
@@ -1700,22 +1546,22 @@ form.login input.button:hover {
 /* Note */
 /* -------------------------------------------------- */
 
-#page #content.list .entry.note h3 {
+body.note-mode #page #content.list .entry h3 {
 	font-size: .95em;
 	font-style: normal;
 	margin-bottom: 2px;
 }
 
-#page #content.list .entry.note h3 a {
+body.note-mode #page #content.list .entry h3 a {
 	text-decoration: none;
 }
 
-#page #content.list .entry.note .content.container {
+body.note-mode #page #content.list .entry .content.container {
 	padding-bottom: 15px;
 	padding-top: 15px;
 }
 
-#page #content.list .entry.note .content .second-line {
+body.note-mode #page #content.list .entry .content .second-line {
 	color: #888;
 	font-size: .8em;
 	line-height: 1.2em;
@@ -1723,7 +1569,7 @@ form.login input.button:hover {
 	word-wrap: break-word;
 }
 
-#page #content.list .entry.note .metadata {
+body.note-mode #page #content.list .entry .metadata {
 	display: none;
 }
 
@@ -2022,44 +1868,37 @@ form.login input.button:hover {
 		padding-top: 30px;
 	}
 
-	#page #content .entry .edit-mode .title {
-		padding-left: 65px;
-		padding-right: 65px;
-		padding-top: 30px;
-	}
-
 	#page #content .entry .edit-mode .group {
 		padding-left: 65px;
 		padding-right: 65px;
 	}
 
-	#page #content .entry.note .metadata.container {
+	/*
+	body.note-mode #page #content .entry .metadata.container {
 		display: none !important;
 	}
 
-	#page #content .entry.note .content.container {
+	body.note-mode #page #content .entry .content.container {
 		margin-left: 0;
 		padding-left: 65px;
 	}
 
-	#page #content .entry.note.selected .content {
+	body.note-mode #page #content .entry.selected .content {
 		padding-left: 55px;
 	}
 
-	#page #content .entry.page .metadata.container {
-		display: none !important;
-	}
+	*/
 
-	#page #content .entry.page .content.container {
+	body.wiki-mode #page #content .entry .content.container {
 		margin-left: 0;
 		padding-left: 65px;
 	}
 
-	#page #content.detail .entry.page .content.container {
+	body.wiki-mode #page #content.detail .entry .content.container {
 		padding-bottom: 65px;
 	}
 
-	#page #content .entry.page.selected .content {
+	body.wiki-mode #page #content .entry.selected .content {
 		padding-left: 55px;
 	}
 
@@ -2085,11 +1924,11 @@ form.login input.button:hover {
 		padding-right: 65px;
 	}
 
-	#page #content .entry.journal .metadata a.date date {
+	body.journal-mode #page #content .entry .metadata a.date date {
 		font-size: 1.1em;
 	}
 
-	#page #content .entry.journal .metadata a.date date span {
+	body.journal-mode #page #content .entry .metadata a.date date span {
 		display: block;
 		font-size: .8em;
 		margin-left: 0;
@@ -2181,56 +2020,58 @@ form.login input.button:hover {
 		padding-right: 90px;
 	}
 
-	#page #content .entry.note .content.container {
+	/*
+	body.note-mode #page #content .entry .content.container {
 		padding-left: 90px;
 		padding-right: 90px;
 	}
 
-	#page #content .entry.note.selected .content {
+	body.note-mode #page #content .entry.selected .content {
 		margin-left: 0;
 		padding-left: 80px;
 	}
 
-	#page #content .entry.page .content.container {
-		padding-left: 90px;
-		padding-right: 90px;
-	}
-
-	#page #content.detail .entry.page .content.container {
-		padding-bottom: 90px;
-	}
-
-	#page #content .entry.page.selected .content {
-		margin-left: 0;
-		padding-left: 80px;
-	}
-
-	#page #content .entry.log.selected .content,
-	#page #content .entry.journal .selected .content {
+	body.log-mode #page #content .entry.selected .content,
+	body.journal-mode #page #content .entry .selected .content {
 		margin-left: 195px;
 	}
 
-	#page #content .entry.log .metadata.container,
-	#page #content .entry.journal .metadata.container {
+	body.log-mode #page #content .entry .metadata.container,
+	body.journal-mode #page #content .entry .metadata.container {
 		padding-left: 70px;
 		width: 180px;
 	}
 
-	#page #content .entry.log .content.container,
-	#page #content .entry.journal .content.container {
+	body.log-mode #page #content .entry .content.container,
+	body.journal-mode #page #content .entry .content.container {
 		padding-right: 70px;
 		margin-left: 205px;
 	}
 
-	#page #content .entry.log.selected .metadata,
-	#page #content .entry.journal.selected .metadata {
+	body.log-mode #page #content .entry.selected .metadata,
+	body.journal-mode #page #content .entry.selected .metadata {
 		padding-left: 60px;
 		width: 170px;
 	}
 
-	#page #content .entry.log.selected .content,
-	#page #content .entry.journal.selected .content {
+	body.log-mode #page #content .entry.selected .content,
+	body.journal-mode #page #content .entry.selected .content {
 		margin-left: 195px;
+	}
+	*/
+
+	body.wiki-mode #page #content .entry .content.container {
+		padding-left: 90px;
+		padding-right: 90px;
+	}
+
+	body.wiki-mode #page #content.detail .entry .content.container {
+		padding-bottom: 90px;
+	}
+
+	body.wiki-mode #page #content .entry.selected .content {
+		margin-left: 0;
+		padding-left: 80px;
 	}
 
 	#all-notebooks .notebook.selected .content {
@@ -2260,15 +2101,17 @@ form.login input.button:hover {
 		margin-left: 135px;
 	}
 
-	#page #content.log > footer .container {
+	/*
+	body.log-mode #page #content > footer .container {
 		padding-left: 70px;
 		padding-right: 70px;
 	}
 
-	#page #content.journal > footer .container {
+	body.journal-mode #page #content > footer .container {
 		padding-left: 70px;
 		padding-right: 70px;
 	}
+	*/
 }
 
 @media screen and (min-width: 1000px) {
@@ -2295,65 +2138,64 @@ form.login input.button:hover {
 		margin-left: 235px;
 	}
 
-	#page #content .entry.note.selected .content {
+	/*
+	body.note-mode #page #content .entry.selected .content {
 		margin-left: 0;
 		padding-left: 120px;
 	}
 
-	#page #content .entry.page.selected .content {
+	body.wiki-mode #page #content .entry.selected .content {
 		margin-left: 0;
 		padding-left: 140px;
 	}
 
-	#page #content .entry.log .metadata.container,
-	#page #content .entry.journal .metadata.container {
+	body.log-mode #page #content .entry .metadata.container,
+	body.journal-mode #page #content .entry .metadata.container {
 		padding-left: 100px;
 		width: 225px;
 	}
 
-	#page #content .entry.log .content.container,
-	#page #content .entry.journal .content.container {
+	body.log-mode #page #content .entry .content.container,
+	body.journal-mode #page #content .entry .content.container {
 		margin-left: 250px;
 		padding-right: 100px;
 	}
 
-	#page #content .entry.log.selected .metadata.container,
-	#page #content .entry.journal.selected .metadata.container {
+	body.log-mode #page #content .entry.selected .metadata.container,
+	body.journal-mode #page #content .entry.selected .metadata.container {
 		padding-left: 90px;
 		width: 215px;
 	}
 
-	#page #content .entry.log.selected .content.container,
-	#page #content .entry.journal.selected .content.container {
+	body.log-mode #page #content .entry.selected .content.container,
+	body.journal-mode #page #content .entry.selected .content.container {
 		margin-left: 240px;
 	}
+	*/
 
 	#all-notebooks .notebook.selected .content {
 		padding-left: 75px;
 	}
 
-	#page #content.log > footer .container,
-	#page #content.journal > footer .container {
+	/*
+	body.log-mode #page #content > footer .container,
+	body.journal-mode #page #content > footer .container {
 		padding-left: 100px;
 		padding-right: 100px;
 	}
 
-	#page #content.log > footer h2,
-	#page #content.journal > footer h2 {
+	body.log-mode #page #content > footer h2,
+	body.journal-mode #page #content > footer h2 {
 		width: 125px;
 	}
 
-	#page #content.log > footer ul,
-	#page #content.journal > footer ul {
+	body.log-mode #page #content > footer ul,
+	body.journal-mode #page #content > footer ul {
 		margin-left: 150px;
 	}
+	*/
 
 	#add-entry textarea {
-		padding-left: 130px;
-		padding-right: 130px;
-	}
-
-	#add-entry .title {
 		padding-left: 130px;
 		padding-right: 130px;
 	}

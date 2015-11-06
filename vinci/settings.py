@@ -168,17 +168,7 @@ REST_FRAMEWORK = {
 # Modes
 # These are filenames that get loaded and replaced with the actual templates
 VINCI_MODE_TEMPLATE_BASE = '{}/vinci/templates/modes'.format(BASE_DIR)
-VINCI_MODES = {
-    'log': {
-        'detail': 'log_detail.html',
-        'list': '',
-    },
-    'wiki': {
-        'detail': 'wiki_detail.html',
-        'list': 'wiki_list.html',
-    },
-}
-
+VINCI_MODE_LIST = [ 'log', 'wiki', 'journal', 'note' ]
 
 
 from local_settings import *  # noqa

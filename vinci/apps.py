@@ -9,7 +9,7 @@ class VinciConfig(AppConfig):
     verbose_name = "Vinci"
     def ready(self):
         # Load modes
-        modes = load_modes(settings.VINCI_MODES, settings.VINCI_MODE_TEMPLATE_BASE)
+        modes = load_modes(settings.VINCI_MODE_LIST, settings.VINCI_MODE_TEMPLATE_BASE)
         settings.VINCI_MODES = modes
 
         # Load templates for modes

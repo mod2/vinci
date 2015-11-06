@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.http.response import HttpResponseNotFound
+from django.http.response import HttpResponse, HttpResponseNotFound
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
@@ -91,10 +91,11 @@ def notebook_section(request, notebook_slug, section_slug):
         'page_type': 'list',
     }
 
-    return render_to_response('vinci/entries.html',
-                              context,
-                              RequestContext(request),
-                              )
+    # Get the template
+    template = settings.VINCI_TEMPLATES[mode]['list']
+
+    return HttpResponse(template.render(RequestContext(request, context)),
+                        content_type="text/html")
 
 
 @login_required
@@ -123,10 +124,11 @@ def entry_detail(request, notebook_slug, section_slug, entry_slug):
         'page_type': 'detail',
     }
 
-    return render_to_response('vinci/entry.html',
-                              context,
-                              RequestContext(request),
-                              )
+    # Get the template
+    template = settings.VINCI_TEMPLATES[mode]['detail']
+
+    return HttpResponse(template.render(RequestContext(request, context)),
+                        content_type="text/html")
 
 
 @login_required
@@ -156,10 +158,11 @@ def revision_detail(request, notebook_slug, section_slug, entry_slug, revision_i
         'page_type': 'detail',
     }
 
-    return render_to_response('vinci/entry.html',
-                              context,
-                              RequestContext(request),
-                              )
+    # Get the template
+    template = settings.VINCI_TEMPLATES[mode]['detail']
+
+    return HttpResponse(template.render(RequestContext(request, context)),
+                        content_type="text/html")
 
 
 @login_required

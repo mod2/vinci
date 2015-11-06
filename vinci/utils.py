@@ -1,3 +1,7 @@
+import re
+
+from django.conf import settings
+
 from vinci.models import Notebook, Section
 
 def get_sections_for_notebook(notebook):
@@ -83,3 +87,75 @@ def parse_payload(payload):
     response['content'] = response['content'].strip()
 
     return response
+
+def load_modes(modes, base):
+    response = {}
+
+    # Load modes
+    for key in modes:
+        response[key] = {
+            'detail': '',
+            'list': '',
+        }
+
+        # Load detail first
+        detail_filename = modes[key]['detail']
+        if detail_filename != '':
+            filename = '{}/{}'.format(base, detail_filename)
+            with open(filename, 'r') as f:
+                data = f.read()
+            response[key]['detail'] = data
+
+        # Load list
+        list_filename = modes[key]['list']
+        if list_filename == '':
+            # Use detail
+            response[key]['list'] = response[key]['detail']
+        else:
+            # Load list
+            filename = '{}/{}'.format(base, list_filename)
+            with open(filename, 'r') as f:
+                data = f.read()
+            response[key]['list'] = data
+
+    return response
+
+def load_template_for_mode(template, mode):
+    """ Takes 'list' or 'detail' plus a mode and returns the combined template. """
+
+    try:
+        mode_html = ''
+
+        if template == 'list':
+            slug = 'entries'
+        elif template == 'detail':
+            slug = 'entry'
+
+        # Load the template HTML
+        filename = '{}/vinci/templates/vinci/{}.html'.format(settings.BASE_DIR, slug)
+        with open(filename, 'r') as f:
+            data = f.read()
+
+        # Default mode
+        if mode == '' or mode not in settings.VINCI_MODES:
+            mode = 'log'
+
+        # Make sure we have this kind of a template
+        if template in settings.VINCI_MODES[mode]:
+            mode_html = settings.VINCI_MODES[mode][template]
+
+        if mode_html == '':
+            # Fallback to other defaults
+            if template == 'list':
+                # Use detail instead
+                mode_html = settings.VINCI_MODES[mode]['detail']
+            else:
+                # Use log detail instead
+                mode_html = settings.VINCI_MODES['log']['detail']
+
+        # Replace the stub with the mode-specific template HTML
+        data = re.sub(r"{% STUB %}", mode_html, data)
+    except:
+        data = ''
+
+    return data

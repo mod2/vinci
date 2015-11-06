@@ -54,6 +54,7 @@ def notebook_section(request, notebook_slug, section_slug):
     sortby = settings.VINCI_DEFAULT_SEARCH_ORDER
     sortby = request.GET.get('sort', sortby)
     page = int(request.GET.get('page', 1))
+    mode = request.GET.get('mode', 'log')
 
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
 
@@ -77,7 +78,6 @@ def notebook_section(request, notebook_slug, section_slug):
     # Get sections (for sidebar list)
     sections = get_sections_for_notebook(notebook)
 
-    template = 'entries'
     labels = []
 
     context = {
@@ -91,7 +91,7 @@ def notebook_section(request, notebook_slug, section_slug):
         'page_type': 'list',
     }
 
-    return render_to_response('vinci/{}.html'.format(template),
+    return render_to_response('vinci/entries.html',
                               context,
                               RequestContext(request),
                               )
@@ -99,6 +99,8 @@ def notebook_section(request, notebook_slug, section_slug):
 
 @login_required
 def entry_detail(request, notebook_slug, section_slug, entry_slug):
+    mode = request.GET.get('mode', 'log')
+
     try:
         entry = Entry.objects.from_slug(entry_slug, section_slug, notebook_slug)
     except Entry.DoesNotExist:
@@ -129,6 +131,8 @@ def entry_detail(request, notebook_slug, section_slug, entry_slug):
 
 @login_required
 def revision_detail(request, notebook_slug, section_slug, entry_slug, revision_id):
+    mode = request.GET.get('mode', 'log')
+
     try:
         if section_slug:
             entry = Entry.objects.from_slug(entry_slug, section_slug, notebook_slug)

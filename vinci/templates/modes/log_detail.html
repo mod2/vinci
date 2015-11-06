@@ -1,0 +1,43 @@
+<article class="entry" data-id="{{ entry.id }}" data-uri="{{ entry.get_absolute_url }}" data-notebook-slug="{{ entry.notebook.slug }}" data-api-uri="{% url 'api_entry_detail' entry.notebook.slug entry.id %}">
+    <a class="controls-toggle" href="">&nbsp;</a>
+
+	<div class="metadata container">
+		{% block entry_metadata %}
+
+		{% block entry_metadata_date %}
+		<a class="date" href="{{ entry.get_absolute_url }}">
+			<date>{{ entry.date|date:'j M Y' }}</date>
+			<time>{{ entry.date|date:'g:i A'|lower }}, {{ entry.date|date:'D' }}</time>
+			{% if scope == 'all' %}<span class="notebook">{{ entry.notebook.name }}</span>{% endif %}
+		</a>
+		{% endblock entry_metadata_date %}
+
+		{% block entry_metadata_tags %}
+		{% if entry.tags.all|length > 0 %}
+		<ul class="tags">{% for tag in entry.tags.all %}<li><a href="{% url 'search_notebook_tags' entry.notebook.slug tag %}">#{{ tag }}</a></li>{% endfor %}</ul>
+		{% endif %}
+		{% endblock entry_metadata_tags %}
+
+		{% endblock entry_metadata %}
+	</div>
+
+	<div class="content container {% block entry_class %}{% endblock entry_class %}">
+		{% block entry_list %}
+		{% if revision %}
+		{{ revision.html|safe }}
+		{% else %}
+		{{ entry.html|safe }}
+		{% endif %}
+		{% endblock %}
+	</div>
+
+	<form class="edit-mode">
+		<textarea name="content" class="container">{% if revision %}{{ revision.get_payload }}{% else %}{{ entry.current_revision.get_payload }}{% endif %}</textarea>
+
+		<div class="edit-panel">
+			<div class="group more container">
+				<a class="save" href="">Save</a> &mdash; <a class="delete" href="">Delete</span> &mdash; <a href="{{ entry.get_absolute_url }}">Go to entry</a>
+			</div>
+		</div>
+	</form>
+</article>

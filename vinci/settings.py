@@ -71,6 +71,24 @@ USE_L10N = True
 
 USE_TZ = True
 
+TEMPLATES = [{
+    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+    'DIRS': [os.path.join(BASE_DIR, 'templates')],
+    'OPTIONS': {
+        'loaders': [
+            ('django.template.loaders.cached.Loader', [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ]),
+        ],
+        'context_processors': [
+            'django.template.context_processors.debug',
+            'django.template.context_processors.request',
+            'django.contrib.auth.context_processors.auth',
+            'django.contrib.messages.context_processors.messages',
+        ],
+    },
+}]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
@@ -145,6 +163,23 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+
+
+# Modes
+# These are filenames that get loaded and replaced with the actual templates
+VINCI_MODE_TEMPLATE_BASE = '{}/vinci/templates/modes'.format(BASE_DIR)
+VINCI_MODES = {
+    'log': {
+        'detail': 'log_detail.html',
+        'list': '',
+    },
+    'wiki': {
+        'detail': 'wiki_detail.html',
+        'list': 'wiki_list.html',
+    },
+}
+
+
 
 from local_settings import *  # noqa
 

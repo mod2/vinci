@@ -53,6 +53,8 @@ vincipatterns = patterns(
 
     url(r'^(?P<notebook_slug>[^\/]+)/$',
         'notebook_home', name='notebook'),
+    url(r'^(?P<notebook_slug>[^\/]+)/settings/$',
+        'notebook_settings', name='notebook_settings'),
     url(r'^(?P<notebook_slug>[^\/]+)/(?P<section_slug>[^\/]+)/$',
         'notebook_section', name='notebook_section'),
     url(r'^(?P<notebook_slug>[^\/]+)/(?P<section_slug>[^\/]+)/search/$',
@@ -65,8 +67,6 @@ vincipatterns = patterns(
         'revision_detail', name='revision'),
     url(r'^(?P<notebook_slug>[^\/]+)/search/$',
         'search_notebook', name='search_notebook'),
-    url(r'^(?P<notebook_slug>[^\/]+)/settings/$',
-        'notebook_settings', name='notebook_settings'),
 )
 
 urlpatterns = patterns(

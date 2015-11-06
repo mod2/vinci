@@ -37,6 +37,7 @@ def notebook_settings(request, notebook_slug):
     context = {
         'title': notebook.name,
         'notebook': notebook,
+        'modes': settings.VINCI_MODE_LIST,
         'scope': 'notebook',
         'statuses': [{'value': s[0], 'label': s[1]} for s in Notebook.STATUS],
         'groups': [{'value': g.name, 'label': g.name} for g in Group.objects.all()],
@@ -57,17 +58,30 @@ def notebook_section(request, notebook_slug, section_slug):
 
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
 
-    if notebook.default_mode:
-        default_mode = notebook.default_mode
-    else:
-        default_mode = 'log'
-
-    mode = request.GET.get('mode', default_mode)
-
     if section_slug:
         section = get_object_or_404(Section, slug=section_slug, notebook=notebook)
     else:
         section = None
+
+    # Check default mode
+    default_mode = 'log'
+    if section and section.default_mode:
+        default_mode = section.default_mode
+    elif notebook.default_mode:
+        default_mode = notebook.default_mode
+
+    mode = request.GET.get('mode', default_mode)
+    sticky = request.GET.get('sticky', '')
+
+    # Save mode as default unless sticky is set
+    if section:
+        if section.default_mode != mode and sticky != 'false':
+            section.default_mode = mode
+            section.save()
+    else:
+        if notebook.default_mode != mode and sticky != 'false':
+            notebook.default_mode = mode
+            notebook.save()
 
     entries = notebook.entries.active()
 
@@ -86,16 +100,10 @@ def notebook_section(request, notebook_slug, section_slug):
 
     labels = []
 
-    # Save mode as default unless sticky is set
-    if notebook.default_mode != mode:
-        sticky = request.GET.get('sticky', '')
-        if sticky != 'false':
-            notebook.default_mode = mode
-            notebook.save()
-
     context = {
         'title': notebook.name,
         'mode': mode,
+        'modes': settings.VINCI_MODE_LIST,
         'notebook': notebook,
         'section': section,
         'sections': sections,
@@ -119,22 +127,28 @@ def entry_detail(request, notebook_slug, section_slug, entry_slug):
     except Entry.DoesNotExist:
         return HttpResponseNotFound('Entry does not exist.')
 
-    if entry.notebook.default_mode:
-        default_mode = entry.notebook.default_mode
-    else:
-        default_mode = 'log'
-
-    mode = request.GET.get('mode', default_mode)
-
     try:
         section = Section.objects.get(slug=section_slug, notebook__slug=notebook_slug)
     except Section.DoesNotExist:
         return HttpResponseNotFound('Section does not exist.')
 
+    # Check default mode
+    default_mode = 'log'
+    if section and section.default_mode:
+        default_mode = section.default_mode
+    elif entry.notebook.default_mode:
+        default_mode = entry.notebook.default_mode
+
+    mode = request.GET.get('mode', default_mode)
+    sticky = request.GET.get('sticky', '')
+
     # Save mode as default unless sticky is set
-    if entry.notebook.default_mode != mode:
-        sticky = request.GET.get('sticky', '')
-        if sticky != 'false':
+    if section:
+        if section.default_mode != mode and sticky != 'false':
+            section.default_mode = mode
+            section.save()
+    else:
+        if entry.notebook.default_mode != mode and sticky != 'false':
             entry.notebook.default_mode = mode
             entry.notebook.save()
 
@@ -143,6 +157,7 @@ def entry_detail(request, notebook_slug, section_slug, entry_slug):
     context = {
         'title': entry.notebook.name,
         'mode': mode,
+        'modes': settings.VINCI_MODE_LIST,
         'notebook': entry.notebook,
         'notebooks': notebooks,
         'entry': entry,
@@ -171,12 +186,39 @@ def revision_detail(request, notebook_slug, section_slug, entry_slug, revision_i
         return HttpResponseNotFound('Entry does not exist.')
 
     try:
+        section = Section.objects.get(slug=section_slug, notebook__slug=notebook_slug)
+    except Section.DoesNotExist:
+        return HttpResponseNotFound('Section does not exist.')
+
+    try:
         revision = Revision.objects.get(id=revision_id)
     except Revision.DoesNotExist:
         return HttpResponseNotFound('Revision does not exist.')
 
+    # Check default mode
+    default_mode = 'log'
+    if section and section.default_mode:
+        default_mode = section.default_mode
+    elif entry.notebook.default_mode:
+        default_mode = entry.notebook.default_mode
+
+    mode = request.GET.get('mode', default_mode)
+    sticky = request.GET.get('sticky', '')
+
+    # Save mode as default unless sticky is set
+    if section:
+        if section.default_mode != mode and sticky != 'false':
+            section.default_mode = mode
+            section.save()
+    else:
+        if entry.notebook.default_mode != mode and sticky != 'false':
+            entry.notebook.default_mode = mode
+            entry.notebook.save()
+
     context = {
         'title': entry.notebook.name,
+        'mode': mode,
+        'modes': settings.VINCI_MODE_LIST,
         'notebook': entry.notebook,
         'entry': entry,
         'revision': revision,

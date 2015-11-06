@@ -48,13 +48,25 @@
 		<nav role="menu">
 			{% if notebook %}
 			<div class="group">
+				<h2>Sections</h2>
 				{% for s in sections %}
 				<a href="{% url 'notebook_section' notebook.slug s.slug %}">{{ s.name }}</a>
 				{% endfor %}
 			</div>
 
 			<div class="group">
-				<a href="{% url 'notebook_settings' notebook.slug %}">Settings</a>
+				<h2>Modes</h2>
+				{% for m in modes %}
+					{% if section %}
+						<a href="{% url 'notebook_section' notebook.slug section.slug %}?mode={{ m }}">{{ m }}</a>
+					{% else %}
+						<a href="{% url 'notebook' notebook.slug %}?mode={{ m }}">{{ m }}</a>
+					{% endif %}
+				{% endfor %}
+			</div>
+
+			<div class="group">
+				<a href="{% url 'notebook_settings' notebook.slug %}">Notebook Settings</a>
 			</div>
 			{% endif %}
 

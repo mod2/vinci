@@ -1,7 +1,0 @@
-{% extends 'vinci/_entry.html' %}
-
-{% block entry_metadata_date %}
-	<a class="date" href="{{ entry.get_absolute_url }}">
-		<date>{{ entry.date|date:'j M Y' }}<span>{{ entry.date|date:'l' }}</span></date>
-	</a>
-{% endblock entry_metadata_date %}

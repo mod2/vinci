@@ -150,6 +150,10 @@ header[role=banner] h1 span {
 	text-decoration: none;
 }
 
+header[role=banner] h1 a {
+	padding-right: .2em;
+}
+
 header[role=banner] a:hover {
 	color: hsl(48, 81%, 74%) !important;
 }

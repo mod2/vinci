@@ -88,7 +88,7 @@
 					<h1>
 						{% block header_title %}
 							{% if notebook %}
-								<a class="home" href="{% if section %}{{ section.get_absolute_url }}{% else %}{{ notebook.get_absolute_url }}{% endif %}">::{{ notebook.slug }}{% if section %}/{{ section.slug }}{% endif %}</a>
+								<a class="home" href="{{ notebook.get_absolute_url }}">::{{ notebook.slug }}</a>{% if section %} <a class="home" href="{{ section.get_absolute_url }}">/{{ section.slug }}</a>{% endif %}
 							{% else %}
 								<span>{{ title }}</span>
 							{% endif %}

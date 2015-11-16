@@ -298,24 +298,21 @@ def diary(request, day):
                                    date__gte=beginning_utc,
                                    date__lte=end_utc)
 
-    # Limit it to just logs and journals
-    entries = entries.filter(Q(entry_type='log') | Q(entry_type='journal'))
-
-    # Sort by notebook and date
-    entries = entries.order_by('date', 'notebook__name')
+    # Sort by date, notebook, and section
+    entries = entries.order_by('date', 'notebook__name', 'section__name')
 
     context = {
         'title': 'Diary ({})'.format(day),
         'entries': entries,
-        'section': 'log',
         'page_type': 'diary',
         'API_KEY': settings.VINCI_API_KEY,
     }
 
-    return render_to_response('vinci/diary.html',
-                              context,
-                              RequestContext(request),
-                              )
+    # Get the template
+    template = settings.VINCI_TEMPLATES['log']['list']
+
+    return HttpResponse(template.render(RequestContext(request, context)),
+                        content_type="text/html")
 
 
 @login_required

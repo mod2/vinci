@@ -24,7 +24,7 @@ def notebook_home(request, notebook_slug):
         section = notebook.default_section
 
         # Redirect to the default section for this notebook
-        return redirect('notebook_section', notebook_slug=notebook_slug, section_slug=section)
+        return redirect('notebook_section', notebook_slug=notebook_slug, section_slug=section.slug)
     else:
         # Show the notebook root
         return notebook_section(request, notebook_slug=notebook_slug, section_slug=None)
@@ -152,8 +152,6 @@ def entry_detail(request, notebook_slug, section_slug, entry_slug):
             entry.notebook.default_mode = mode
             entry.notebook.save()
 
-    notebooks = Notebook.objects.filter(status='active').order_by('name')
-
     # Get sections (for sidebar list)
     sections = get_sections_for_notebook(entry.notebook)
 
@@ -162,7 +160,6 @@ def entry_detail(request, notebook_slug, section_slug, entry_slug):
         'mode': mode,
         'modes': settings.VINCI_MODE_LIST,
         'notebook': entry.notebook,
-        'notebooks': notebooks,
         'entry': entry,
         'sections': sections,
         'section': section,
@@ -273,9 +270,6 @@ def diary(request, day):
 
     # Note: day needs to be YYYY-MM-DD form
 
-    # Get list of all active notebooks (for add tray)
-    notebooks = Notebook.objects.exclude(status='deleted').order_by('name')
-
     # Convert date to a datetime object
     current_tz = timezone.get_current_timezone()
     the_date = datetime.strptime(day, "%Y-%m-%d")
@@ -299,7 +293,6 @@ def diary(request, day):
 
     context = {
         'title': 'Diary ({})'.format(day),
-        'notebooks': notebooks,
         'entries': entries,
         'section': 'log',
         'scope': 'all',
@@ -360,13 +353,10 @@ def _search(request, query, notebook=None, section=None):
         if notebook:
             search_params['notebook'] = notebook
 
-        #entries, __, __ = si.search(**search_params)
-        entries= si.search(**search_params)
+        entries = si.search(**search_params)
         entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE)
         total = entries.count
         entries = entries.page(page)
-
-        notebooks = Notebook.objects.filter(status='active').order_by('name')
 
         # Convert tags in queries back to hashtag syntax
         query = query.replace('tag:', '#')
@@ -384,7 +374,6 @@ def _search(request, query, notebook=None, section=None):
         'total': total,
         'section': section,
         'scope': scope,
-        'notebooks': notebooks,
         'page_type': 'list',
         'search': True,
     }

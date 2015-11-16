@@ -222,9 +222,8 @@ $(document).ready(function() {
 
 		// Show the edit area
 		entry.find(".content, .metadata").fadeOut(100, function() {
-			autosize.update(entry.find(".edit-mode textarea"));
-
 			entry.find(".edit-mode").fadeIn(150, function() {
+				autosize.update(entry.find(".edit-mode textarea"));
 				entry.find(".edit-mode textarea").focus();
 			});
 		});

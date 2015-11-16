@@ -47,27 +47,30 @@
 		{% block menu %}
 		<nav role="menu">
 			{% if notebook %}
-			<div class="group">
-				<h2>Sections</h2>
-				{% for s in sections %}
-				<a href="{% url 'notebook_section' notebook.slug s.slug %}">{{ s.name }}</a>
-				{% endfor %}
-			</div>
+				<div class="group">
+					<h2>Sections</h2>
+					<a href="{% url 'notebook' notebook.slug %}">home</a>
+					{% for s in sections %}
+					<a href="{% url 'notebook_section' notebook.slug s.slug %}">{{ s.name }}</a>
+					{% endfor %}
+				</div>
 
-			<div class="group">
-				<h2>Modes</h2>
-				{% for m in modes %}
-					{% if section %}
-						<a href="{% url 'notebook_section' notebook.slug section.slug %}?mode={{ m }}">{{ m }}</a>
-					{% else %}
-						<a href="{% url 'notebook' notebook.slug %}?mode={{ m }}">{{ m }}</a>
-					{% endif %}
-				{% endfor %}
-			</div>
+				{% if modes|length %}
+				<div class="group">
+					<h2>Modes</h2>
+					{% for m in modes %}
+						{% if section %}
+							<a href="{% url 'notebook_section' notebook.slug section.slug %}?mode={{ m }}">{{ m }}</a>
+						{% else %}
+							<a href="{% url 'notebook' notebook.slug %}?mode={{ m }}">{{ m }}</a>
+						{% endif %}
+					{% endfor %}
+				</div>
+				{% endif %}
 
-			<div class="group">
-				<a href="{% url 'notebook_settings' notebook.slug %}">Notebook Settings</a>
-			</div>
+				<div class="group">
+					<a href="{% url 'notebook_settings' notebook.slug %}">Notebook Settings</a>
+				</div>
 			{% endif %}
 
 			<div class="group system">
@@ -111,11 +114,11 @@
 			</header>
 			{% endblock header %}
 
-			{% block sections %}
-			<div id="sections" class="{% if section %}{{ section }}{% else %}nosection{% endif %}">
+			{% block modebar %}
+			<div id="mode-bar" class="{% if mode %}{{ mode }}{% else %}no-mode{% endif %}">
 				<div class="container"></div>
 			</div>
-			{% endblock sections %}
+			{% endblock modebar %}
 
 			{% block add_entry %}
 			<form id="add-entry" class="edit-mode" data-uri="{% url 'api_notebook_list' %}" {% if notebook %}data-notebook-slug="{{ notebook.slug }}"{% endif %}{% if section %} data-section-slug="{{ section.slug }}"{% endif %}>

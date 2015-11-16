@@ -569,68 +569,54 @@ body.active-nav #page .mask {
 /* Sections */
 /* -------------------------------------------------- */
 
-#sections {
-	-moz-transition: max-height 5s cubic-bezier(0.2, 0.3, 0.25, 0.9);
-	-moz-user-select: none;
-	-o-transition: max-height 5s cubic-bezier(0.2, 0.3, 0.25, 0.9);
-	-webkit-transition: max-height 5s cubic-bezier(0.2, 0.3, 0.25, 0.9);
-	-webkit-user-select: none;
+#mode-bar {
 	background: hsl(0, 0%, 7%);
 	max-height: 7px;
 	min-height: 7px;
-	transition: max-height 5s cubic-bezier(0.2, 0.3, 0.25, 0.9);
 	user-select: none;
 }
 
-#sections .container {
+#mode-bar .container {
 	padding-bottom: 0;
 	padding-top: 0;
 	max-height: 7px;
 	min-height: 7px;
-	-moz-transition: max-height 5s cubic-bezier(0.2, 0.3, 0.25, 0.9);
-	-o-transition: max-height 5s cubic-bezier(0.2, 0.3, 0.25, 0.9);
-	-webkit-transition: max-height 5s cubic-bezier(0.2, 0.3, 0.25, 0.9);
-	transition: max-height 5s cubic-bezier(0.2, 0.3, 0.25, 0.9);
 }
 
-#sections.nosection {
+#mode-bar.no-mode {
 	display: none;
 }
 
-body.log-mode #sections {
+body.log-mode #mode-bar {
 	background: hsl(210, 37%, 42%);
 }
 
-body.log-mode #sections .container {
+body.log-mode #mode-bar .container {
 	background: hsl(210, 47%, 57%);
 }
 
-body.note-mode #sections {
+body.note-mode #mode-bar {
 	background: hsl(55, 37%, 42%);
 }
 
-body.note-mode #sections .container {
+body.note-mode #mode-bar .container {
 	background: hsl(55, 39%, 57%);
 }
 
-body.wiki-mode #sections {
+body.wiki-mode #mode-bar {
 	background: hsl(93, 37%, 42%);
 }
 
-body.wiki-mode #sections .container {
+body.wiki-mode #mode-bar .container {
 	background: hsl(93, 39%, 57%);
 }
 
-body.journal-mode #sections {
+body.journal-mode #mode-bar {
 	background: hsl(342, 37%, 42%);
 }
 
-body.journal-mode #sections .container {
+body.journal-mode #mode-bar .container {
 	background: hsl(342, 39%, 57%);
-}
-
-#sections a {
-	display: none;
 }
 
 

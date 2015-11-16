@@ -38,7 +38,6 @@ def notebook_settings(request, notebook_slug):
         'title': notebook.name,
         'notebook': notebook,
         'modes': settings.VINCI_MODE_LIST,
-        'scope': 'notebook',
         'statuses': [{'value': s[0], 'label': s[1]} for s in Notebook.STATUS],
         'groups': [{'value': g.name, 'label': g.name} for g in Group.objects.all()],
         'page_type': 'settings',
@@ -108,7 +107,6 @@ def notebook_section(request, notebook_slug, section_slug):
         'notebook': notebook,
         'section': section,
         'sections': sections,
-        'scope': 'section',
         'entries': entries,
         'labels': labels,
         'page_type': 'list',
@@ -171,7 +169,6 @@ def entry_detail(request, notebook_slug, section_slug, entry_slug):
         'entry': entry,
         'sections': sections,
         'section': section,
-        'scope': 'section',
         'page_type': 'detail',
         'API_KEY': settings.VINCI_API_KEY,
     }
@@ -240,7 +237,6 @@ def revision_detail(request, notebook_slug, section_slug, entry_slug, revision_i
         'revision': revision,
         'sections': sections,
         'section': section,
-        'scope': 'section',
         'page_type': 'detail',
         'API_KEY': settings.VINCI_API_KEY,
     }
@@ -266,7 +262,6 @@ def notebooks_list(request):
         'title': 'All Notebooks',
         'groups': groups,
         'ungrouped_notebooks': ungrouped_notebooks,
-        'scope': 'all',
         'page_type': 'all',
         'blank_slate': blank_slate,
         'API_KEY': settings.VINCI_API_KEY,
@@ -309,7 +304,6 @@ def diary(request, day):
         'title': 'Diary ({})'.format(day),
         'entries': entries,
         'section': 'log',
-        'scope': 'all',
         'page_type': 'diary',
         'API_KEY': settings.VINCI_API_KEY,
     }
@@ -376,19 +370,13 @@ def _search(request, query, notebook=None, section=None):
         # Convert tags in queries back to hashtag syntax
         query = query.replace('tag:', '#')
 
-    scope = 'all'
-    if notebook is not None:
-        scope = 'notebook'
-    if section is not None:
-        scope = 'section'
-
     context = {
         'title': 'Search',
         'query': query,
         'entries': entries,
         'total': total,
         'section': section,
-        'scope': scope,
+        'modes': settings.VINCI_MODE_LIST,
         'page_type': 'list',
         'search': True,
         'API_KEY': settings.VINCI_API_KEY,
@@ -397,6 +385,9 @@ def _search(request, query, notebook=None, section=None):
     if notebook:
         context['title'] = '{}{}{}'.format(context['title'], settings.VINCI_SITE_TITLE_SEP, notebook.name)
         context['notebook'] = notebook
+
+        # Get sections (for sidebar list)
+        context['sections'] = get_sections_for_notebook(notebook)
 
     return render_to_response('vinci/entries.html',
                               context,

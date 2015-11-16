@@ -202,7 +202,14 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
                 notebook.group = new_group
 
         if default_section is not None:
-            notebook.default_section = default_section
+            try:
+                if default_section == 'home':
+                    notebook.default_section = None
+                else:
+                    section = models.Section.objects.get(slug=default_section, notebook=notebook)
+                    notebook.default_section = section
+            except models.Section.DoesNotExist:
+                return APIResponseNotFound('Section does not exist.')
 
         notebook.save()
 
@@ -386,12 +393,14 @@ class NotebookDetailAPIView(APIView):
                     notebook.group = new_group
 
             if default_section != '':
-                notebook.default_section = default_section
-
-            notebook.display_logs = display_logs
-            notebook.display_notes = display_notes
-            notebook.display_pages = display_pages
-            notebook.display_journals = display_journals
+                try:
+                    if default_section == 'home':
+                        notebook.default_section = None
+                    else:
+                        section = models.Section.objects.get(slug=default_section, notebook=notebook)
+                        notebook.default_section = section
+                except models.Section.DoesNotExist:
+                    return APIResponseNotFound('Section does not exist.')
 
             notebook.save()
 
@@ -574,7 +583,6 @@ def append_today(request, notebook_slug):
 
             new_revision.entry = entry
             new_revision.content = cur_rev.content + content
-            new_revision.author = notebook.author
             new_revision.parent = cur_rev
             new_revision.save()
 
@@ -585,7 +593,6 @@ def append_today(request, notebook_slug):
             # so there's no initial newline)
 
             kwargs = {'content': content.strip(),
-                      'author': request.user,
                       'section': section,
                       'notebook': notebook,
                       }
@@ -636,7 +643,6 @@ def add_entry(request, notebook_slug):
             section = notebook.default_section
 
         kwargs = {'content': content.strip(),
-                  'author': notebook.author,
                   'section': section,
                   'notebook': notebook,
                   }
@@ -686,7 +692,6 @@ def add_revision(request, notebook_slug, slug):  # noqa too complex
         if content:
             revision = models.Revision()
             revision.content = content.strip()
-            revision.author = request.user
             revision.entry = entry
             revision.save()
 

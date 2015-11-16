@@ -11,7 +11,10 @@
 
 	<h3 class="container">Default Section</h3>
 	<div id="default-section" class="group container">
-		<span class="type{% if notebook.default_section == 'log' %} selected{% endif %}" data-value="log">Logs</span>
+		<span class="type{% if not notebook.default_section %} selected{% endif %}" data-value="home">home</span>
+		{% for section in sections %}
+		<span class="type{% if notebook.default_section.slug == section.slug %} selected{% endif %}" data-value="{{ section.slug }}">{{ section.name }}</span>
+		{% endfor %}
 	</div>
 
 	<h3 class="container">Status</h3>

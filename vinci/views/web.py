@@ -20,7 +20,7 @@ from vinci.utils import get_sections_for_notebook
 def notebook_home(request, notebook_slug):
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
 
-    if notebook.default_section:
+    if notebook.default_section is not None:
         section = notebook.default_section
 
         # Redirect to the default section for this notebook
@@ -34,9 +34,13 @@ def notebook_home(request, notebook_slug):
 def notebook_settings(request, notebook_slug):
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
 
+    # Get sections (for sidebar list)
+    sections = get_sections_for_notebook(notebook)
+
     context = {
         'title': notebook.name,
         'notebook': notebook,
+        'sections': sections,
         'modes': settings.VINCI_MODE_LIST,
         'statuses': [{'value': s[0], 'label': s[1]} for s in Notebook.STATUS],
         'groups': [{'value': g.name, 'label': g.name} for g in Group.objects.all()],

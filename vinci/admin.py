@@ -4,7 +4,7 @@ from .models import Notebook, Section, Entry, Revision, Group
 
 class RevisionInline(admin.StackedInline):
     model = Revision
-    fields = ('content', 'entry', 'parent', 'author',)
+    fields = ('content', 'entry', 'parent',)
     extra = 1
 
     def get_extra(self, request, obj=None, **kwargs):

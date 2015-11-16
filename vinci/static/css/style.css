@@ -987,6 +987,7 @@ body.journal-mode #mode-bar .container {
 #page #content .entry .content.container {
 	padding-top: 0;
 	padding-bottom: 25px;
+	word-wrap: break-word;
 }
 
 body.wiki-mode #page #content .content.container {
@@ -1907,6 +1908,14 @@ body.note-mode #page #content.list .entry .metadata {
 }
 
 @media screen and (min-width: 700px) {
+	header[role=banner] h1 span {
+		padding-left: 0;
+	}
+
+	form.login {
+		padding-left: 0;
+	}
+
 	body .container {
 		padding-left: 90px;
 		padding-right: 90px;

@@ -45,6 +45,7 @@
 <body {% if mode %}class="{{ mode }}-mode"{% endif %}>
 	<div class="wrapper">
 		{% block menu %}
+		{% if request.user.username %}
 		<nav role="menu">
 			{% if notebook %}
 				<div class="group">
@@ -79,18 +80,21 @@
 				<a href="{% url 'logout' %}">Logout</a>
 			</div>
 		</nav>
+		{% endif %}
 		{% endblock menu %}
 
 		<section id="page">
 			<div class="mask"></div>
 
 			{% block search %}
+			{% if request.user.username %}
 			<form id="search" data-search-all-uri="{% url 'search_all' %}"{% if notebook and section %} data-search-section-uri="{% url 'search_notebook_section' notebook.slug section.slug %}"{% endif %}{% if notebook %}data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}"{% endif %} data-quickjump-uri="{% url 'quick_jump' %}" class="{{ page_type }}">
 				<div class="container">
 					<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
 					<section class="results"></section>
 				</div>
 			</form>
+			{% endif %}
 			{% endblock search %}
 
 			{% block header %}
@@ -121,6 +125,7 @@
 			{% endblock modebar %}
 
 			{% block add_entry %}
+			{% if request.user.username %}
 			<form id="add-entry" class="edit-mode" data-uri="{% url 'api_notebook_list' %}" {% if notebook %}data-notebook-slug="{{ notebook.slug }}"{% endif %}{% if section %} data-section-slug="{{ section.slug }}"{% endif %}>
 				<textarea name="entry-content" class="container"></textarea>
 
@@ -130,6 +135,7 @@
 					</div>
 				</div>
 			</form>
+			{% endif %}
 			{% endblock add_entry %}
 
 			{% if query %}

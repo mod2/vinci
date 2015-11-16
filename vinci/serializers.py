@@ -15,7 +15,6 @@ class NotebookSerializer(serializers.ModelSerializer):
                   'status',
                   'group',
                   'default_section',
-                  'author',
                   'entries',
                   )
 
@@ -40,39 +39,19 @@ class ContentField(RevisionField):
     field_name = 'content'
 
 
-class AuthorField(RevisionField):
-    field_name = 'author'
-
-    def to_representation(self, value):
-        value = super(AuthorField, self).to_representation(value)
-        if isinstance(value, User):
-            return {'username': value.username,
-                    'name': ("{0.first_name} {0.last_name}"
-                             .format(value)
-                             .strip()
-                             ),
-                    }
-        else:
-            return value
-
-    def to_internal_value(self, value):
-        return User.objects.get(username=value)
-
-
 class EntrySerializer(serializers.ModelSerializer):
     notebook = serializers.SlugRelatedField(slug_field='slug',
                                             queryset=Notebook.objects.active())
     section = serializers.SlugRelatedField(slug_field='slug',
                                            queryset=Section.objects.all())
     content = ContentField()
-    author = AuthorField(required=False)
 
     def create(self, kwargs):
         return Entry.objects.create(**kwargs)
 
     class Meta:
         model = Entry
-        fields = ('id', 'title', 'slug', 'date', 'content', 'author',
+        fields = ('id', 'title', 'slug', 'date', 'content',
                   'html', 'notebook', 'section')
 
 

@@ -1,5 +1,4 @@
-<article class="entry" data-id="{{ entry.id }}" data-uri="{{ entry.get_absolute_url }}" data-notebook-slug="{{ entry.notebook.slug }}" data-api-uri="{% url 'api_entry_detail' entry.notebook.slug entry.id %}">
-    <a class="controls-toggle" href="">&nbsp;</a>
+%%%ENTRYSTART%%%
 
 	<div class="metadata container">
 		{% block entry_metadata %}
@@ -29,13 +28,5 @@
 		{% endblock %}
 	</div>
 
-	<form class="edit-mode">
-		<textarea name="content" class="container">{% if revision %}{{ revision.get_payload }}{% else %}{{ entry.current_revision.get_payload }}{% endif %}</textarea>
-
-		<div class="edit-panel">
-			<div class="group more container">
-				<a class="save" href="">Save</a> &mdash; <a class="delete" href="">Delete</span> &mdash; <a href="{{ entry.get_absolute_url }}">Go to entry</a>
-			</div>
-		</div>
-	</form>
-</article>
+	%%%EDITMODE%%%
+%%%ENTRYEND%%%

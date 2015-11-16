@@ -7,10 +7,29 @@ from vinci.utils import load_modes, load_template_for_mode
 class VinciConfig(AppConfig):
     name = 'vinci'
     verbose_name = "Vinci"
+
     def ready(self):
         # Load modes
         modes = load_modes(settings.VINCI_MODE_LIST, settings.VINCI_MODE_TEMPLATE_BASE)
         settings.VINCI_MODES = modes
+
+        # Load the edit-mode HTML
+        filename = '{}/vinci/templates/partials/_edit_mode.html'.format(settings.BASE_DIR)
+
+        with open(filename, 'r') as f:
+            settings.VINCI_EDIT_MODE_HTML = f.read()
+
+        # Load the entry start HTML
+        filename = '{}/vinci/templates/partials/_entry_start.html'.format(settings.BASE_DIR)
+
+        with open(filename, 'r') as f:
+            settings.VINCI_ENTRY_START_HTML = f.read()
+
+        # Load the entry end HTML
+        filename = '{}/vinci/templates/partials/_entry_end.html'.format(settings.BASE_DIR)
+
+        with open(filename, 'r') as f:
+            settings.VINCI_ENTRY_END_HTML = f.read()
 
         # Load templates for modes
         settings.VINCI_TEMPLATES = {}

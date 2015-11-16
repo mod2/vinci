@@ -157,8 +157,11 @@ def load_template_for_mode(template, mode):
                 # Use log detail instead
                 mode_html = settings.VINCI_MODES['log']['detail']
 
-        # Replace the stub with the mode-specific template HTML
+        # Replace stubs
         data = re.sub(r"%%%STUB%%%", mode_html, data)
+        data = re.sub(r"%%%EDITMODE%%%", settings.VINCI_EDIT_MODE_HTML, data)
+        data = re.sub(r"%%%ENTRYSTART%%%", settings.VINCI_ENTRY_START_HTML, data)
+        data = re.sub(r"%%%ENTRYEND%%%", settings.VINCI_ENTRY_END_HTML, data)
     except:
         data = ''
 

@@ -729,12 +729,14 @@ $(document).ready(function() {
 	// Menu items
 	// --------------------------------------------------
 
-	$("span.show-search").on("click", function() {
+	$("span.show-search, span.show-search object").on("click", function() {
 		if ($("#search:visible").length > 0) {
 			_unfocusSearch();
 		} else {
 			_focusSearch();
 		}
+
+		return false;
 	});
 
 	$("span.add-notebook").on("click", function() {

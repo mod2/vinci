@@ -200,6 +200,12 @@ header[role=banner] .group span:hover {
 	color: hsl(48, 81%, 74%) !important;
 }
 
+header[role=banner] .group span svg {
+	cursor: pointer;
+	height: 0.7em;
+	width: 0.7em;
+}
+
 
 /* Page header (desktop) */
 /* -------------------------------------------------- */
@@ -416,6 +422,10 @@ body.active-nav #page .mask {
 
 #search .results a.notebook {
 	background: hsl(21, 27%, 44%);
+}
+
+#search .results a.section {
+	background: hsl(270, 14%, 46%);
 }
 
 #search .results a.page {
@@ -1939,6 +1949,12 @@ body.note-mode #page #content.list .entry .metadata {
 
 	body header[role=banner] h1 a.home {
 		padding-left: 0;
+	}
+
+	body header[role=banner] .group span {
+		font-size: 1.6em;
+		padding-left: 1em;
+		padding-top: 1em;
 	}
 
 	header[role=banner] .system {

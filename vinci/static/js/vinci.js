@@ -71,6 +71,12 @@ $(document).ready(function() {
 		$("#error").slideDown(75);
 	}
 
+	function _hideError() {
+		$("#error").slideUp(75, function() {
+			$("#error .container").html('');
+		});
+	}
+
 
 	// Search
 	// --------------------------------------------------
@@ -117,20 +123,14 @@ $(document).ready(function() {
 	function _executeSearch() {
 		var url = '';
 
-		if ($("#search .results a").length > 0) {
-			// Go to the first one
-			var result = $("#search .results a:first-child");
-			var url = result.attr("href");
-		} else {
-			var url = $("#search").attr("data-search-section-uri");
-			var query = $("#search input[type=text]").val().trim();
+		var url = $("#search").attr("data-search-section-uri");
+		var query = $("#search input[type=text]").val().trim();
 
-			if (query.length > 0) {
-				// Search
-				var q = query.replace(/#(\w+)/g, 'tag:$1');
+		if (query.length > 0) {
+			// Search
+			var q = query.replace(/#(\w+)/g, 'tag:$1');
 
-				url = url + '?q=' + q;
-			}
+			url = url + '?q=' + q;
 		}
 
 		if (url) {
@@ -152,6 +152,9 @@ $(document).ready(function() {
 				method: 'GET',
 				contentType: 'application/json',
 				success: function(data) {
+					// Hide any pre-existing errors
+					_hideError();
+
 					var html = '';
 
 					for (var i in data.results.notebooks) {

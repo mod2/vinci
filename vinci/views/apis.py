@@ -442,12 +442,22 @@ class QuickJumpAPIView(APIView):
             # See if there's a notebook specifier ("home.projects", for example)
             query, _, notebook_specifier = query.partition('.')
 
+            # Get notebooks
             notebooks = (models.Notebook.objects
                          .filter(name__icontains=query)
                          )[:5]
+
+            # Get sections
+            sections = (models.Section.objects
+                         .filter(name__icontains=query)
+                         )[:5]
+
+            # Get tags
             tags = Tag.objects.filter(name__icontains=query)[:5]
 
+            # Get entries
             entries = models.Entry.objects.filter(title__icontains=query)
+
             if notebook_specifier:
                 # Filter further by a specific notebook (allows user to resolve
                 # pages with same name in different notebooks)
@@ -459,14 +469,17 @@ class QuickJumpAPIView(APIView):
                 # Zero out notebooks/tags because we only want pages
                 notebooks = []
                 tags = []
+
+            # Limit to top five entries
             entries = entries[:5]
 
             status = 'success'
             status_code = 200
             msg_label = 'results'
 
-            nbs = []
-            pages = []
+            notebook_list = []
+            section_list = []
+            page_list = []
             tag_list = []
 
             for notebook in notebooks:
@@ -474,7 +487,14 @@ class QuickJumpAPIView(APIView):
                       'slug': notebook.slug,
                       'url': notebook.get_absolute_url(),
                       }
-                nbs.append(nb)
+                notebook_list.append(nb)
+
+            for section in sections:
+                s = {'name': str(section),
+                     'slug': section.slug,
+                     'url': section.get_absolute_url(),
+                     }
+                section_list.append(s)
 
             for entry in entries:
                 page = {'name': entry.title,
@@ -483,7 +503,7 @@ class QuickJumpAPIView(APIView):
                         'section': entry.section.name if entry.section else '',
                         'url': entry.get_absolute_url(),
                         }
-                pages.append(page)
+                page_list.append(page)
 
             for tag in tags:
                 tag_item = {'name': tag.name,
@@ -494,8 +514,9 @@ class QuickJumpAPIView(APIView):
                 tag_list.append(tag_item)
 
             msg = {
-                'notebooks': nbs,
-                'pages': pages,
+                'notebooks': notebook_list,
+                'sections': section_list,
+                'pages': page_list,
                 'tags': tag_list,
             }
         else:

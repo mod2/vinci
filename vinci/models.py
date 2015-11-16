@@ -257,7 +257,7 @@ class Entry(models.Model):
         if self.section:
             section_slug = self.section.slug
         else:
-            section_slug = None
+            section_slug = '--'
 
         return resolve_url('entry', self.notebook.slug, section_slug, slug)
 

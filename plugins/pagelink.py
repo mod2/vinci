@@ -35,6 +35,8 @@ def process(content, entry, notebook_url):
     # Replace the placeholder with the current notebook/section slugs
     # (Since we can't pass the slugs in to parse_match)
     content = content.replace('REPLACENOTEBOOK', entry.notebook.slug)
-    content = content.replace('REPLACESECTION', entry.section.slug)
+
+    if entry.section:
+        content = content.replace('REPLACESECTION', entry.section.slug)
 
     return content

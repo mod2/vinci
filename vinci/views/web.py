@@ -125,14 +125,20 @@ def notebook_section(request, notebook_slug, section_slug):
 @login_required
 def entry_detail(request, notebook_slug, section_slug, entry_slug):
     try:
+        if section_slug == '--':
+            section_slug = None
+
         entry = Entry.objects.from_slug(entry_slug, section_slug, notebook_slug)
     except Entry.DoesNotExist:
         return HttpResponseNotFound('Entry does not exist.')
 
-    try:
-        section = Section.objects.get(slug=section_slug, notebook__slug=notebook_slug)
-    except Section.DoesNotExist:
-        return HttpResponseNotFound('Section does not exist.')
+    if section_slug is not None:
+        try:
+            section = Section.objects.get(slug=section_slug, notebook__slug=notebook_slug)
+        except Section.DoesNotExist:
+            return HttpResponseNotFound('Section does not exist.')
+    else:
+        section = None
 
     # Check default mode
     default_mode = 'log'
@@ -182,17 +188,20 @@ def revision_detail(request, notebook_slug, section_slug, entry_slug, revision_i
     mode = request.GET.get('mode', 'log')
 
     try:
-        if section_slug:
-            entry = Entry.objects.from_slug(entry_slug, section_slug, notebook_slug)
-        else:
-            entry = Entry.objects.from_slug(entry_slug, None, notebook_slug)
+        if section_slug == '--':
+            section_slug = None
+
+        entry = Entry.objects.from_slug(entry_slug, section_slug, notebook_slug)
     except Entry.DoesNotExist:
         return HttpResponseNotFound('Entry does not exist.')
 
-    try:
-        section = Section.objects.get(slug=section_slug, notebook__slug=notebook_slug)
-    except Section.DoesNotExist:
-        return HttpResponseNotFound('Section does not exist.')
+    if section_slug is not None:
+        try:
+            section = Section.objects.get(slug=section_slug, notebook__slug=notebook_slug)
+        except Section.DoesNotExist:
+            return HttpResponseNotFound('Section does not exist.')
+    else:
+        section = None
 
     try:
         revision = Revision.objects.get(id=revision_id)

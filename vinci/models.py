@@ -248,6 +248,14 @@ class Entry(models.Model):
 
         return content
 
+    def unparsed_html(self):
+        content = self.content
+        content = content.replace('\n', '<br>')
+        content = content.replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
+        content = content.replace('    ', '&nbsp;&nbsp;&nbsp;&nbsp;')
+
+        return content
+
     def get_absolute_url(self):
         slug = self.id
 
@@ -334,6 +342,14 @@ class Revision(models.Model):
             content = plugin.process(content,
                                         self.entry,
                                         self.entry.notebook.get_absolute_url())
+
+        return content
+
+    def unparsed_html(self):
+        content = self.content
+        content = content.replace('\n', '<br>')
+        content = content.replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
+        content = content.replace('    ', '&nbsp;&nbsp;&nbsp;&nbsp;')
 
         return content
 

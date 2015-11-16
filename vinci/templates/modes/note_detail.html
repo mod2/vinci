@@ -2,9 +2,9 @@
 
 	<div class="content container">
 		{% if revision %}
-			{{ revision.html|safe }}
+			{{ revision.unparsed_html|safe }}
 		{% else %}
-			{{ entry.html|safe }}
+			{{ entry.unparsed_html|safe }}
 		{% endif %}
 	</div>
 

@@ -123,20 +123,17 @@ header[role=banner] h1 {
 	font-size: 1em;
 	font-weight: 400;
 	left: 60px;
-	letter-spacing: 0.04em;
 	margin: 0;
 	overflow: hidden;
 	padding-top: .4em;
 	padding-bottom: 0;
 	right: 60px;
 	text-align: left;
-	text-transform: uppercase;
 	z-index: 50000;
 }
 
 header[role=banner] h1 a.home {
 	color: #fff;
-	display: block;
 	font-size: 1.1em;
 	line-height: 1.1em;
 	text-decoration: none;
@@ -151,6 +148,7 @@ header[role=banner] h1 span {
 }
 
 header[role=banner] h1 a {
+	padding-left: 0;
 	padding-right: .2em;
 }
 
@@ -1844,11 +1842,6 @@ body.note-mode #page #content.list .entry .metadata {
 		padding-right: 65px;
 	}
 
-	/*
-	body.note-mode #page #content .entry .metadata.container {
-		display: none !important;
-	}
-
 	body.note-mode #page #content .entry .content.container {
 		margin-left: 0;
 		padding-left: 65px;
@@ -1857,8 +1850,6 @@ body.note-mode #page #content.list .entry .metadata {
 	body.note-mode #page #content .entry.selected .content {
 		padding-left: 55px;
 	}
-
-	*/
 
 	body.wiki-mode #page #content .entry .content.container {
 		margin-left: 0;
@@ -1999,7 +1990,6 @@ body.note-mode #page #content.list .entry .metadata {
 		padding-right: 90px;
 	}
 
-	/*
 	body.note-mode #page #content .entry .content.container {
 		padding-left: 90px;
 		padding-right: 90px;
@@ -2009,6 +1999,8 @@ body.note-mode #page #content.list .entry .metadata {
 		margin-left: 0;
 		padding-left: 80px;
 	}
+
+	/*
 
 	body.log-mode #page #content .entry.selected .content,
 	body.journal-mode #page #content .entry .selected .content {
@@ -2118,11 +2110,6 @@ body.note-mode #page #content.list .entry .metadata {
 	}
 
 	/*
-	body.note-mode #page #content .entry.selected .content {
-		margin-left: 0;
-		padding-left: 120px;
-	}
-
 	body.wiki-mode #page #content .entry.selected .content {
 		margin-left: 0;
 		padding-left: 140px;

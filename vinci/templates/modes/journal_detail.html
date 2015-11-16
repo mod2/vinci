@@ -1,31 +1,21 @@
 %%%ENTRYSTART%%%
 
 	<div class="metadata container">
-		{% block entry_metadata %}
-
-		{% block entry_metadata_date %}
 		<a class="date" href="{{ entry.get_absolute_url }}">
 			<date>{{ entry.date|date:'j M Y' }}<span>{{ entry.date|date:'l' }}</span></date>
 		</a>
-		{% endblock entry_metadata_date %}
 
-		{% block entry_metadata_tags %}
 		{% if entry.tags.all|length > 0 %}
 		<ul class="tags">{% for tag in entry.tags.all %}<li><a href="{% url 'search_notebook_tags' entry.notebook.slug tag %}">#{{ tag }}</a></li>{% endfor %}</ul>
 		{% endif %}
-		{% endblock entry_metadata_tags %}
-
-		{% endblock entry_metadata %}
 	</div>
 
-	<div class="content container {% block entry_class %}{% endblock entry_class %}">
-		{% block entry_list %}
+	<div class="content container">
 		{% if revision %}
-		{{ revision.html|safe }}
+			{{ revision.html|safe }}
 		{% else %}
-		{{ entry.html|safe }}
+			{{ entry.html|safe }}
 		{% endif %}
-		{% endblock %}
 	</div>
 
 	%%%EDITMODE%%%

@@ -1,13 +1,13 @@
 %%%ENTRYSTART%%%
 
-	<div class="content container {% block entry_class %}{% endblock entry_class %}">
+	<div class="content container">
 		<h1 class="page-title">{{ entry.title }}</h1>
 
 		<div class="page-content">
 			{% if revision %}
-			{{ revision.html|safe }}
+				{{ revision.html|safe }}
 			{% else %}
-			{{ entry.html|safe }}
+				{{ entry.html|safe }}
 			{% endif %}
 		</div>
 	</div>

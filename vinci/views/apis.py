@@ -426,7 +426,7 @@ class QuickJumpAPIView(APIView):
     ## Examples
 
     * GET `/api/quick-jump/?q={query}` Returns lists of all the pages and
-    notebooks that match the given query.
+    notebooks and sections that match the given query.
 
     """
     authentication_classes = (APIKeyAuthentication,)
@@ -480,6 +480,7 @@ class QuickJumpAPIView(APIView):
                 page = {'name': entry.title,
                         'slug': entry.slug,
                         'notebook': entry.notebook.name,
+                        'section': entry.section.name if entry.section else '',
                         'url': entry.get_absolute_url(),
                         }
                 pages.append(page)

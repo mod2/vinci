@@ -385,47 +385,6 @@ body.active-nav #page .mask {
 	padding-top: 0;
 }
 
-#search.quickjump {
-	background: hsl(194, 20%, 17%);
-}
-
-#search.quickjump .container {
-	background: hsl(194, 20%, 25%);
-}
-
-#search.quickjump .scope {
-	display: none;
-}
-
-#search .scope {
-	font-size: .9em;
-	overflow: hidden;
-	padding-bottom: 15px;
-}
-
-#search .scope span {
-	background: hsl(0, 0%, 25%);
-	border-radius: 3px;
-	color: hsl(0, 0%, 50%);
-	cursor: pointer;
-	display: inline-block;
-	margin-bottom: 5px;
-	margin-right: 5px;
-	padding: 1px 6px 2px;
-}
-
-#search .scope span:hover {
-	background: hsl(0, 0%, 15%);
-}
-
-#search .scope span.selected {
-	color: hsl(0, 0%, 70%);
-}
-
-#search .scope span.selected:hover {
-	background: hsl(0, 0%, 5%);
-}
-
 #search input[type=text] {
 	-webkit-font-feature-settings: normal;
 	background: none;

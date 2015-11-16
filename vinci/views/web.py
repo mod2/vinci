@@ -42,6 +42,7 @@ def notebook_settings(request, notebook_slug):
         'statuses': [{'value': s[0], 'label': s[1]} for s in Notebook.STATUS],
         'groups': [{'value': g.name, 'label': g.name} for g in Group.objects.all()],
         'page_type': 'settings',
+        'API_KEY': settings.VINCI_API_KEY,
     }
 
     return render_to_response('vinci/notebook_settings.html',
@@ -111,6 +112,7 @@ def notebook_section(request, notebook_slug, section_slug):
         'entries': entries,
         'labels': labels,
         'page_type': 'list',
+        'API_KEY': settings.VINCI_API_KEY,
     }
 
     # Get the template
@@ -165,6 +167,7 @@ def entry_detail(request, notebook_slug, section_slug, entry_slug):
         'section': section,
         'scope': 'section',
         'page_type': 'detail',
+        'API_KEY': settings.VINCI_API_KEY,
     }
 
     # Get the template
@@ -230,6 +233,7 @@ def revision_detail(request, notebook_slug, section_slug, entry_slug, revision_i
         'section': section,
         'scope': 'section',
         'page_type': 'detail',
+        'API_KEY': settings.VINCI_API_KEY,
     }
 
     # Get the template
@@ -256,6 +260,7 @@ def notebooks_list(request):
         'scope': 'all',
         'page_type': 'all',
         'blank_slate': blank_slate,
+        'API_KEY': settings.VINCI_API_KEY,
     }
 
     return render_to_response('vinci/index.html',
@@ -297,6 +302,7 @@ def diary(request, day):
         'section': 'log',
         'scope': 'all',
         'page_type': 'diary',
+        'API_KEY': settings.VINCI_API_KEY,
     }
 
     return render_to_response('vinci/diary.html',
@@ -376,6 +382,7 @@ def _search(request, query, notebook=None, section=None):
         'scope': scope,
         'page_type': 'list',
         'search': True,
+        'API_KEY': settings.VINCI_API_KEY,
     }
 
     if notebook:
@@ -395,7 +402,9 @@ def prefs_view(request):
     context = {
         'labels': labels,
         'title': 'Preferences',
+        'API_KEY': settings.VINCI_API_KEY,
     }
+
     return render_to_response('vinci/prefs.html',
                               context,
                               RequestContext(request),

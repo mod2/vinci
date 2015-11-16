@@ -90,7 +90,6 @@ $(document).ready(function() {
 		// Unfocus the search box
 		$("#search").slideUp(75, function() {
 			$("#search input").val('').blur();
-			$("#search").removeClass("quickjump");
 			$("#search .results").html('').hide();
 		});
 
@@ -103,55 +102,27 @@ $(document).ready(function() {
 	});
 
 
-	// Quickjump
-	// --------------------------------------------------
-
-	function _focusQuickJump() {
-		// Display and focus on the search with quickjump enabled
-		$("#search input[type=text]").val('');
-		$("#search .results").html('').hide();
-		$("#search").addClass("quickjump");
-
-		$("#search").slideDown(75, function() {
-			$("#search input[type=text]").focus();
-		});
-
-		return false;
-	}
-
-
 	// Keyboard shortcuts
 	// --------------------------------------------------
 
 	Mousetrap.bind('g m', _toggleMenu);
 
 	Mousetrap.bind('/', _focusSearch);
-	Mousetrap.bind('g /', _focusQuickJump);
 
 	var field = document.querySelector('#search input[type=text]');
 	Mousetrap(field).bind('esc', _unfocusSearch);
-	// _unfocusSearch also handles clearing out the quickjump
 
 	$("#search").on('submit', _executeSearch);
 
 	function _executeSearch() {
 		var url = '';
 
-		var quickJump = $("#search").hasClass("quickjump");
-
-		if (quickJump && $("#search .results a").length > 0) {
+		if ($("#search .results a").length > 0) {
 			// Go to the first one
 			var result = $("#search .results a:first-child");
 			var url = result.attr("href");
 		} else {
-			var scope = $("#search .scope span.selected").attr("data-value");
-			var scopes = {
-				'all': $("#search").attr("data-search-all-uri"),
-				'notebook': $("#search").attr("data-search-notebook-uri"),
-				'section': $("#search").attr("data-search-section-uri"),
-			};
-
-			var url = scopes[scope];
+			var url = $("#search").attr("data-search-section-uri");
 			var query = $("#search input[type=text]").val().trim();
 
 			if (query.length > 0) {
@@ -170,10 +141,10 @@ $(document).ready(function() {
 	}
 
 	// Quickjump
-	$("#page").on("input", "#search.quickjump", function() {
+	$("#page").on("input", "#search", function() {
 		// On typing, call the API
-		var url = $("#search.quickjump").attr("data-quickjump-uri");
-		var query = $("#search.quickjump input[type=text]").val().trim();
+		var url = $("#search").attr("data-quickjump-uri");
+		var query = $("#search input[type=text]").val().trim();
 
 		if (query) {
 			$.ajax({
@@ -187,6 +158,12 @@ $(document).ready(function() {
 						var nb = data.results.notebooks[i];
 
 						html += '<a class="notebook" href="' + nb.url + '" data-slug="' + nb.slug + '">' + nb.name + '</a>';
+					}
+
+					for (var i in data.results.sections) {
+						var s = data.results.sections[i];
+
+						html += '<a class="section" href="' + s.url + '" data-slug="' + s.slug + '">' + s.name + '</a>';
 					}
 
 					for (var i in data.results.pages) {
@@ -212,38 +189,10 @@ $(document).ready(function() {
 				},
 			});
 		} else {
-			// Hide quickjump results
+			// Hide results
 			$("#search .results").html('').hide();
 		}
 	});
-
-	function _followQuickJump() {
-		if ($("#search .results a").length > 0) {
-			// Go to the first one
-			var result = $("#search .results a:first-child").attr("href");
-
-			window.location.href = result;
-		}
-
-		return false;
-	}
-
-
-	// Infinite scroll
-	// --------------------------------------------------
-
-	/*
-	if ($("nav[role=pagination] a.next")) {
-		$(".entries").infinitescroll({
-			navSelector: "nav[role=pagination]",
-			nextSelector: "nav[role=pagination] a.next",
-			itemSelector: "article.entry",
-			loading: {
-				finishedMsg: '<i>The very end.</i>',
-			},
-		}, processEntries);
-	}
-	*/
 
 
 	// Add viewport to the window object
@@ -782,14 +731,6 @@ $(document).ready(function() {
 			_unfocusSearch();
 		} else {
 			_focusSearch();
-		}
-	});
-
-	$("span.show-quickjump").on("click", function() {
-		if ($("#search:visible").length > 0) {
-			_unfocusSearch();
-		} else {
-			_focusQuickJump();
 		}
 	});
 

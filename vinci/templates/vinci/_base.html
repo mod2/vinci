@@ -81,6 +81,15 @@
 		<section id="page">
 			<div class="mask"></div>
 
+			{% block search %}
+			<form id="search" data-search-all-uri="{% url 'search_all' %}"{% if notebook and section %} data-search-section-uri="{% url 'search_notebook_section' notebook.slug section.slug %}"{% endif %}{% if notebook %}data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}"{% endif %} data-quickjump-uri="{% url 'quick_jump' %}" class="{{ page_type }}">
+				<div class="container">
+					<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
+					<section class="results"></section>
+				</div>
+			</form>
+			{% endblock search %}
+
 			{% block header %}
 			<header role="banner">
 				<div class="container">
@@ -97,7 +106,6 @@
 					<div class="group">
 						<span class="add-entry">+</span>
 						<span class="show-search">S</span>
-						<span class="show-quickjump">QJ</span>
 					</div>
 				</div>
 			</header>
@@ -120,20 +128,6 @@
 				</div>
 			</form>
 			{% endblock add_entry %}
-
-			{% block search %}
-			<form id="search" data-search-all-uri="{% url 'search_all' %}"{% if notebook and section %} data-search-section-uri="{% url 'search_notebook_section' notebook.slug section.slug %}"{% endif %}{% if notebook %}data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}"{% endif %} data-quickjump-uri="{% url 'quick_jump' %}" class="{{ page_type }}">
-				<div class="container">
-					<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
-					<section class="scope">
-						{% if section and notebook %}<span data-value="section"{% if scope == 'section' %} class="selected"{% endif %}>This Section</span>{% endif %}
-						{% if notebook %}<span data-value="notebook"{% if scope == 'notebook' %} class="selected"{% endif %}>This Notebook</span>{% endif %}
-						<span data-value="all"{% if scope == 'all' %} class="selected"{% endif %}>All Notebooks</span>
-					</section>
-					<section class="results"></section>
-				</div>
-			</form>
-			{% endblock search %}
 
 			{% if query %}
 			<section id="results">
@@ -199,11 +193,6 @@
 					<div class="group">
 						<label>C-&#x23ce;</label>
 						<span>Save entry</span>
-					</div>
-
-					<div class="group">
-						<label>g /</label>
-						<span>Quickjump</span>
 					</div>
 
 					<div class="group">

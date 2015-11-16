@@ -300,6 +300,10 @@ nav[role=menu] a:hover {
 	color: #fff;
 }
 
+nav[role=menu] a.mode {
+	color: hsl(56, 50%, 82%);
+}
+
 nav[role=menu] span {
 	color: #fff;
 	cursor: pointer;

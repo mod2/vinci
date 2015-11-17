@@ -1,5 +1,15 @@
 {% extends 'vinci/_base.html' %}
 
+{% load staticfiles %}
+
+{% block pagecss %}
+<link href="{% static 'css/lib/codemirror.css' %}" rel="stylesheet" type="text/css" charset="utf-8" />
+{% endblock pagecss %}
+
+{% block pagejs %}
+<script src="{% static 'js/lib/codemirror.js' %}" type="text/javascript" charset="utf-8"></script>
+{% endblock pagejs %}
+
 {% block content %}
 <section id="settings" data-uri="{% url 'api_entry_list' notebook.slug %}">
 	<h2 class="container">Notebook Settings</h2>
@@ -34,6 +44,11 @@
 			<option {% if group.label == notebook.group.name %}selected {% endif %}value="{{ group.value }}">{{ group.label }}</option>
 			{% endfor %}
 		</select>
+	</div>
+
+	<h3 class="container">Custom CSS</h3>
+	<div class="group container">
+		<textarea id="custom-css" class="code">{{ notebook.custom_css }}</textarea>
 	</div>
 </section>
 {% endblock content %}

@@ -11,8 +11,11 @@
 	<link href="{% static 'css/style.css' %}?v14" rel="stylesheet" type="text/css" charset="utf-8" />
 
 	<link href="{% static 'css/lib/prism.css' %}" rel="stylesheet" type="text/css" charset="utf-8" />
-	<link href="{% static 'css/lib/jquery.tagit.css' %}" rel="stylesheet" type="text/css" charset="utf-8" />
-	<link href="{% static 'css/lib/tagit.ui-zendesk.css' %}" rel="stylesheet" type="text/css" charset="utf-8" />
+	{% block pagecss %}{% endblock pagecss %}
+
+	{% if notebook.custom_css %}
+	<style type="text/css">{{ notebook.custom_css }}</style>
+	{% endif %}
 
 	<script src="{% static 'js/lib/jquery-2.1.4.min.js' %}" type="text/javascript" charset="utf-8"></script>
 	<script src="{% static 'js/lib/jquery-ui.min.js' %}" type="text/javascript" charset="utf-8"></script>
@@ -214,5 +217,7 @@
 		{% block modal %}
 		{% endblock modal %}
 	</section>
+
+	{% block pagejs %}{% endblock pagejs %}
 </body>
 </html>

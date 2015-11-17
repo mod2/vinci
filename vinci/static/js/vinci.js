@@ -961,11 +961,48 @@ $(document).ready(function() {
 
 	Mousetrap.bind('g s', _goToNotebookSettings);
 
+
 	// Revision display toggle
+    // ----------------------------------------------------------
+
 	$("ul.revisions li a.toggle").on("click", function() {
 		$(this).parents("ul.revisions").toggleClass("show");
 
 		return false;
+	});
+
+
+    // Custom CSS/dotfile (CodeMirror)
+    // ----------------------------------------------------------
+	
+	$("textarea#custom-css").each(function() {
+		var myCodeMirror = CodeMirror.fromTextArea($(this)[0], {
+			mode: 'css',
+			indentUnit: 4,
+			lineNumbers: true,
+		});
+
+		myCodeMirror.on("change", function(cm, change) {
+			var url = $("#settings").attr("data-uri");
+			var value = cm.getValue();
+			var data = {
+				'custom_css': value,
+			};
+
+			$.ajax({
+				url: url,
+				method: 'PUT',
+				contentType: 'application/json',
+				data: JSON.stringify(data),
+				success: function(data) {
+					return true;
+				},
+				error: function(data) {
+					_showError("Error saving settings", data);
+				},
+			});
+		});
+
 	});
 });
 

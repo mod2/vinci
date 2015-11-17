@@ -1700,6 +1700,18 @@ body.note-mode #page #content.list .entry .metadata {
 	min-width: 150px;
 }
 
+#settings textarea.code {
+	display: none;
+}
+
+#settings .CodeMirror * {
+	font-family: Inconsolata, monospace !important;
+}
+
+#settings .CodeMirror {
+	border: solid 1px #ddd;
+}
+
 
 /* Error messages */
 /* -------------------------------------------------- */

@@ -189,12 +189,16 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
         status = request.data.get('status')
         group = request.data.get('group')
         default_section = request.data.get('default_section')
+        custom_css = request.data.get('custom_css')
 
         if name is not None:
             notebook.name = name
 
         if status is not None and status in models.Notebook.STATUS:
             notebook.status = status
+
+        if custom_css is not None:
+            notebook.custom_css = custom_css
 
         if group is not None:
             new_group = models.Group.objects.get(name=group)

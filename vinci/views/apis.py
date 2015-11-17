@@ -879,8 +879,8 @@ def add_payload(request):
         # Tags
         entry.tags.clear()
         if 'tags' in payload or 'tag' in payload:
-            tags = [t.strip() for t in payload['tags'].split(',')]
-            entry.tags.add(tags)
+            tags = [t.strip() for t in payload['tags']]
+            entry.tags.add(*tags)
 
         # Update date
         if 'date' in payload:

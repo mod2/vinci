@@ -90,8 +90,8 @@ class EntryQuerySet(StatusQueries, models.QuerySet):
         revision.save()
 
         if tags:
-            tags = [t.strip() for t in tags.split(',')]
-            entry.tags.add(tags)
+            tags = [t.strip() for t in tags]
+            entry.tags.add(*tags)
         else:
             # No tags, so clear it
             entry.tags.clear()

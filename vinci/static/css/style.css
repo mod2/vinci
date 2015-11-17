@@ -2050,37 +2050,6 @@ body.note-mode #page #content.list .entry .metadata {
 		padding-left: 80px;
 	}
 
-	/*
-
-	body.log-mode #page #content .entry.selected .content,
-	body.journal-mode #page #content .entry .selected .content {
-		margin-left: 195px;
-	}
-
-	body.log-mode #page #content .entry .metadata.container,
-	body.journal-mode #page #content .entry .metadata.container {
-		padding-left: 70px;
-		width: 180px;
-	}
-
-	body.log-mode #page #content .entry .content.container,
-	body.journal-mode #page #content .entry .content.container {
-		padding-right: 70px;
-		margin-left: 205px;
-	}
-
-	body.log-mode #page #content .entry.selected .metadata,
-	body.journal-mode #page #content .entry.selected .metadata {
-		padding-left: 60px;
-		width: 170px;
-	}
-
-	body.log-mode #page #content .entry.selected .content,
-	body.journal-mode #page #content .entry.selected .content {
-		margin-left: 195px;
-	}
-	*/
-
 	body.wiki-mode #page #content .entry .content.container {
 		padding-left: 90px;
 		padding-right: 90px;
@@ -2121,18 +2090,6 @@ body.note-mode #page #content.list .entry .metadata {
 	#page #content > footer ul {
 		margin-left: 135px;
 	}
-
-	/*
-	body.log-mode #page #content > footer .container {
-		padding-left: 70px;
-		padding-right: 70px;
-	}
-
-	body.journal-mode #page #content > footer .container {
-		padding-left: 70px;
-		padding-right: 70px;
-	}
-	*/
 }
 
 @media screen and (min-width: 1000px) {
@@ -2159,57 +2116,13 @@ body.note-mode #page #content.list .entry .metadata {
 		margin-left: 235px;
 	}
 
-	/*
-	body.wiki-mode #page #content .entry.selected .content {
-		margin-left: 0;
-		padding-left: 140px;
-	}
-
-	body.log-mode #page #content .entry .metadata.container,
-	body.journal-mode #page #content .entry .metadata.container {
-		padding-left: 100px;
-		width: 225px;
-	}
-
-	body.log-mode #page #content .entry .content.container,
-	body.journal-mode #page #content .entry .content.container {
-		margin-left: 250px;
-		padding-right: 100px;
-	}
-
-	body.log-mode #page #content .entry.selected .metadata.container,
-	body.journal-mode #page #content .entry.selected .metadata.container {
-		padding-left: 90px;
-		width: 215px;
-	}
-
-	body.log-mode #page #content .entry.selected .content.container,
 	body.journal-mode #page #content .entry.selected .content.container {
-		margin-left: 240px;
+		margin-left: 260px;
 	}
-	*/
 
 	#all-notebooks .notebook.selected .content {
 		padding-left: 75px;
 	}
-
-	/*
-	body.log-mode #page #content > footer .container,
-	body.journal-mode #page #content > footer .container {
-		padding-left: 100px;
-		padding-right: 100px;
-	}
-
-	body.log-mode #page #content > footer h2,
-	body.journal-mode #page #content > footer h2 {
-		width: 125px;
-	}
-
-	body.log-mode #page #content > footer ul,
-	body.journal-mode #page #content > footer ul {
-		margin-left: 150px;
-	}
-	*/
 
 	#add-entry textarea {
 		padding-left: 130px;

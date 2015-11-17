@@ -2143,16 +2143,6 @@ body.note-mode #page #content.list .entry .metadata {
 		padding-left: 75px;
 	}
 
-	#add-entry textarea {
-		padding-left: 130px;
-		padding-right: 130px;
-	}
-
-	#add-entry .group {
-		padding-left: 130px;
-		padding-right: 130px;
-	}
-
 	#page #content > footer h2 {
 		width: 155px;
 	}

@@ -405,10 +405,7 @@ def _search(request, query, notebook=None, section=None):
 
 @login_required
 def prefs_view(request):
-    labels = Label.objects.all()
-
     context = {
-        'labels': labels,
         'title': 'Preferences',
         'API_KEY': settings.VINCI_API_KEY,
     }

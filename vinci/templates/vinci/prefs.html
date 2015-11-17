@@ -1,19 +1,11 @@
 {% extends 'vinci/_base.html' %}
 
 {% block content %}
-<section id="settings" >
-	<h2 class="container">Labels</h2>
+<section id="settings">
+	<h2 class="container">Custom CSS</h2>
 	<div id="section-config" class="group container">
-		<ul class="labels">
-		{% for label in labels %}
-			<li class="label" style="background-color: {{ label.color }}">{{ label.title }}</li>
-		{% empty %}
-			<li>No labels</li>
-		{% endfor %}
-		</ul>
-
-		<input type="text" />
-		<input type="submit" value="Add Label" />
+		<textarea></textarea>
+		<input type="submit" value="Save" />
 	</div>
 </section>
 {% endblock content %}

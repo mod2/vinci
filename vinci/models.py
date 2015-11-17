@@ -175,9 +175,6 @@ class Section(models.Model):
 
     default_mode = models.CharField(max_length=30, blank=True, null=True)
 
-    dotfile = models.TextField(blank=True, null=True)
-    custom_css = models.TextField(blank=True, null=True)
-
     objects = SectionManager.as_manager()
 
     def __str__(self):

@@ -48,7 +48,7 @@
 
 	<h3 class="container">Custom CSS</h3>
 	<div class="group container">
-		<textarea id="custom-css" class="code">{{ notebook.custom_css }}</textarea>
+		<textarea id="custom-css" class="code">{% if notebook.custom_css %}{{ notebook.custom_css }}{% endif %}</textarea>
 	</div>
 </section>
 {% endblock content %}

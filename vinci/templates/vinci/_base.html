@@ -130,7 +130,7 @@
 			{% block add_entry %}
 			{% if request.user.username %}
 			<form id="add-entry" class="edit-mode" data-uri="{% url 'api_notebook_list' %}" {% if notebook %}data-notebook-slug="{{ notebook.slug }}"{% endif %}{% if section %} data-section-slug="{{ section.slug }}"{% endif %}>
-				<textarea name="entry-content" class="container"></textarea>
+				<textarea name="entry-content" class="entry-content container"></textarea>
 
 				<div class="edit-panel">
 					<div class="group more container">

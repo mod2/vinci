@@ -78,7 +78,7 @@ def parse_payload(payload):
             
             else:
                 # Normal line
-                response['content'] += '{}\n'.format(line.strip())
+                response['content'] += '{}\n'.format(line.rstrip())
 
         else:
             # Blank line

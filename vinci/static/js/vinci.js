@@ -975,34 +975,31 @@ $(document).ready(function() {
     // Custom CSS/dotfile (CodeMirror)
     // ----------------------------------------------------------
 	
-	$("textarea#custom-css").each(function() {
-		var myCodeMirror = CodeMirror.fromTextArea($(this)[0], {
-			mode: 'css',
-			indentUnit: 4,
-			lineNumbers: true,
+	var myCodeMirror = CodeMirror.fromTextArea($("textarea#custom-css")[0], {
+		mode: 'css',
+		indentUnit: 4,
+		lineNumbers: true,
+	});
+
+	myCodeMirror.on("change", function(cm, change) {
+		var url = $("#settings").attr("data-uri");
+		var value = cm.getValue();
+		var data = {
+			'custom_css': value,
+		};
+
+		$.ajax({
+			url: url,
+			method: 'PUT',
+			contentType: 'application/json',
+			data: JSON.stringify(data),
+			success: function(data) {
+				return true;
+			},
+			error: function(data) {
+				_showError("Error saving settings", data);
+			},
 		});
-
-		myCodeMirror.on("change", function(cm, change) {
-			var url = $("#settings").attr("data-uri");
-			var value = cm.getValue();
-			var data = {
-				'custom_css': value,
-			};
-
-			$.ajax({
-				url: url,
-				method: 'PUT',
-				contentType: 'application/json',
-				data: JSON.stringify(data),
-				success: function(data) {
-					return true;
-				},
-				error: function(data) {
-					_showError("Error saving settings", data);
-				},
-			});
-		});
-
 	});
 });
 

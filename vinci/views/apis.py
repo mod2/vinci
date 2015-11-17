@@ -185,14 +185,14 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
 
         notebook = get_object_or_404(models.Notebook, slug=notebook_slug)
 
-        name = request.data.get('name')
+        slug = request.data.get('slug')
         status = request.data.get('status')
         group = request.data.get('group')
         default_section = request.data.get('default_section')
         custom_css = request.data.get('custom_css')
 
-        if name is not None:
-            notebook.name = name
+        if slug is not None:
+            notebook.slug = slug
 
         if status is not None and status in models.Notebook.STATUS:
             notebook.status = status

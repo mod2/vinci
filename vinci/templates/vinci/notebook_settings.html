@@ -15,7 +15,7 @@
 	<h2 class="container">Notebook Settings</h2>
 
 	<div class="group container">
-		<input type="text" name="notebook-name" value="{{ notebook.name }}" />
+		<input type="text" name="notebook-slug" value="{{ notebook.slug }}" />
 		<input type="submit" class="rename-notebook button" value="Rename" />
 	</div>
 
@@ -23,7 +23,7 @@
 	<div id="default-section" class="group container">
 		<span class="type{% if not notebook.default_section %} selected{% endif %}" data-value="home">home</span>
 		{% for section in sections %}
-		<span class="type{% if notebook.default_section.slug == section.slug %} selected{% endif %}" data-value="{{ section.slug }}">{{ section.name }}</span>
+		<span class="type{% if notebook.default_section.slug == section.slug %} selected{% endif %}" data-value="{{ section.slug }}">/{{ section.slug }}</span>
 		{% endfor %}
 	</div>
 

@@ -749,12 +749,12 @@ $(document).ready(function() {
 	// Rename notebook
 
 	$("#settings input.rename-notebook").on("click", function() {
-		var field = $("#settings input[name=notebook-name]");
+		var field = $("#settings input[name=notebook-slug]");
 		var url = $("#settings").attr("data-uri");
 		var value = field.val().trim();
 
 		var data = {
-			'name': value,
+			'slug': value,
 		};
 
 		$.ajax({
@@ -764,6 +764,9 @@ $(document).ready(function() {
 			data: JSON.stringify(data),
 			success: function(data) {
 				$("#settings input.rename-notebook").blur();
+
+				// Redirect to new notebook page
+				window.location.href = "/" + value + "/settings/";
 			},
 			error: function(data) {
 				_showError("Error renaming notebook", data);

@@ -2138,10 +2138,6 @@ body.note-mode #page #content.list .entry .metadata {
 	}
 
 	#page #content .entry.selected .content.container {
-		margin-left: 235px;
-	}
-
-	body.journal-mode #page #content .entry.selected .content.container {
 		margin-left: 260px;
 	}
 

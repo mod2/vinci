@@ -1071,14 +1071,23 @@ body.wiki-mode #page #content.detail .entry .content.container {
 #page #content .edit-mode textarea {
 	border: none;
 	font-size: 1em;
+	margin-bottom: 15px;
 	padding-top: 10px;
-	padding-bottom: 20px;
+	padding-bottom: 10px;
 	resize: none;
 	width: 100%;
 }
 
 #page #content .edit-mode textarea:focus {
 	outline: none;
+}
+
+#page #content .edit-mode textarea.entry-metadata {
+	background: hsl(206, 30%, 93%);
+	color: hsl(206, 46%, 53%);
+	margin-bottom: 0;
+	padding-top: 15px;
+	padding-bottom: 15px;
 }
 
 #page #content .edit-mode .group {
@@ -1137,6 +1146,11 @@ body.wiki-mode #page #content.detail .entry .content.container {
 
 #page #content .edit-mode .group.more a:hover {
 	color: hsl(0, 0%, 30%);	
+}
+
+#page #content .edit-mode .group.more a.save {
+	color: hsl(206, 46%, 53%);
+	font-size: 1.2em;
 }
 
 #page #content .edit-mode .group span.type {
@@ -1908,6 +1922,11 @@ body.note-mode #page #content.list .entry .metadata {
 		padding-left: 65px;
 		padding-right: 65px;
 		padding-top: 30px;
+	}
+
+	#page #content .entry .edit-mode textarea.entry-metadata {
+		padding-bottom: 20px;
+		padding-top: 20px;
 	}
 
 	#page #content .entry .edit-mode .group {

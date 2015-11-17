@@ -1,9 +1,11 @@
 <form class="edit-mode">
-	<textarea name="content" class="container">{% if revision %}{{ revision.get_payload }}{% else %}{{ entry.current_revision.get_payload }}{% endif %}</textarea>
+	<textarea name="content" class="entry-content container">{% if revision %}{{ revision.content }}{% else %}{{ entry.current_revision.content }}{% endif %}</textarea>
+
+	<textarea name="metadata" class="entry-metadata container">{% if revision %}{{ revision.get_metadata }}{% else %}{{ entry.current_revision.get_metadata }}{% endif %}</textarea>
 
 	<div class="edit-panel">
 		<div class="group more container">
-			<a class="save" href="">Save</a> &mdash; <a class="delete" href="">Delete</span> &mdash; <a href="{{ entry.get_absolute_url }}">Go to entry</a>
+			<a class="save" href="">Save</a> &nbsp;&mdash;&nbsp; <a class="delete" href="">Delete</a> &nbsp;&mdash;&nbsp; <a href="{{ entry.get_absolute_url }}">Go to entry</a>
 		</div>
 	</div>
 </form>

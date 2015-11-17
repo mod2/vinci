@@ -230,6 +230,12 @@ class Entry(models.Model):
 
         return ''
 
+    def get_metadata(self):
+        if self.current_revision:
+            return self.current_revision.get_metadata()
+        else:
+            return ''
+
     def get_payload(self):
         if self.current_revision:
             return self.current_revision.get_payload()
@@ -306,13 +312,9 @@ class Revision(models.Model):
     def content_excerpt(self):
         return self.content[:60]
 
-    def get_payload(self):
-        content = self.content
-
-        content += '\n\n'
-
+    def get_metadata(self):
         # ::notebook/section
-        content += '::{}'.format(self.entry.notebook.slug)
+        content = '::{}'.format(self.entry.notebook.slug)
         if self.entry.section:
             content += '/{}'.format(self.entry.section.slug)
         content += '\n'
@@ -331,6 +333,15 @@ class Revision(models.Model):
 
         # :id 2930
         content += ':id {}'.format(self.entry.id)
+
+        return content.strip()
+
+    def get_payload(self):
+        content = self.content
+
+        content += '\n\n'
+
+        content += self.get_metadata()
 
         return content.strip()
 

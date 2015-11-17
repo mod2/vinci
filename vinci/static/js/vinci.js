@@ -219,7 +219,9 @@ $(document).ready(function() {
 		entry.find(".content, .metadata").fadeOut(100, function() {
 			entry.find(".edit-mode").fadeIn(150, function() {
 				autosize.update(entry.find(".edit-mode textarea"));
-				entry.find(".edit-mode textarea").focus();
+
+				var contentTextarea = entry.find(".edit-mode textarea.entry-content");
+				contentTextarea.focus();
 			});
 		});
 
@@ -569,10 +571,14 @@ $(document).ready(function() {
 	// --------------------------------------------------
 
 	function save(callback) {
-		var currentBox = $("textarea[name=content]:visible");
+		var currentBox = $("textarea.entry-content:visible");
 
 		if (currentBox && currentBox.val()) {
 			var currentText = currentBox.val().trim();
+			var currentMetadata = $("textarea.entry-metadata:visible").val().trim();
+
+			var payload = currentText + "\n\n" + currentMetadata;
+
 			var entry = currentBox.parents(".entry");
 			var entryId = entry.attr("data-id");
 			var url = $(".entries").attr("data-uri");
@@ -580,7 +586,7 @@ $(document).ready(function() {
 
 			var submit = false;
 			var data = {
-				'content': currentText,
+				'content': payload,
 			};
 
 			$.ajax({

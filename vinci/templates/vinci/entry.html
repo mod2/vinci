@@ -30,7 +30,7 @@
 			<h2>Revision</h2>
 			<ul class="revisions">
 				<li>{{ revision.last_modified }}</li>
-				<li><a href="{% url 'entry' entry.notebook.slug entry.id %}">Back to entry</a></li>
+				<li><a href="{% if entry.section %}{% url 'entry' entry.notebook.slug entry.section.slug entry.id %}{% else %}{% url 'entry' entry.notebook.slug '--' entry.id %}{% endif %}">Back to entry</a></li>
 			</ul>
 			{% else %}
 			<h2>Revisions</h2>

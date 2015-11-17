@@ -311,11 +311,20 @@ nav[role=menu] a:hover {
 	color: #fff;
 }
 
+nav[role=menu] a span.selector {
+	color: #666;
+	margin-right: 1px;
+}
+
 nav[role=menu] a.mode {
 	color: hsl(56, 50%, 82%);
 }
 
-nav[role=menu] span {
+nav[role=menu] a.settings {
+	color: hsl(40, 24%, 66%);
+}
+
+nav[role=menu] > span {
 	color: #fff;
 	cursor: pointer;
 	display: block;
@@ -324,7 +333,7 @@ nav[role=menu] span {
 	text-decoration: none;
 }
 
-nav[role=menu] span:hover {
+nav[role=menu] > span:hover {
 	background: hsl(0, 0%, 21%);
 	color: #fff;
 }

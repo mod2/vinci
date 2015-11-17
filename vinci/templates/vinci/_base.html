@@ -49,11 +49,12 @@
 		<nav role="menu">
 			{% if notebook %}
 				<div class="group">
-					<h2>Sections</h2>
-					<a href="{% url 'notebook' notebook.slug %}">Home</a>
+					<h2>Notebook</h2>
+					<a href="{% url 'notebook' notebook.slug %}">home</a>
 					{% for s in sections %}
-					<a href="{% url 'notebook_section' notebook.slug s.slug %}">{{ s.name }}</a>
+					<a href="{% url 'notebook_section' notebook.slug s.slug %}"><span class="selector">/</span>{{ s.slug }}</a>
 					{% endfor %}
+					<a class="settings" href="{% url 'notebook_settings' notebook.slug %}">settings</a>
 				</div>
 
 				{% if modes|length %}
@@ -61,23 +62,19 @@
 					<h2>Modes</h2>
 					{% for m in modes %}
 						{% if section %}
-							<a class="mode" href="{% url 'notebook_section' notebook.slug section.slug %}?mode={{ m }}">{{ m|title }}</a>
+							<a class="mode" href="{% url 'notebook_section' notebook.slug section.slug %}?mode={{ m }}">{{ m }}</a>
 						{% else %}
-							<a class="mode" href="{% url 'notebook' notebook.slug %}?mode={{ m }}">{{ m|title }}</a>
+							<a class="mode" href="{% url 'notebook' notebook.slug %}?mode={{ m }}">{{ m }}</a>
 						{% endif %}
 					{% endfor %}
 				</div>
 				{% endif %}
-
-				<div class="group">
-					<a href="{% url 'notebook_settings' notebook.slug %}">Notebook Settings</a>
-				</div>
 			{% endif %}
 
 			<div class="group system">
-				<a href="{% url 'notebooks_list' %}">Home</a></li>
-				<a href="{% url 'preferences' %}">Preferences</a>
-				<a href="{% url 'logout' %}">Logout</a>
+				<a href="{% url 'notebooks_list' %}">all notebooks</a></li>
+				<a href="{% url 'preferences' %}">preferences</a>
+				<a href="{% url 'logout' %}">logout</a>
 			</div>
 		</nav>
 		{% endif %}

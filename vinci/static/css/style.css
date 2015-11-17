@@ -536,14 +536,12 @@ body.active-nav #page .mask {
 /* -------------------------------------------------- */
 
 #all-notebooks > h2 {
-	background: hsl(44, 28%, 90%);
-	color: hsl(32, 25%, 65%);
-	font-size: 1em;
+	background: hsl(0, 0%, 95%);
+	color: hsl(339, 77%, 48%);
+	font-size: 1.4em;
 	font-weight: 400;
-	letter-spacing: 0.05em;
 	padding-bottom: .5em;
-	padding-top: 1em;
-	text-transform: uppercase;
+	padding-top: 2.5em;
 }
 
 #all-notebooks .notebook {
@@ -556,8 +554,8 @@ body.active-nav #page .mask {
 }
 
 #all-notebooks .notebook .content.container {
-	padding-bottom: 10px;
-	padding-top: 6px;
+	padding-bottom: 11px;
+	padding-top: 8px;
 }
 
 #all-notebooks .notebook a {

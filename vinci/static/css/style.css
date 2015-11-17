@@ -179,8 +179,6 @@ header[role=banner] h1 a {
 	font-size: 1.1em;
 	height: 100%;
 	line-height: 100%;
-	padding-left: 0;
-	padding-right: .2em;
 	padding: .3em 0 .7em;
 	text-decoration: none;
 	z-index: 100000;
@@ -202,6 +200,17 @@ header[role=banner] h1 a.section span.selector {
 
 header[role=banner] h1 a:hover {
 	color: hsl(48, 81%, 74%) !important;
+}
+
+header[role=banner] h1 > span {
+	color: #fff;
+	display: inline-block;
+	font-size: 1.1em;
+	height: 100%;
+	line-height: 100%;
+	padding: .3em 0 .7em;
+	text-decoration: none;
+	z-index: 100000;
 }
 
 header[role=banner] .system {
@@ -1915,10 +1924,6 @@ body.note-mode #page #content.list .entry .metadata {
 }
 
 @media screen and (min-width: 700px) {
-	header[role=banner] h1 span {
-		padding-left: 0;
-	}
-
 	form.login {
 		padding-left: 0;
 	}
@@ -1951,7 +1956,7 @@ body.note-mode #page #content.list .entry .metadata {
 		position: initial;
 	}
 
-	body header[role=banner] h1 a {
+	body header[role=banner] h1 a, body header[role=banner] h1 span {
 		display: inline-block;
 		font-size: 1.6em;
 		letter-spacing: -0.02em;

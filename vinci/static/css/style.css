@@ -1981,7 +1981,7 @@ body.note-mode #page #content.list .entry .metadata {
 		position: initial;
 	}
 
-	body header[role=banner] h1 a, body header[role=banner] h1 span {
+	body header[role=banner] h1 a, body header[role=banner] h1 > span {
 		display: inline-block;
 		font-size: 1.6em;
 		letter-spacing: -0.02em;

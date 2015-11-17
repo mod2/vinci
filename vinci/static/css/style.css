@@ -473,7 +473,11 @@ body.active-nav #page .mask {
 }
 
 #search .results a:hover {
-	color: hsl(0, 0%, 30%);
+	color: #fff;
+}
+
+#search .results a:hover span.selector {
+	color: #666;
 }
 
 

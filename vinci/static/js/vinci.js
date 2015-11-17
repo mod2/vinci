@@ -970,6 +970,18 @@ $(document).ready(function() {
 
 	Mousetrap.bind('g s', _goToNotebookSettings);
 
+	function _goToNotebook() {
+		var url = $("main#content").attr("data-notebook-url");
+
+		if (url) {
+			window.location.href = url;
+		}
+
+		return false;
+	}
+
+	Mousetrap.bind('g n', _goToNotebook);
+
 
 	// Revision display toggle
     // ----------------------------------------------------------

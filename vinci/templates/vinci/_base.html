@@ -153,7 +153,7 @@
 				<div class="container"></div>
 			</section>
 
-			<main id="content" class="{{ page_type }}{% if section %} {{ section }}{% endif %}"{% if notebook %} data-notebook-settings-url="{% url 'notebook_settings' notebook.slug %}"{% endif %}>
+			<main id="content" class="{{ page_type }}{% if section %} {{ section }}{% endif %}"{% if notebook %} data-notebook-settings-url="{% url 'notebook_settings' notebook.slug %}" data-notebook-url="{% if section %}{% url 'notebook_section' notebook.slug section.slug %}{% else %}{{ notebook.get_absolute_url }}{% endif %}" {% endif %}>
 				{% block content %}{% endblock content %}
 				{% block nav %}{% endblock nav %}
 
@@ -210,6 +210,16 @@
 					<div class="group">
 						<label>g h</label>
 						<span>Home (All Notebooks)</span>
+					</div>
+
+					<div class="group">
+						<label>g s</label>
+						<span>Notebook settings</span>
+					</div>
+
+					<div class="group">
+						<label>g n</label>
+						<span>Go to parent notebook/section</span>
 					</div>
 				</div>
 			</div>

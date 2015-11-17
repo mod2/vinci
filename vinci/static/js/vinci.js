@@ -360,7 +360,7 @@ $(document).ready(function() {
 
 	// Delete entry
 
-	$(".entries").on("click touchstart", ".entry .buttons .button.delete", function() {
+	$(".entries").on("click touchstart", ".entry .edit-panel .delete", function() {
 		if (confirm("Are you sure you want to delete this entry?")) {
 			var entry = $(this).parents(".entry");
 			var url = entry.attr("data-api-uri");
@@ -371,7 +371,9 @@ $(document).ready(function() {
 				contentType: 'application/json',
 				success: function(data) {
 					hideEditPanel(entry);
-					entry.slideUp(75).remove();
+					entry.slideUp(75, function() {
+						$(this).remove();
+					});
 				},
 				error: function(data) {
 					_showError("Error deleting entry", data);

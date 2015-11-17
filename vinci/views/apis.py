@@ -865,6 +865,11 @@ def add_payload(request):
         else:
             entry.title = ''
 
+        # Notebook and section
+        entry.notebook = payload['notebook']
+        if 'section' in payload and payload['section'] is not None:
+            entry.section = payload['section']
+
         # Tags
         entry.tags.clear()
         if 'tags' in payload or 'tag' in payload:

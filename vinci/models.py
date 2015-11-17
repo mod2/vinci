@@ -259,11 +259,12 @@ class Entry(models.Model):
     def get_absolute_url(self):
         slug = self.id
 
-        if self.slug:
-            slug = self.slug
-
         if self.section:
             section_slug = self.section.slug
+
+            # For wiki pages, use the slug, otherwise
+            if self.slug and self.section.default_mode == 'wiki':
+                slug = self.slug
         else:
             section_slug = '--'
 

@@ -97,30 +97,33 @@ def load_modes(modes, base):
         response[key] = {
             'detail': '',
             'list': '',
+            'search': '',
         }
 
         # Load detail first
         detail_filename = '{}_detail.html'.format(key)
-        if detail_filename != '':
-            filename = '{}/{}'.format(base, detail_filename)
-            if os.path.isfile(filename):
-                with open(filename, 'r') as f:
-                    data = f.read()
-                response[key]['detail'] = data
+        filename = '{}/{}'.format(base, detail_filename)
+        if os.path.isfile(filename):
+            with open(filename, 'r') as f:
+                data = f.read()
+            response[key]['detail'] = data
 
         # Load list
         list_filename = '{}_list.html'.format(key)
-        if list_filename == '':
-            # Use detail
-            response[key]['list'] = response[key]['detail']
-        else:
-            # Load list
-            filename = '{}/{}'.format(base, list_filename)
-            if os.path.isfile(filename):
-                with open(filename, 'r') as f:
-                    data = f.read()
-                response[key]['list'] = data
+        filename = '{}/{}'.format(base, list_filename)
+        if os.path.isfile(filename):
+            with open(filename, 'r') as f:
+                data = f.read()
+            response[key]['list'] = data
 
+        # Load search
+        search_filename = '{}_search.html'.format(key)
+        filename = '{}/{}'.format(base, search_filename)
+        if os.path.isfile(filename):
+            with open(filename, 'r') as f:
+                data = f.read()
+            response[key]['search'] = data
+    
     return response
 
 def load_template_for_mode(template, mode):
@@ -129,7 +132,7 @@ def load_template_for_mode(template, mode):
     try:
         mode_html = ''
 
-        if template == 'list':
+        if template in ['list', 'search']:
             slug = 'entries'
         elif template == 'detail':
             slug = 'entry'
@@ -153,6 +156,9 @@ def load_template_for_mode(template, mode):
             if template == 'list':
                 # Use detail instead
                 mode_html = settings.VINCI_MODES[mode]['detail']
+            elif template == 'search':
+                # Use log search instead
+                mode_html = settings.VINCI_MODES['log']['search']
             else:
                 # Use log detail instead
                 mode_html = settings.VINCI_MODES['log']['detail']

@@ -371,12 +371,18 @@ def _search(request, query, notebook=None, section=None):
         # Convert tags in queries back to hashtag syntax
         query = query.replace('tag:', '#')
 
+    if section:
+        mode = section.default_mode
+    else:
+        mode = 'log'
+
     context = {
         'title': 'Search',
         'query': query,
         'entries': entries,
         'total': total,
         'section': section,
+        'mode': mode,
         'modes': settings.VINCI_MODE_LIST,
         'page_type': 'list',
         'search': True,
@@ -390,10 +396,11 @@ def _search(request, query, notebook=None, section=None):
         # Get sections (for sidebar list)
         context['sections'] = get_sections_for_notebook(notebook)
 
-    return render_to_response('vinci/entries.html',
-                              context,
-                              RequestContext(request),
-                              )
+    # Get the template
+    template = settings.VINCI_TEMPLATES[mode]['search']
+
+    return HttpResponse(template.render(RequestContext(request, context)),
+                        content_type="text/html")
 
 
 @login_required

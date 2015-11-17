@@ -102,11 +102,6 @@ $(document).ready(function() {
 		return false;
 	}
 
-	$("#search .scope span").on("click", function() {
-		$(this).siblings("span").removeClass("selected");
-		$(this).addClass("selected");
-	});
-
 
 	// Keyboard shortcuts
 	// --------------------------------------------------
@@ -160,13 +155,13 @@ $(document).ready(function() {
 					for (var i in data.results.notebooks) {
 						var nb = data.results.notebooks[i];
 
-						html += '<a class="notebook" href="' + nb.url + '" data-slug="' + nb.slug + '">' + nb.name + '</a>';
+						html += '<a class="notebook" href="' + nb.url + '" data-slug="' + nb.slug + '">::' + nb.slug + '</a>';
 					}
 
 					for (var i in data.results.sections) {
 						var s = data.results.sections[i];
 
-						html += '<a class="section" href="' + s.url + '" data-slug="' + s.slug + '">' + s.name + '</a>';
+						html += '<a class="section" href="' + s.url + '" data-slug="' + s.slug + '">::' + s.name + '</a>';
 					}
 
 					for (var i in data.results.pages) {
@@ -718,19 +713,21 @@ $(document).ready(function() {
 	Mousetrap(field).bind(['mod+enter', 'shift+enter'], _addEntry);
 	$("#add-entry .add").on("click", _addEntry);
 
-	$("span.add-entry").on("click", function() {
+	$("a.add-entry").on("click", function() {
 		if ($("#add-entry:visible").length > 0) {
 			_unfocusAddEntry();
 		} else {
 			_focusAddEntry();
 		}
+
+		return false;
 	});
 
 
 	// Menu items
 	// --------------------------------------------------
 
-	$("span.show-search, span.show-search object").on("click", function() {
+	$("a.show-search, a.show-search object").on("click", function() {
 		if ($("#search:visible").length > 0) {
 			_unfocusSearch();
 		} else {

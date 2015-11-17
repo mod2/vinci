@@ -1,0 +1,23 @@
+%%%ENTRYSTART%%%
+
+	<div class="metadata container">
+		<a class="date" href="{{ entry.get_absolute_url }}">
+			<date>{{ entry.date|date:'j M Y' }}</date>
+			<time>{{ entry.date|date:'g:i A'|lower }}, {{ entry.date|date:'D' }}</time>
+			{% if page_type == 'diary' %}<span class="notebook">{{ entry.notebook.name }}</span>{% endif %}
+		</a>
+
+		{% if entry.tags.all|length > 0 %}
+		<ul class="tags">{% for tag in entry.tags.all %}<li><a href="{% url 'search_notebook_tags' entry.notebook.slug tag %}">#{{ tag }}</a></li>{% endfor %}</ul>
+		{% endif %}
+	</div>
+
+	<div class="content container {% if entry.highlight %}excerpt{% endif %}">
+		{% if entry.highlight %}
+			&hellip; {{ entry.highlight|safe }} &hellip;
+		{% else %}
+			{{ entry.html|safe }}
+		{% endif %}
+	</div>
+
+%%%ENTRYEND%%%

@@ -104,106 +104,108 @@ p {
 /* -------------------------------------------------- */
 
 header[role=banner] {
-	background: hsl(212, 7%, 14%);
+	background: hsl(212, 12%, 10%);
 	overflow: hidden;
 }
 
 header[role=banner] .container {
-	background: hsl(212, 7%, 24%);
+	background: hsl(212, 12%, 20%);
 	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
-	display: flex;
 	overflow: hidden;
 	padding-bottom: 0;
 	padding-top: 0;
 }
 
-header[role=banner] h1 {
-	color: #fff;
-	flex: 1;
-	font-size: 1em;
-	font-weight: 400;
-	left: 60px;
-	margin: 0;
-	overflow: hidden;
-	padding-top: .4em;
-	padding-bottom: 0;
-	right: 60px;
-	text-align: left;
-	z-index: 50000;
+header[role=banner] .controls {
+	display: flex;
+	font-size: 1.5em;
 }
 
-header[role=banner] h1 a.home {
-	color: #fff;
-	font-size: 1.1em;
-	line-height: 1.1em;
+header[role=banner] .controls a {
+	color: hsl(212, 22%, 69%);
+	cursor: pointer;
+	display: inline-block;
+	padding: 9px .5em .3em;
 	text-decoration: none;
 }
 
-header[role=banner] h1 span {
-	color: #fff;
-	display: block;
-	font-size: 1.1em;
-	padding: 1em .5em .7em;
-	text-decoration: none;
-}
-
-header[role=banner] h1 a {
-	padding-left: 0;
-	padding-right: .2em;
-}
-
-header[role=banner] a:hover {
+header[role=banner] .controls a:hover {
 	color: hsl(48, 81%, 74%) !important;
 }
 
-header[role=banner] a {
+header[role=banner] .controls a.menu {
+	padding-left: 0;
+	padding-top: 3px;
+}
+
+header[role=banner] .controls .group {
+	-webkit-user-select: none;
+	flex: 1;
+	text-align: right;
+	user-select: none;
+}
+
+header[role=banner] .controls .group svg {
+	cursor: pointer;
+	height: 0.7em;
+	width: 0.7em;
+}
+
+header[role=banner] .controls .group svg path {
+	fill: hsl(212, 22%, 69%);
+}
+
+header[role=banner] .controls .group svg:hover path {
+	fill: hsl(48, 81%, 74%);
+}
+
+header[role=banner] .controls .group .show-search {
+	padding-right: 0;
+}
+
+header[role=banner] h1 {
+	color: #fff;
+	font-size: 1em;
+	font-weight: 400;
+	margin: 0;
+	overflow: hidden;
+	z-index: 50000;
+}
+
+header[role=banner] h1 a {
 	color: #fff;
 	cursor: pointer;
 	display: inline-block;
-	font-size: 1.3em;
+	font-size: 1.1em;
 	height: 100%;
 	line-height: 100%;
-	padding: 1em .5em .7em;
+	padding-left: 0;
+	padding-right: .2em;
+	padding: .3em 0 .7em;
+	text-decoration: none;
 	z-index: 100000;
 }
 
-header[role=banner] a.menu {
-	float: left;
-	font-size: 1.4em;
-	padding-left: 0px;
-	padding-top: 0.7em;
+header[role=banner] h1 a.notebook {
+	margin-right: 3px;
 }
 
-header[role=banner] a.add {
-	float: right;
-	padding-right: 0px;
+header[role=banner] h1 a.notebook span.selector {
+	color: hsl(51, 25%, 64%);
+	margin-right: 2px;
+}
+
+header[role=banner] h1 a.section span.selector {
+	color: hsl(10, 25%, 64%);
+	margin-right: 2px;
+}
+
+header[role=banner] h1 a:hover {
+	color: hsl(48, 81%, 74%) !important;
 }
 
 header[role=banner] .system {
 	display: none;
-}
-
-header[role=banner] .group {
-	-webkit-user-select: none;
-	user-select: none;
-}
-
-header[role=banner] .group span {
-	color: #fff;
-	cursor: pointer;
-	display: inline-block;
-	padding-top: 1.3em;
-	padding-left: 10px;
-}
-
-header[role=banner] .group span:hover {
-	color: hsl(48, 81%, 74%) !important;
-}
-
-header[role=banner] .group span svg {
-	cursor: pointer;
-	height: 0.7em;
-	width: 0.7em;
 }
 
 
@@ -414,9 +416,9 @@ body.active-nav #page .mask {
 }
 
 #search .results a {
-	background: hsl(0, 0%, 44%);
+	background: hsl(0, 0%, 20%);
 	border-radius: 3px;
-	color: #fff;
+	color: hsl(0, 0%, 44%);
 	display: inline-block;
 	margin-bottom: 5px;
 	margin-right: 5px;
@@ -425,28 +427,28 @@ body.active-nav #page .mask {
 }
 
 #search .results a.notebook {
-	background: hsl(21, 27%, 44%);
+	color: hsl(51, 62%, 81%);
 }
 
 #search .results a.section {
-	background: hsl(270, 14%, 46%);
+	color: hsl(10, 62%, 81%);
 }
 
 #search .results a.page {
-	background: hsl(75, 29%, 39%);
+	color: hsl(294, 62%, 81%);
 }
 
 #search .results a.tag {
-	background: hsl(180, 23%, 45%);
+	color: hsl(180, 42%, 61%);
 }
 
 #search .results a span {
-	color: rgba(255, 255, 255, 0.5);
+	color: #666;
 	font-size: .8em;
 }
 
 #search .results a:hover {
-	background: hsl(0, 0%, 30%);
+	color: hsl(0, 0%, 30%);
 }
 
 
@@ -1927,38 +1929,36 @@ body.note-mode #page #content.list .entry .metadata {
 	}
 
 	body header[role=banner] .container {
+		display: flex;
 		position: relative;
 	}
 
-	header[role=banner] a.menu {
-		display: none;
+	body header[role=banner] .controls {
+		order: 1;
 	}
 
-	header[role=banner] a.add {
+	body header[role=banner] .controls a {
+		padding-bottom: 17px;
+		padding-top: 40px;
+	}
+
+	body header[role=banner] .controls a.menu {
 		display: none;
 	}
 
 	body header[role=banner] h1 {
+		flex: 1;
 		position: initial;
 	}
 
-	body header[role=banner] h1 a.home {
+	body header[role=banner] h1 a {
 		display: inline-block;
 		font-size: 1.6em;
 		letter-spacing: -0.02em;
-		padding-bottom: 0.5em;
-		padding-top: 0.6em;
-		text-transform: none;
-	}
-
-	body header[role=banner] h1 a.home {
+		padding-bottom: 17px;
 		padding-left: 0;
-	}
-
-	body header[role=banner] .group span {
-		font-size: 1.6em;
-		padding-left: 1em;
-		padding-top: 1em;
+		padding-top: 40px;
+		text-transform: none;
 	}
 
 	header[role=banner] .system {

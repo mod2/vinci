@@ -37,10 +37,12 @@ class VinciConfig(AppConfig):
             # Load templates
             list_template = load_template_for_mode('list', key)
             detail_template = load_template_for_mode('detail', key)
+            search_template = load_template_for_mode('search', key)
 
             settings.VINCI_TEMPLATES[key] = {
                 'list': Template(list_template),
                 'detail': Template(detail_template),
+                'search': Template(search_template),
             }
 
         pass # startup code here

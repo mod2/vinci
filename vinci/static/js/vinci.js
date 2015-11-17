@@ -155,13 +155,13 @@ $(document).ready(function() {
 					for (var i in data.results.notebooks) {
 						var nb = data.results.notebooks[i];
 
-						html += '<a class="notebook" href="' + nb.url + '" data-slug="' + nb.slug + '">::' + nb.slug + '</a>';
+						html += '<a class="notebook" href="' + nb.url + '" data-slug="' + nb.slug + '"><span class="selector">::</span>' + nb.slug + '</a>';
 					}
 
 					for (var i in data.results.sections) {
 						var s = data.results.sections[i];
 
-						html += '<a class="section" href="' + s.url + '" data-slug="' + s.slug + '">::' + s.name + '</a>';
+						html += '<a class="section" href="' + s.url + '" data-slug="' + s.slug + '"><span class="selector">::</span>' + s.name.replace("/", "<span class='selector'>/</span>") + '</a>';
 					}
 
 					for (var i in data.results.pages) {
@@ -173,7 +173,7 @@ $(document).ready(function() {
 					for (var i in data.results.tags) {
 						var t = data.results.tags[i];
 
-						html += '<a class="tag" href="' + t.url + '" data-slug="' + t.slug + '">#' + t.name + '</a>';
+						html += '<a class="tag" href="' + t.url + '" data-slug="' + t.slug + '"><span class="selector">#</span>' + t.name + '</a>';
 					}
 
 					if (html) {

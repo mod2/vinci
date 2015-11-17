@@ -439,8 +439,19 @@ body.active-nav #page .mask {
 	color: hsl(51, 62%, 81%);
 }
 
+#search .results a.notebook span.selector {
+	color: hsl(51, 29%, 55%);
+	margin-right: 1px;
+}
+
 #search .results a.section {
 	color: hsl(10, 62%, 81%);
+}
+
+#search .results a.section span.selector {
+	color: hsl(10, 29%, 55%);
+	margin-left: 3px;
+	margin-right: 1px;
 }
 
 #search .results a.page {
@@ -451,7 +462,12 @@ body.active-nav #page .mask {
 	color: hsl(180, 42%, 61%);
 }
 
-#search .results a span {
+#search .results a.tag span.selector {
+	color: hsl(180, 21%, 44%);
+	margin-right: 1px;
+}
+
+#search .results a span:not(.selector) {
 	color: #666;
 	font-size: .8em;
 }
@@ -527,24 +543,33 @@ body.active-nav #page .mask {
 }
 
 #all-notebooks .notebook .content.container {
-	padding-bottom: 8px;
-	padding-top: 8px;
+	padding-bottom: 10px;
+	padding-top: 6px;
 }
 
 #all-notebooks .notebook a {
 	text-decoration: none;
 }
 
-#all-notebooks .notebook a h2.notebook-name {
+#all-notebooks .notebook h2.notebook-name {
 	display: inline-block;
-	font-size: 1.2em;
+	font-size: 1.3em;
+	line-height: 1.1em;
 	margin: 0;
 }
 
-#all-notebooks .notebook a div {
+#all-notebooks .notebook h2.notebook-name span.selector {
+	color: #bbb;
+	font-weight: normal;
+	margin-right: 2px;
+}
+
+#all-notebooks .notebook div {
 	color: hsl(0, 0%, 75%);
 	display: block;
 	font-size: .9em;
+	line-height: 1.2em;
+	margin-top: 2px;
 }
 
 #all-notebooks .notebook .edit-mode {
@@ -1889,7 +1914,7 @@ body.note-mode #page #content.list .entry .metadata {
 		padding-left: 55px;
 	}
 
-	#all-notebooks .notebook a div {
+	#all-notebooks .notebook .content div {
 		display: inline-block;
 		margin-left: 20px;
 	}

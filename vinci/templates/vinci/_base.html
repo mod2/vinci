@@ -14,7 +14,7 @@
 	{% block pagecss %}{% endblock pagecss %}
 
 	{% if notebook.custom_css %}
-	<style type="text/css">{{ notebook.custom_css }}</style>
+	<style type="text/css">{{ notebook.custom_css|safe }}</style>
 	{% endif %}
 
 	<script src="{% static 'js/lib/jquery-2.1.4.min.js' %}" type="text/javascript" charset="utf-8"></script>

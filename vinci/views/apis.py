@@ -562,10 +562,9 @@ def append_today(request, notebook_slug):
 
         # Section
         if section != '':
-            section = models.Section.objects.get(slug=section)
+            section = models.Section.objects.get(slug=section, notebook=notebook)
         else:
             section = notebook.default_section
-
 
         # Get first entry for today
         results = (models.Entry.objects

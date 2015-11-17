@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.http.response import HttpResponse, HttpResponseNotFound
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
@@ -97,7 +97,11 @@ def notebook_section(request, notebook_slug, section_slug):
         entries = entries.filter(section__isnull=True)
 
     entries = entries.order_by(sortby)
-    entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE).page(page)
+
+    try:
+        entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE).page(page)
+    except EmptyPage:
+        entries = []
 
     # Get sections (for sidebar list)
     sections = get_sections_for_notebook(notebook)

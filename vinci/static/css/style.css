@@ -118,14 +118,14 @@ header[role=banner] .container {
 
 header[role=banner] .controls {
 	display: flex;
-	font-size: 1.6em;
+	font-size: 1.8em;
 }
 
 header[role=banner] .controls a {
 	color: hsl(212, 22%, 69%);
 	cursor: pointer;
 	display: inline-block;
-	padding: 11px .5em .3em;
+	padding: 14px .5em .3em;
 	text-decoration: none;
 }
 
@@ -135,7 +135,7 @@ header[role=banner] .controls a:hover {
 
 header[role=banner] .controls a.menu {
 	padding-left: 0;
-	padding-top: 5px;
+	padding-top: 8px;
 }
 
 header[role=banner] .controls .group {
@@ -176,8 +176,9 @@ header[role=banner] h1 a {
 	color: #fff;
 	cursor: pointer;
 	display: inline-block;
-	font-size: 1.1em;
+	font-size: 1.3em;
 	height: 100%;
+	letter-spacing: -0.02em;
 	line-height: 100%;
 	padding: .4em 0 .9em;
 	text-decoration: none;
@@ -982,9 +983,9 @@ body.journal-mode #mode-bar .container {
 	display: inline-block;
 	float: right;
 	font-size: 1em;
-	height: .75em;
+	height: 1.15em;
 	text-decoration: none;
-	width: 2em;
+	width: 3em;
 }
 
 #page #content .controls-toggle.active {

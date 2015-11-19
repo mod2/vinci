@@ -8,7 +8,7 @@ from django.db.models import Q
 
 from django.utils import timezone
 from django.utils.timezone import utc, make_aware
-from datetime import datetime
+import datetime
 
 from vinci.models import Notebook, Section, Entry, Revision, Group
 import vinci.search_indexer as si
@@ -319,8 +319,11 @@ def notebooks_list(request):
 def diary_home(request):
     """ Shows calendar for diary mode. """
 
+    date = request.GET.get('date', None)
+
     context = {
         'title': '/diary',
+        'today': date,
         'page_type': 'diary',
         'API_KEY': settings.VINCI_API_KEY,
     }
@@ -339,7 +342,7 @@ def diary_detail(request, day):
 
     # Convert date to a datetime object
     current_tz = timezone.get_current_timezone()
-    the_date = datetime.strptime(day, "%Y-%m-%d")
+    the_date = datetime.datetime.strptime(day, "%Y-%m-%d")
     beginning = the_date.replace(hour=0, minute=0, second=0, tzinfo=current_tz)
     end = the_date.replace(hour=23, minute=59, second=59, tzinfo=current_tz)
 
@@ -355,10 +358,25 @@ def diary_detail(request, day):
     # Sort by date, notebook, and section
     entries = entries.order_by('date', 'notebook__name', 'section__name')
 
+    # Get yesterday/tomorrow dates
+    tomorrow = the_date + datetime.timedelta(days=1)
+    tomorrow_slug = tomorrow.isoformat()[:10]
+    yesterday = the_date - datetime.timedelta(days=1)
+    yesterday_slug = yesterday.isoformat()[:10]
+
     context = {
         'title': '{} — /diary'.format(day),
         'entries': entries,
-        'page_type': 'diary',
+        'today': the_date,
+        'tomorrow': {
+            'slug': tomorrow_slug,
+            'label': tomorrow,
+        },
+        'yesterday': {
+            'slug': yesterday_slug,
+            'label': yesterday,
+        },
+        'page_type': 'diary_detail',
         'API_KEY': settings.VINCI_API_KEY,
     }
 

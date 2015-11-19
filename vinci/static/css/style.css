@@ -199,6 +199,11 @@ header[role=banner] h1 a.section span.selector {
 	margin-right: 2px;
 }
 
+header[role=banner] h1 a.diary span.selector {
+	color: hsl(314, 25%, 64%);
+	margin-right: 2px;
+}
+
 header[role=banner] h1 a:hover {
 	color: hsl(48, 81%, 74%) !important;
 }
@@ -206,12 +211,17 @@ header[role=banner] h1 a:hover {
 header[role=banner] h1 > span {
 	color: #fff;
 	display: inline-block;
-	font-size: 1.1em;
+	font-size: 1.3em;
 	height: 100%;
+	letter-spacing: -0.02em;
 	line-height: 100%;
-	padding: .3em 0 .7em;
+	padding: .4em 0 .9em;
 	text-decoration: none;
 	z-index: 100000;
+}
+
+header[role=banner] h1 > a + span {
+	margin-left: 10px;
 }
 
 header[role=banner] .system {
@@ -1793,6 +1803,36 @@ body.note-mode #page #content.list .entry .metadata {
 	padding: 3px 6px;
 }
 
+/* Diary nav bar */
+.diary-nav {
+	background: hsl(314, 24%, 20%);
+}
+
+.diary-nav .container {
+	background: hsl(314, 28%, 40%);
+	display: flex;
+	padding-bottom: 0;
+	padding-top: 0;
+}
+
+.diary-nav a {
+	color: #fff;
+	display: inline-block;
+	padding: 8px 0;
+	text-decoration: none;
+}
+
+.diary-nav a:hover {
+	color: hsl(314, 28%, 90%);
+}
+
+.diary-nav a.prev {
+	flex: 1;
+}
+
+.diary-nav a .arrow {
+	color: hsl(314, 28%, 70%);
+}
 
 
 /* Media queries */

@@ -5,7 +5,7 @@
 <section id="diary" class="container">
 	<h2>Choose a date</h2>
 
-	<input id="date-picker" type="date" />
+	<input id="date-picker" type="date" {% if today %}value="{{ today }}"{% endif %} />
 </section>
 
 {% endblock content %}

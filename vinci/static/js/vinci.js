@@ -1024,6 +1024,15 @@ $(document).ready(function() {
 			});
 		});
 	}
+
+
+	// Diary mode
+    // ----------------------------------------------------------
+	
+	// Go to date
+	$("input#date-picker[type=date]").on("change", function(data) {
+		window.location.href = "/diary/" + $(this).val();
+	});
 });
 
 function processEntries(entries) {

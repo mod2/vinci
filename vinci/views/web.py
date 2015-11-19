@@ -37,8 +37,14 @@ def notebook_settings(request, notebook_slug):
     # Get sections (for sidebar list)
     sections = get_sections_for_notebook(notebook)
 
+    # Title tag
+    if section:
+        title_tag = '::{}'.format(str(section))
+    else:
+        title_tag = '::{}'.format(notebook.slug)
+
     context = {
-        'title': notebook.name,
+        'title': title_tag,
         'notebook': notebook,
         'sections': sections,
         'modes': settings.VINCI_MODE_LIST,
@@ -106,10 +112,16 @@ def notebook_section(request, notebook_slug, section_slug):
     # Get sections (for sidebar list)
     sections = get_sections_for_notebook(notebook)
 
+    # Title tag
+    if section:
+        title_tag = '::{}'.format(str(section))
+    else:
+        title_tag = '::{}'.format(notebook.slug)
+
     labels = []
 
     context = {
-        'title': notebook.name,
+        'title': title_tag,
         'mode': mode,
         'modes': settings.VINCI_MODE_LIST,
         'notebook': notebook,
@@ -169,8 +181,19 @@ def entry_detail(request, notebook_slug, section_slug, entry_slug):
     # Get sections (for sidebar list)
     sections = get_sections_for_notebook(entry.notebook)
 
+    # Title tag
+    if entry.slug:
+        slug = entry.slug
+    else:
+        slug = entry.id
+
+    if entry.section:
+        title_tag = '{} — ::{}'.format(slug, str(entry.section))
+    else:
+        title_tag = '{} — ::{}'.format(slug, entry.notebook.slug)
+
     context = {
-        'title': entry.notebook.name,
+        'title': title_tag,
         'mode': mode,
         'modes': settings.VINCI_MODE_LIST,
         'notebook': entry.notebook,
@@ -236,8 +259,19 @@ def revision_detail(request, notebook_slug, section_slug, entry_slug, revision_i
     # Get sections (for sidebar list)
     sections = get_sections_for_notebook(entry.notebook)
 
+    # Title tag
+    if entry.slug:
+        slug = entry.slug
+    else:
+        slug = entry.id
+
+    if entry.section:
+        title_tag = '{}.{} — ::{}'.format(slug, revision.id, str(entry.section))
+    else:
+        title_tag = '{}.{} — ::{}'.format(slug, revision.id, entry.notebook.slug)
+
     context = {
-        'title': entry.notebook.name,
+        'title': title_tag,
         'mode': mode,
         'modes': settings.VINCI_MODE_LIST,
         'notebook': entry.notebook,
@@ -282,7 +316,23 @@ def notebooks_list(request):
 
 
 @login_required
-def diary(request, day):
+def diary_home(request):
+    """ Shows calendar for diary mode. """
+
+    context = {
+        'title': '/diary',
+        'page_type': 'diary',
+        'API_KEY': settings.VINCI_API_KEY,
+    }
+
+    return render_to_response('vinci/diary.html',
+                              context,
+                              RequestContext(request),
+                              )
+
+
+@login_required
+def diary_detail(request, day):
     """ Get every entry (log/journal) from the specified day, ordered by notebook. """
 
     # Note: day needs to be YYYY-MM-DD form
@@ -306,7 +356,7 @@ def diary(request, day):
     entries = entries.order_by('date', 'notebook__name', 'section__name')
 
     context = {
-        'title': 'Diary ({})'.format(day),
+        'title': '{} — /diary'.format(day),
         'entries': entries,
         'page_type': 'diary',
         'API_KEY': settings.VINCI_API_KEY,
@@ -381,7 +431,7 @@ def _search(request, query, notebook=None, section=None):
         mode = 'log'
 
     context = {
-        'title': 'Search',
+        'title': '{} — /search'.format(query),
         'query': query,
         'entries': entries,
         'total': total,

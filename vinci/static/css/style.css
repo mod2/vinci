@@ -1772,6 +1772,29 @@ body.note-mode #page #content.list .entry .metadata {
 }
 
 
+/* Diary */
+/* -------------------------------------------------- */
+
+#diary {
+	padding-bottom: 55px;
+	padding-top: 25px;
+}
+
+#diary h2 {
+	font-size: 1.2em;
+	font-weight: 400;
+	margin: 0 0 10px 0;
+}
+
+#diary input[type=date] {
+	border: solid 1px #bbb;
+	border-radius: 3px;
+	font-size: 1.2em;
+	padding: 3px 6px;
+}
+
+
+
 /* Media queries */
 /* -------------------------------------------------- */
 

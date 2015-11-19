@@ -98,6 +98,10 @@ class EntryQuerySet(StatusQueries, models.QuerySet):
 
         # Update dates
         if 'date' in kwargs:
+            if len(kwargs['date']) == 10:
+                # Add a dummy time of 6 a.m.
+                kwargs['date'] += " 06:00:00"
+
             the_date = datetime.datetime.strptime(kwargs['date'], DATETIME_FORMAT)
             revision.last_modified = the_date
             revision.save()

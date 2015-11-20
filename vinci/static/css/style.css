@@ -956,9 +956,7 @@ body.journal-mode #mode-bar .container {
 
 #page #content .entry .metadata a.date span.notebook {
 	color: hsl(21, 27%, 44%);
-	letter-spacing: 0.03em;
 	margin-left: 10px;
-	text-transform: uppercase;
 }
 
 #page #content .entry .metadata a.date:hover * {

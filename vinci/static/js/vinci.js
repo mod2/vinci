@@ -492,9 +492,9 @@ $(document).ready(function() {
 		}
 	});
 
-	// Go to logs section
-	Mousetrap.bind('g l', function() {
-		var uri = $("#sections").attr("data-log-uri");
+	// Go to diary
+	Mousetrap.bind('g d', function() {
+		var uri = $("#diary-home").attr("href");
 
 		if (uri) {
 			window.location.href = uri;
@@ -503,9 +503,9 @@ $(document).ready(function() {
 		return false;
 	});
 
-	// Go to notes section
-	Mousetrap.bind('g n', function() {
-		var uri = $("#sections").attr("data-note-uri");
+	// Switch to log mode
+	Mousetrap.bind('m l', function() {
+		var uri = $("#mode-log-link").attr("href");
 
 		if (uri) {
 			window.location.href = uri;
@@ -514,9 +514,9 @@ $(document).ready(function() {
 		return false;
 	});
 
-	// Go to pages section
-	Mousetrap.bind('g p', function() {
-		var uri = $("#sections").attr("data-page-uri");
+	// Switch to wiki mode
+	Mousetrap.bind('m w', function() {
+		var uri = $("#mode-wiki-link").attr("href");
 
 		if (uri) {
 			window.location.href = uri;
@@ -525,9 +525,20 @@ $(document).ready(function() {
 		return false;
 	});
 
-	// Go to journals section
-	Mousetrap.bind('g j', function() {
-		var uri = $("#sections").attr("data-journal-uri");
+	// Switch to journal mode
+	Mousetrap.bind('m j', function() {
+		var uri = $("#mode-journal-link").attr("href");
+
+		if (uri) {
+			window.location.href = uri;
+		}
+
+		return false;
+	});
+
+	// Switch to note mode
+	Mousetrap.bind('m n', function() {
+		var uri = $("#mode-note-link").attr("href");
 
 		if (uri) {
 			window.location.href = uri;

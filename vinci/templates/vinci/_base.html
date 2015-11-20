@@ -65,9 +65,9 @@
 					<h2>Modes</h2>
 					{% for m in modes %}
 						{% if section %}
-							<a class="mode" href="{% url 'notebook_section' notebook.slug section.slug %}?mode={{ m }}">{{ m }}</a>
+							<a id="mode-{{ m }}-link" class="mode" href="{% url 'notebook_section' notebook.slug section.slug %}?mode={{ m }}">{{ m }}</a>
 						{% else %}
-							<a class="mode" href="{% url 'notebook' notebook.slug %}?mode={{ m }}">{{ m }}</a>
+							<a id="mode-{{ m }}-link" class="mode" href="{% url 'notebook' notebook.slug %}?mode={{ m }}">{{ m }}</a>
 						{% endif %}
 					{% endfor %}
 				</div>
@@ -76,7 +76,7 @@
 
 			<div class="group system">
 				<a href="{% url 'notebooks_list' %}">all notebooks</a></li>
-				<a href="{% url 'diary_home' %}">diary</a></li>
+				<a id="diary-home" href="{% url 'diary_home' %}">diary</a></li>
 			<!--<a href="{% url 'preferences' %}">preferences</a>-->
 				<a href="{% url 'logout' %}">logout</a>
 			</div>
@@ -208,6 +208,11 @@
 					</div>
 
 					<div class="group">
+						<label>e</label>
+						<span>Edit entry</span>
+					</div>
+
+					<div class="group">
 						<label>j</label>
 						<span>Move down in entry list</span>
 					</div>
@@ -215,18 +220,6 @@
 					<div class="group">
 						<label>k</label>
 						<span>Move up in entry list</span>
-					</div>
-				</div>
-
-				<div class="column">
-					<div class="group">
-						<label>e</label>
-						<span>Edit entry</span>
-					</div>
-
-					<div class="group">
-						<label>C-&#x23ce;</label>
-						<span>Save entry</span>
 					</div>
 
 					<div class="group">
@@ -238,10 +231,42 @@
 						<label>g s</label>
 						<span>Notebook settings</span>
 					</div>
+				</div>
+
+				<div class="column">
+					<div class="group">
+						<label>C-&#x23ce;</label>
+						<span>Save entry</span>
+					</div>
+
+					<div class="group">
+						<label>g d</label>
+						<span>Diary</span>
+					</div>
 
 					<div class="group">
 						<label>g n</label>
 						<span>Go to parent notebook/section</span>
+					</div>
+
+					<div class="group">
+						<label>m l</label>
+						<span>Switch to log mode</span>
+					</div>
+
+					<div class="group">
+						<label>m n</label>
+						<span>Switch to note mode</span>
+					</div>
+
+					<div class="group">
+						<label>m w</label>
+						<span>Switch to wiki mode</span>
+					</div>
+
+					<div class="group">
+						<label>m j</label>
+						<span>Switch to journal mode</span>
 					</div>
 				</div>
 			</div>

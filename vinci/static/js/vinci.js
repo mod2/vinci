@@ -607,8 +607,7 @@ $(document).ready(function() {
 			$.ajax({
 				url: url,
 				method: 'POST',
-				contentType: 'application/json',
-				data: JSON.stringify(data),
+				data: data,
 				success: function(data) {
 					// Update the returned HTML
 					if (data.html) {
@@ -714,8 +713,7 @@ $(document).ready(function() {
 			$.ajax({
 				url: url,
 				method: 'POST',
-				//contentType: 'application/json',
-				data: data, //JSON.stringify(data),
+				data: data,
 				success: function(data) {
 					window.location.reload();
 				},

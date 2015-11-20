@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import authentication
 from rest_framework import exceptions
 from rest_framework import viewsets
@@ -905,6 +906,7 @@ def add_payload(request):
             }
 
 
+@csrf_exempt
 def add_payload_endpoint(request):
     callback = request.GET.get('callback', '')
     key = request.GET.get('key', '')

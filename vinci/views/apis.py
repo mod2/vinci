@@ -810,14 +810,17 @@ def update_revision(request, notebook_slug, slug, revision_id):
 def add_payload(request):
     """Add a payload from the content query parameter."""
 
-    if hasattr(request, 'data'):
-        content = request.data.get('content', '')
-        notebook_slug = request.data.get('notebook', None)
-        section_slug = request.data.get('section', None)
-    else:
+    content = request.POST.get('content', '')
+    if content == '':
         content = request.GET.get('content', '')
-        notebook_slug = request.GET.get('notebook', None)
-        section_slug = request.GET.get('section', None)
+
+    notebook_slug = request.POST.get('notebook', '')
+    if notebook_slug == '':
+        notebook_slug = request.GET.get('notebook', '')
+
+    section_slug = request.POST.get('section', '')
+    if section_slug == '':
+        section_slug = request.GET.get('section', '')
 
     if content == '':
         return {

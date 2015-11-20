@@ -586,7 +586,11 @@ $(document).ready(function() {
 
 		if (currentBox && currentBox.val()) {
 			var currentText = currentBox.val().trim();
-			var currentMetadata = $("textarea.entry-metadata:visible").val().trim();
+			if ($("textarea.entry-metadata:visible").length > 0) {
+				var currentMetadata = $("textarea.entry-metadata:visible").val().trim();
+			} else {
+				var currentMetadata = '';
+			}
 
 			var payload = currentText + "\n\n" + currentMetadata;
 
@@ -710,8 +714,8 @@ $(document).ready(function() {
 			$.ajax({
 				url: url,
 				method: 'POST',
-				contentType: 'application/json',
-				data: JSON.stringify(data),
+				//contentType: 'application/json',
+				data: data, //JSON.stringify(data),
 				success: function(data) {
 					window.location.reload();
 				},

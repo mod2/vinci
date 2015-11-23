@@ -21,6 +21,19 @@
 	</section>
 	{% endfor %}
 
+    {% if tags|length %}
+	<h2 class="container">Tags</h2>
+	<section class="notebooks">
+        <div class="container tags">
+        {% for tag in tags %}
+            {% if tag.slug %}
+            <a href="{% url 'search_all_tags' tag.slug %}"><span class="selector">#</span>{{ tag.slug }}</a>
+            {% endif %}
+		{% endfor %}
+        </div>
+	</section>
+    {% endif %}
+
 	{% if blank_slate %}
 	<section class="notebooks container empty">
 		<div>Welcome to Vinci! To get started, add a notebook.</div><span class="add-notebook">Add a notebook</span>

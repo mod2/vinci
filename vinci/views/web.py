@@ -300,10 +300,15 @@ def notebooks_list(request):
     else:
         blank_slate = False
 
+    # Get all the tags
+    from taggit.models import Tag
+    tags = Tag.objects.all().order_by('slug')
+
     context = {
         'title': 'All Notebooks',
         'groups': groups,
         'ungrouped_notebooks': ungrouped_notebooks,
+        'tags': tags,
         'page_type': 'all',
         'blank_slate': blank_slate,
         'API_KEY': settings.VINCI_API_KEY,
@@ -419,6 +424,7 @@ def search_all_tags(request, tag):
 def _search(request, query, notebook=None, section=None):
     sortby = request.GET.get('sort', settings.VINCI_DEFAULT_SEARCH_ORDER)
     page = int(request.GET.get('page', 1))
+    tagview = False
 
     if query is None:
         entries = Paginator([], settings.VINCI_RESULTS_PER_PAGE).page(1)
@@ -440,6 +446,10 @@ def _search(request, query, notebook=None, section=None):
         total = entries.count
         entries = entries.page(page)
 
+        # Tag view
+        if 'tag:' in query:
+            tagview = True
+
         # Convert tags in queries back to hashtag syntax
         query = query.replace('tag:', '#')
 
@@ -456,6 +466,7 @@ def _search(request, query, notebook=None, section=None):
         'section': section,
         'mode': mode,
         'modes': settings.VINCI_MODE_LIST,
+        'tagview': tagview,
         'page_type': 'list',
         'search': True,
         'API_KEY': settings.VINCI_API_KEY,

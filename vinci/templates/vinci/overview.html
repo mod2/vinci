@@ -28,7 +28,7 @@
 				<ul class="months">
 					{% for m in y.months %}
 					<li><label>{{ m.label }} <span>({{ m.total|intcomma }})</span></label>
-						<ul class="days">{% for d in m.days %}<li><a target="_blank" href="{% url 'diary_detail' d.slug %}">{{ d.label }}</a></li>{% endfor %}</ul>
+						<ul class="days">{% for d in m.days %}<li><a href="{% url 'diary_detail' d.slug %}">{{ d.label }}</a></li>{% endfor %}</ul>
 					</li>
 					{% endfor %}
 				</ul>

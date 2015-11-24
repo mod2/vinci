@@ -1,0 +1,36 @@
+{% extends 'vinci/_base.html' %}
+
+{% load humanize %}
+
+{% block sections %}{% endblock sections %}
+
+{% block content %}
+<div id="overview">
+	<section class="container">
+		<div class="group">
+			<h2>Jump to date</h2>
+			<input id="date-picker" type="date" {% if today %}value="{{ today }}"{% endif %} />
+		</div>
+
+		<div class="toc group">
+			<h2>Year Index</h2>
+			{% for y in years %}
+			<a href="#year-{{ y.label }}">{{ y.label }}</a>
+			{% endfor %}	
+		</div>
+
+		{% for y in years %}
+			<div id="year-{{ y.label }}" class="year group">
+				<h2>{{ y.label }} <span>{{ y.total|intcomma }} entries</span></h2>
+				<ul class="months">
+					{% for m in y.months %}
+					<li><label>{{ m.label }} <span>({{ m.total|intcomma }})</span></label>
+						<ul class="days">{% for d in m.days %}<li><a target="_blank" href="{% url 'diary_detail' d.slug %}">{{ d.label }}</a></li>{% endfor %}</ul>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endfor %}
+	</section>
+</div>
+{% endblock content %}

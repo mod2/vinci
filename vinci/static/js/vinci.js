@@ -492,9 +492,9 @@ $(document).ready(function() {
 		}
 	});
 
-	// Go to diary
-	Mousetrap.bind('g d', function() {
-		var uri = $("#diary-home").attr("href");
+	// Go to overview
+	Mousetrap.bind('g o', function() {
+		var uri = $("#overview-link").attr("href");
 
 		if (uri) {
 			window.location.href = uri;

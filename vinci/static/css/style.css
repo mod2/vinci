@@ -64,7 +64,6 @@ article, aside, figure, figcaption, footer, header, hgroup, menu, nav, section, 
 /* -------------------------------------------------- */
 
 a {
-	color: hsl(211, 56%, 50%);
 	color: hsl(211, 56%, 44%);
 }
 
@@ -656,6 +655,92 @@ body.active-nav #page .mask {
 
 #all-notebooks .tags a:hover span.selector {
 	color: #aaa;
+}
+
+
+/* Overview */
+/* -------------------------------------------------- */
+
+#overview {
+	padding: 25px 0 50px;
+}
+
+#overview h2 {
+	font-size: 1.3em;
+	font-weight: 400;
+	margin: 0 0 6px 0;
+}
+
+#overview input[type=date] {
+	border: solid 1px #bbb;
+	border-radius: 3px;
+	font-size: 1.2em;
+	padding: 3px 6px;
+}
+
+#overview .toc {
+	margin-bottom: 2em;
+}
+
+#overview .toc a {
+	margin-right: 5px;
+	text-decoration: none;
+}
+
+#overview .group + .group {
+	border-top: solid 1px #ddd;
+	margin-top: 2em;
+	padding-top: 2em;
+}
+
+#overview .year h2 span {
+	color: #bbb;
+	font-size: .6em;
+	margin-left: 10px;
+}
+
+#overview .year ul.months {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+#overview .year ul.months > li {
+	display: flex;
+	list-style: none;
+	padding: 0;
+}
+
+#overview .year ul.months > li + li {
+	margin-top: 8px;
+}
+
+#overview .year ul.months > li label {
+	line-height: 1.2em;
+	margin-right: 15px;
+	min-width: 4.3em;
+	width: 4.3em;
+}
+
+#overview .year ul.months > li label span {
+	color: #bbb;
+}
+
+#overview .year ul.months > li ul.days {
+	display: inline-block;
+	line-height: 1.2em;
+	margin: 0;
+	max-width: calc(100% - 4.4em);
+	padding-left: 0;
+}
+
+#overview .year ul.months > li ul.days li {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+#overview .year ul.months > li ul.days li a {
+	text-decoration: none;
 }
 
 
@@ -1806,24 +1891,6 @@ body.note-mode #page #content.list .entry .metadata {
 /* Diary */
 /* -------------------------------------------------- */
 
-#diary {
-	padding-bottom: 55px;
-	padding-top: 25px;
-}
-
-#diary h2 {
-	font-size: 1.2em;
-	font-weight: 400;
-	margin: 0 0 10px 0;
-}
-
-#diary input[type=date] {
-	border: solid 1px #bbb;
-	border-radius: 3px;
-	font-size: 1.2em;
-	padding: 3px 6px;
-}
-
 /* Diary nav bar */
 .diary-nav {
 	background: hsl(314, 24%, 20%);
@@ -1894,6 +1961,10 @@ body.note-mode #page #content.list .entry .metadata {
 	#add-entry {
 		font-size: 1.1em;
 		line-height: 1.4em;
+	}
+
+	#overview {
+		padding: 45px 0 75px;
 	}
 }
 

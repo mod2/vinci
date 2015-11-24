@@ -497,3 +497,82 @@ def prefs_view(request):
                               context,
                               RequestContext(request),
                               )
+
+@login_required
+def overview(request):
+    # Get all the entries
+    entries = Entry.objects.all().order_by('date')
+
+    years = {}
+
+    import calendar
+
+    for e in entries:
+        d = e.date
+
+        if d.year not in years:
+            years[d.year] = {
+                'label': d.year,
+                'total': 1,
+                'months': {},
+            }
+        else:
+            years[d.year]['total'] += 1
+
+        month = calendar.month_abbr[d.month]
+
+        if d.month not in years[d.year]['months']:
+            years[d.year]['months'][d.month] = {
+                'label': month,
+                'key': d.month,
+                'total': 1,
+                'days': {},
+            }
+        else:
+            years[d.year]['months'][d.month]['total'] += 1
+        
+        if d.day not in years[d.year]['months'][d.month]['days']:
+            years[d.year]['months'][d.month]['days'][d.day] = 1
+        else:
+            years[d.year]['months'][d.month]['days'][d.day] += 1
+
+    # Sort years
+    year_list = []
+
+    for year_key in list(sorted(years)):
+        month_list = []
+
+        for month_key in list(sorted(years[year_key]['months'])):
+            day_list = []
+
+            for day_key in list(sorted(years[year_key]['months'][month_key]['days'])):
+                day_list.append({
+                    'label': day_key,
+                    'slug': '{}-{:0>2}-{:0>2}'.format(year_key, years[year_key]['months'][month_key]['key'], day_key),
+                    'total': years[year_key]['months'][month_key]['days'][day_key],
+                })
+
+            month_list.append({
+                'label': years[year_key]['months'][month_key]['label'],
+                'total': years[year_key]['months'][month_key]['total'],
+                'key': years[year_key]['months'][month_key]['key'],
+                'days': day_list,
+            })
+
+        year_list.append({
+            'label': years[year_key]['label'],
+            'total': years[year_key]['total'],
+            'months': month_list,
+        })
+
+    context = {
+        'title': 'Overview',
+        'page_type': 'overview',
+        'years': year_list,
+        'API_KEY': settings.VINCI_API_KEY,
+    }
+
+    return render_to_response('vinci/overview.html',
+                              context,
+                              RequestContext(request),
+                              )

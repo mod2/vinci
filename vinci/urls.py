@@ -48,6 +48,7 @@ vincipatterns = patterns(
     url(r'^$', 'notebooks_list', name='notebooks_list'),
     url(r'^api/', include(vinciapipatterns)),
     url(r'^search/$', 'search_all', name='search_all'),
+    url(r'^overview/$', 'overview', name='overview'),
     url(r'^tag/(?P<tag>[^\/]+)/$', 'search_all_tags', name='search_all_tags'),
     url(r'^diary/(?P<day>[^\/]+)/$', 'diary_detail', name='diary_detail'),
     url(r'^diary/$', 'diary_home', name='diary_home'),

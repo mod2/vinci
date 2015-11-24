@@ -498,10 +498,26 @@ def prefs_view(request):
                               RequestContext(request),
                               )
 
+
 @login_required
 def overview(request):
-    # Get all the entries
-    entries = Entry.objects.all().order_by('date')
+    # See if we want to limit it to a specific notebook and/or section
+    notebook = request.GET.get('notebook', '')
+    section = None
+
+    if notebook != '':
+        # Split out section if it's there
+        if '/' in notebook:
+            notebook, section = notebook.split('/')
+
+            # Get section entries
+            entries = Entry.objects.filter(notebook__slug=notebook, section__slug=section)
+        else:
+            # Get notebook entries
+            entries = Entry.objects.filter(notebook__slug=notebook)
+    else:
+        # Get all the entries
+        entries = Entry.objects.all().order_by('date')
 
     years = {}
 
@@ -569,6 +585,8 @@ def overview(request):
         'title': 'Overview',
         'page_type': 'overview',
         'years': year_list,
+        'notebook_filter': notebook,
+        'section_filter': section,
         'API_KEY': settings.VINCI_API_KEY,
     }
 

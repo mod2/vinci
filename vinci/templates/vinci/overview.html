@@ -15,12 +15,28 @@
 			</div>
 		</div>
 
+		<div class="group">
+			<h2>Limit to notebook/section</h2>
+			<form class="row" action="." method="GET">
+				<input type="search" name="notebook" {% if notebook_filter or section_filter %}value="{{ notebook_filter }}{% if section_filter %}/{{ section_filter }}{% endif %}"{% endif %} />
+				<input type="submit" class="button" value="Limit" />
+			</form>
+		</div>
+
+		{% if years %}
 		<div class="toc group">
 			<h2>Year Index</h2>
 			{% for y in years %}
 			<a href="#year-{{ y.label }}">{{ y.label }}</a>
 			{% endfor %}	
 		</div>
+		{% else %}
+		<div class="toc group">
+			<h2>No entries</h2>
+
+			<p>This notebook/section may not exist.</p>
+		</div>
+		{% endif %}
 
 		{% for y in years %}
 			<div id="year-{{ y.label }}" class="year group">

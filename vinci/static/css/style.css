@@ -677,12 +677,22 @@ body.active-nav #page .mask {
 	align-items: center;
 }
 
-#overview .row input[type=date] {
+#overview .row input[type=date], #overview .row input[type=search] {
+	-webkit-appearance: textfield;
 	border: solid 1px #bbb;
 	border-radius: 3px;
 	font-size: 1.2em;
 	margin-right: 10px;
 	padding: 3px 6px;
+}
+
+#overview .row input[type=date]:focus, #overview .row input[type=search]:focus {
+	border-color: #888;
+	outline: none;
+}
+
+#overview .row input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
 }
 
 #overview .row .button {

@@ -1039,12 +1039,13 @@ $(document).ready(function() {
 	}
 
 
-	// Diary mode
+	// Overview
     // ----------------------------------------------------------
 	
-	// Go to date
-	$("input#date-picker[type=date]").on("change", function(data) {
-		window.location.href = "/diary/" + $(this).val();
+	// Jump to date
+	$("#jump-to-date input[type=submit]").on("click", function(data) {
+		var theDate = $(this).siblings("#date-picker[type=date]").val();
+		window.location.href = "/diary/" + theDate;
 	});
 });
 

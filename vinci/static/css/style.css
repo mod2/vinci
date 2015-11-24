@@ -678,6 +678,12 @@ body.active-nav #page .mask {
 	padding: 3px 6px;
 }
 
+#overview .button {
+	display: inline;
+	font-size: 1.1em;
+	width: auto;
+}
+
 #overview .toc {
 	margin-bottom: 2em;
 }

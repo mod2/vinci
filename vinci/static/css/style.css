@@ -671,14 +671,21 @@ body.active-nav #page .mask {
 	margin: 0 0 6px 0;
 }
 
-#overview input[type=date] {
+#overview .row {
+	flex-direction: row;
+	display: flex;
+	align-items: center;
+}
+
+#overview .row input[type=date] {
 	border: solid 1px #bbb;
 	border-radius: 3px;
 	font-size: 1.2em;
+	margin-right: 10px;
 	padding: 3px 6px;
 }
 
-#overview .button {
+#overview .row .button {
 	display: inline;
 	font-size: 1.1em;
 	width: auto;

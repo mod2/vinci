@@ -9,8 +9,10 @@
 	<section class="container">
 		<div id="jump-to-date" class="group">
 			<h2>Jump to date</h2>
-			<input id="date-picker" type="date" {% if today %}value="{{ today }}"{% endif %} />
-			<input type="submit" class="button" value="Go to date" />
+			<div class="row">
+				<input id="date-picker" type="date" {% if today %}value="{{ today }}"{% endif %} />
+				<input type="submit" class="button" value="Go to date" />
+			</div>
 		</div>
 
 		<div class="toc group">

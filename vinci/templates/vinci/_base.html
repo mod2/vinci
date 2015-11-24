@@ -112,7 +112,7 @@
 					<h1>
 						{% block header_title %}
 							{% if page_type == 'diary_detail' %}
-								<a class="home diary" href="{% url 'diary_home' %}?date={{ today|date:"Y-m-d" }}"><span class="selector">/</span>diary</a> <span>{{ today|date:"D, j M Y" }}</span>
+								<a class="home diary" href="{% url 'overview' %}?date={{ today|date:"Y-m-d" }}"><span class="selector">/</span>diary</a> <span>{{ today|date:"D, j M Y" }}</span>
 							{% else %}
 								{% if notebook %}
 									<a class="home notebook" href="{{ notebook.get_absolute_url }}"><span class="selector">::</span>{{ notebook.slug }}</a>{% if section %} <a class="home section" href="{{ section.get_absolute_url }}"><span class="selector">/</span>{{ section.slug }}</a>{% endif %}

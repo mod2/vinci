@@ -38,10 +38,7 @@ def notebook_settings(request, notebook_slug):
     sections = get_sections_for_notebook(notebook)
 
     # Title tag
-    if section:
-        title_tag = '::{}'.format(str(section))
-    else:
-        title_tag = '::{}'.format(notebook.slug)
+    title_tag = 'Settings — ::{}'.format(notebook.slug)
 
     context = {
         'title': title_tag,

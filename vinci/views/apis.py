@@ -892,6 +892,8 @@ def add_payload(request):
             entry.date = the_date
             entry.save()
 
+        si.update_index(entry)
+
         e = serializers.EntrySerializer(entry)
         return e.data
     else:

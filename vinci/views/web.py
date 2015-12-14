@@ -99,7 +99,11 @@ def notebook_section(request, notebook_slug, section_slug):
         # Get entries that aren't in any section
         entries = entries.filter(section__isnull=True)
 
-    entries = entries.order_by(sortby)
+    if mode == 'note':
+        # Sort notes by last modified
+        entries = entries.order_by('-last_modified', '-date')
+    else:
+        entries = entries.order_by(sortby)
 
     try:
         entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE).page(page)

@@ -167,6 +167,7 @@ REST_FRAMEWORK = {
 VINCI_MODE_TEMPLATE_BASE = '{}/vinci/templates/modes'.format(BASE_DIR)
 VINCI_MODE_LIST = [ 'log', 'note', 'wiki', 'journal' ]
 
+TEMPLATE_SETTINGS = None
 
 from local_settings import *  # noqa
 

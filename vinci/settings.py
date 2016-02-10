@@ -23,8 +23,6 @@ SECRET_KEY = 'vinci'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-TEMPLATE_DEBUG = False
-
 ALLOWED_HOSTS = []
 
 
@@ -71,10 +69,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+from django.conf import global_settings
+
 TEMPLATES = [{
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
     'DIRS': [os.path.join(BASE_DIR, 'templates')],
     'OPTIONS': {
+        'debug': False,
         'loaders': [
             ('django.template.loaders.cached.Loader', [
                 'django.template.loaders.filesystem.Loader',
@@ -86,6 +87,8 @@ TEMPLATES = [{
             'django.template.context_processors.request',
             'django.contrib.auth.context_processors.auth',
             'django.contrib.messages.context_processors.messages',
+            'vinci.processors.site_title',
+            'vinci.processors.api_key',
         ],
     },
 }]
@@ -148,12 +151,6 @@ LOGGING = {
     },
 }
 
-from django.conf import global_settings
-TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
-    'vinci.processors.site_title',
-    'vinci.processors.api_key',
-)
-
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -172,6 +169,9 @@ VINCI_MODE_LIST = [ 'log', 'note', 'wiki', 'journal' ]
 
 
 from local_settings import *  # noqa
+
+if TEMPLATE_SETTINGS:
+    TEMPLATES[0]['OPTIONS']['debug'] = TEMPLATE_SETTINGS['debug']
 
 if SECRET_KEY == 'vinci':
     raise ImproperlyConfigured('SECRET_KEY must be provided.')

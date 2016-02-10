@@ -1,14 +1,14 @@
-from django.conf import settings
 from django.apps import AppConfig
-from django.template import Template
-
-from vinci.utils import load_modes, load_template_for_mode
 
 class VinciConfig(AppConfig):
     name = 'vinci'
     verbose_name = "Vinci"
 
     def ready(self):
+        from django.conf import settings
+        from django.template import Template
+        from vinci.utils import load_modes, load_template_for_mode
+
         # Load modes
         modes = load_modes(settings.VINCI_MODE_LIST, settings.VINCI_MODE_TEMPLATE_BASE)
         settings.VINCI_MODES = modes

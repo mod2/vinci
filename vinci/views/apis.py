@@ -882,7 +882,7 @@ def add_payload(request):
 
         # Tags
         entry.tags.clear()
-        if 'tags' in payload or 'tag' in payload:
+        if 'tags' in payload:
             tags = [t.strip() for t in payload['tags']]
             entry.tags.add(*tags)
 

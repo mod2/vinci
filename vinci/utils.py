@@ -72,7 +72,7 @@ def parse_payload(payload):
                 value = ' '.join(command_list[1:])
 
                 if command == 'tag' or command == 'tags':
-                    response[command] = [x.strip() for x in value.split(',')]
+                    response['tags'] = [x.strip() for x in value.split(',')]
                 else:
                     response[command] = value
             

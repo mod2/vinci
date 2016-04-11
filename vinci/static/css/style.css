@@ -778,10 +778,8 @@ body.active-nav #page .mask {
 
 #timeline .add-form {
 	-webkit-display: flex;
-	border-bottom: solid 1px #ddd;
 	display: flex;
-	padding-bottom: 1em;
-	margin-bottom: 1em;
+	margin-bottom: 2em;
 }
 
 #timeline .add-form textarea {

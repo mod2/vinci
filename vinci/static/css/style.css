@@ -767,6 +767,129 @@ body.active-nav #page .mask {
 }
 
 
+/* Timeline */
+/* -------------------------------------------------- */
+
+#timeline {
+	font-size: 1.2em;
+	line-height: 1.3em;
+	padding: 25px 0;
+}
+
+#timeline .add-form {
+	-webkit-display: flex;
+	border-bottom: solid 1px #ddd;
+	display: flex;
+	padding-bottom: 1em;
+	margin-bottom: 1em;
+}
+
+#timeline .add-form textarea {
+	-webkit-flex: 1;
+	border: solid 1px #bbb;
+	border-radius: 3px;
+	flex: 1;
+	font-size: 1em;
+	margin-right: 10px;
+	padding: 3px 5px;
+	resize: none;
+}
+
+#timeline .add-form textarea:focus {
+	outline: none;
+}
+
+#timeline .add-form .button {
+	width: auto;
+}
+
+#timeline .day + .day {
+	margin-top: .75em;
+}
+
+#timeline .day > a {
+	color: #aaa;
+	display: block;
+	font-size: .75em;
+	letter-spacing: 0.05em;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+#timeline .day > a:hover {
+	color: #444;
+}
+
+#timeline .day > span {
+	display: block;
+}
+
+#timeline .day > .edit {
+	-webkit-align-items: flex-start;
+	-webkit-flex-wrap: wrap;
+	display: none;
+	align-items: flex-start;
+	flex-wrap: wrap;
+}
+
+#timeline .day > .edit textarea {
+	-webkit-flex: 1;
+	border: none;
+	flex: 1;
+	font-size: 1em;
+	margin-bottom: 12px;
+	min-width: 100%;
+	padding: 0;
+	resize: none;
+}
+
+#timeline .day > .edit textarea:focus {
+	outline: none;
+}
+
+#timeline .day > .edit .button {
+	width: auto;
+}
+
+#timeline .day > .edit .cancel {
+	color: #999;
+	cursor: pointer;
+	font-size: .7em;
+	margin-left: 25px;
+}
+
+#timeline .day.editing > span {
+	display: none;
+}
+
+#timeline .day.editing > .edit {
+	display: -webkit-flex;
+	display: flex;
+}
+
+@media screen and (min-width: 600px) {
+	#timeline .day {
+		display: -webkit-flex;
+		display: flex;
+	}
+
+	#timeline .day > a {
+		width: 150px;
+	}
+
+	#timeline .day > span {
+		-webkit-flex: 1;
+		flex: 1;
+	}
+
+	#timeline .day > .edit {
+		-webkit-flex: 1;
+		flex: 1;
+	}
+}
+
+
+
 /* Sections */
 /* -------------------------------------------------- */
 

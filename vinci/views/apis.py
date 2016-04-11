@@ -929,3 +929,46 @@ def add_payload_endpoint(request):
     else:
         # Return JSON response
         return JsonResponse(response)
+
+@csrf_exempt
+def update_timeline_day(request):
+    callback = request.GET.get('callback', '')
+    key = request.GET.get('key', '')
+
+    if key != settings.VINCI_API_KEY:
+        return JsonResponse({})
+
+    content = request.GET.get('content', '').strip()
+    response = {}
+
+    if content != '':
+        try:
+            for line in content.split('\n'):
+                if line != '':
+                    # Get date
+                    the_date = line[0:10]
+
+                    # Prep content, stripping any delimiter
+                    the_content = line[10:].strip()
+                    if the_content[0] == ':':
+                        the_content = the_content[1:].strip()
+                    if the_content[0:2] == '--':
+                        the_content = the_content[2:].strip()
+
+                    # Convert date to a date object
+                    date = datetime.datetime.strptime(the_date, '%Y-%m-%d')
+
+                    the_day, created = models.TimelineDay.objects.get_or_create(date=date)
+                    the_day.content = the_content
+                    the_day.save()
+        except Exception as e:
+            response['error'] = e
+
+    if callback and 'error' not in response:
+        # Redirect to callback
+        response = HttpResponse("", status=302)
+        response['Location'] = callback
+        return response
+    else:
+        # Return JSON response
+        return JsonResponse(response)

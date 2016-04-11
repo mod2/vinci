@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.utils.timezone import utc, make_aware
 import datetime
 
-from vinci.models import Notebook, Section, Entry, Revision, Group
+from vinci.models import Notebook, Section, Entry, Revision, Group, TimelineDay
 import vinci.search_indexer as si
 
 from vinci.utils import get_sections_for_notebook
@@ -592,6 +592,23 @@ def overview(request):
     }
 
     return render_to_response('vinci/overview.html',
+                              context,
+                              RequestContext(request),
+                              )
+
+
+@login_required
+def timeline(request):
+    entries = TimelineDay.objects.all()
+
+    context = {
+        'title': 'Timeline',
+        'entries': entries,
+        'page_type': 'timeline',
+        'API_KEY': settings.VINCI_API_KEY,
+    }
+
+    return render_to_response('vinci/timeline.html',
                               context,
                               RequestContext(request),
                               )

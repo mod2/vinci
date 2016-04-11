@@ -1,0 +1,20 @@
+{% extends 'vinci/_base.html' %}
+
+{% load humanize %}
+
+{% block sections %}{% endblock sections %}
+
+{% block content %}
+<div id="timeline">
+	<section class="container">
+		<form class="add-form" action="{% url 'api_update_timeline_day' %}" method="GET">
+			<textarea name="content"></textarea>
+			<input type="submit" value="Add" class="button" />
+		</form>
+
+		{% for entry in entries %}
+			<div class="day" data-date="{{ entry.date_slug }}"><a href="{% url 'diary_detail' entry.date_slug %}">{{ entry.date_display }}</a><span class="content">{{ entry.content }}</span><div class="edit"><textarea>{{ entry.content }}</textarea><input type="submit" value="Save" class="button" /><span class="cancel">Cancel</span></div></div>
+		{% endfor %}
+	</section>
+</div>
+{% endblock content %}

@@ -19,6 +19,7 @@
 
 	<script src="{% static 'js/lib/jquery-2.1.4.min.js' %}" type="text/javascript" charset="utf-8"></script>
 	<script src="{% static 'js/lib/jquery-ui.min.js' %}" type="text/javascript" charset="utf-8"></script>
+	<script src="{% static 'js/lib/jquery.finger.min.js' %}" type="text/javascript" charset="utf-8"></script>
 	<script src="{% static 'js/lib/autosize.min.js' %}" type="text/javascript" charset="utf-8"></script>
 	<script src="{% static 'js/lib/mousetrap.min.js' %}" type="text/javascript" charset="utf-8"></script>
 	<script src="{% static 'js/lib/mousetrap-global-bind.min.js' %}" type="text/javascript" charset="utf-8"></script>
@@ -77,6 +78,7 @@
 			<div class="group system">
 				<a href="{% url 'notebooks_list' %}">all notebooks</a></li>
 				<a id="overview-link" href="{% url 'overview' %}">overview</a></li>
+				<a id="timeline-link" href="{% url 'timeline' %}">timeline</a></li>
 			<!--<a href="{% url 'preferences' %}">preferences</a>-->
 				<a href="{% url 'logout' %}">logout</a>
 			</div>

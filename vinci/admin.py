@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Notebook, Section, Entry, Revision, Group
+from .models import Notebook, Section, Entry, Revision, Group, TimelineDay
 
 
 class RevisionInline(admin.StackedInline):
@@ -42,3 +42,8 @@ class RevisionAdmin(admin.ModelAdmin):
     list_display = ('last_modified', 'content_excerpt', 'parent',)
     pass
 
+
+@admin.register(TimelineDay)
+class TimelineDayAdmin(admin.ModelAdmin):
+    list_display = ('date', 'content',)
+    pass

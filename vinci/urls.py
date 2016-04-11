@@ -14,6 +14,7 @@ vinciapipatterns = [
         name='api_notebook_list'),
     url(r'^quick-jump/$', QuickJumpAPIView.as_view(), name='quick_jump'),
     url(r'^add/$', 'vinci.views.apis.add_payload_endpoint', name='api_add_payload'),
+    url(r'^timeline/$', 'vinci.views.apis.update_timeline_day', name='api_update_timeline_day'),
     url(r'^(?P<notebook_slug>[^\/]+)/$',
         EntryListAPIView.as_view(),
         name='api_entry_list'),
@@ -48,10 +49,11 @@ vincipatterns = patterns(
     url(r'^$', 'notebooks_list', name='notebooks_list'),
     url(r'^api/', include(vinciapipatterns)),
     url(r'^search/$', 'search_all', name='search_all'),
-    url(r'^overview/$', 'overview', name='overview'),
     url(r'^tag/(?P<tag>[^\/]+)/$', 'search_all_tags', name='search_all_tags'),
-    url(r'^diary/(?P<day>[^\/]+)/$', 'diary_detail', name='diary_detail'),
-    url(r'^diary/$', 'diary_home', name='diary_home'),
+    url(r'^meta/timeline/$', 'timeline', name='timeline'),
+    url(r'^meta/overview/$', 'overview', name='overview'),
+    url(r'^meta/diary/(?P<day>[^\/]+)/$', 'diary_detail', name='diary_detail'),
+    url(r'^meta/diary/$', 'diary_home', name='diary_home'),
 
     url(r'^(?P<notebook_slug>[^\/]+)/$',
         'notebook_home', name='notebook'),
@@ -73,7 +75,7 @@ vincipatterns = patterns(
 
 urlpatterns = patterns(
     '',
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^meta/admin/', include(admin.site.urls)),
     url(r'^accounts/login/$', auth_views.login, name='login'),
     url(r'^accounts/logout/$', auth_views.logout, name='logout'),
     url(r'^accounts/preferences/$', 'vinci.views.web.prefs_view',

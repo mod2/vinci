@@ -503,6 +503,17 @@ $(document).ready(function() {
 		return false;
 	});
 
+	// Go to timeline
+	Mousetrap.bind('g t', function() {
+		var uri = $("#timeline-link").attr("href");
+
+		if (uri) {
+			window.location.href = uri;
+		}
+
+		return false;
+	});
+
 	// Switch to log mode
 	Mousetrap.bind('m l', function() {
 		var uri = $("#mode-log-link").attr("href");
@@ -1046,6 +1057,99 @@ $(document).ready(function() {
 	$("#jump-to-date input[type=submit]").on("click", function(data) {
 		var theDate = $(this).siblings("#date-picker[type=date]").val();
 		window.location.href = "/diary/" + theDate;
+	});
+
+
+	// Timeline
+    // ----------------------------------------------------------
+	
+	// Open edit entry panel
+	$("#timeline").on("doubletap", ".day > span", function(data) {
+		$(this).closest(".day").addClass("editing");
+		$(this).closest(".day").find("textarea").focus();
+
+		return false;
+	});
+
+	// Cancel editing entry
+	$("#timeline").on("click", ".day .cancel", function(data) {
+		$(this).closest(".day").removeClass("editing");
+
+		return false;
+	});
+
+	// Save entry
+	function _saveTimelineDay(day) {
+		// Get the URL
+		var url = $("form.add-form").attr("action");
+
+		// Get the content
+		var content = day.find("textarea").val();
+
+		// Prepend the date
+		var payload = day.data("date") + " " + content;
+
+		// AJAX it to the right location
+		$.ajax({
+			url: url + "?content=" + encodeURIComponent(payload) + "&key=" + config.api_key,
+			method: 'GET',
+			success: function(data) {
+				// Update text and hide the edit panel
+				day.find("span.content").html(content);
+				day.removeClass("editing");
+			},
+			error: function(data) {
+				console.log("error", data);
+			},
+		});
+	}
+
+	$("#timeline").on("click", ".day input[type=submit]", function() {
+		var day = $(this).closest(".day");
+
+		_saveTimelineDay(day);
+
+		return false;
+	});
+
+	// Shift+enter to save
+	var fields = document.querySelectorAll(".day .edit textarea");
+	for (var i=0; i<fields.length; i++) {
+		Mousetrap(fields[i]).bind('shift+enter', function(e) {
+			var day = $(e.target).parents(".day");
+			_saveTimelineDay(day);
+			return false;
+		});
+	}
+
+	// Add entry
+	$("#timeline .add-form").on("submit", function(data) {
+		var url = $(this).attr("action");
+
+		// Get the content
+		var content = $(this).find("textarea[name=content]").val();
+
+		// AJAX it to the right location
+		$.ajax({
+			url: url + "?content=" + encodeURIComponent(content) + "&key=" + config.api_key,
+			method: 'GET',
+			success: function(data) {
+				// Reload
+				window.location.reload();
+			},
+			error: function(data) {
+				console.log("error", data);
+			},
+		});
+
+		return false;
+	});
+
+	// Shift+enter to add
+	var field = document.querySelector('#timeline .add-form textarea');
+	Mousetrap(field).bind('shift+enter', function() {
+		$("#timeline .add-form").submit();
+		return false;
 	});
 });
 

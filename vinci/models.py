@@ -374,3 +374,21 @@ class Revision(models.Model):
 
     class Meta:
         ordering = ['-last_modified']
+
+
+class TimelineDay(models.Model):
+    date = models.DateField()
+    content = models.TextField()
+
+    def date_slug(self):
+        return self.date.isoformat()[:10]
+
+    def date_display(self):
+        #return datetime.datetime.strftime(self.date, '%Y-%m-%d, %a')
+        return datetime.datetime.strftime(self.date, '%a, %-d %b %Y')
+
+    def __str__(self):
+        return '{}: {}'.format(self.date, self.content)
+
+    class Meta:
+        ordering = ['date']

@@ -833,7 +833,7 @@ body.active-nav #page .mask {
 #timeline .day > .edit textarea {
 	-webkit-flex: 1;
 	border: none;
-	flex: 1;
+	flex: 1 0 auto;
 	font-size: 1em;
 	margin-bottom: 12px;
 	min-width: 100%;

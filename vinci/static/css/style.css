@@ -839,6 +839,7 @@ body.active-nav #page .mask {
 	min-width: 100%;
 	padding: 0;
 	resize: none;
+	width: 100%;
 }
 
 #timeline .day > .edit textarea:focus {

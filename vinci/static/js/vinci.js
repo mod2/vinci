@@ -1065,8 +1065,11 @@ $(document).ready(function() {
 	
 	// Open edit entry panel
 	$("#timeline").on("doubletap", ".day > span", function(data) {
-		$(this).closest(".day").addClass("editing");
-		$(this).closest(".day").find("textarea").focus();
+		var day = $(this).closest(".day");
+
+		day.addClass("editing");
+		autosize(day.find("textarea"));
+		day.find("textarea").focus();
 
 		return false;
 	});

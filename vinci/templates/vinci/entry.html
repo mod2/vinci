@@ -1,7 +1,5 @@
 {% extends 'vinci/_base.html' %}
 
-{% block title %}{% if entry.title != '' %}{{ entry.title }}{% elif entry.slug != '' %}{{ entry.slug }}{% else %}{{ entry.date|date:'Y-m-d' }}{% endif %} | {{ entry.notebook.name }} | Vinci{% endblock title %}
-
 {% block content %}
 	{% block entry %}
 	<section class="entries" data-uri="{% url 'api_notebook_list' %}">

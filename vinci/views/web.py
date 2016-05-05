@@ -183,10 +183,10 @@ def entry_detail(request, notebook_slug, section_slug, entry_slug):
     sections = get_sections_for_notebook(entry.notebook)
 
     # Title tag
-    if entry.slug:
-        slug = entry.slug
+    if entry.title:
+        slug = entry.title
     else:
-        slug = entry.id
+        slug = '{} ({})'.format(str(entry.date)[0:10], entry.id)
 
     if entry.section:
         title_tag = '{} — ::{}'.format(slug, str(entry.section))
@@ -207,7 +207,6 @@ def entry_detail(request, notebook_slug, section_slug, entry_slug):
 
     # Get the template
     template = settings.VINCI_TEMPLATES[mode]['detail']
-
     return HttpResponse(template.render(RequestContext(request, context)),
                         content_type="text/html")
 

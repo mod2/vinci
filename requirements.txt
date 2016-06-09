@@ -8,3 +8,4 @@ mistune>=0.5.1
 requests>=2.6.0
 smartypants>=1.8.6
 django-taggit>=0.13.0
+django-background-tasks>=1.0

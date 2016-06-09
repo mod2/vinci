@@ -1,6 +1,5 @@
 import os
 import os.path
-# import re
 import math
 
 from functools import partial
@@ -13,6 +12,7 @@ from whoosh.qparser import QueryParser
 from whoosh.query import Term
 from whoosh.qparser.dateparse import DateParserPlugin
 import whoosh.index as index
+from background_task import background
 
 from .models import Entry
 
@@ -85,9 +85,20 @@ def add_or_update_index(document, new=False):
     getattr(writer, doc_func)(**doc)
     writer.commit()
 
-
 add_index = partial(add_or_update_index, new=True)
 update_index = partial(add_or_update_index, new=False)
+
+@background
+def update_index_background(document_id):
+    entry = Entry.objects.get(id=document_id)
+    update_index(entry)
+
+@background
+def add_index_background(document_id):
+    entry = Entry.objects.get(id=document_id)
+    add_index(entry)
+
+
 
 def delete_from_index(document):
     """Remove a document from the index."""

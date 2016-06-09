@@ -892,7 +892,7 @@ def add_payload(request):
             entry.date = the_date
             entry.save()
 
-        si.update_index(entry)
+        si.update_index_background(entry.id)
 
         e = serializers.EntrySerializer(entry)
         return e.data
@@ -900,7 +900,7 @@ def add_payload(request):
         if len(stripped_content) > 0 and payload['notebook']:
             entry = models.Entry.objects.create(**payload)
 
-            si.add_index(entry)
+            si.add_index_background(entry.id)
             e = serializers.EntrySerializer(entry)
 
             return e.data
@@ -929,6 +929,7 @@ def add_payload_endpoint(request):
     else:
         # Return JSON response
         return JsonResponse(response)
+
 
 @csrf_exempt
 def update_timeline_day(request):

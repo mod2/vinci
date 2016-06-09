@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'taggit',
     'django_extensions',
+    'background_task',
     'vinci',
     'rest_framework',
 ]
@@ -181,7 +182,7 @@ import logging.config
 logging.config.dictConfig(LOGGING)
 
 if DEBUG:
-    INSTALLED_APPS.append('debug_toolbar.apps.DebugToolbarConfig')
+    INSTALLED_APPS.append('debug_toolbar')
 
     DEBUG_TOOLBAR_PANELS = (
         'debug_toolbar.panels.profiling.ProfilingPanel',

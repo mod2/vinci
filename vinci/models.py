@@ -156,6 +156,12 @@ class Notebook(models.Model):
     def get_absolute_url(self):
         return resolve_url('notebook', self.slug)
 
+    def section_count(self):
+        return self.sections.count()
+
+    def active_entry_count(self):
+        return self.entries.filter(status='active').count()
+
     def delete(self):
         self.status = self.STATUS.deleted
         self.save()

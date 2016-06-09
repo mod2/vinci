@@ -293,9 +293,10 @@ def revision_detail(request, notebook_slug, section_slug, entry_slug, revision_i
 @login_required
 def notebooks_list(request):
     groups = Group.objects.all()
-    ungrouped_notebooks = Notebook.objects.active().filter(group__isnull=True).order_by('name')
+    active_notebooks = Notebook.objects.active()
+    ungrouped_notebooks = active_notebooks.filter(group__isnull=True).order_by('name')
 
-    if len(Notebook.objects.active()) == 0:
+    if active_notebooks.count() == 0:
         blank_slate = True
     else:
         blank_slate = False

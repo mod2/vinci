@@ -1,13 +1,37 @@
 {% extends 'vinci/_base.html' %}
 
+{% load humanize %}
+
 {% block sections %}{% endblock sections %}
 
 {% block content %}
 <div id="all-notebooks">
-	{% if ungrouped_notebooks|length %}
+	{% if ungrouped_notebooks %}
 	<section class="notebooks">
 		{% for notebook in ungrouped_notebooks %}
-			{% include 'vinci/_notebook.html' %}
+			<article class="notebook" data-slug="{{ notebook.slug }}" data-uri="{{ notebook.get_absolute_url }}" data-name="{{ notebook.name|lower }}" data-api-uri="{% url 'api_entry_list' notebook.slug %}">
+				<a class="controls-toggle" href="">&nbsp;</a>
+
+				<div class="content container">
+					<h2 class="notebook-name"><span class="selector">::</span><a href="{{ notebook.get_absolute_url }}">{{ notebook.slug }}</a></h2>
+					<div>{{ notebook.active_entry_count|intcomma }} entries{% for s in notebook.sections.all %}{% if forloop.counter > 1 %}, {% else %} &mdash; {% endif %}<a href="{% url 'notebook_section' notebook.slug s.slug %}"><span class="selector">/</span>{{ s.slug }}</a>{% endfor %}</div>
+				</div>
+
+				<form class="edit-mode">
+					<div class="group container">
+						<label>Name:</label>
+						<input type="text" name="notebook-name" class="name" value="{{ notebook.name }}" />
+					</div>
+
+					<div class="group container">
+						<div class="buttons">
+							<span class="button rename-notebook">Rename</span>
+							<span class="button archive-notebook">Archive</span>
+							<span class="button delete">Delete</span>
+						</div>
+					</div>
+				</form>
+			</article>
 		{% endfor %}
 	</section>
 	{% endif %}
@@ -16,7 +40,29 @@
 	<h2 class="container">{{ group.name }}</h2>
 	<section class="notebooks">
 		{% for notebook in group.active_notebooks %}
-			{% include 'vinci/_notebook.html' %}
+			<article class="notebook" data-slug="{{ notebook.slug }}" data-uri="{{ notebook.get_absolute_url }}" data-name="{{ notebook.name|lower }}" data-api-uri="{% url 'api_entry_list' notebook.slug %}">
+				<a class="controls-toggle" href="">&nbsp;</a>
+
+				<div class="content container">
+					<h2 class="notebook-name"><span class="selector">::</span><a href="{{ notebook.get_absolute_url }}">{{ notebook.slug }}</a></h2>
+					<div>{{ notebook.active_entry_count|intcomma }} entries{% for s in notebook.sections.all %}{% if forloop.counter > 1 %}, {% else %} &mdash; {% endif %}<a href="{% url 'notebook_section' notebook.slug s.slug %}"><span class="selector">/</span>{{ s.slug }}</a>{% endfor %}</div>
+				</div>
+
+				<form class="edit-mode">
+					<div class="group container">
+						<label>Name:</label>
+						<input type="text" name="notebook-name" class="name" value="{{ notebook.name }}" />
+					</div>
+
+					<div class="group container">
+						<div class="buttons">
+							<span class="button rename-notebook">Rename</span>
+							<span class="button archive-notebook">Archive</span>
+							<span class="button delete">Delete</span>
+						</div>
+					</div>
+				</form>
+			</article>
 		{% endfor %}
 	</section>
 	{% endfor %}

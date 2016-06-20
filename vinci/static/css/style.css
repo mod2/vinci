@@ -658,6 +658,7 @@ body.active-nav #page .mask {
   border: solid 1px #bbb;
   border-radius: 3px;
   flex: 1;
+  font-family: Charter;
   font-size: 1em;
   margin-right: 10px;
   overflow-y: scroll;
@@ -851,6 +852,7 @@ body.journal-mode #mode-bar .container {
   padding-top: 25px; }
 
 #page #content .entry.empty span.add-entry {
+  font-family: Charter;
   background: #73b464;
   border-radius: 3px;
   color: #fff;
@@ -1102,6 +1104,7 @@ body.wiki-mode #page #content.detail .entry .content.container {
 #page #content .edit-mode textarea {
   -webkit-overflow-scrolling: touch;
   border: none;
+  font-family: Charter;
   font-size: 1em;
   margin-bottom: 15px;
   overflow-y: scroll;
@@ -1438,8 +1441,9 @@ form.login input.button:hover {
   -webkit-overflow-scrolling: touch;
   border: none;
   display: block;
-  font-size: 1.1em;
-  line-height: 1.3em;
+  font-family: Charter;
+  font-size: 1.2em;
+  line-height: 1.4em;
   overflow-y: scroll;
   padding-top: 25px;
   padding-bottom: 25px;

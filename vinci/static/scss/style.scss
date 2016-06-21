@@ -1162,7 +1162,7 @@ body.journal-mode #mode-bar .container {
 }
 
 #page #content .entry ul li {
-	line-height: 1.25em;
+	line-height: 1.4em;
 }
 
 #page #content .entry ul li + li {
@@ -1295,6 +1295,7 @@ body.journal-mode #mode-bar .container {
 }
 
 #page #content .entry .content.container {
+	font-family: Charter;
 	padding-top: 0;
 	padding-bottom: 25px;
 	word-wrap: break-word;
@@ -2079,7 +2080,7 @@ body.note-mode #page #content.list .entry .metadata {
 
 	#page #content .entry .content.container {
 		font-size: 1.1em;
-		line-height: 1.35em;
+		line-height: 1.4em;
 	}
 
 	#page #content .entry .edit-mode textarea {

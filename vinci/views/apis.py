@@ -560,10 +560,9 @@ def append_today(request, notebook_slug):
     if key != settings.VINCI_NON_REST_KEY:
         return JsonResponse({})
 
-    if request.method == 'GET':
+    content = request.POST.get('content', '')
+    if content == '':
         content = request.GET.get('content')
-    elif request.method == 'POST':
-        content = request.POST.get('content')
 
     # Append/create the entry
     try:

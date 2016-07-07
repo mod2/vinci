@@ -550,6 +550,7 @@ class QuickJumpAPIView(APIView):
 
 
 # Non-REST API views
+@csrf_exempt
 def append_today(request, notebook_slug):
     """ Appends to today's entry, creating it if it's not there. """
 

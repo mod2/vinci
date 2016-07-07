@@ -944,7 +944,7 @@ body.journal-mode #mode-bar .container {
   overflow-x: auto;
   padding: 10px; }
 
-#page #content .entry code:not([class*='language-']) {
+#page #content .entry .content.container code:not([class*='language-']) {
   background: #eee;
   border-radius: 3px;
   color: #345678;

@@ -231,6 +231,7 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
             notebook.parse_notes = parse_notes
 
         notebook.save()
+        si.update_index(notebook)
 
         nb = serializers.NotebookSerializer(notebook,
                                             context={'request': request})
@@ -244,6 +245,7 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
         nb = serializers.NotebookSerializer(notebook,
                                             context={'request': request})
         notebook.delete()
+        si.delete_from_index(notebook)
         return APIResponse(nb.data)
 
 
@@ -299,8 +301,6 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
                 entry.date = datetime.datetime.strptime(date,
                                                         models.DATETIME_FORMAT)
 
-            entry.save()
-
             if tags:
                 entry.tags.set(*tags)
             else:
@@ -309,8 +309,8 @@ class EntryDetailAPIView(NotebookLimitMixin, APIView):
             # If it's a note, put the first line in the title field
             if entry.entry_type == models.ENTRY_TYPE.note:
                 entry.title = entry.first_line()
-                entry.save()
 
+            entry.save()
             si.update_index(entry)
             e = self.serializer_class(entry).data
 
@@ -360,6 +360,7 @@ class NotebookListAPIView(ListCreateAPIView):
                 'author': request.user,
                 }
         notebook = models.Notebook.objects.create(**data)
+        si.add_index(notebook)
         n = serializers.NotebookSerializer(notebook,
                                            context={'request': request})
         return APIResponse(n.data)
@@ -432,10 +433,9 @@ class NotebookDetailAPIView(APIView):
             notebook.display_todos = display_todos
 
             notebook.save()
-
             si.update_index(notebook)
-
             n = self.serializer_class(notebook).data
+
             return APIResponse(n)
         else:
             return APIResponseNotFound('No notebook found.')
@@ -445,6 +445,7 @@ class NotebookDetailAPIView(APIView):
         if notebook:
             n = self.serializer_class(notebook).data
             notebook.delete()
+            si.delete_from_index(notebook)
             return APIResponse(n)
         else:
             return APIResponseNotFound('No notebook found.')
@@ -823,7 +824,6 @@ def update_revision(request, notebook_slug, slug, revision_id):
             entry.tags.clear()
             tags = [t.strip() for t in tags.split(',')]
             entry.tags.add(*tags)
-            entry.save()  # TODO: Is this needed?
 
         if new_notebook:
             nb = models.Notebook.objects.get(slug=new_notebook)

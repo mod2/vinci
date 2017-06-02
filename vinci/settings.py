@@ -190,3 +190,5 @@ if DEBUG:
         'debug_toolbar.panels.templates.TemplatesPanel',
         'debug_toolbar.panels.timer.TimerPanel',
     )
+
+    MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)

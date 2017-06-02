@@ -13,6 +13,8 @@
 	</div>
 
 	<div class="content container {% if entry.highlight %}excerpt{% endif %}">
+		{% if entry.title %}<h1 class="page-title">{{ entry.title }}</h1>{% endif %}
+
 		{% if entry.highlight %}
 			&hellip; {{ entry.highlight|safe }} &hellip;
 		{% else %}

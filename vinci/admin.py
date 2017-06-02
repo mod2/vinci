@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Notebook, Section, Entry, Revision, Group, TimelineDay
+from .models import Notebook, Entry, Revision, Group, TimelineDay
 
 
 class RevisionInline(admin.StackedInline):
@@ -16,12 +16,6 @@ class RevisionInline(admin.StackedInline):
 @admin.register(Notebook)
 class NotebookAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug',)
-    pass
-
-
-@admin.register(Section)
-class SectionAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'notebook',)
     pass
 
 

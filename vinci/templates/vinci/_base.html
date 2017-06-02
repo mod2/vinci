@@ -55,9 +55,6 @@
 				<div class="group">
 					<h2>Notebook</h2>
 					<a href="{% url 'notebook' notebook.slug %}">home</a>
-					{% for s in sections %}
-					<a href="{% url 'notebook_section' notebook.slug s.slug %}"><span class="selector">/</span>{{ s.slug }}</a>
-					{% endfor %}
 					<a class="settings" href="{% url 'notebook_settings' notebook.slug %}">settings</a>
 				</div>
 
@@ -65,11 +62,7 @@
 				<div class="group">
 					<h2>Modes</h2>
 					{% for m in modes %}
-						{% if section %}
-							<a id="mode-{{ m }}-link" class="mode" href="{% url 'notebook_section' notebook.slug section.slug %}?mode={{ m }}">{{ m }}</a>
-						{% else %}
-							<a id="mode-{{ m }}-link" class="mode" href="{% url 'notebook' notebook.slug %}?mode={{ m }}">{{ m }}</a>
-						{% endif %}
+						<a id="mode-{{ m }}-link" class="mode" href="{% url 'notebook' notebook.slug %}?mode={{ m }}">{{ m }}</a>
 					{% endfor %}
 				</div>
 				{% endif %}
@@ -91,7 +84,7 @@
 
 			{% block search %}
 			{% if request.user.username %}
-			<form id="search" data-search-all-uri="{% url 'search_all' %}"{% if notebook and section %} data-search-section-uri="{% url 'search_notebook_section' notebook.slug section.slug %}"{% endif %}{% if notebook %}data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}"{% endif %} data-quickjump-uri="{% url 'quick_jump' %}" class="{{ page_type }}">
+			<form id="search" data-search-all-uri="{% url 'search_all' %}"{% if notebook %}data-search-notebook-uri="{% url 'search_notebook' notebook.slug %}"{% endif %} data-quickjump-uri="{% url 'quick_jump' %}" class="{{ page_type }}">
 				<div class="container">
 					<input type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
 					<section class="results"></section>
@@ -117,7 +110,7 @@
 								<a class="home diary" href="{% url 'overview' %}?date={{ today|date:"Y-m-d" }}"><span class="selector">/</span>diary</a> <span>{{ today|date:"D, j M Y" }}</span>
 							{% else %}
 								{% if notebook %}
-									<a class="home notebook" href="{{ notebook.get_absolute_url }}"><span class="selector">::</span>{{ notebook.slug }}</a>{% if section %} <a class="home section" href="{{ section.get_absolute_url }}"><span class="selector">/</span>{{ section.slug }}</a>{% endif %}
+									<a class="home notebook" href="{{ notebook.get_absolute_url }}"><span class="selector">::</span>{{ notebook.slug }}</a>
 								{% else %}
 									<span>{{ title }}</span>
 								{% endif %}
@@ -136,7 +129,7 @@
 
 			{% block add_entry %}
 			{% if request.user.username %}
-			<form id="add-entry" data-uri="{% url 'api_notebook_list' %}" {% if notebook %}data-notebook-slug="{{ notebook.slug }}"{% endif %}{% if section %} data-section-slug="{{ section.slug }}"{% endif %}>
+			<form id="add-entry" data-uri="{% url 'api_notebook_list' %}" {% if notebook %}data-notebook-slug="{{ notebook.slug }}"{% endif %}>
 				<textarea name="entry-content" class="entry-content container"></textarea>
 
 				<div class="edit-panel">
@@ -169,7 +162,7 @@
 				<div class="container"></div>
 			</section>
 
-			<main id="content" class="{{ page_type }}{% if section %} {{ section }}{% endif %}"{% if notebook %} data-notebook-settings-url="{% url 'notebook_settings' notebook.slug %}" data-notebook-url="{% if section %}{% url 'notebook_section' notebook.slug section.slug %}{% else %}{{ notebook.get_absolute_url }}{% endif %}" {% endif %}>
+			<main id="content" class="{{ page_type }}"{% if notebook %} data-notebook-settings-url="{% url 'notebook_settings' notebook.slug %}" data-notebook-url="{{ notebook.get_absolute_url }}" {% endif %}>
 				{% block content %}{% endblock content %}
 				{% block nav %}{% endblock nav %}
 
@@ -248,7 +241,7 @@
 
 					<div class="group">
 						<label>g n</label>
-						<span>Go to parent notebook/section</span>
+						<span>Go to parent notebook</span>
 					</div>
 
 					<div class="group">

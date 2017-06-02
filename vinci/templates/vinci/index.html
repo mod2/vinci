@@ -2,8 +2,6 @@
 
 {% load humanize %}
 
-{% block sections %}{% endblock sections %}
-
 {% block content %}
 <div id="all-notebooks">
 	{% if ungrouped_notebooks %}
@@ -14,7 +12,7 @@
 
 				<div class="content container">
 					<h2 class="notebook-name"><span class="selector">::</span><a href="{{ notebook.get_absolute_url }}">{{ notebook.slug }}</a></h2>
-					<div>{{ notebook.active_entry_count|intcomma }} entries{% for s in notebook.sections.all %}{% if forloop.counter > 1 %}, {% else %} &mdash; {% endif %}<a href="{% url 'notebook_section' notebook.slug s.slug %}"><span class="selector">/</span>{{ s.slug }}</a>{% endfor %}</div>
+					<div>{{ notebook.active_entry_count|intcomma }} entries</div>
 				</div>
 
 				<form class="edit-mode">
@@ -45,7 +43,7 @@
 
 				<div class="content container">
 					<h2 class="notebook-name"><span class="selector">::</span><a href="{{ notebook.get_absolute_url }}">{{ notebook.slug }}</a></h2>
-					<div>{{ notebook.active_entry_count|intcomma }} entries{% for s in notebook.sections.all %}{% if forloop.counter > 1 %}, {% else %} &mdash; {% endif %}<a href="{% url 'notebook_section' notebook.slug s.slug %}"><span class="selector">/</span>{{ s.slug }}</a>{% endfor %}</div>
+					<div>{{ notebook.active_entry_count|intcomma }} entries</div>
 				</div>
 
 				<form class="edit-mode">

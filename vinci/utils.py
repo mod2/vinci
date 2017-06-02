@@ -3,12 +3,7 @@ import os.path
 
 from django.conf import settings
 
-from vinci.models import Notebook, Section
-
-def get_sections_for_notebook(notebook):
-    sections = Section.objects.filter(notebook=notebook).order_by('name')
-
-    return sections
+from vinci.models import Notebook
 
 def get_or_create_notebook(notebook_slug):
     try:
@@ -24,24 +19,6 @@ def get_or_create_notebook(notebook_slug):
 
     return notebook
 
-def get_or_create_section(section_slug, notebook_slug):
-    # First get the notebook
-    notebook = get_or_create_notebook(notebook_slug)
-
-    try:
-        # Get section
-        section = Section.objects.get(slug=section_slug, notebook=notebook)
-    except Exception as e:
-        # Create section
-        section = Section()
-        section.slug = section_slug
-        section.name = ' '.join([x.capitalize() for x in section_slug.split('-')])
-        section.order = 0
-        section.notebook = notebook
-        section.save()
-
-    return section
-
 def parse_payload(payload):
     """ Parses a payload and returns dictionary with content + metadata. """
 
@@ -53,17 +30,10 @@ def parse_payload(payload):
         if len(line.strip()) > 0:
             # See if it's a notebook selector
             if line[0:2] == '::':
-                selector = line[2:]
-                # ::notebook/section OR ::notebook
-                if '/' in selector:
-                    notebook, section = selector.split('/')
-                else:
-                    notebook = selector
-                    section = None
+                # ::notebook
+                notebook = line[2:]
 
                 response['notebook'] = notebook.strip()
-                if section:
-                    response['section'] = section.strip()
 
             elif line[0] == ':':
                 # Normal metadata (:title Title)

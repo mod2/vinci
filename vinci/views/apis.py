@@ -16,7 +16,7 @@ from rest_framework.views import APIView
 from taggit.models import Tag
 
 from vinci import models, serializers, search_indexer as si
-from vinci.utils import get_or_create_notebook, get_or_create_section, parse_payload
+from vinci.utils import get_or_create_notebook, parse_payload
 
 def _reorder_items(model_qs, orders, owner_id=None):
     """
@@ -140,7 +140,7 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
 
     - **GET** List the entries for the current notebook.
     - **POST** Create a new entry attached to the current notebook.
-    - **PUT** Edit the current notebook's name, status, group, or sections.
+    - **PUT** Edit the current notebook's name, status, group.
     - **DELETE** Delete the current notebook (sets the status to deleted).
     """
     serializer_class = serializers.EntrySerializer
@@ -149,28 +149,16 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
         """Create a new Entry."""
 
         content = request.data.get('content')
-        section_slug = request.data.get('section')
 
         payload = parse_payload(content) 
 
-        # Get or create notebook/section
+        # Get or create notebook
         if 'notebook' in payload:
             notebook_slug = payload['notebook']
             payload['notebook'] = get_or_create_notebook(notebook_slug)
         else:
             # Default to the notebook we're in
             notebook = get_or_create_notebook(notebook_slug)
-
-        if 'section' in payload:
-            section_slug = payload['section']
-            payload['section'] = get_or_create_section(section_slug, notebook_slug)
-        else:
-            if section_slug:
-                # Section passed in
-                payload['section'] = get_or_create_section(section_slug, notebook_slug)
-            elif notebook.default_section is None:
-                # Try the notebook's default section
-                payload['section'] = notebook.default_section
 
         if len(payload['content'].strip()) > 0:
             entry = models.Entry.objects.create(**payload)
@@ -189,7 +177,6 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
         slug = request.data.get('slug')
         status = request.data.get('status')
         group = request.data.get('group')
-        default_section = request.data.get('default_section')
         custom_css = request.data.get('custom_css')
 
         if slug is not None:
@@ -205,16 +192,6 @@ class EntryListAPIView(NotebookLimitMixin, ListCreateAPIView):
             new_group = models.Group.objects.get(name=group)
             if new_group:
                 notebook.group = new_group
-
-        if default_section is not None:
-            try:
-                if default_section == 'home':
-                    notebook.default_section = None
-                else:
-                    section = models.Section.objects.get(slug=default_section, notebook=notebook)
-                    notebook.default_section = section
-            except models.Section.DoesNotExist:
-                return APIResponseNotFound('Section does not exist.')
 
         notebook.save()
 
@@ -383,7 +360,6 @@ class NotebookDetailAPIView(APIView):
         name = request.data.get('name', '')
         status = request.data.get('status', '')
         group = request.data.get('group', '')
-        default_section = request.data.get('default_section', '')
 
         if notebook:
             if name != '':
@@ -396,16 +372,6 @@ class NotebookDetailAPIView(APIView):
                 new_group = models.Group.objects.get(name=group)
                 if new_group:
                     notebook.group = new_group
-
-            if default_section != '':
-                try:
-                    if default_section == 'home':
-                        notebook.default_section = None
-                    else:
-                        section = models.Section.objects.get(slug=default_section, notebook=notebook)
-                        notebook.default_section = section
-                except models.Section.DoesNotExist:
-                    return APIResponseNotFound('Section does not exist.')
 
             notebook.save()
 
@@ -440,7 +406,7 @@ class QuickJumpAPIView(APIView):
     ## Examples
 
     * GET `/api/quick-jump/?q={query}` Returns lists of all the pages and
-    notebooks and sections that match the given query.
+    notebooks that match the given query.
 
     """
     authentication_classes = (APIKeyAuthentication,)
@@ -456,46 +422,22 @@ class QuickJumpAPIView(APIView):
         query = request.GET.get('q', '').strip().lower()
         if query:
             notebook_list = []
-            section_list = []
             page_list = []
             tag_list = []
 
             print("load", time.time())
             # See if there's a notebook specifier ("home.projects", for example)
-            query, _, section_slug = query.partition('/')
 
-            if section_slug:
-                # Get two notebooks
-                notebooks = (models.Notebook.objects
-                            .filter(slug__contains=query)
-                            .values('slug')
-                            )[:4]
+            # Get notebooks
+            notebooks = (models.Notebook.objects
+                        .filter(slug__contains=query)
+                        )[:4]
 
-                # Get sections
-                sections = (models.Section.objects
-                            .filter(slug__contains=section_slug, notebook__slug__in=notebooks)
-                            )[:4]
+            # Get tags
+            tags = Tag.objects.filter(slug__contains=query)[:4]
 
-                # Zero out entries/tags because we only want the section
-                notebooks = []
-                entries = []
-                tags = []
-            else:
-                # Get notebooks
-                notebooks = (models.Notebook.objects
-                            .filter(slug__contains=query)
-                            )[:4]
-
-                # Get sections
-                sections = (models.Section.objects
-                            .filter(slug__contains=query)
-                            )[:4]
-
-                # Get tags
-                tags = Tag.objects.filter(slug__contains=query)[:4]
-
-                # Get entries
-                entries = models.Entry.objects.filter(title__icontains=query).select_related('notebook', 'section').order_by('date')[:4]
+            # Get entries
+            entries = models.Entry.objects.filter(title__icontains=query).select_related('notebook').order_by('date')[:4]
 
             status = 'success'
             status_code = 200
@@ -509,20 +451,11 @@ class QuickJumpAPIView(APIView):
                         }
                     notebook_list.append(nb)
 
-            if sections:
-                for section in sections:
-                    s = {'name': str(section),
-                        'slug': section.slug,
-                        'url': section.get_absolute_url(),
-                        }
-                    section_list.append(s)
-
             if entries:
                 for entry in entries:
                     page = {'name': entry.title,
                             'slug': entry.slug,
                             'notebook': entry.notebook.name,
-                            'section': entry.section.name if entry.section else '',
                             'url': entry.get_absolute_url(),
                             }
                     page_list.append(page)
@@ -538,7 +471,6 @@ class QuickJumpAPIView(APIView):
 
             msg = {
                 'notebooks': notebook_list,
-                'sections': section_list,
                 'pages': page_list,
                 'tags': tag_list,
             }
@@ -555,7 +487,6 @@ def append_today(request, notebook_slug):
     """ Appends to today's entry, creating it if it's not there. """
 
     callback = request.GET.get('callback', '')
-    section = request.GET.get('section', '')
     key = request.GET.get('key', '')
 
     if key != settings.VINCI_NON_REST_KEY:
@@ -574,16 +505,9 @@ def append_today(request, notebook_slug):
         # Notebook
         notebook = models.Notebook.objects.get(slug=notebook_slug)
 
-        # Section
-        if section != '':
-            section = models.Section.objects.get(slug=section, notebook=notebook)
-        else:
-            section = notebook.default_section
-
         # Get first entry for today
         results = (models.Entry.objects
                    .filter(notebook=notebook,
-                           section=section,
                            date__range=[today, tomorrow],
                            )
                    .order_by('date')
@@ -610,7 +534,6 @@ def append_today(request, notebook_slug):
             # so there's no initial newline)
 
             kwargs = {'content': content.strip(),
-                      'section': section,
                       'notebook': notebook,
                       }
             entry = models.Entry.objects.create(**kwargs)
@@ -641,7 +564,6 @@ def add_entry(request, notebook_slug):
 
     callback = request.GET.get('callback', '')
     key = request.GET.get('key', '')
-    section = request.GET.get('section', '')
 
     if key != settings.VINCI_NON_REST_KEY:
         return JsonResponse({})
@@ -656,11 +578,7 @@ def add_entry(request, notebook_slug):
         # Notebook
         notebook = models.Notebook.objects.get(slug=notebook_slug)
 
-        if section == '':
-            section = notebook.default_section
-
         kwargs = {'content': content.strip(),
-                  'section': section,
                   'notebook': notebook,
                   }
         entry = models.Entry.objects.create(**kwargs)
@@ -827,10 +745,6 @@ def add_payload(request):
     if notebook_slug == '':
         notebook_slug = request.GET.get('notebook', '')
 
-    section_slug = request.POST.get('section', '')
-    if section_slug == '':
-        section_slug = request.GET.get('section', '')
-
     if content == '':
         return {
             'error': 'No content to save',
@@ -839,7 +753,7 @@ def add_payload(request):
 
     payload = parse_payload(content) 
 
-    # Get or create notebook/section
+    # Get or create notebook
     if 'notebook' in payload:
         notebook_slug = payload['notebook']
         payload['notebook'] = get_or_create_notebook(notebook_slug)
@@ -847,21 +761,10 @@ def add_payload(request):
         # Default to the notebook we're in
         payload['notebook'] = get_or_create_notebook(notebook_slug)
 
-    if 'section' in payload:
-        section_slug = payload['section']
-        payload['section'] = get_or_create_section(section_slug, notebook_slug)
-    else:
-        if section_slug:
-            # Section passed in
-            payload['section'] = get_or_create_section(section_slug, notebook_slug)
-        elif 'notebook' in payload and hasattr(payload['notebook'], 'default_section') and payload['notebook'].default_section is None:
-            # Try the notebook's default section
-            payload['section'] = payload['notebook'].default_section
-
-    # Make sure there's a section or notebook
-    if ('notebook' not in payload or payload['notebook'] is None) and ('section' not in payload or payload['section'] is None):
+    # Make sure there's a notebook
+    if ('notebook' not in payload or payload['notebook'] is None):
         return {
-            'error': 'No notebook/section specified',
+            'error': 'No notebook specified',
             'status': 400,
         }
 
@@ -882,12 +785,8 @@ def add_payload(request):
         else:
             entry.title = ''
 
-        # Notebook and section
+        # Notebook
         entry.notebook = payload['notebook']
-        if 'section' in payload and payload['section'] is not None:
-            entry.section = payload['section']
-        else:
-            entry.section = None
 
         # Tags
         entry.tags.clear()

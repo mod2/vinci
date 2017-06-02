@@ -38,12 +38,8 @@ class NotebookManager(StatusQueries, models.QuerySet):
     pass
 
 
-class SectionManager(StatusQueries, models.QuerySet):
-    pass
-
-
 class EntryQuerySet(StatusQueries, models.QuerySet):
-    def from_slug(self, slug, section_slug=None, notebook_slug=None):
+    def from_slug(self, slug, notebook_slug=None):
         # See if it's a post ID or a page slug
         try:
             slug_id = int(slug)
@@ -57,10 +53,6 @@ class EntryQuerySet(StatusQueries, models.QuerySet):
         # If there's a notebook slug, filter by it
         if notebook_slug:
             entries = entries.filter(notebook__slug=notebook_slug)
-
-        # If there's a section slug, filter by it
-        if section_slug:
-            entries = entries.filter(section__slug=section_slug)
 
         # Get the first entry
         entry = entries.first()
@@ -141,8 +133,6 @@ class Notebook(models.Model):
     group = models.ForeignKey(Group, related_name="notebooks", default=None,
                               null=True, blank=True)
 
-    default_section = models.ForeignKey("Section", related_name="default_notebooks", blank=True, null=True)
-
     default_mode = models.CharField(max_length=30, blank=True, null=True)
 
     dotfile = models.TextField(blank=True, null=True)
@@ -156,42 +146,12 @@ class Notebook(models.Model):
     def get_absolute_url(self):
         return resolve_url('notebook', self.slug)
 
-    def section_count(self):
-        return self.sections.count()
-
     def active_entry_count(self):
         return self.entries.filter(status='active').count()
 
     def delete(self):
         self.status = self.STATUS.deleted
         self.save()
-
-
-class Section(models.Model):
-    STATUS = Choices(
-        ('active', 'Active'),
-        ('archived', 'Archived'),
-        ('deleted', 'Deleted'),
-    )
-
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(blank=True, default='')
-
-    status = models.CharField(max_length=20,
-                              default=STATUS.active,
-                              choices=STATUS)
-
-    notebook = models.ForeignKey(Notebook, related_name='sections')
-
-    default_mode = models.CharField(max_length=30, blank=True, null=True)
-
-    objects = SectionManager.as_manager()
-
-    def __str__(self):
-        return "{}/{}".format(self.notebook.slug, self.slug)
-
-    def get_absolute_url(self):
-        return resolve_url('notebook_section', self.notebook.slug, self.slug)
 
 
 class Entry(models.Model):
@@ -203,7 +163,6 @@ class Entry(models.Model):
     title = models.CharField(max_length=100, blank=True, default='')
     slug = models.SlugField(blank=True, default='')
     notebook = models.ForeignKey(Notebook, related_name='entries')
-    section = models.ForeignKey(Section, related_name='entries', null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20,
                               default=STATUS.active,
@@ -275,16 +234,7 @@ class Entry(models.Model):
     def get_absolute_url(self):
         slug = self.id
 
-        if self.section:
-            section_slug = self.section.slug
-
-            # For wiki pages, use the slug, otherwise
-            if self.slug and self.section.default_mode == 'wiki':
-                slug = self.slug
-        else:
-            section_slug = '--'
-
-        return resolve_url('entry', self.notebook.slug, section_slug, slug)
+        return resolve_url('entry', self.notebook.slug, slug)
 
     def __str__(self):
         return "{}".format(self.current_revision)
@@ -323,11 +273,8 @@ class Revision(models.Model):
         return self.content[:60]
 
     def get_metadata(self):
-        # ::notebook/section
-        content = '::{}'.format(self.entry.notebook.slug)
-        if self.entry.section:
-            content += '/{}'.format(self.entry.section.slug)
-        content += '\n'
+        # ::notebook
+        content = '::{}\n'.format(self.entry.notebook.slug)
 
         # :title Title
         if self.entry.title:

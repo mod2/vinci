@@ -118,7 +118,7 @@ $(document).ready(function() {
 	function _executeSearch() {
 		var url = '';
 
-		var url = $("#search").attr("data-search-section-uri");
+		var url = $("#search").attr("data-search-notebook-uri");
 		var query = $("#search input[type=text]").val().trim();
 
 		if (query.length > 0) {
@@ -156,12 +156,6 @@ $(document).ready(function() {
 						var nb = data.results.notebooks[i];
 
 						html += '<a class="notebook" href="' + nb.url + '" data-slug="' + nb.slug + '"><span class="selector">::</span>' + nb.slug + '</a>';
-					}
-
-					for (var i in data.results.sections) {
-						var s = data.results.sections[i];
-
-						html += '<a class="section" href="' + s.url + '" data-slug="' + s.slug + '"><span class="selector">::</span>' + s.name.replace("/", "<span class='selector'>/</span>") + '</a>';
 					}
 
 					for (var i in data.results.pages) {
@@ -710,7 +704,6 @@ $(document).ready(function() {
 	function _addEntry() {
 		var currentBox = $("#add-entry textarea[name=entry-content]:visible");
 		var currentNotebook = $("#add-entry").attr("data-notebook-slug");
-		var currentSection = $("#add-entry").attr("data-section-slug");
 
 		if (currentBox && currentBox.val()) {
 			var currentText = currentBox.val().trim();
@@ -719,7 +712,6 @@ $(document).ready(function() {
 
 			if (currentText) data['content'] = currentText;
 			if (currentNotebook) data['notebook'] = currentNotebook;
-			if (currentSection) data['section'] = currentSection;
 
 			$.ajax({
 				url: url,
@@ -800,33 +792,6 @@ $(document).ready(function() {
 			},
 			error: function(data) {
 				_showError("Error renaming notebook", data);
-			},
-		});
-	});
-
-	// Change default section
-
-	$("#settings #default-section span.type").on("click", function() {
-		var url = $("#settings").attr("data-uri");
-		var button = $(this);
-
-		var value = $(this).attr("data-value");
-		var data = {
-			'default_section': value,
-		};
-
-		$.ajax({
-			url: url,
-			method: 'PUT',
-			contentType: 'application/json',
-			data: JSON.stringify(data),
-			success: function(data) {
-				// Change default section
-				button.siblings(".selected").removeClass("selected");
-				button.addClass("selected");
-			},
-			error: function(data) {
-				_showError("Error saving settings", data);
 			},
 		});
 	});

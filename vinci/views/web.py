@@ -10,94 +10,32 @@ from django.utils import timezone
 from django.utils.timezone import utc, make_aware
 import datetime
 
-from vinci.models import Notebook, Section, Entry, Revision, Group, TimelineDay
+from vinci.models import Notebook, Entry, Revision, Group, TimelineDay
 import vinci.search_indexer as si
-
-from vinci.utils import get_sections_for_notebook
 
 
 @login_required
 def notebook_home(request, notebook_slug):
-    notebook = get_object_or_404(Notebook, slug=notebook_slug)
-
-    if notebook.default_section is not None:
-        section = notebook.default_section
-
-        # Redirect to the default section for this notebook
-        return redirect('notebook_section', notebook_slug=notebook_slug, section_slug=section.slug)
-    else:
-        # Show the notebook root
-        return notebook_section(request, notebook_slug=notebook_slug, section_slug=None)
-
-
-@login_required
-def notebook_settings(request, notebook_slug):
-    notebook = get_object_or_404(Notebook, slug=notebook_slug)
-
-    # Get sections (for sidebar list)
-    sections = get_sections_for_notebook(notebook)
-
-    # Title tag
-    title_tag = 'Settings — ::{}'.format(notebook.slug)
-
-    context = {
-        'title': title_tag,
-        'notebook': notebook,
-        'sections': sections,
-        'modes': settings.VINCI_MODE_LIST,
-        'statuses': [{'value': s[0], 'label': s[1]} for s in Notebook.STATUS],
-        'groups': [{'value': g.name, 'label': g.name} for g in Group.objects.all()],
-        'page_type': 'settings',
-        'API_KEY': settings.VINCI_API_KEY,
-    }
-
-    return render_to_response('vinci/notebook_settings.html',
-                              context,
-                              RequestContext(request),
-                              )
-
-
-@login_required
-def notebook_section(request, notebook_slug, section_slug):
     sortby = settings.VINCI_DEFAULT_SEARCH_ORDER
     sortby = request.GET.get('sort', sortby)
     page = int(request.GET.get('page', 1))
 
     notebook = get_object_or_404(Notebook, slug=notebook_slug)
 
-    if section_slug:
-        section = get_object_or_404(Section, slug=section_slug, notebook=notebook)
-    else:
-        section = None
-
     # Check default mode
     default_mode = 'log'
-    if section and section.default_mode:
-        default_mode = section.default_mode
-    elif notebook.default_mode:
+    if notebook.default_mode:
         default_mode = notebook.default_mode
 
     mode = request.GET.get('mode', default_mode)
     sticky = request.GET.get('sticky', '')
 
     # Save mode as default unless sticky is set
-    if section:
-        if section.default_mode != mode and sticky != 'false':
-            section.default_mode = mode
-            section.save()
-    else:
-        if notebook.default_mode != mode and sticky != 'false':
-            notebook.default_mode = mode
-            notebook.save()
+    if notebook.default_mode != mode and sticky != 'false':
+        notebook.default_mode = mode
+        notebook.save()
 
     entries = notebook.entries.active()
-
-    if section:
-        # Filter by section
-        entries = entries.filter(section=section)
-    else:
-        # Get entries that aren't in any section
-        entries = entries.filter(section__isnull=True)
 
     if mode == 'note':
         # Sort notes by last modified
@@ -106,18 +44,13 @@ def notebook_section(request, notebook_slug, section_slug):
         entries = entries.order_by(sortby)
 
     try:
-        entries = Paginator(entries, settings.VINCI_RESULTS_PER_PAGE).page(page)
+        entries = Paginator(entries,
+                            settings.VINCI_RESULTS_PER_PAGE).page(page)
     except EmptyPage:
         entries = []
 
-    # Get sections (for sidebar list)
-    sections = get_sections_for_notebook(notebook)
-
     # Title tag
-    if section:
-        title_tag = '::{}'.format(str(section))
-    else:
-        title_tag = '::{}'.format(notebook.slug)
+    title_tag = '::{}'.format(notebook.slug)
 
     labels = []
 
@@ -126,8 +59,6 @@ def notebook_section(request, notebook_slug, section_slug):
         'mode': mode,
         'modes': settings.VINCI_MODE_LIST,
         'notebook': notebook,
-        'section': section,
-        'sections': sections,
         'entries': entries,
         'labels': labels,
         'page_type': 'list',
@@ -142,45 +73,47 @@ def notebook_section(request, notebook_slug, section_slug):
 
 
 @login_required
-def entry_detail(request, notebook_slug, section_slug, entry_slug):
-    try:
-        if section_slug == '--':
-            section_slug = None
+def notebook_settings(request, notebook_slug):
+    notebook = get_object_or_404(Notebook, slug=notebook_slug)
 
-        entry = Entry.objects.from_slug(entry_slug, section_slug, notebook_slug)
+    # Title tag
+    title_tag = 'Settings — ::{}'.format(notebook.slug)
+
+    context = {
+        'title': title_tag,
+        'notebook': notebook,
+        'modes': settings.VINCI_MODE_LIST,
+        'statuses': [{'value': s[0], 'label': s[1]} for s in Notebook.STATUS],
+        'groups': [{'value': g.name, 'label': g.name} for g in Group.objects.all()],
+        'page_type': 'settings',
+        'API_KEY': settings.VINCI_API_KEY,
+    }
+
+    return render_to_response('vinci/notebook_settings.html',
+                              context,
+                              RequestContext(request),
+                              )
+
+
+@login_required
+def entry_detail(request, notebook_slug, entry_slug):
+    try:
+        entry = Entry.objects.from_slug(entry_slug, notebook_slug)
     except Entry.DoesNotExist:
         return HttpResponseNotFound('Entry does not exist.')
 
-    if section_slug is not None:
-        try:
-            section = Section.objects.get(slug=section_slug, notebook__slug=notebook_slug)
-        except Section.DoesNotExist:
-            return HttpResponseNotFound('Section does not exist.')
-    else:
-        section = None
-
     # Check default mode
     default_mode = 'log'
-    if section and section.default_mode:
-        default_mode = section.default_mode
-    elif entry.notebook.default_mode:
+    if entry.notebook.default_mode:
         default_mode = entry.notebook.default_mode
 
     mode = request.GET.get('mode', default_mode)
     sticky = request.GET.get('sticky', '')
 
     # Save mode as default unless sticky is set
-    if section:
-        if section.default_mode != mode and sticky != 'false':
-            section.default_mode = mode
-            section.save()
-    else:
-        if entry.notebook.default_mode != mode and sticky != 'false':
-            entry.notebook.default_mode = mode
-            entry.notebook.save()
-
-    # Get sections (for sidebar list)
-    sections = get_sections_for_notebook(entry.notebook)
+    if entry.notebook.default_mode != mode and sticky != 'false':
+        entry.notebook.default_mode = mode
+        entry.notebook.save()
 
     # Title tag
     if entry.title:
@@ -188,10 +121,7 @@ def entry_detail(request, notebook_slug, section_slug, entry_slug):
     else:
         slug = '{} ({})'.format(str(entry.date)[0:10], entry.id)
 
-    if entry.section:
-        title_tag = '{} — ::{}'.format(slug, str(entry.section))
-    else:
-        title_tag = '{} — ::{}'.format(slug, entry.notebook.slug)
+    title_tag = '{} — ::{}'.format(slug, entry.notebook.slug)
 
     context = {
         'title': title_tag,
@@ -199,8 +129,6 @@ def entry_detail(request, notebook_slug, section_slug, entry_slug):
         'modes': settings.VINCI_MODE_LIST,
         'notebook': entry.notebook,
         'entry': entry,
-        'sections': sections,
-        'section': section,
         'page_type': 'detail',
         'API_KEY': settings.VINCI_API_KEY,
     }
@@ -212,24 +140,13 @@ def entry_detail(request, notebook_slug, section_slug, entry_slug):
 
 
 @login_required
-def revision_detail(request, notebook_slug, section_slug, entry_slug, revision_id):
+def revision_detail(request, notebook_slug, entry_slug, revision_id):
     mode = request.GET.get('mode', 'log')
 
     try:
-        if section_slug == '--':
-            section_slug = None
-
-        entry = Entry.objects.from_slug(entry_slug, section_slug, notebook_slug)
+        entry = Entry.objects.from_slug(entry_slug, notebook_slug)
     except Entry.DoesNotExist:
         return HttpResponseNotFound('Entry does not exist.')
-
-    if section_slug is not None:
-        try:
-            section = Section.objects.get(slug=section_slug, notebook__slug=notebook_slug)
-        except Section.DoesNotExist:
-            return HttpResponseNotFound('Section does not exist.')
-    else:
-        section = None
 
     try:
         revision = Revision.objects.get(id=revision_id)
@@ -238,26 +155,16 @@ def revision_detail(request, notebook_slug, section_slug, entry_slug, revision_i
 
     # Check default mode
     default_mode = 'log'
-    if section and section.default_mode:
-        default_mode = section.default_mode
-    elif entry.notebook.default_mode:
+    if entry.notebook.default_mode:
         default_mode = entry.notebook.default_mode
 
     mode = request.GET.get('mode', default_mode)
     sticky = request.GET.get('sticky', '')
 
     # Save mode as default unless sticky is set
-    if section:
-        if section.default_mode != mode and sticky != 'false':
-            section.default_mode = mode
-            section.save()
-    else:
-        if entry.notebook.default_mode != mode and sticky != 'false':
-            entry.notebook.default_mode = mode
-            entry.notebook.save()
-
-    # Get sections (for sidebar list)
-    sections = get_sections_for_notebook(entry.notebook)
+    if entry.notebook.default_mode != mode and sticky != 'false':
+        entry.notebook.default_mode = mode
+        entry.notebook.save()
 
     # Title tag
     if entry.slug:
@@ -265,10 +172,7 @@ def revision_detail(request, notebook_slug, section_slug, entry_slug, revision_i
     else:
         slug = entry.id
 
-    if entry.section:
-        title_tag = '{}.{} — ::{}'.format(slug, revision.id, str(entry.section))
-    else:
-        title_tag = '{}.{} — ::{}'.format(slug, revision.id, entry.notebook.slug)
+    title_tag = '{}.{} — ::{}'.format(slug, revision.id, entry.notebook.slug)
 
     context = {
         'title': title_tag,
@@ -277,8 +181,6 @@ def revision_detail(request, notebook_slug, section_slug, entry_slug, revision_i
         'notebook': entry.notebook,
         'entry': entry,
         'revision': revision,
-        'sections': sections,
-        'section': section,
         'page_type': 'detail',
         'API_KEY': settings.VINCI_API_KEY,
     }
@@ -361,8 +263,8 @@ def diary_detail(request, day):
                                    date__gte=beginning_utc,
                                    date__lte=end_utc)
 
-    # Sort by date, notebook, and section
-    entries = entries.order_by('date', 'notebook__name', 'section__name')
+    # Sort by date, notebook
+    entries = entries.order_by('date', 'notebook__name')
 
     # Get yesterday/tomorrow dates
     tomorrow = the_date + datetime.timedelta(days=1)
@@ -406,13 +308,6 @@ def search_notebook_tags(request, notebook_slug, tag):
 
 
 @login_required
-def search_notebook_section(request, notebook_slug, section_slug):
-    notebook = get_object_or_404(Notebook, slug=notebook_slug)
-    section = get_object_or_404(Section, slug=section_slug, notebook=notebook)
-    return _search(request, request.GET.get('q'), notebook, section)
-
-
-@login_required
 def search_all(request):
     return _search(request, request.GET.get('q'))
 
@@ -422,7 +317,7 @@ def search_all_tags(request, tag):
     return _search(request, 'tag:{}'.format(tag))
 
 
-def _search(request, query, notebook=None, section=None):
+def _search(request, query, notebook=None):
     sortby = request.GET.get('sort', settings.VINCI_DEFAULT_SEARCH_ORDER)
     page = int(request.GET.get('page', 1))
     tagview = False
@@ -435,9 +330,6 @@ def _search(request, query, notebook=None, section=None):
             'page': page,
             'sort_order': sortby,
         }
-
-        if section:
-            search_params['section'] = section
 
         if notebook:
             search_params['notebook'] = notebook
@@ -454,17 +346,13 @@ def _search(request, query, notebook=None, section=None):
         # Convert tags in queries back to hashtag syntax
         query = query.replace('tag:', '#')
 
-    if section:
-        mode = section.default_mode
-    else:
-        mode = 'log'
+    mode = 'log'
 
     context = {
         'title': '{} — /search'.format(query),
         'query': query,
         'entries': entries,
         'total': total,
-        'section': section,
         'mode': mode,
         'modes': settings.VINCI_MODE_LIST,
         'tagview': tagview,
@@ -476,9 +364,6 @@ def _search(request, query, notebook=None, section=None):
     if notebook:
         context['title'] = '{}{}{}'.format(context['title'], settings.VINCI_SITE_TITLE_SEP, notebook.name)
         context['notebook'] = notebook
-
-        # Get sections (for sidebar list)
-        context['sections'] = get_sections_for_notebook(notebook)
 
     # Get the template
     template = settings.VINCI_TEMPLATES[mode]['search']
@@ -502,20 +387,12 @@ def prefs_view(request):
 
 @login_required
 def overview(request):
-    # See if we want to limit it to a specific notebook and/or section
+    # See if we want to limit it to a specific notebook
     notebook = request.GET.get('notebook', '')
-    section = None
 
     if notebook != '':
-        # Split out section if it's there
-        if '/' in notebook:
-            notebook, section = notebook.split('/')
-
-            # Get section entries
-            entries = Entry.objects.filter(notebook__slug=notebook, section__slug=section)
-        else:
-            # Get notebook entries
-            entries = Entry.objects.filter(notebook__slug=notebook)
+        # Get notebook entries
+        entries = Entry.objects.filter(notebook__slug=notebook)
     else:
         # Get all the entries
         entries = Entry.objects.all().order_by('date')
@@ -587,7 +464,6 @@ def overview(request):
         'page_type': 'overview',
         'years': year_list,
         'notebook_filter': notebook,
-        'section_filter': section,
         'API_KEY': settings.VINCI_API_KEY,
     }
 

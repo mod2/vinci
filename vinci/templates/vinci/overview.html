@@ -2,8 +2,6 @@
 
 {% load humanize %}
 
-{% block sections %}{% endblock sections %}
-
 {% block content %}
 <div id="overview">
 	<section class="container">
@@ -16,9 +14,9 @@
 		</div>
 
 		<div class="group">
-			<h2>Limit to notebook/section</h2>
+			<h2>Limit to notebook</h2>
 			<form class="row" action="." method="GET">
-				<input type="search" name="notebook" {% if notebook_filter or section_filter %}value="{{ notebook_filter }}{% if section_filter %}/{{ section_filter }}{% endif %}"{% endif %} />
+				<input type="search" name="notebook" {% if notebook_filter %}value="{{ notebook_filter }}"{% endif %} />
 				<input type="submit" class="button" value="Limit" />
 			</form>
 		</div>
@@ -34,7 +32,7 @@
 		<div class="toc group">
 			<h2>No entries</h2>
 
-			<p>This notebook/section may not exist.</p>
+			<p>This notebook may not exist.</p>
 		</div>
 		{% endif %}
 

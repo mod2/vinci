@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Entry, Notebook, Section
+from .models import Entry, Notebook
 
 
 class NotebookSerializer(serializers.ModelSerializer):
@@ -14,7 +14,6 @@ class NotebookSerializer(serializers.ModelSerializer):
                   'slug',
                   'status',
                   'group',
-                  'default_section',
                   'entries',
                   )
 
@@ -42,8 +41,6 @@ class ContentField(RevisionField):
 class EntrySerializer(serializers.ModelSerializer):
     notebook = serializers.SlugRelatedField(slug_field='slug',
                                             queryset=Notebook.objects.active())
-    section = serializers.SlugRelatedField(slug_field='slug',
-                                           queryset=Section.objects.all())
     content = ContentField()
 
     def create(self, kwargs):
@@ -52,6 +49,6 @@ class EntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Entry
         fields = ('id', 'title', 'slug', 'date', 'content',
-                  'html', 'notebook', 'section')
+                  'html', 'notebook')
 
 

@@ -24,7 +24,6 @@ if settings.VINCI_SEARCH_SCHEMA:
 else:
     SCHEMA = Schema(id=ID(unique=True, stored=True),
                     notebook=ID,
-                    section=ID,
                     content=TEXT(analyzer=StemmingAnalyzer(), stored=True),
                     tag=KEYWORD(field_boost=2.0),
                     title=TEXT(field_boost=2.0),
@@ -46,7 +45,6 @@ def _generate_entry_document(entry):
     doc = {}
     doc = {'id': str(entry.id),
            'notebook': entry.notebook.slug,
-           'section': entry.section.slug if entry.section else '',
            'content': entry.title + ' ' + entry.content,
            'title': entry.title,
            'tag': ' '.join([t.name for t in entry.tags.all()]),
@@ -109,7 +107,7 @@ def delete_from_index(document):
 
 
 def search(query_string, page=1, results_per_page=10, sort_order='relevance',
-           notebook=None, section=None):
+           notebook=None):
     ix = get_or_create_index()
 
     qp = QueryParser('content', ix.schema)
@@ -118,9 +116,6 @@ def search(query_string, page=1, results_per_page=10, sort_order='relevance',
 
     if notebook:
         query = query & Term('notebook', notebook.slug)
-
-    if section:
-        query = query & Term('section', section.slug)
 
     entry_ids = {}
     results = None

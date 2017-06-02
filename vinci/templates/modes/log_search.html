@@ -4,7 +4,7 @@
 		<a class="date" href="{{ entry.get_absolute_url }}">
 			<date>{{ entry.date|date:'j M Y' }}</date>
 			<time>{{ entry.date|date:'g:i A'|lower }}, {{ entry.date|date:'D' }}</time>
-			{% if page_type == 'diary_detail' %}<span class="notebook">::{{ entry.notebook.slug }}{% if entry.section %}/{{ entry.section.slug }}{% endif %}</span>{% endif %}
+			{% if page_type == 'diary_detail' %}<span class="notebook">::{{ entry.notebook.slug }}</span>{% endif %}
 		</a>
 
 		{% if entry.tags.all|length > 0 %}

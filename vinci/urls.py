@@ -61,12 +61,12 @@ vincipatterns = [
         vinci_web_views.notebook_settings, name='notebook_settings'),
     url(r'^(?P<notebook_slug>[^\/]+)/tag/(?P<tag>[^\/]+)/$',
         vinci_web_views.search_notebook_tags, name='search_notebook_tags'),
+    url(r'^(?P<notebook_slug>[^\/]+)/search/$',
+        vinci_web_views.search_notebook, name='search_notebook'),
     url(r'^(?P<notebook_slug>[^\/]+)/(?P<entry_slug>[^\/]+)/(?P<revision_id>[^\/]+)/$',
         vinci_web_views.revision_detail, name='revision'),
     url(r'^(?P<notebook_slug>[^\/]+)/(?P<entry_slug>[^\/]+)/$',
         vinci_web_views.entry_detail, name='entry'),
-    url(r'^(?P<notebook_slug>[^\/]+)/search/$',
-        vinci_web_views.search_notebook, name='search_notebook'),
 ]
 
 urlpatterns = [

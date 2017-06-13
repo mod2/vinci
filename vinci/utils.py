@@ -31,7 +31,7 @@ def parse_payload(payload):
             # See if it's a notebook selector
             if line[0:2] == '::':
                 # ::notebook
-                notebook = line[2:]
+                notebook = line[2:].lower()
 
                 response['notebook'] = notebook.strip()
 
